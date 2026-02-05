@@ -7,8 +7,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
  */
 const config = {
   output: "export",
-  basePath: "/Json_Crack",
-  assetPrefix: "/Json_Crack",
   reactStrictMode: false,
   productionBrowserSourceMaps: true,
   compiler: {
