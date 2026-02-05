@@ -52,11 +52,11 @@ jobs:
           fi
 
       - name: Build project
-        run: bun run build && touch ./dist/.nojekyll #✎ Adjust to your build output folder (dist or out)
+        run: bun run build && touch ./out/.nojekyll #✎ Adjust to your build output folder (dist or out)
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: public
-          folder: dist #✎ Adjust to your build output folder (dist or out)
+          folder: out #✎ Adjust to your build output folder (dist or out)
