@@ -26,6 +26,7 @@
     "@mantine/dropzone": "^8.3.14",
     "@mantine/hooks": "^8.3.14",
     "@monaco-editor/react": "^4.7.0",
+    "@react-three/fiber": "^9.5.0",
     "allotment": "^1.20.5",
     "fast-xml-parser": "5.3.4",
     "gofmt.js": "0.0.2",
@@ -42,6 +43,7 @@
     "next-seo": "^7.1.0",
     "next-sitemap": "^4.2.3",
     "nextjs-google-analytics": "^2.3.7",
+    "ogl": "^1.0.11",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hot-toast": "^2.6.0",
@@ -52,6 +54,7 @@
     "reaflow": "5.4.1",
     "shiki": "^3.22.0",
     "styled-components": "^6.3.8",
+    "three": "^0.182.0",
     "use-long-press": "^3.3.0",
     "zustand": "^5.0.11"
   },

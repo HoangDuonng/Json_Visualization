@@ -13,20 +13,6 @@ const oxygen = Oxygen({
 const StyledHeroSection = styled.main`
   position: relative;
 
-  &:before {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 100%;
-    background-size: 40px 40px;
-    background-image:
-      linear-gradient(to right, #f7f7f7 1px, transparent 1px),
-      linear-gradient(to bottom, #f7f7f7 1px, transparent 1px);
-    image-rendering: pixelated;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, 0%, white, 98%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, 0%, white, 98%, transparent);
-  }
-
   @media only screen and (max-width: 1240px) {
     flex-direction: column;
   }
