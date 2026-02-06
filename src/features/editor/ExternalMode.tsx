@@ -149,8 +149,8 @@ const ExternalMode = () => {
           ToDiagram
         </Anchor>
         <Text c="dimmed">•</Text>
-        <Anchor href="https://x.com/aykutsarach" rel="noopener" target="_blank" fz="sm">
-          Aykut Saraç (@aykutsarach)
+        <Anchor href="https://x.com/HoanggDuonng" rel="noopener" target="_blank" fz="sm">
+          Hoang Duong (@HoanggDuonng)
         </Anchor>
       </Flex>
     </Modal>

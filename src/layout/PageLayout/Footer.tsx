@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Anchor, Container, Divider, Flex, Stack, Text, ThemeIcon } from "@mantine/core";
-import { FaDiscord, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { JSONCrackLogo } from "../JsonCrackLogo";
 
@@ -12,8 +12,8 @@ export const Footer = () => {
       <Flex justify="space-between">
         <Stack gap={4} visibleFrom="sm">
           <JSONCrackLogo />
-          <Anchor href="mailto:contact@todiagram.com" fz="xs" c="dimmed">
-            contact@todiagram.com
+          <Anchor href="mailto:hoangduong@nguuyen.io.vn" fz="xs" c="dimmed">
+            hoangduong@nguuyen.io.vn
           </Anchor>
         </Stack>
         <Flex gap={60} visibleFrom="sm">
@@ -65,7 +65,7 @@ export const Footer = () => {
             <Flex gap="xs">
               <Anchor
                 aria-label="LinkedIn"
-                href="https://www.linkedin.com/company/jsoncrack"
+                href="https://www.linkedin.com/in/hoangduonng/"
                 fz="sm"
                 rel="noopener"
               >
@@ -73,7 +73,7 @@ export const Footer = () => {
                   <FaLinkedin size={20} />
                 </ThemeIcon>
               </Anchor>
-              <Anchor aria-label="X" fz="sm" href="https://x.com/jsoncrack" rel="noopener">
+              <Anchor aria-label="X" fz="sm" href="https://x.com/HoanggDuonng" rel="noopener">
                 <ThemeIcon variant="transparent" color="gray.5">
                   <FaXTwitter size={20} />
                 </ThemeIcon>
@@ -86,16 +86,6 @@ export const Footer = () => {
               >
                 <ThemeIcon variant="transparent" color="gray.5">
                   <FaGithub size={20} />
-                </ThemeIcon>
-              </Anchor>
-              <Anchor
-                aria-label="Discord"
-                fz="sm"
-                href="https://discord.com/invite/yVyTtCRueq"
-                rel="noopener"
-              >
-                <ThemeIcon variant="transparent" color="gray.5">
-                  <FaDiscord size={20} />
                 </ThemeIcon>
               </Anchor>
             </Flex>
