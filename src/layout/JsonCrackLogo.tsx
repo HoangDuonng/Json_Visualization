@@ -18,15 +18,16 @@ const StyledLogoWrapper = styled.div`
 `;
 
 const StyledTitle = styled.span<{ fontSize: string }>`
-  font-weight: 800;
+  font-weight: 400;
   margin: 0;
-  font-family: ${monaSans.style.fontFamily} !important;
+  font-family: "Playfair Display", "Sagittaire Display", serif;
   font-size: ${({ fontSize }) => fontSize};
   white-space: nowrap;
   z-index: 10;
   vertical-align: middle;
-  color: white;
-  mix-blend-mode: difference;
+  color: #1a1a1a;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  letter-spacing: -0.02em;
 `;
 
 interface LogoProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -60,7 +61,7 @@ export const JSONCrackLogo = ({ fontSize = "1.2rem", hideText, hideLogo, ...prop
         )}
         {!hideText && (
           <StyledTitle fontSize={fontSize} {...props}>
-            JSON VISUALIZATION
+            JSON VIZ
           </StyledTitle>
         )}
       </StyledLogoWrapper>
