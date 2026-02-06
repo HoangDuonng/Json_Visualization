@@ -2,4 +2,4 @@ User-agent: *
 
 Allow: /
 
-Sitemap: https://jsoncrack.com/sitemap.xml
+Sitemap: https://jsonvisualization.nguuyen.io.vn/sitemap.xml
