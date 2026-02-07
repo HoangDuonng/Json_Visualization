@@ -23,14 +23,14 @@ const ContentWrapper = styled.div`
   z-index: 1;
 `;
 
-const PageLayout = ({ children }: React.PropsWithChildren) => {
+const PageLayout = ({ children, stars = 0 }: React.PropsWithChildren<{ stars?: number }>) => {
   return (
     <ThemeProvider theme={lightTheme}>
       <StyledLayoutWrapper>
         <SplashCursor />
         <Navbar />
         <ContentWrapper>{children}</ContentWrapper>
-        <Footer />
+        <Footer stars={stars} />
       </StyledLayoutWrapper>
     </ThemeProvider>
   );

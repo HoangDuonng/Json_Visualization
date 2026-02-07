@@ -87,7 +87,7 @@ export const Navbar = () => {
         blur={18}
         opacity={0.04}
         borderRadius={24}
-        padding="8px 12px"
+        padding="8px 24px"
         style={{ margin: 0 }}
       >
         <StyledNavbar>
@@ -95,18 +95,6 @@ export const Navbar = () => {
             <JSONCrackLogo fontSize="1.2rem" />
           </Left>
           <Center>
-            <StyledButton
-              component="a"
-              href="https://github.com/HoangDuonng/Json_Visualization"
-              target="_blank"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-              rel="noopener"
-            >
-              Open Source
-            </StyledButton>
             <StyledButton
               component={Link}
               prefetch={false}

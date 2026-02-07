@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Anchor, Container, Divider, Flex, Stack, Text, ThemeIcon } from "@mantine/core";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { GithubButton } from "../../components/GithubButton";
 import { JSONCrackLogo } from "../JsonCrackLogo";
 
-export const Footer = () => {
+interface FooterProps {
+  stars?: number;
+}
+
+export const Footer: React.FC<FooterProps> = ({ stars = 0 }) => {
   return (
     <Container w="100%" mt={60} px={60} pb="xl" bg="black" fluid>
       <Divider color="gray.3" mb="xl" mx={-60} />
@@ -30,6 +35,10 @@ export const Footer = () => {
             >
               Open Source
             </Anchor>
+            <GithubButton
+              stars={stars}
+              href="https://github.com/HoangDuonng/Json_Visualization"
+            />
           </Stack>
           <Stack gap="xs">
             <Text fz="sm" c="white">

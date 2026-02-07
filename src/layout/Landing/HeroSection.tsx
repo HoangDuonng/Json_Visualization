@@ -1,9 +1,10 @@
 import React from "react";
 import { Oxygen } from "next/font/google";
 import Link from "next/link";
-import { Stack, Flex, Button } from "@mantine/core";
+import { Stack, Flex } from "@mantine/core";
 import styled from "styled-components";
-import { FaChevronRight, FaGithub, FaStar } from "react-icons/fa6";
+import { ExploreButton } from "../../components/ExploreButton";
+import { GithubButton } from "../../components/GithubButton";
 
 const oxygen = Oxygen({
   subsets: ["latin-ext"],
@@ -92,27 +93,6 @@ export const HeroSection = ({ stars = 0 }) => {
     <StyledHeroSection>
       <StyledHeroSectionBody>
         <Stack flex="1" miw={250} mx="auto" align="center">
-          <Link
-            href="https://github.com/HoangDuonng/Json_Visualization"
-            target="_blank"
-            rel="noopener"
-          >
-            <Button
-              variant="default"
-              radius="xl"
-              ta="left"
-              leftSection={<FaGithub size="18" />}
-              rightSection={
-                <Flex ml="sm" c="dimmed" align="center" gap="4">
-                  <FaStar />
-                  {stars.toLocaleString("en-US")}
-                </Flex>
-              }
-            >
-              GitHub
-            </Button>
-          </Link>
-
           <StyledHeroTitle>Visualize JSON into interactive graphs</StyledHeroTitle>
           <StyledHeroText>
             The best online JSON viewer to <strong>visualize</strong>, <strong>format</strong> and{" "}
@@ -121,32 +101,12 @@ export const HeroSection = ({ stars = 0 }) => {
 
           <Flex gap="xs" wrap="wrap" justify="center" hiddenFrom="xs">
             <Link href="/editor">
-              <Button
-                // component="a"
-                color="#202842"
-                size="md"
-                radius="md"
-                rightSection={<FaChevronRight />}
-                fw="500"
-                mt="sm"
-              >
-                Go to Editor
-              </Button>
+              <ExploreButton>Go to Editor</ExploreButton>
             </Link>
           </Flex>
           <Flex gap="lg" wrap="wrap" justify="center" visibleFrom="xs">
             <Link href="/editor">
-              <Button
-                // component="a"
-                color="#202842"
-                size="md"
-                radius="md"
-                rightSection={<FaChevronRight />}
-                fw="500"
-                mt="sm"
-              >
-                Go to Editor
-              </Button>
+              <ExploreButton>Go to Editor</ExploreButton>
             </Link>
           </Flex>
         </Stack>

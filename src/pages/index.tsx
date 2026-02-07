@@ -14,7 +14,7 @@ import Layout from "../layout/PageLayout";
 
 export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout>
+    <Layout stars={props.stars}>
       <Head>{generateNextSeo({ ...SEO, canonical: "https://nguuyen.io.vn" })}</Head>
       <HeroSection stars={props.stars} />
       <HeroPreview />
