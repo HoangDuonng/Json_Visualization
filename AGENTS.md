@@ -157,6 +157,7 @@ import { isIframe } from "../lib/utils/helpers";
 ```
 src/
 ├── pages/           # Next.js pages (routing)
+├── components/      # Reusable UI components
 ├── features/        # Feature modules (editor, modals, etc.)
 ├── layout/          # Layout components (Navbar, Footer, etc.)
 ├── hooks/           # Custom React hooks
@@ -169,6 +170,46 @@ src/
 └── enums/           # Enumerations
 ```
 
+### Component Organization
+
+All reusable components follow this structure:
+
+```
+src/components/
+├── ComponentName/
+│   ├── ComponentName.tsx    # Component implementation
+│   └── index.ts             # Barrel export
+```
+
+**Styled-components convention**: Keep styled-components in the same file as the component (project convention).
+
+## Design System
+
+### Typography
+
+- **Global font**: Playfair Display (serif) - Applied via `next/font/google` in `_app.tsx`
+- **Code/Editor font**: JetBrains Mono (monospace) - Applied to editor pages and code blocks
+
+### Color Palette
+
+- **Background**: `#f7f3e6` (warm beige) - Used for footer and headers
+- **Primary text**: `#1a1a1a` (dark)
+- **Secondary text**: `#666666` (gray)
+- **Accent**: `#37ff8b` (neon green) - Interactive elements and hover states
+- **Yellow**: `#f7c948` (warm yellow) - Buttons and highlights
+- **Border**: `#e8e4db` (light beige)
+
+### Reusable Components
+
+The project includes several reusable button components with animations:
+
+- **EditorButton**: Purple animated button for editor navigation
+- **GithubButton**: Gradient border button with star count
+- **ExploreButton**: Neumorphic style button for CTAs
+- **AnimatedLinkButton**: Link with underline animation
+- **ArrowButton**: Circular button with arrow (yellow → neon green on hover)
+- **GenerateButton**: Sparkle animation button with warm yellow color
+
 ## Best Practices
 
 1. **Performance**: Use debouncing for expensive operations (see `useFocusNode.ts`)
@@ -179,6 +220,8 @@ src/
 6. **Type safety**: Leverage TypeScript's type system fully
 7. **Component composition**: Break down complex components into smaller ones
 8. **Avoid prop drilling**: Use Zustand stores for deeply nested state
+9. **Consistent styling**: Use design system colors and fonts across all pages
+10. **Error handling**: Always add try-catch blocks for async operations and validate inputs
 
 ## Common Patterns
 
@@ -214,6 +257,46 @@ export const useMyHook = () => {
   const [debouncedValue] = useDebouncedValue(value, 600);
 
   return [value, setValue, debouncedValue] as const;
+};
+```
+
+### Creating a reusable component
+
+```typescript
+import React from "react";
+import styled from "styled-components";
+
+const StyledButton = styled.button`
+  background-color: #f7c948;
+  color: #1a1a1a;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #37ff8b;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+interface MyButtonProps {
+  onClick?: () => void;
+  children: React.ReactNode;
+  disabled?: boolean;
+}
+
+export const MyButton: React.FC<MyButtonProps> = ({ onClick, children, disabled }) => {
+  return (
+    <StyledButton onClick={onClick} disabled={disabled}>
+      {children}
+    </StyledButton>
+  );
 };
 ```
 

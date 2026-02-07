@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 const StyledEditorButton = styled.div`
   .button {
-    --white: #ffe7ff;
-    --purple-100: #f4b1fd;
-    --purple-200: #d190ff;
-    --purple-300: #c389f2;
-    --purple-400: #8e26e2;
-    --purple-500: #5e2b83;
+    --white: #fef9e7;
+    --yellow-100: #f7f3e6;
+    --yellow-200: #f0e6c8;
+    --yellow-300: #e8d9a8;
+    --yellow-400: #d4a017;
+    --yellow-500: #b8860b;
     --radius: 18px;
 
     border-radius: var(--radius);
@@ -38,20 +38,20 @@ const StyledEditorButton = styled.div`
     position: absolute;
     inset: 0;
     border-radius: calc(var(--radius) * 1.1);
-    background: var(--purple-500);
+    background: var(--yellow-500);
   }
 
   .bg::before {
     filter: blur(5px);
     transition: all 0.3s ease;
     box-shadow:
-      -7px 6px 0 0 rgb(115 75 155 / 40%),
-      -14px 12px 0 0 rgb(115 75 155 / 30%),
-      -21px 18px 4px 0 rgb(115 75 155 / 25%),
-      -28px 24px 8px 0 rgb(115 75 155 / 15%),
-      -35px 30px 12px 0 rgb(115 75 155 / 12%),
-      -42px 36px 16px 0 rgb(115 75 155 / 8%),
-      -56px 42px 20px 0 rgb(115 75 155 / 5%);
+      -7px 6px 0 0 rgb(212 160 23 / 40%),
+      -14px 12px 0 0 rgb(212 160 23 / 30%),
+      -21px 18px 4px 0 rgb(212 160 23 / 25%),
+      -28px 24px 8px 0 rgb(212 160 23 / 15%),
+      -35px 30px 12px 0 rgb(212 160 23 / 12%),
+      -42px 36px 16px 0 rgb(212 160 23 / 8%),
+      -56px 42px 20px 0 rgb(212 160 23 / 5%);
   }
 
   .wrap {
@@ -62,8 +62,8 @@ const StyledEditorButton = styled.div`
     padding: 2px;
     background: linear-gradient(
       to bottom,
-      var(--purple-100) 0%,
-      var(--purple-400) 100%
+      var(--yellow-100) 0%,
+      var(--yellow-400) 100%
     );
     position: relative;
     transition: all 0.3s ease;
@@ -110,11 +110,11 @@ const StyledEditorButton = styled.div`
     transition: all 0.3s ease;
     background: linear-gradient(
       to bottom,
-      var(--purple-300) 0%,
-      var(--purple-400) 100%
+      var(--yellow-300) 0%,
+      var(--yellow-400) 100%
     );
     box-shadow:
-      inset -2px 12px 11px -5px var(--purple-200),
+      inset -2px 12px 11px -5px var(--yellow-200),
       inset 1px -3px 11px 0px rgb(0 0 0 / 35%);
   }
 
@@ -128,7 +128,7 @@ const StyledEditorButton = styled.div`
     bottom: 35%;
     opacity: 0.7;
     margin: auto;
-    background: linear-gradient(to bottom, transparent, var(--purple-400));
+    background: linear-gradient(to bottom, transparent, var(--yellow-400));
     filter: brightness(1.3) blur(5px);
   }
 
@@ -162,7 +162,7 @@ const StyledEditorButton = styled.div`
     content: attr(data-label);
     position: absolute;
     color: var(--white);
-    text-shadow: -1px 1px 2px var(--purple-500);
+    text-shadow: -1px 1px 2px var(--yellow-500);
     left: 0;
   }
 
@@ -207,9 +207,9 @@ const StyledEditorButton = styled.div`
   .icon div {
     position: relative;
     width: 12px;
-    box-shadow: -2px 2px 5px var(--purple-400);
+    box-shadow: -2px 2px 5px var(--yellow-400);
     transform: scale(0.9);
-    background: linear-gradient(to bottom, var(--white), var(--purple-100));
+    background: linear-gradient(to bottom, var(--white), var(--yellow-100));
     animation: swingArrow 1s ease-in-out infinite;
     animation-play-state: paused;
   }
@@ -217,7 +217,7 @@ const StyledEditorButton = styled.div`
   .icon div::before {
     transform: rotate(44deg);
     top: 1px;
-    box-shadow: 1px -2px 3px -1px var(--purple-400);
+    box-shadow: 1px -2px 3px -1px var(--yellow-400);
     animation: rotateArrowLine 1s linear infinite;
     animation-play-state: paused;
   }
@@ -225,8 +225,8 @@ const StyledEditorButton = styled.div`
   .icon div::after {
     bottom: 1px;
     transform: rotate(316deg);
-    box-shadow: -2px 2px 3px 0 var(--purple-400);
-    background: linear-gradient(200deg, var(--white), var(--purple-100));
+    box-shadow: -2px 2px 3px 0 var(--yellow-400);
+    background: linear-gradient(200deg, var(--white), var(--yellow-100));
     animation: rotateArrowLine2 1s linear infinite;
     animation-play-state: paused;
   }
@@ -250,7 +250,7 @@ const StyledEditorButton = styled.div`
     stroke-dasharray: 60 60;
     stroke-dashoffset: 60;
     transform: translate(-17%, -31%);
-    stroke: var(--purple-300);
+    stroke: var(--yellow-300);
   }
 
   .button:hover .words {
@@ -289,15 +289,15 @@ const StyledEditorButton = styled.div`
     filter: blur(5px);
     opacity: 0.7;
     box-shadow:
-      -7px 6px 0 0 rgb(115 75 155 / 40%),
-      -14px 12px 0 0 rgb(115 75 155 / 25%),
-      -21px 18px 4px 0 rgb(115 75 155 / 15%);
+      -7px 6px 0 0 rgb(212 160 23 / 40%),
+      -14px 12px 0 0 rgb(212 160 23 / 25%),
+      -21px 18px 4px 0 rgb(212 160 23 / 15%);
   }
 
   .button:active .content {
     box-shadow:
-      inset -1px 12px 8px -5px rgba(71, 0, 137, 0.4),
-      inset 0px -3px 8px 0px var(--purple-200);
+      inset -1px 12px 8px -5px rgba(212, 160, 23, 0.4),
+      inset 0px -3px 8px 0px var(--yellow-200);
   }
 
   .button:active .words,
@@ -429,7 +429,7 @@ const StyledEditorButton = styled.div`
     }
     to {
       stroke-dashoffset: -480;
-      stroke: #f9c6fe;
+      stroke: #fef3d0;
     }
   }
 

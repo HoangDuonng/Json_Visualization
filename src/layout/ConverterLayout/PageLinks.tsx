@@ -1,67 +1,43 @@
 import React from "react";
 import Link from "next/link";
-import { Anchor, Button, Flex, List, SimpleGrid, Stack } from "@mantine/core";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { useRouter } from "next/router";
+import { Flex, SimpleGrid, Stack } from "@mantine/core";
+import { AnimatedLinkButton } from "../../components/AnimatedLinkButton";
 import { formats } from "../../enums/file.enum";
 
 const languages = formats.map(format => format.label);
 
 function groupCombinations(array: string[]): Record<string, string[]> {
-  // Create an object to hold the grouped combinations
   const grouped = {};
-
-  // Iterate over each item in the array
   array.forEach(from => {
-    // Filter out the same item for the "to" array
     const targets = array.filter(to => to !== from);
-
-    // Add the "from" item as the key and the "to" items as the value array
     grouped[from] = targets;
   });
-
   return grouped;
 }
 
 const groupedLanguages = groupCombinations(languages);
 
 export const PageLinks = () => {
+  const router = useRouter();
+
   return (
-    <Flex justify="space-between" align="center">
-      <Stack gap="sm" py="md" justify="center">
-        <Button
-          component={Link}
-          prefetch={false}
-          href="/editor"
-          radius="md"
-          size="sm"
-          color="dark.5"
-          autoContrast
-          w="fit-content"
-          rightSection={<FaArrowRightLong />}
-          style={{
-            boxShadow: "rgba(0, 0, 0, 0.12) 0px -3px 0px 0px inset",
-            border: "none",
-          }}
-        >
-          Open JSON Visualization
-        </Button>
-      </Stack>
-      <SimpleGrid cols={4} w="fit-content">
+    <Flex justify="space-between" align="center" wrap="wrap" gap="md">
+      <SimpleGrid cols={4} w="100%" spacing="xl" style={{ flex: 1 }}>
         {Object.entries(groupedLanguages).map(([from, tos]) => (
-          <List key={from} listStyleType="none">
+          <Stack key={from} gap="xs">
             {tos.map(to => (
-              <List.Item key={to} c="black">
-                <Anchor
-                  component={Link}
-                  prefetch={false}
-                  c="black"
-                  href={`/converter/${from.toLowerCase()}-to-${to.toLowerCase()}`}
-                >
+              <Link
+                key={to}
+                href={`/converter/${from.toLowerCase()}-to-${to.toLowerCase()}`}
+                prefetch={false}
+              >
+                <AnimatedLinkButton>
                   {from} to {to}
-                </Anchor>
-              </List.Item>
+                </AnimatedLinkButton>
+              </Link>
             ))}
-          </List>
+          </Stack>
         ))}
       </SimpleGrid>
     </Flex>
