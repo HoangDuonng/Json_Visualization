@@ -7,6 +7,7 @@ import "@mantine/dropzone/styles.css";
 import styled, { ThemeProvider } from "styled-components";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { JetBrains_Mono } from "next/font/google";
 import { generateNextSeo } from "next-seo/pages";
 import { SEO } from "../constants/seo";
 import { darkTheme, lightTheme } from "../constants/theme";
@@ -17,6 +18,12 @@ import useGraph from "../features/editor/views/GraphView/stores/useGraph";
 import useConfig from "../store/useConfig";
 import useFile from "../store/useFile";
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jetbrains-mono",
+});
+
 const ModalController = dynamic(() => import("../features/modals/ModalController"));
 const ExternalMode = dynamic(() => import("../features/editor/ExternalMode"));
 
@@ -25,6 +32,11 @@ export const StyledPageWrapper = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+
+  * {
+    font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+  }
 
   @media only screen and (max-width: 320px) {
     height: 100vh;
