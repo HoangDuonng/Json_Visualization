@@ -15,6 +15,7 @@ const StyledLogoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  color: #1a1a1a;
 `;
 
 const StyledTitle = styled.span<{ fontSize: string }>`
@@ -25,7 +26,7 @@ const StyledTitle = styled.span<{ fontSize: string }>`
   white-space: nowrap;
   z-index: 10;
   vertical-align: middle;
-  color: #1a1a1a;
+  color: currentColor;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   letter-spacing: -0.02em;
 `;
@@ -48,7 +49,7 @@ export const JSONCrackLogo = ({ fontSize = "1.2rem", hideText, hideLogo, ...prop
   return (
     <Link href="/" prefetch={false} target="_self" onClick={handleLogoClick}>
       <StyledLogoWrapper>
-        {!hideLogo && (
+        {/* {!hideLogo && (
           <Image
             src="/assets/192.png"
             loading="eager"
@@ -58,7 +59,7 @@ export const JSONCrackLogo = ({ fontSize = "1.2rem", hideText, hideLogo, ...prop
             radius={4}
             mb="2"
           />
-        )}
+        )} */}
         {!hideText && (
           <StyledTitle fontSize={fontSize} {...props}>
             JSON VIZ

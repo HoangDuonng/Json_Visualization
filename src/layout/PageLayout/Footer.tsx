@@ -11,7 +11,7 @@ export const Footer = () => {
       <Divider color="gray.3" mb="xl" mx={-60} />
       <Flex justify="space-between">
         <Stack gap={4} visibleFrom="sm">
-          <JSONCrackLogo />
+          <JSONCrackLogo style={{ color: "white" }} />
           <Anchor href="mailto:hoangduong@nguuyen.io.vn" fz="xs" c="dimmed">
             hoangduong@nguuyen.io.vn
           </Anchor>

@@ -58,7 +58,7 @@ export const GlassSurface: React.FC<GlassSurfaceProps> = ({
   blur = 2,
   opacity = 0.05,
   borderRadius = 999,
-  padding = "12px 24px",
+  padding = "8px 24px",
   className,
   style,
 }) => {
