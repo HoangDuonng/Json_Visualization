@@ -1,0 +1,22 @@
+{
+  "agentskills": {
+    "version": "1.0",
+    "skills": [
+      {
+        "name": "json-visualization-dev",
+        "path": ".agentskills/json-visualization-dev",
+        "description": "Develop and maintain the JSON Visualization web application - a Next.js tool for visualizing JSON/YAML/CSV/XML data as interactive graphs. Use when working with this codebase, adding features, fixing bugs, or understanding the graph visualization, data conversion, or type generation systems.",
+        "entrypoint": "SKILL.md",
+        "references": [
+          "references/ARCHITECTURE.md",
+          "references/COMPONENTS.md",
+          "references/STATE.md"
+        ],
+        "scripts": [
+          "scripts/validate-format.js",
+          "scripts/analyze-json.js"
+        ]
+      }
+    ]
+  }
+}

@@ -54,6 +54,12 @@ JSON Visualization is a tool for visualizing JSON data in a structured, interact
 - [Reaflow](https://reaflow.dev/)
 - [Monaco Editor](https://github.com/suren-atoyan/monaco-react)
 
+## For AI Agents
+
+This repository includes [Agent Skills](.agentskills/) - structured documentation to help AI coding assistants understand and work with this codebase effectively.
+
+**Quick start for agents**: Read [`.agentskills/json-visualization-dev/SKILL.md`](.agentskills/json-visualization-dev/SKILL.md) for project overview, architecture, and development guidelines.
+
 ## Stay Up-to-Date
 
 JSON Visualization officially launched as v1.0 on the 17th of February 2022 and we've come a long way so far. Watch **releases** of this repository to be notified of future updates:

@@ -2,6 +2,8 @@
 
 This document provides guidelines for AI coding agents working in the JSON Visualization codebase.
 
+> **💡 For comprehensive documentation**: See [`.agentskills/json-visualization-dev/`](.agentskills/json-visualization-dev/) for structured Agent Skills with detailed architecture, components, and state management references.
+
 ## Project Overview
 
 JSON Visualization is a Next.js application for visualizing and manipulating JSON data. It uses React 19, TypeScript, Zustand for state management, styled-components for styling, and Mantine v8 for UI components.
