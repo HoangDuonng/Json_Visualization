@@ -19,7 +19,7 @@ const StyledContentBody = styled.div`
   line-height: 1.7;
 `;
 
-const StyledFeatureCard = styled(Paper)`
+const StyledFeatureCard = styled(Paper)<any>`
   cursor: pointer;
   transition: all 0.3s ease;
   height: 100%;
