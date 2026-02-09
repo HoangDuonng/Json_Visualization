@@ -11,6 +11,8 @@ const StyledFooter = styled.footer`
   background: #f7f3e6;
   border-top: 1px solid #e8e4db;
   padding: 60px 0 40px;
+  position: relative;
+  z-index: 2;
 `;
 
 const StyledFooterContent = styled.div`

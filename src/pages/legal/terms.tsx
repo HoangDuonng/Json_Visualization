@@ -23,7 +23,7 @@ const Terms = () => {
             Terms of Service
           </Title>
           <Text c="gray.6" ta="center">
-            Last updated: No 30, 2024
+            Last updated: February 9, 2026
           </Text>
 
           <Stack mt={50} my="lg">

@@ -1,40 +1,98 @@
 import React from "react";
 import Head from "next/head";
-import { Group, Paper, Stack, Text, Title } from "@mantine/core";
-import { CodeHighlight } from "@mantine/code-highlight";
+import Link from "next/link";
+import { Container, Group, Paper, Stack, Text, Title, ThemeIcon, SimpleGrid } from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
+import { FaBolt, FaToolbox } from "react-icons/fa";
+import { IoImages } from "react-icons/io5";
+import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-icons/md";
+import { TbTransformFilled } from "react-icons/tb";
+import { VscJson } from "react-icons/vsc";
 import { SEO } from "../constants/seo";
 import Layout from "../layout/PageLayout";
-
-const StyledFrame = styled.iframe`
-  border: none;
-  width: 80%;
-  flex: 500px;
-  margin: 3% auto;
-`;
 
 const StyledContentBody = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  gap: 15px;
-  line-height: 1.8;
-  overflow-x: auto;
+  gap: 12px;
+  line-height: 1.7;
 `;
 
-const StyledHighlight = styled.span<{ $link?: boolean; $alert?: boolean }>`
-  display: inline-block;
-  text-align: left;
-  color: ${({ theme, $link, $alert }) =>
-    $alert ? theme.DANGER : $link ? theme.BLURPLE : theme.TEXT_POSITIVE};
-  background: ${({ theme }) => theme.BACKGROUND_TERTIARY};
-  border-radius: 4px;
-  font-weight: 500;
-  padding: 2px 4px;
-  font-size: 14px;
-  margin: ${({ $alert }) => ($alert ? "8px 0" : "1px")};
+const StyledFeatureCard = styled(Paper)`
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  background: white;
+  color: black;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
 `;
+
+const StyledLink = styled.a`
+  color: #228be6;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const features = [
+  {
+    title: "Visualization",
+    description: "Transform JSON, YAML, CSV, XML into interactive graphs or tree views",
+    icon: <FaBolt size={24} />,
+    color: "#fab005",
+    link: "/editor",
+  },
+  {
+    title: "Format Conversion",
+    description: "Convert between JSON, YAML, CSV, XML, and TOML formats seamlessly",
+    icon: <TbTransformFilled size={24} />,
+    color: "#fd7e14",
+    link: "/converter/json-to-yaml",
+  },
+  {
+    title: "Format & Validate",
+    description: "Beautify and validate JSON, YAML, CSV with real-time error detection",
+    icon: <MdOutlineFormatIndentIncrease size={24} />,
+    color: "#51cf66",
+    link: "/editor",
+  },
+  {
+    title: "Type Generation",
+    description: "Generate TypeScript, Go, Rust, Kotlin types from your data",
+    icon: <MdOutlineGeneratingTokens size={24} />,
+    color: "#cc5de8",
+    link: "/type/json-to-typescript",
+  },
+  {
+    title: "JSON Schema",
+    description: "Generate schema, validate data, and create mock data",
+    icon: <VscJson size={24} />,
+    color: "#22b8cf",
+    link: "/tools/json-schema",
+  },
+  {
+    title: "Query Tools",
+    description: "Execute jq and JSONPath queries to filter and transform data",
+    icon: <FaToolbox size={24} />,
+    color: "#20c997",
+    link: "/editor",
+  },
+  {
+    title: "Export Images",
+    description: "Download visualizations as PNG, JPEG, or SVG images",
+    icon: <IoImages size={24} />,
+    color: "#339af0",
+    link: "/editor",
+  },
+];
 
 const Docs = () => {
   return (
@@ -43,110 +101,142 @@ const Docs = () => {
         {generateNextSeo({
           ...SEO,
           title: "Documentation - JSON Visualization",
-          description: "Integrate JSON Visualization widgets into your website.",
+          description: "Learn about JSON Visualization features and how to use them.",
           canonical: "https://jsonvisualization.nguuyen.io.vn/docs",
         })}
       </Head>
-      <Stack mx="auto" maw="90%">
-        <Group mb="lg" mt={40}>
-          <Title order={1} c="dark">
-            Embed
-          </Title>
-        </Group>
-        <Paper bg="white" c="black" p="md" radius="md" withBorder>
-          <Title mb="sm" order={3} c="dark">
-            # Fetching from URL
-          </Title>
-          <StyledContentBody>
-            <Text>
-              By adding <StyledHighlight>?json=https://catfact.ninja/fact</StyledHighlight> query at
-              the end of iframe src you will be able to fetch from URL at widgets without additional
-              scripts. This applies to editor page as well, the following link will fetch the url at
-              the editor:{" "}
-              <StyledHighlight
-                as="a"
-                href="https://jsonvisualization.nguuyen.io.vn/editor?json=https://catfact.ninja/fact"
-                $link
-              >
-                https://jsonvisualization.nguuyen.io.vn/editor?json=https://catfact.ninja/fact
-              </StyledHighlight>
-            </Text>
+      <Container size="xl" py={60}>
+        <Stack gap="xl">
+          <Group mb="lg">
+            <Title order={1} c="dark">
+              Documentation
+            </Title>
+          </Group>
 
-            <StyledFrame
-              title="Untitled"
-              src="https://codepen.io/AykutSarac/embed/KKBpWVR?default-tab=html%2Cresult"
-              loading="eager"
-            >
-              See the Pen <a href="https://codepen.io/AykutSarac/pen/KKBpWVR">Untitled</a> by Aykut
-              Saraç (<a href="https://codepen.io/AykutSarac">@AykutSarac</a>) on{" "}
-              <a href="https://codepen.io">CodePen</a>.
-            </StyledFrame>
-          </StyledContentBody>
-        </Paper>
-        <Paper bg="white" c="black" p="md" radius="md" withBorder>
-          <Title mb="sm" order={3} c="dark">
-            # Communicating with API
-          </Title>
-          <Title order={4}>◼︎ Post Message to Embed</Title>
-          <StyledContentBody>
-            <Text>
-              Communicating with the embed is possible with{" "}
-              <StyledHighlight
-                as="a"
-                href="https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/postMessage"
-                $link
-              >
-                MessagePort
-              </StyledHighlight>
-              , you should pass an object consist of &quot;json&quot; and &quot;options&quot; key
-              where json is a string and options is an object that may contain the following:
-              <CodeHighlight
-                w={500}
-                language="json"
-                code={
-                  '{\n  theme: "light" | "dark",\n  direction: "TOP" | "RIGHT" | "DOWN" | "LEFT"\n}'
-                }
-                withCopyButton={false}
-              />
-            </Text>
-
-            <StyledFrame
-              scrolling="no"
-              title="Untitled"
-              src="https://codepen.io/AykutSarac/embed/rNrVyWP?default-tab=html%2Cresult"
-              loading="lazy"
-            >
-              See the Pen <a href="https://codepen.io/AykutSarac/pen/rNrVyWP">Untitled</a> by Aykut
-              Saraç (<a href="https://codepen.io/AykutSarac">@AykutSarac</a>) on{" "}
-              <a href="https://codepen.io">CodePen</a>.
-            </StyledFrame>
-          </StyledContentBody>
-        </Paper>
-        <Paper bg="white" c="black" p="md" radius="md" withBorder>
-          <Title order={4}>◼︎ On Page Load</Title>
-          <StyledContentBody>
-            <Text>
-              <Text>
-                ⚠️ <b>Important!</b> - iframe should be defined before the script tag
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={2} c="dark">
+              Welcome to JSON Visualization
+            </Title>
+            <StyledContentBody>
+              <Text size="lg">
+                JSON Visualization is a powerful tool for visualizing, editing, and transforming
+                JSON data. All processing happens in your browser - your data never leaves your
+                device.
               </Text>
               <Text>
-                ⚠️ <b>Note</b> - Widget is not loaded immediately with the parent page. The widget
-                sends its <b>id</b> attribute so you can listen for it as in the example below to
-                ensure its loaded and ready to listen for messages.
+                Get started by exploring our features below or jump straight to the{" "}
+                <StyledLink href="/editor">Editor</StyledLink>.
               </Text>
-            </Text>
-            <StyledFrame
-              title="Untitled"
-              src="https://codepen.io/AykutSarac/embed/QWBbpqx?default-tab=html%2Cresult"
-              loading="lazy"
-            >
-              See the Pen <a href="https://codepen.io/AykutSarac/pen/QWBbpqx">Untitled</a> by Aykut
-              Saraç (<a href="https://codepen.io/AykutSarac">@AykutSarac</a>) on{" "}
-              <a href="https://codepen.io">CodePen</a>.
-            </StyledFrame>
-          </StyledContentBody>
-        </Paper>
-      </Stack>
+            </StyledContentBody>
+          </Paper>
+
+          <div>
+            <Title mb="lg" order={2} c="dark">
+              Features
+            </Title>
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+              {features.map(feature => (
+                <Link
+                  key={feature.title}
+                  href={feature.link}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <StyledFeatureCard p="lg" radius="md" withBorder>
+                    <Group mb="md">
+                      <ThemeIcon size={48} radius="md" color={feature.color} variant="light">
+                        {feature.icon}
+                      </ThemeIcon>
+                    </Group>
+                    <Title order={4} mb="xs" c="dark">
+                      {feature.title}
+                    </Title>
+                    <Text size="sm" c="dimmed">
+                      {feature.description}
+                    </Text>
+                  </StyledFeatureCard>
+                </Link>
+              ))}
+            </SimpleGrid>
+          </div>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              Quick Start
+            </Title>
+            <StyledContentBody>
+              <div>
+                <Text fw={600} mb="xs">
+                  1. Open the Editor
+                </Text>
+                <Text>
+                  Visit the <StyledLink href="/editor">Editor</StyledLink> and paste your JSON,
+                  YAML, CSV, or XML data.
+                </Text>
+              </div>
+              <div>
+                <Text fw={600} mb="xs">
+                  2. Visualize Your Data
+                </Text>
+                <Text>
+                  See your data transform into an interactive graph. Use Graph View for exploring
+                  relationships or Tree View for hierarchical structure.
+                </Text>
+              </div>
+              <div>
+                <Text fw={600} mb="xs">
+                  3. Use Tools
+                </Text>
+                <Text>
+                  Access powerful tools from the toolbar: convert formats, generate types, validate
+                  with JSON Schema, or query with jq/JSONPath.
+                </Text>
+              </div>
+              <div>
+                <Text fw={600} mb="xs">
+                  4. Export & Share
+                </Text>
+                <Text>
+                  Download your visualization as an image or export your transformed data.
+                </Text>
+              </div>
+            </StyledContentBody>
+          </Paper>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              Supported Formats
+            </Title>
+            <StyledContentBody>
+              <Text>JSON Visualization supports the following data formats:</Text>
+              <SimpleGrid cols={{ base: 2, sm: 3 }} spacing="md">
+                <Text>• JSON</Text>
+                <Text>• YAML</Text>
+                <Text>• CSV</Text>
+                <Text>• XML</Text>
+                <Text>• TOML</Text>
+              </SimpleGrid>
+              <Text size="sm" c="dimmed" mt="md">
+                All formats can be visualized, validated, and converted to other formats.
+              </Text>
+            </StyledContentBody>
+          </Paper>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              Privacy & Security
+            </Title>
+            <StyledContentBody>
+              <Text>
+                Your privacy is our priority. All data processing happens entirely in your browser.
+                We never store, transmit, or have access to your data.
+              </Text>
+              <Text size="sm" c="dimmed">
+                You can use JSON Visualization offline once the page is loaded.
+              </Text>
+            </StyledContentBody>
+          </Paper>
+        </Stack>
+      </Container>
     </Layout>
   );
 };
