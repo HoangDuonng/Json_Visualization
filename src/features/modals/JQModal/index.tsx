@@ -15,12 +15,7 @@ export const JQModal = ({ opened, onClose }: ModalProps) => {
           jq is a lightweight and flexible command-line JSON processor. JSON Visualization uses
           simplified version of jq, not all features are supported.
           <br />
-          <Anchor
-            fz="sm"
-            target="_blank"
-            href="https://jqlang.github.io/jq/manual/"
-            rel="noopener noreferrer"
-          >
+          <Anchor fz="sm" target="_blank" href="/docs/jq-query" rel="noopener noreferrer">
             Read documentation. <VscLinkExternal />
           </Anchor>
         </Text>

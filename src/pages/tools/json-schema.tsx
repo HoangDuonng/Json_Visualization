@@ -1,12 +1,12 @@
 import React from "react";
+import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 import Link from "next/link";
 import { Box, Container, Flex, Paper, Title, Text } from "@mantine/core";
+import styled from "styled-components";
 import { Editor, type OnMount } from "@monaco-editor/react";
 import { JSONSchemaFaker } from "json-schema-faker";
 import { generateNextSeo } from "next-seo/pages";
-import { JetBrains_Mono } from "next/font/google";
-import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { LuCheck, LuCircleX } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
@@ -129,7 +129,7 @@ const JSONSchemaTool = () => {
         <Title c="black" mb="lg">
           JSON Schema Validator & Generator
         </Title>
-        
+
         <Flex justify="flex-start" mb="xl">
           <Link href="/editor">
             <ExploreButton>Open JSON Visualization</ExploreButton>
@@ -161,10 +161,7 @@ const JSONSchemaTool = () => {
             }
             targetId="schema-editor"
           >
-            <GenerateButton
-              onClick={generateJson}
-              disabled={!jsonSchema.length || jsonSchemaError}
-            >
+            <GenerateButton onClick={generateJson} disabled={!jsonSchema.length || jsonSchemaError}>
               Generate JSON
             </GenerateButton>
           </Tooltip>
@@ -196,9 +193,9 @@ const JSONSchemaTool = () => {
               />
             </StyledEditorWrapper>
           </StyledPaper>
-          
+
           <ArrowButton />
-          
+
           <StyledPaper
             id="schema-editor"
             mah="600px"

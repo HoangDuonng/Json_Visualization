@@ -25,14 +25,16 @@ const StyledWrapper = styled.div`
 
   .button:before {
     border: 4px solid #f7c948;
-    transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+    transition:
+      opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
       transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
   }
 
   .button:after {
     border: 4px solid #37ff8b;
     transform: scale(1.3);
-    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transition:
+      opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
       transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     opacity: 0;
   }
@@ -41,7 +43,8 @@ const StyledWrapper = styled.div`
   .button:focus:before {
     opacity: 0;
     transform: scale(0.7);
-    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transition:
+      opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
       transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
@@ -49,7 +52,8 @@ const StyledWrapper = styled.div`
   .button:focus:after {
     opacity: 1;
     transform: scale(1);
-    transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+    transition:
+      opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
       transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
   }
 

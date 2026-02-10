@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Anchor, Container, Flex, Stack, Text } from "@mantine/core";
+import { Anchor, Flex, Text } from "@mantine/core";
 import styled from "styled-components";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";

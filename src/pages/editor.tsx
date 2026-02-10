@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
+import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMantineColorScheme } from "@mantine/core";
@@ -7,7 +8,6 @@ import "@mantine/dropzone/styles.css";
 import styled, { ThemeProvider } from "styled-components";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { JetBrains_Mono } from "next/font/google";
 import { generateNextSeo } from "next-seo/pages";
 import { SEO } from "../constants/seo";
 import { darkTheme, lightTheme } from "../constants/theme";

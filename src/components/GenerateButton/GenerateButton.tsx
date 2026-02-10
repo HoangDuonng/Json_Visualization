@@ -65,7 +65,9 @@ const StyledWrapper = styled.div`
     background-color: var(--primary-color);
 
     border-radius: var(--border_radius);
-    box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+    box-shadow:
+      inset 0 0.5px hsl(0, 0%, 100%),
+      inset 0 -1px 2px 0 hsl(0, 0%, 0%),
       0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
       0 0 0 calc(var(--active, 0) * 0.375rem) hsl(45 95% 60% / 0.75);
 
@@ -83,11 +85,8 @@ const StyledWrapper = styled.div`
     width: 100%;
     height: 100%;
     background-color: hsla(45, 50%, 92%, 0.75);
-    background-image: radial-gradient(
-        at 51% 89%,
-        hsla(45, 50%, 94%, 1) 0px,
-        transparent 50%
-      ),
+    background-image:
+      radial-gradient(at 51% 89%, hsla(45, 50%, 94%, 1) 0px, transparent 50%),
       radial-gradient(at 100% 100%, hsla(45, 50%, 92%, 1) 0px, transparent 50%),
       radial-gradient(at 22% 91%, hsla(45, 50%, 92%, 1) 0px, transparent 50%);
     background-position: top;
@@ -217,11 +216,7 @@ interface GenerateButtonProps {
   disabled?: boolean;
 }
 
-export const GenerateButton: React.FC<GenerateButtonProps> = ({
-  onClick,
-  children,
-  disabled,
-}) => {
+export const GenerateButton: React.FC<GenerateButtonProps> = ({ onClick, children, disabled }) => {
   return (
     <StyledWrapper>
       <button className="button" onClick={onClick} disabled={disabled}>

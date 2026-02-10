@@ -60,11 +60,7 @@ const StyledEditorButton = styled.div`
     height: 100%;
     transform: translate(3px, -3px);
     padding: 2px;
-    background: linear-gradient(
-      to bottom,
-      var(--yellow-100) 0%,
-      var(--yellow-400) 100%
-    );
+    background: linear-gradient(to bottom, var(--yellow-100) 0%, var(--yellow-400) 100%);
     position: relative;
     transition: all 0.3s ease;
   }
@@ -86,12 +82,7 @@ const StyledEditorButton = styled.div`
     width: 60px;
     height: 150px;
     margin: auto;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      white 50%,
-      transparent 100%
-    );
+    background: linear-gradient(to right, transparent 0%, white 50%, transparent 100%);
     animation: spin 3s linear infinite;
     animation-play-state: paused;
   }
@@ -108,11 +99,7 @@ const StyledEditorButton = styled.div`
     border-radius: calc(var(--radius) * 0.85);
     font-weight: 600;
     transition: all 0.3s ease;
-    background: linear-gradient(
-      to bottom,
-      var(--yellow-300) 0%,
-      var(--yellow-400) 100%
-    );
+    background: linear-gradient(to bottom, var(--yellow-300) 0%, var(--yellow-400) 100%);
     box-shadow:
       inset -2px 12px 11px -5px var(--yellow-200),
       inset 1px -3px 11px 0px rgb(0 0 0 / 35%);

@@ -1,15 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import {
-  Container,
-  Flex,
-  Image,
-  List,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Container, Flex, Image, List, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import styled from "styled-components";
 import { LuBadgeCheck } from "react-icons/lu";
 import { ExploreButton } from "../../components/ExploreButton";

@@ -1,5 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
+export const MONO_FONT_FAMILY = '"JetBrains Mono", "Fira Code", "Consolas", "Monaco", monospace';
+
 const GlobalStyle = createGlobalStyle`
   html, body {
     background: #ffffff;

@@ -34,12 +34,7 @@ export const JPathModal = ({ opened, onClose }: ModalProps) => {
           are used in combination with an XML document. The &quot;root member object&quot; in
           JsonPath is always referred to as $ regardless if it is an object or array.
           <br />
-          <Anchor
-            fz="sm"
-            target="_blank"
-            href="https://docs.oracle.com/cd/E60058_01/PDF/8.0.8.x/8.0.8.0.0/PMF_HTML/JsonPath_Expressions.htm"
-            rel="noopener noreferrer"
-          >
+          <Anchor fz="sm" target="_blank" href="/docs/json-path" rel="noopener noreferrer">
             Read documentation. <VscLinkExternal />
           </Anchor>
         </Text>

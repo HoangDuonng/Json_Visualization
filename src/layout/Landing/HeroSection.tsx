@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Stack, Flex } from "@mantine/core";
 import styled from "styled-components";
 import { ExploreButton } from "../../components/ExploreButton";
-import { GithubButton } from "../../components/GithubButton";
 
 const oxygen = Oxygen({
   subsets: ["latin-ext"],

@@ -126,6 +126,24 @@ import { isIframe } from "../lib/utils/helpers";
   `;
   ```
 
+### Font Usage
+
+- **Global font**: Playfair Display (serif) - Applied via `next/font/google` in `_app.tsx`
+- **Code/Monospace font**: Use `MONO_FONT_FAMILY` constant from `src/constants/globalStyle.ts`
+  ```typescript
+  import { MONO_FONT_FAMILY } from "src/constants/globalStyle";
+
+  const StyledCodeBlock = styled.pre`
+    font-family: ${MONO_FONT_FAMILY} !important;
+
+    * {
+      font-family: ${MONO_FONT_FAMILY} !important;
+    }
+  `;
+  ```
+- **Rule**: All code-related content (code blocks, inline code, examples, syntax) MUST use `MONO_FONT_FAMILY`
+- **Important**: Always add `!important` to override global font styles and apply to all children elements with `* { font-family: ... !important; }`
+
 ### Error Handling
 
 - **Try-catch blocks**: Use for async operations and data parsing

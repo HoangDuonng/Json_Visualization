@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
+import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 import Link from "next/link";
 import { Box, Container, Flex, Paper, Title, Text } from "@mantine/core";
+import styled from "styled-components";
 import { Editor } from "@monaco-editor/react";
 import { generateNextSeo } from "next-seo/pages";
-import { JetBrains_Mono } from "next/font/google";
-import styled from "styled-components";
 import { LuCheck, LuCircleX } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
 import { ExploreButton } from "../../components/ExploreButton";
@@ -70,7 +70,7 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
         <Title c="black" mb="lg">
           {fromLabel} to {toLabel} Converter
         </Title>
-        
+
         <Flex justify="flex-start" mb="xl">
           <Link href="/editor">
             <ExploreButton>Open JSON Visualization</ExploreButton>
@@ -78,7 +78,7 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
         </Flex>
 
         <PageLinks />
-        
+
         <Flex pt="xl" gap="40" align="center">
           <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
@@ -101,9 +101,9 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
               />
             </StyledEditorWrapper>
           </Paper>
-          
+
           <ArrowButton />
-          
+
           <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
               <Text c="#1a1a1a">{toLabel}</Text>

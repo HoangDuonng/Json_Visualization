@@ -1,7 +1,6 @@
 import React from "react";
 import localFont from "next/font/local";
 import Link from "next/link";
-import { Image } from "@mantine/core";
 import styled from "styled-components";
 
 const monaSans = localFont({
