@@ -9,6 +9,7 @@ import { IoImages } from "react-icons/io5";
 import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-icons/md";
 import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
 import Layout from "../layout/PageLayout";
 
@@ -48,28 +49,28 @@ const features = [
     description: "Transform JSON, YAML, CSV, XML into interactive graphs or tree views",
     icon: <FaBolt size={24} />,
     color: "#fab005",
-    link: "/editor",
+    link: "/docs/visualization",
   },
   {
     title: "Format Conversion",
     description: "Convert between JSON, YAML, CSV, XML, and TOML formats seamlessly",
     icon: <TbTransformFilled size={24} />,
     color: "#fd7e14",
-    link: "/converter/json-to-yaml",
+    link: "/docs/format-conversion",
   },
   {
     title: "Format & Validate",
     description: "Beautify and validate JSON, YAML, CSV with real-time error detection",
     icon: <MdOutlineFormatIndentIncrease size={24} />,
     color: "#51cf66",
-    link: "/editor",
+    link: "/docs/format-validate",
   },
   {
     title: "Type Generation",
     description: "Generate TypeScript, Go, Rust, Kotlin types from your data",
     icon: <MdOutlineGeneratingTokens size={24} />,
     color: "#cc5de8",
-    link: "/type/json-to-typescript",
+    link: "/docs/type-generation",
   },
   {
     title: "JSON Schema",
@@ -114,11 +115,12 @@ const Docs = () => {
       </Head>
       <Container size="xl" py={60}>
         <Stack gap="xl">
-          <Group mb="lg">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Title order={1} c="dark">
               Documentation
             </Title>
-          </Group>
+            <LanguageSwitcher />
+          </div>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">

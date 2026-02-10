@@ -4,8 +4,10 @@ import { Container, Paper, Stack, Text, Title, Table, Divider, Alert } from "@ma
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
+import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
 const StyledContentBody = styled.div`
@@ -49,31 +51,41 @@ const StyledInlineCode = styled.code`
 `;
 
 const JsonSchemaDocs = () => {
+  const { t } = useTranslation("docs");
+
   return (
     <Layout>
       <Head>
         {generateNextSeo({
           ...SEO,
-          title: "JSON Schema Documentation - JSON Visualization",
-          description:
-            "Learn how to use JSON Schema to validate, document, and generate mock data in JSON Visualization.",
+          title: `${t("jsonSchema.title")} Documentation - JSON Visualization`,
+          description: t("jsonSchema.subtitle"),
           canonical: "https://jsonvisualization.nguuyen.io.vn/docs/json-schema",
         })}
       </Head>
       <Container size="lg" py={60}>
         <Stack gap="xl">
-          <div>
-            <Title order={1} c="dark" mb="sm">
-              JSON Schema
-            </Title>
-            <Text size="lg" c="dimmed">
-              Validate, document, and generate mock data with JSON Schema
-            </Text>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}
+          >
+            <div>
+              <Title order={1} c="dark" mb="sm">
+                {t("jsonSchema.title")}
+              </Title>
+              <Text size="lg" c="dimmed">
+                {t("jsonSchema.subtitle")}
+              </Text>
+            </div>
+            <LanguageSwitcher />
           </div>
 
-          <Alert icon={<VscInfo size={20} />} color="blue" variant="light">
-            JSON Schema is a vocabulary that allows you to annotate and validate JSON documents. Any
-            validation failures are shown at the bottom toolbar of the editor pane.
+          <Alert
+            icon={<VscInfo size={20} />}
+            color="cyan"
+            variant="light"
+            styles={{ message: { color: "#1971c2" } }}
+          >
+            {t("jsonSchema.alert")}
           </Alert>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>

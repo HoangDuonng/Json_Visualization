@@ -4,8 +4,10 @@ import { Container, Paper, Stack, Text, Title, Code, Table, Divider, Alert } fro
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
+import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
 const StyledContentBody = styled.div`
@@ -44,98 +46,98 @@ const StyledCode = styled(Code)`
 `;
 
 const JQQueryDocs = () => {
+  const { t } = useTranslation("docs");
+
   return (
     <Layout>
       <Head>
         {generateNextSeo({
           ...SEO,
-          title: "JSON Query (jq) Documentation - JSON Visualization",
-          description:
-            "Learn how to use jq queries to filter, transform, and extract data from JSON in JSON Visualization.",
+          title: `${t("jqQuery.title")} Documentation - JSON Visualization`,
+          description: t("jqQuery.subtitle"),
           canonical: "https://jsonvisualization.nguuyen.io.vn/docs/jq-query",
         })}
       </Head>
       <Container size="lg" py={60}>
         <Stack gap="xl">
-          <div>
-            <Title order={1} c="dark" mb="sm">
-              JSON Query (jq)
-            </Title>
-            <Text size="lg" c="dimmed">
-              Filter, transform, and extract data from JSON using jq syntax
-            </Text>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}
+          >
+            <div>
+              <Title order={1} c="dark" mb="sm">
+                {t("jqQuery.title")}
+              </Title>
+              <Text size="lg" c="dimmed">
+                {t("jqQuery.subtitle")}
+              </Text>
+            </div>
+            <LanguageSwitcher />
           </div>
 
-          <Alert icon={<VscInfo size={20} />} color="blue" variant="light">
-            JSON Visualization uses a simplified version of jq. Not all features from the official
-            jq command-line tool are supported.
+          <Alert
+            icon={<VscInfo size={20} />}
+            color="cyan"
+            variant="light"
+            styles={{ message: { color: "#1971c2" } }}
+          >
+            {t("jqQuery.alert")}
           </Alert>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is jq?
+              {t("jqQuery.whatIsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                jq is a lightweight and flexible command-line JSON processor. It allows you to
-                slice, filter, map, and transform structured data with ease.
-              </Text>
-              <Text>
-                In JSON Visualization, you can use jq queries to quickly extract or manipulate
-                specific parts of your JSON data without writing custom code.
-              </Text>
+              <Text>{t("jqQuery.whatIsDesc1")}</Text>
+              <Text>{t("jqQuery.whatIsDesc2")}</Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Use
+              {t("jqQuery.howToUseTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  1. Open the Editor
+                  {t("jqQuery.step1Title")}
                 </Text>
                 <Text>
-                  Load your JSON data in the{" "}
-                  <StyledLink href="/editor">JSON Visualization Editor</StyledLink>.
+                  {t("jqQuery.step1Desc")}{" "}
+                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>.
                 </Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  2. Open JSON Query Tool
+                  {t("jqQuery.step2Title")}
                 </Text>
-                <Text>
-                  Click on &quot;Tools&quot; in the toolbar and select &quot;JSON Query (jq)&quot;.
-                </Text>
+                <Text>{t("jqQuery.step2Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  3. Enter Your Query
+                  {t("jqQuery.step3Title")}
                 </Text>
-                <Text>
-                  Type your jq query in the input field and click &quot;Display on Graph&quot;.
-                </Text>
+                <Text>{t("jqQuery.step3Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  4. View Results
+                  {t("jqQuery.step4Title")}
                 </Text>
-                <Text>The filtered or transformed data will be displayed in the graph view.</Text>
+                <Text>{t("jqQuery.step4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Basic Syntax
+              {t("jqQuery.basicSyntaxTitle")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Query</Table.Th>
-                    <Table.Th>Description</Table.Th>
+                    <Table.Th>{t("jqQuery.tableQuery")}</Table.Th>
+                    <Table.Th>{t("jqQuery.tableDescription")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -143,37 +145,37 @@ const JQQueryDocs = () => {
                     <Table.Td>
                       <StyledCode>.</StyledCode>
                     </Table.Td>
-                    <Table.Td>Identity - returns the entire input</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxIdentity")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledCode>.field</StyledCode>
                     </Table.Td>
-                    <Table.Td>Access a specific field</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxField")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledCode>.field1.field2</StyledCode>
                     </Table.Td>
-                    <Table.Td>Access nested fields</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxNested")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledCode>.[]</StyledCode>
                     </Table.Td>
-                    <Table.Td>Iterate through array elements</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxIterate")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledCode>.[0]</StyledCode>
                     </Table.Td>
-                    <Table.Td>Access array element by index</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxIndex")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledCode>.field[]</StyledCode>
                     </Table.Td>
-                    <Table.Td>Iterate through array in a field</Table.Td>
+                    <Table.Td>{t("jqQuery.syntaxFieldArray")}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>
@@ -182,10 +184,10 @@ const JQQueryDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Practical Examples
+              {t("jqQuery.examplesTitle")}
             </Title>
             <StyledContentBody>
-              <Text fw={600}>Sample JSON Data:</Text>
+              <Text fw={600}>{t("jqQuery.sampleData")}</Text>
               <StyledCodeBlock>
                 {`{
   "fruits": [
@@ -236,11 +238,11 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 1: Get all fruit names
+                  {t("jqQuery.example1Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>.fruits[].name</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>{'["Apple", "Banana", "Orange"]'}</StyledCodeBlock>
               </div>
 
@@ -248,11 +250,11 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 2: Get all colors
+                  {t("jqQuery.example2Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>.fruits[].color</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>{'["#FF0000", "#FFFF00", "#FFA500"]'}</StyledCodeBlock>
               </div>
 
@@ -260,11 +262,11 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 3: Get calorie information
+                  {t("jqQuery.example3Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>.fruits[].nutrients.calories</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>[52, 89, 47]</StyledCodeBlock>
               </div>
 
@@ -272,11 +274,11 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 4: Filter fruits with type &quot;Citrus&quot;
+                  {t("jqQuery.example4Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>{'.fruits[] | select(.details.type == "Citrus")'}</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {`{
   "name": "Orange",
@@ -298,11 +300,11 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 5: Filter fruits with calories less than 50
+                  {t("jqQuery.example5Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>.fruits[] | select(.nutrients.calories &lt; 50)</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {`[
   {
@@ -323,13 +325,13 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 6: Create simplified objects
+                  {t("jqQuery.example6Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>
                   {".fruits[] | {name: .name, calories: .nutrients.calories}"}
                 </StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {`[
   {"name": "Apple", "calories": 52},
@@ -343,13 +345,13 @@ const JQQueryDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 7: Get fruits by season
+                  {t("jqQuery.example7Title")}
                 </Text>
-                <Text mb="xs">Query:</Text>
+                <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
                 <StyledCodeBlock>
                   {'.fruits[] | select(.details.season == "Winter")'}
                 </StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {`{
   "name": "Orange",
@@ -367,20 +369,20 @@ const JQQueryDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Common Operations
+              {t("jqQuery.commonOpsTitle")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Operation</Table.Th>
-                    <Table.Th>Syntax</Table.Th>
-                    <Table.Th>Example</Table.Th>
+                    <Table.Th>{t("jqQuery.tableOperation")}</Table.Th>
+                    <Table.Th>{t("jqQuery.tableSyntax")}</Table.Th>
+                    <Table.Th>{t("jqQuery.tableExample")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
                   <Table.Tr>
-                    <Table.Td>Filter</Table.Td>
+                    <Table.Td>{t("jqQuery.opFilter")}</Table.Td>
                     <Table.Td>
                       <StyledCode>select(condition)</StyledCode>
                     </Table.Td>
@@ -389,7 +391,7 @@ const JQQueryDocs = () => {
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
-                    <Table.Td>Map</Table.Td>
+                    <Table.Td>{t("jqQuery.opMap")}</Table.Td>
                     <Table.Td>
                       <StyledCode>map(expression)</StyledCode>
                     </Table.Td>
@@ -398,7 +400,7 @@ const JQQueryDocs = () => {
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
-                    <Table.Td>Pipe</Table.Td>
+                    <Table.Td>{t("jqQuery.opPipe")}</Table.Td>
                     <Table.Td>
                       <StyledCode>|</StyledCode>
                     </Table.Td>
@@ -407,7 +409,7 @@ const JQQueryDocs = () => {
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
-                    <Table.Td>Object construction</Table.Td>
+                    <Table.Td>{t("jqQuery.opObject")}</Table.Td>
                     <Table.Td>
                       <StyledCode>{"{key: value}"}</StyledCode>
                     </Table.Td>
@@ -416,7 +418,7 @@ const JQQueryDocs = () => {
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
-                    <Table.Td>Array construction</Table.Td>
+                    <Table.Td>{t("jqQuery.opArray")}</Table.Td>
                     <Table.Td>
                       <StyledCode>[expression]</StyledCode>
                     </Table.Td>
@@ -431,57 +433,42 @@ const JQQueryDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("jqQuery.tipsTitle")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Start Simple</Text>
-                <Text>
-                  Begin with basic queries like <StyledCode>.field</StyledCode> and gradually add
-                  complexity.
-                </Text>
+                <Text fw={600}>{t("jqQuery.tip1Title")}</Text>
+                <Text>{t("jqQuery.tip1Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use Pipe Operator</Text>
-                <Text>
-                  Chain operations with <StyledCode>|</StyledCode> to build complex transformations
-                  step by step.
-                </Text>
+                <Text fw={600}>{t("jqQuery.tip2Title")}</Text>
+                <Text>{t("jqQuery.tip2Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Test Incrementally</Text>
-                <Text>
-                  Test each part of your query separately before combining them into a complex
-                  expression.
-                </Text>
+                <Text fw={600}>{t("jqQuery.tip3Title")}</Text>
+                <Text>{t("jqQuery.tip3Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Understand Your Data Structure</Text>
-                <Text>
-                  Use the graph visualization to understand your JSON structure before writing
-                  queries.
-                </Text>
+                <Text fw={600}>{t("jqQuery.tip4Title")}</Text>
+                <Text>{t("jqQuery.tip4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Limitations
+              {t("jqQuery.limitationsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                JSON Visualization uses a simplified version of jq. Some advanced features from the
-                official jq tool may not be supported, including:
-              </Text>
-              <Text>• Complex recursive operations</Text>
-              <Text>• Some built-in functions</Text>
-              <Text>• Advanced string manipulation</Text>
-              <Text>• Custom function definitions</Text>
+              <Text>{t("jqQuery.limitationsDesc")}</Text>
+              <Text>{t("jqQuery.limitation1")}</Text>
+              <Text>{t("jqQuery.limitation2")}</Text>
+              <Text>{t("jqQuery.limitation3")}</Text>
+              <Text>{t("jqQuery.limitation4")}</Text>
               <Text mt="md">
-                For full jq capabilities, consider using the official{" "}
+                {t("jqQuery.limitationsFooter")}{" "}
                 <StyledLink href="https://jqlang.org/" target="_blank" rel="noopener noreferrer">
-                  jq command-line tool
+                  {t("jqQuery.jqTool")}
                 </StyledLink>
                 .
               </Text>
@@ -490,13 +477,14 @@ const JQQueryDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("common.needHelp")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or check out the{" "}
-                <StyledLink href="/editor">Editor</StyledLink> to try it yourself.
+                {t("common.needHelpText")}{" "}
+                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                {t("common.directly")}.
               </Text>
             </StyledContentBody>
           </Paper>

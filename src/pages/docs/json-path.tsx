@@ -4,8 +4,10 @@ import { Container, Paper, Stack, Text, Title, Table, Divider, Alert } from "@ma
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
+import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
 const StyledContentBody = styled.div`
@@ -49,31 +51,41 @@ const StyledInlineCode = styled.code`
 `;
 
 const JsonPathDocs = () => {
+  const { t } = useTranslation("docs");
+
   return (
     <Layout>
       <Head>
         {generateNextSeo({
           ...SEO,
-          title: "JSON Path Documentation - JSON Visualization",
-          description:
-            "Learn how to use JSONPath expressions to query and extract data from JSON in JSON Visualization.",
+          title: `${t("jsonPath.title")} Documentation - JSON Visualization`,
+          description: t("jsonPath.subtitle"),
           canonical: "https://jsonvisualization.nguuyen.io.vn/docs/json-path",
         })}
       </Head>
       <Container size="lg" py={60}>
         <Stack gap="xl">
-          <div>
-            <Title order={1} c="dark" mb="sm">
-              JSON Path
-            </Title>
-            <Text size="lg" c="dimmed">
-              Query and extract data from JSON using JSONPath expressions
-            </Text>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}
+          >
+            <div>
+              <Title order={1} c="dark" mb="sm">
+                {t("jsonPath.title")}
+              </Title>
+              <Text size="lg" c="dimmed">
+                {t("jsonPath.subtitle")}
+              </Text>
+            </div>
+            <LanguageSwitcher />
           </div>
 
-          <Alert icon={<VscInfo size={20} />} color="blue" variant="light">
-            JSONPath expressions work similarly to XPath for XML, allowing you to navigate and query
-            JSON structures with a simple syntax.
+          <Alert
+            icon={<VscInfo size={20} />}
+            color="cyan"
+            variant="light"
+            styles={{ message: { color: "#1971c2" } }}
+          >
+            {t("jsonPath.alert")}
           </Alert>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
