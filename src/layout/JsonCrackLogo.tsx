@@ -15,7 +15,7 @@ const StyledLogoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #1a1a1a;
+  color: ${({ theme }) => theme.TEXT_NORMAL};
 `;
 
 const StyledTitle = styled.span<{ fontSize: string }>`

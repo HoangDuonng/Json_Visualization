@@ -2,8 +2,15 @@ import React from "react";
 import type { ModalProps } from "@mantine/core";
 import { Modal, Stack, Text, ScrollArea, Flex, CloseButton } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
+import styled from "styled-components";
 import type { NodeData } from "../../../types/graph";
 import useGraph from "../../editor/views/GraphView/stores/useGraph";
+
+const StyledModal = styled(Modal)`
+  * {
+    font-family: "JetBrains Mono", monospace !important;
+  }
+`;
 
 // return object from json removing array and object fields
 const normalizeNodeData = (nodeRows: NodeData["text"]) => {
@@ -30,7 +37,7 @@ export const NodeModal = ({ opened, onClose }: ModalProps) => {
   const nodeData = useGraph(state => state.selectedNode);
 
   return (
-    <Modal size="auto" opened={opened} onClose={onClose} centered withCloseButton={false}>
+    <StyledModal size="auto" opened={opened} onClose={onClose} centered withCloseButton={false}>
       <Stack pb="sm" gap="sm">
         <Stack gap="xs">
           <Flex justify="space-between" align="center">
@@ -64,6 +71,6 @@ export const NodeModal = ({ opened, onClose }: ModalProps) => {
           />
         </ScrollArea.Autosize>
       </Stack>
-    </Modal>
+    </StyledModal>
   );
 };
