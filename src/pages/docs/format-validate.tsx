@@ -4,8 +4,8 @@ import { Container, Paper, Stack, Text, Title, Divider, Alert } from "@mantine/c
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo, VscError, VscPass } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
-import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
@@ -15,20 +15,6 @@ const StyledContentBody = styled.div`
   flex-direction: column;
   gap: 16px;
   line-height: 1.7;
-`;
-
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
-  border: 1px solid #e9ecef;
-
-  * {
-    font-family: ${MONO_FONT_FAMILY} !important;
-  }
 `;
 
 const StyledLink = styled.a`
@@ -194,21 +180,21 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.missingComma")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John"
   "age": 30
 }`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John",
   "age": 30
 }`}
-                  </StyledCodeBlock>
+                  />
                 </div>
 
                 <Divider my="md" />
@@ -218,21 +204,21 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.trailingComma")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John",
   "age": 30,
 }`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John",
   "age": 30
 }`}
-                  </StyledCodeBlock>
+                  />
                 </div>
 
                 <Divider my="md" />
@@ -242,21 +228,21 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.unquotedKeys")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   name: "John",
   age: 30
 }`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John",
   "age": 30
 }`}
-                  </StyledCodeBlock>
+                  />
                 </div>
 
                 <Divider my="md" />
@@ -266,21 +252,21 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.singleQuotes")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   'name': 'John',
   'age': 30
 }`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`{
+                  <CodeBlock
+                    code={`{
   "name": "John",
   "age": 30
 }`}
-                  </StyledCodeBlock>
+                  />
                 </div>
               </div>
 
@@ -296,19 +282,19 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.inconsistentIndentation")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`person:
+                  <CodeBlock
+                    code={`person:
   name: John
    age: 30`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`person:
+                  <CodeBlock
+                    code={`person:
   name: John
   age: 30`}
-                  </StyledCodeBlock>
+                  />
                 </div>
 
                 <Divider my="md" />
@@ -318,17 +304,17 @@ const FormatValidateDocs = () => {
                     <Text fw={600}>{t("formatValidate.missingSpaceAfterColon")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`name:John
+                  <CodeBlock
+                    code={`name:John
 age:30`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`name: John
+                  <CodeBlock
+                    code={`name: John
 age: 30`}
-                  </StyledCodeBlock>
+                  />
                 </div>
               </div>
 
@@ -344,19 +330,19 @@ age: 30`}
                     <Text fw={600}>{t("formatValidate.inconsistentColumnCount")}</Text>
                   </Alert>
                   <Text mb="xs">{t("formatValidate.invalid")}</Text>
-                  <StyledCodeBlock>
-                    {`name,age,city
+                  <CodeBlock
+                    code={`name,age,city
 John,30,New York
 Jane,25`}
-                  </StyledCodeBlock>
+                  />
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
                     <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
-                  <StyledCodeBlock>
-                    {`name,age,city
+                  <CodeBlock
+                    code={`name,age,city
 John,30,New York
 Jane,25,Boston`}
-                  </StyledCodeBlock>
+                  />
                 </div>
               </div>
             </StyledContentBody>

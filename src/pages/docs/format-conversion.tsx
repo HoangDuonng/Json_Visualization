@@ -14,6 +14,7 @@ import {
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -25,20 +26,6 @@ const StyledContentBody = styled.div`
   flex-direction: column;
   gap: 16px;
   line-height: 1.7;
-`;
-
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
-  border: 1px solid #e9ecef;
-
-  * {
-    font-family: ${MONO_FONT_FAMILY} !important;
-  }
 `;
 
 const StyledLink = styled.a`
@@ -202,26 +189,26 @@ const FormatConversionDocs = () => {
                   {t("formatConversion.example1Title")}
                 </Text>
                 <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "name": "John Doe",
   "age": 30,
   "email": "john@example.com",
   "skills": ["JavaScript", "Python", "Go"]
 }`}
-                </StyledCodeBlock>
+                />
                 <Text mb="xs" mt="md">
                   Output (YAML):
                 </Text>
-                <StyledCodeBlock>
-                  {`name: John Doe
+                <CodeBlock
+                  code={`name: John Doe
 age: 30
 email: john@example.com
 skills:
   - JavaScript
   - Python
   - Go`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -231,17 +218,17 @@ skills:
                   {t("formatConversion.example2Title")}
                 </Text>
                 <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
-                <StyledCodeBlock>
-                  {`name,age,city
+                <CodeBlock
+                  code={`name,age,city
 Alice,25,New York
 Bob,30,San Francisco
 Charlie,35,Seattle`}
-                </StyledCodeBlock>
+                />
                 <Text mb="xs" mt="md">
                   Output (JSON):
                 </Text>
-                <StyledCodeBlock>
-                  {`[
+                <CodeBlock
+                  code={`[
   {
     "name": "Alice",
     "age": "25",
@@ -258,7 +245,7 @@ Charlie,35,Seattle`}
     "city": "Seattle"
   }
 ]`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -268,26 +255,26 @@ Charlie,35,Seattle`}
                   Example 3: JSON to XML
                 </Text>
                 <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "book": {
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
     "year": 1925
   }
 }`}
-                </StyledCodeBlock>
+                />
                 <Text mb="xs" mt="md">
                   Output (XML):
                 </Text>
-                <StyledCodeBlock>
-                  {`<?xml version="1.0" encoding="UTF-8"?>
+                <CodeBlock
+                  code={`<?xml version="1.0" encoding="UTF-8"?>
 <book>
   <title>The Great Gatsby</title>
   <author>F. Scott Fitzgerald</author>
   <year>1925</year>
 </book>`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -297,20 +284,20 @@ Charlie,35,Seattle`}
                   Example 4: YAML to JSON
                 </Text>
                 <Text mb="xs">Input (YAML):</Text>
-                <StyledCodeBlock>
-                  {`server:
+                <CodeBlock
+                  code={`server:
   host: localhost
   port: 8080
   ssl: true
 database:
   name: myapp
   user: admin`}
-                </StyledCodeBlock>
+                />
                 <Text mb="xs" mt="md">
                   Output (JSON):
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "server": {
     "host": "localhost",
     "port": 8080,
@@ -321,7 +308,7 @@ database:
     "user": "admin"
   }
 }`}
-                </StyledCodeBlock>
+                />
               </div>
             </StyledContentBody>
           </Paper>

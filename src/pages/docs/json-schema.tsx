@@ -4,6 +4,7 @@ import { Container, Paper, Stack, Text, Title, Table, Divider, Alert } from "@ma
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -15,20 +16,6 @@ const StyledContentBody = styled.div`
   flex-direction: column;
   gap: 16px;
   line-height: 1.7;
-`;
-
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
-  border: 1px solid #e9ecef;
-
-  * {
-    font-family: ${MONO_FONT_FAMILY} !important;
-  }
 `;
 
 const StyledLink = styled.a`
@@ -149,8 +136,8 @@ const JsonSchemaDocs = () => {
             </Title>
             <StyledContentBody>
               <Text>{t("jsonSchema.basicSchemaDesc")}</Text>
-              <StyledCodeBlock>
-                {`{
+              <CodeBlock
+                code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Product",
   "description": "A product from the catalog",
@@ -172,7 +159,7 @@ const JsonSchemaDocs = () => {
   },
   "required": ["id", "name", "price"]
 }`}
-              </StyledCodeBlock>
+              />
             </StyledContentBody>
           </Paper>
 
@@ -293,8 +280,8 @@ const JsonSchemaDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 1: Simple User Schema
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "User",
   "type": "object",
@@ -316,17 +303,17 @@ const JsonSchemaDocs = () => {
   },
   "required": ["username", "email"]
 }`}
-                </StyledCodeBlock>
+                />
                 <Text c="dimmed" size="sm" mt="xs">
                   Valid JSON:
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "username": "john_doe",
   "email": "john@example.com",
   "age": 30
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -335,8 +322,8 @@ const JsonSchemaDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 2: Product with Enum
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Product",
   "type": "object",
@@ -358,7 +345,7 @@ const JsonSchemaDocs = () => {
   },
   "required": ["name", "category", "price"]
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -367,8 +354,8 @@ const JsonSchemaDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 3: Array of Objects
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Users List",
   "type": "object",
@@ -392,18 +379,18 @@ const JsonSchemaDocs = () => {
   },
   "required": ["users"]
 }`}
-                </StyledCodeBlock>
+                />
                 <Text c="dimmed" size="sm" mt="xs">
                   Valid JSON:
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "users": [
     { "id": 1, "name": "Alice" },
     { "id": 2, "name": "Bob" }
   ]
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -412,8 +399,8 @@ const JsonSchemaDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 4: Nested Objects
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Person",
   "type": "object",
@@ -440,7 +427,7 @@ const JsonSchemaDocs = () => {
   },
   "required": ["name", "address"]
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -449,8 +436,8 @@ const JsonSchemaDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 5: String Pattern Validation
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Contact",
   "type": "object",
@@ -466,7 +453,7 @@ const JsonSchemaDocs = () => {
     }
   }
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -478,8 +465,8 @@ const JsonSchemaDocs = () => {
                 <Text c="dimmed" size="sm" mb="xs">
                   {t("jsonSchema.example6Desc")}
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Vehicle",
   "type": "object",
@@ -536,12 +523,12 @@ const JsonSchemaDocs = () => {
     }
   }
 }`}
-                </StyledCodeBlock>
+                />
                 <Text c="dimmed" size="sm" mt="xs">
                   Valid JSON:
                 </Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "vehicle": {
     "identification": {
       "id": "VIN123456789"
@@ -553,7 +540,7 @@ const JsonSchemaDocs = () => {
     "axleQuantity": 2
   }
 }`}
-                </StyledCodeBlock>
+                />
               </div>
             </StyledContentBody>
           </Paper>
@@ -577,8 +564,8 @@ const JsonSchemaDocs = () => {
               <Text fw={600} mt="md" mb="xs">
                 Example:
               </Text>
-              <StyledCodeBlock>
-                {`{
+              <CodeBlock
+                code={`{
   "definitions": {
     "Address": {
       "type": "object",
@@ -597,7 +584,7 @@ const JsonSchemaDocs = () => {
     }
   }
 }`}
-              </StyledCodeBlock>
+              />
             </StyledContentBody>
           </Paper>
 

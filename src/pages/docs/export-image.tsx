@@ -4,19 +4,8 @@ import { Container, Stack, Title, Text, Paper, Alert } from "@mantine/core";
 import styled from "styled-components";
 import { MdInfoOutline } from "react-icons/md";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
-import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
-
-const StyledInlineCode = styled.code`
-  background: #f8f9fa;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: ${MONO_FONT_FAMILY};
-  font-size: 0.9em;
-  color: #e03131;
-  border: 1px solid #e9ecef;
-`;
 
 const StyledLink = styled.a`
   color: #228be6;

@@ -4,6 +4,7 @@ import { Container, Paper, Stack, Text, Title, Code, Table, Divider, Alert } fro
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -15,20 +16,6 @@ const StyledContentBody = styled.div`
   flex-direction: column;
   gap: 16px;
   line-height: 1.7;
-`;
-
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
-  border: 1px solid #e9ecef;
-
-  * {
-    font-family: ${MONO_FONT_FAMILY} !important;
-  }
 `;
 
 const StyledLink = styled.a`
@@ -43,6 +30,17 @@ const StyledLink = styled.a`
 
 const StyledCode = styled(Code)`
   font-family: ${MONO_FONT_FAMILY} !important;
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 6px;
+  display: block;
+  border: 1px solid #e9ecef;
+  font-size: 14px;
+  margin: 8px 0;
+
+  * {
+    font-family: ${MONO_FONT_FAMILY} !important;
+  }
 `;
 
 const JQQueryDocs = () => {
@@ -188,8 +186,8 @@ const JQQueryDocs = () => {
             </Title>
             <StyledContentBody>
               <Text fw={600}>{t("jqQuery.sampleData")}</Text>
-              <StyledCodeBlock>
-                {`{
+              <CodeBlock
+                code={`{
   "fruits": [
     {
       "name": "Apple",
@@ -232,7 +230,7 @@ const JQQueryDocs = () => {
     }
   ]
 }`}
-              </StyledCodeBlock>
+              />
 
               <Divider my="md" />
 
@@ -241,9 +239,9 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example1Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>.fruits[].name</StyledCodeBlock>
+                <StyledCode>.fruits[].name</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>{'["Apple", "Banana", "Orange"]'}</StyledCodeBlock>
+                <StyledCode>{'["Apple", "Banana", "Orange"]'}</StyledCode>
               </div>
 
               <Divider my="md" />
@@ -253,9 +251,9 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example2Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>.fruits[].color</StyledCodeBlock>
+                <StyledCode>.fruits[].color</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>{'["#FF0000", "#FFFF00", "#FFA500"]'}</StyledCodeBlock>
+                <StyledCode>{'["#FF0000", "#FFFF00", "#FFA500"]'}</StyledCode>
               </div>
 
               <Divider my="md" />
@@ -265,9 +263,9 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example3Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>.fruits[].nutrients.calories</StyledCodeBlock>
+                <StyledCode>.fruits[].nutrients.calories</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>[52, 89, 47]</StyledCodeBlock>
+                <StyledCode>[52, 89, 47]</StyledCode>
               </div>
 
               <Divider my="md" />
@@ -277,10 +275,10 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example4Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>{'.fruits[] | select(.details.type == "Citrus")'}</StyledCodeBlock>
+                <StyledCode>{'.fruits[] | select(.details.type == "Citrus")'}</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "name": "Orange",
   "color": "#FFA500",
   "details": {
@@ -293,7 +291,7 @@ const JQQueryDocs = () => {
     "vitaminC": "53.2mg"
   }
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -303,10 +301,10 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example5Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>.fruits[] | select(.nutrients.calories &lt; 50)</StyledCodeBlock>
+                <StyledCode>.fruits[] | select(.nutrients.calories &lt; 50)</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {`[
+                <CodeBlock
+                  code={`[
   {
     "name": "Apple",
     "color": "#FF0000",
@@ -318,7 +316,7 @@ const JQQueryDocs = () => {
     ...
   }
 ]`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -328,17 +326,17 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example6Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>
+                <StyledCode>
                   {".fruits[] | {name: .name, calories: .nutrients.calories}"}
-                </StyledCodeBlock>
+                </StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {`[
+                <CodeBlock
+                  code={`[
   {"name": "Apple", "calories": 52},
   {"name": "Banana", "calories": 89},
   {"name": "Orange", "calories": 47}
 ]`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -348,12 +346,10 @@ const JQQueryDocs = () => {
                   {t("jqQuery.example7Title")}
                 </Text>
                 <Text mb="xs">{t("jqQuery.queryLabel")}</Text>
-                <StyledCodeBlock>
-                  {'.fruits[] | select(.details.season == "Winter")'}
-                </StyledCodeBlock>
+                <StyledCode>{'.fruits[] | select(.details.season == "Winter")'}</StyledCode>
                 <Text mb="xs">{t("jqQuery.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "name": "Orange",
   "color": "#FFA500",
   "details": {
@@ -362,7 +358,7 @@ const JQQueryDocs = () => {
   },
   ...
 }`}
-                </StyledCodeBlock>
+                />
               </div>
             </StyledContentBody>
           </Paper>

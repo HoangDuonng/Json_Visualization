@@ -1,9 +1,10 @@
 import React from "react";
 import Head from "next/head";
-import { Container, Paper, Stack, Text, Title, Table, Divider, Alert } from "@mantine/core";
+import { Container, Paper, Stack, Text, Title, Table, Divider, Alert, Code } from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -17,14 +18,14 @@ const StyledContentBody = styled.div`
   line-height: 1.7;
 `;
 
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
+const StyledCode = styled(Code)`
   font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 6px;
+  display: block;
   border: 1px solid #e9ecef;
+  font-size: 14px;
   margin: 8px 0;
 
   * {
@@ -215,8 +216,8 @@ const JsonPathDocs = () => {
             </Title>
             <StyledContentBody>
               <Text fw={600}>{t("jsonPath.practicalExamples.sampleData")}</Text>
-              <StyledCodeBlock>
-                {`{
+              <CodeBlock
+                code={`{
   "store": {
     "book": [
       {
@@ -245,7 +246,7 @@ const JsonPathDocs = () => {
     }
   }
 }`}
-              </StyledCodeBlock>
+              />
 
               <Divider my="md" />
 
@@ -254,7 +255,7 @@ const JsonPathDocs = () => {
                   Example 1: Get all books
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[*]</StyledCodeBlock>
+                <StyledCode>$.store.book[*]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example1.description")}
                 </Text>
@@ -267,11 +268,9 @@ const JsonPathDocs = () => {
                   Example 2: Get all book authors
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[*].author</StyledCodeBlock>
+                <StyledCode>$.store.book[*].author</StyledCode>
                 <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {'["Nigel Rees", "Evelyn Waugh", "Herman Melville"]'}
-                </StyledCodeBlock>
+                <StyledCode>{'["Nigel Rees", "Evelyn Waugh", "Herman Melville"]'}</StyledCode>
               </div>
 
               <Divider my="md" />
@@ -281,9 +280,9 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example3.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store..price</StyledCodeBlock>
+                <StyledCode>$.store..price</StyledCode>
                 <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
-                <StyledCodeBlock>{"[8.95, 12.99, 8.99, 19.95]"}</StyledCodeBlock>
+                <StyledCode>{"[8.95, 12.99, 8.99, 19.95]"}</StyledCode>
                 <Text c="dimmed" size="sm">
                   The <StyledInlineCode>..</StyledInlineCode> operator searches recursively
                 </Text>
@@ -296,16 +295,16 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example4.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[0]</StyledCodeBlock>
+                <StyledCode>$.store.book[0]</StyledCode>
                 <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
-                <StyledCodeBlock>
-                  {`{
+                <CodeBlock
+                  code={`{
   "category": "reference",
   "author": "Nigel Rees",
   "title": "Sayings of the Century",
   "price": 8.95
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -315,7 +314,7 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example5.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[-1]</StyledCodeBlock>
+                <StyledCode>$.store.book[-1]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example5.description")}
                 </Text>
@@ -328,7 +327,7 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example6.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[0:2]</StyledCodeBlock>
+                <StyledCode>$.store.book[0:2]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example6.description")}
                 </Text>
@@ -341,7 +340,7 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example7.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[?(@.price &lt; 10)]</StyledCodeBlock>
+                <StyledCode>$.store.book[?(@.price &lt; 10)]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example7.description")}
                 </Text>
@@ -354,7 +353,7 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example8.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[?(@.isbn)]</StyledCodeBlock>
+                <StyledCode>$.store.book[?(@.isbn)]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example8.description")}
                 </Text>
@@ -367,7 +366,7 @@ const JsonPathDocs = () => {
                   {t("jsonPath.practicalExamples.example9.title")}
                 </Text>
                 <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
-                <StyledCodeBlock>$.store.book[0,2]</StyledCodeBlock>
+                <StyledCode>$.store.book[0,2]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.practicalExamples.example9.description")}
                 </Text>
@@ -544,7 +543,7 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   {t("jsonPath.commonUseCases.useCase1.title")}
                 </Text>
-                <StyledCodeBlock>$..fieldName</StyledCodeBlock>
+                <StyledCode>$..fieldName</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.commonUseCases.useCase1.description")}
                 </Text>
@@ -556,7 +555,7 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   {t("jsonPath.commonUseCases.useCase2.title")}
                 </Text>
-                <StyledCodeBlock>$.arrayName[*]</StyledCodeBlock>
+                <StyledCode>$.arrayName[*]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.commonUseCases.useCase2.description")}
                 </Text>
@@ -568,9 +567,7 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   {t("jsonPath.commonUseCases.useCase3.title")}
                 </Text>
-                <StyledCodeBlock>
-                  $.items[?(@.price &lt; 100 &amp;&amp; @.inStock == true)]
-                </StyledCodeBlock>
+                <StyledCode>$.items[?(@.price &lt; 100 &amp;&amp; @.inStock == true)]</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.commonUseCases.useCase3.description")}
                 </Text>
@@ -582,7 +579,7 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   {t("jsonPath.commonUseCases.useCase4.title")}
                 </Text>
-                <StyledCodeBlock>$.users[*].address.city</StyledCodeBlock>
+                <StyledCode>$.users[*].address.city</StyledCode>
                 <Text c="dimmed" size="sm">
                   {t("jsonPath.commonUseCases.useCase4.description")}
                 </Text>

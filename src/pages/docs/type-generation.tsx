@@ -4,6 +4,7 @@ import { Container, Paper, Stack, Text, Title, Divider, Alert, SimpleGrid } from
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { CodeBlock } from "../../components/CodeBlock";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -15,20 +16,6 @@ const StyledContentBody = styled.div`
   flex-direction: column;
   gap: 16px;
   line-height: 1.7;
-`;
-
-const StyledCodeBlock = styled.pre`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ${MONO_FONT_FAMILY} !important;
-  font-size: 14px;
-  border: 1px solid #e9ecef;
-
-  * {
-    font-family: ${MONO_FONT_FAMILY} !important;
-  }
 `;
 
 const StyledLink = styled.a`
@@ -187,8 +174,8 @@ const TypeGenerationDocs = () => {
               <Text fw={600} mb="xs">
                 {t("typeGeneration.inputLabel")}
               </Text>
-              <StyledCodeBlock>
-                {`{
+              <CodeBlock
+                code={`{
   "user": {
     "id": 1,
     "name": "John Doe",
@@ -201,7 +188,7 @@ const TypeGenerationDocs = () => {
     }
   }
 }`}
-              </StyledCodeBlock>
+              />
 
               <Divider my="md" />
 
@@ -209,8 +196,8 @@ const TypeGenerationDocs = () => {
                 <Text fw={600} mb="xs">
                   TypeScript Output:
                 </Text>
-                <StyledCodeBlock>
-                  {`export interface Root {
+                <CodeBlock
+                  code={`export interface Root {
   user: User;
 }
 
@@ -227,7 +214,7 @@ export interface Profile {
   age: number;
   city: string;
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -236,8 +223,8 @@ export interface Profile {
                 <Text fw={600} mb="xs">
                   Go Output:
                 </Text>
-                <StyledCodeBlock>
-                  {`type Root struct {
+                <CodeBlock
+                  code={`type Root struct {
     User User \`json:"user"\`
 }
 
@@ -254,7 +241,7 @@ type Profile struct {
     Age  int    \`json:"age"\`
     City string \`json:"city"\`
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -263,8 +250,8 @@ type Profile struct {
                 <Text fw={600} mb="xs">
                   Rust Output:
                 </Text>
-                <StyledCodeBlock>
-                  {`use serde::{Deserialize, Serialize};
+                <CodeBlock
+                  code={`use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct Root {
@@ -287,7 +274,7 @@ pub struct Profile {
     pub age: i32,
     pub city: String,
 }`}
-                </StyledCodeBlock>
+                />
               </div>
 
               <Divider my="md" />
@@ -296,8 +283,8 @@ pub struct Profile {
                 <Text fw={600} mb="xs">
                   Kotlin Output:
                 </Text>
-                <StyledCodeBlock>
-                  {`data class Root(
+                <CodeBlock
+                  code={`data class Root(
     val user: User
 )
 
@@ -314,7 +301,7 @@ data class Profile(
     val age: Int,
     val city: String
 )`}
-                </StyledCodeBlock>
+                />
               </div>
             </StyledContentBody>
           </Paper>
