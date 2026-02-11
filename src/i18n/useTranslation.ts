@@ -29,10 +29,12 @@ export function useTranslation(namespace: "docs") {
 }
 
 export function getLocalizedPath(path: string, locale: Locale): string {
+  // Remove existing lang parameter
+  const cleanPath = path.split("?")[0];
+  
   // Add locale as query parameter
   if (locale === defaultLocale) {
-    return path;
+    return cleanPath;
   }
-  const separator = path.includes("?") ? "&" : "?";
-  return `${path}${separator}lang=${locale}`;
+  return `${cleanPath}?lang=${locale}`;
 }

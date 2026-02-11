@@ -11,6 +11,7 @@ import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
+import { useTranslation } from "../i18n";
 import Layout from "../layout/PageLayout";
 
 const StyledContentBody = styled.div`
@@ -43,66 +44,72 @@ const StyledLink = styled.a`
   }
 `;
 
-const features = [
-  {
-    title: "Visualization",
-    description: "Transform JSON, YAML, CSV, XML into interactive graphs or tree views",
-    icon: <FaBolt size={24} />,
-    color: "#fab005",
-    link: "/docs/visualization",
-  },
-  {
-    title: "Format Conversion",
-    description: "Convert between JSON, YAML, CSV, XML, and TOML formats seamlessly",
-    icon: <TbTransformFilled size={24} />,
-    color: "#fd7e14",
-    link: "/docs/format-conversion",
-  },
-  {
-    title: "Format & Validate",
-    description: "Beautify and validate JSON, YAML, CSV with real-time error detection",
-    icon: <MdOutlineFormatIndentIncrease size={24} />,
-    color: "#51cf66",
-    link: "/docs/format-validate",
-  },
-  {
-    title: "Type Generation",
-    description: "Generate TypeScript, Go, Rust, Kotlin types from your data",
-    icon: <MdOutlineGeneratingTokens size={24} />,
-    color: "#cc5de8",
-    link: "/docs/type-generation",
-  },
-  {
-    title: "JSON Schema",
-    description: "Generate schema, validate data, and create mock data",
-    icon: <VscJson size={24} />,
-    color: "#22b8cf",
-    link: "/docs/json-schema",
-  },
-  {
-    title: "JSON Query (jq)",
-    description: "Filter and transform JSON data using jq syntax",
-    icon: <FaToolbox size={24} />,
-    color: "#20c997",
-    link: "/docs/jq-query",
-  },
-  {
-    title: "JSON Path",
-    description: "Query and extract data using JSONPath expressions",
-    icon: <FaToolbox size={24} />,
-    color: "#15aabf",
-    link: "/docs/json-path",
-  },
-  {
-    title: "Export Images",
-    description: "Download visualizations as PNG, JPEG, or SVG images",
-    icon: <IoImages size={24} />,
-    color: "#339af0",
-    link: "/editor",
-  },
-];
-
 const Docs = () => {
+  const { t, locale } = useTranslation("docs");
+
+  const getLocalizedLink = (path: string) => {
+    return locale === "vi" ? `${path}?lang=vi` : path;
+  };
+
+  const features = [
+    {
+      title: t("index.visualizationTitle"),
+      description: t("index.visualizationDesc"),
+      icon: <FaBolt size={24} />,
+      color: "#fab005",
+      link: getLocalizedLink("/docs/visualization"),
+    },
+    {
+      title: t("index.formatConversionTitle"),
+      description: t("index.formatConversionDesc"),
+      icon: <TbTransformFilled size={24} />,
+      color: "#fd7e14",
+      link: getLocalizedLink("/docs/format-conversion"),
+    },
+    {
+      title: t("index.formatValidateTitle"),
+      description: t("index.formatValidateDesc"),
+      icon: <MdOutlineFormatIndentIncrease size={24} />,
+      color: "#51cf66",
+      link: getLocalizedLink("/docs/format-validate"),
+    },
+    {
+      title: t("index.typeGenerationTitle"),
+      description: t("index.typeGenerationDesc"),
+      icon: <MdOutlineGeneratingTokens size={24} />,
+      color: "#cc5de8",
+      link: getLocalizedLink("/docs/type-generation"),
+    },
+    {
+      title: t("index.jsonSchemaTitle"),
+      description: t("index.jsonSchemaDesc"),
+      icon: <VscJson size={24} />,
+      color: "#22b8cf",
+      link: getLocalizedLink("/docs/json-schema"),
+    },
+    {
+      title: t("index.jqQueryTitle"),
+      description: t("index.jqQueryDesc"),
+      icon: <FaToolbox size={24} />,
+      color: "#20c997",
+      link: getLocalizedLink("/docs/jq-query"),
+    },
+    {
+      title: t("index.jsonPathTitle"),
+      description: t("index.jsonPathDesc"),
+      icon: <FaToolbox size={24} />,
+      color: "#15aabf",
+      link: getLocalizedLink("/docs/json-path"),
+    },
+    {
+      title: t("index.exportImageTitle"),
+      description: t("index.exportImageDesc"),
+      icon: <IoImages size={24} />,
+      color: "#339af0",
+      link: getLocalizedLink("/docs/export-image"),
+    },
+  ];
+
   return (
     <Layout>
       <Head>
@@ -117,31 +124,26 @@ const Docs = () => {
         <Stack gap="xl">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Title order={1} c="dark">
-              Documentation
+              {t("index.title")}
             </Title>
             <LanguageSwitcher />
           </div>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Welcome to JSON Visualization
+              {t("index.welcomeTitle")}
             </Title>
             <StyledContentBody>
-              <Text size="lg">
-                JSON Visualization is a powerful tool for visualizing, editing, and transforming
-                JSON data. All processing happens in your browser - your data never leaves your
-                device.
-              </Text>
+              <Text size="lg">{t("index.welcomeDesc1")}</Text>
               <Text>
-                Get started by exploring our features below or jump straight to the{" "}
-                <StyledLink href="/editor">Editor</StyledLink>.
+                {t("index.welcomeDesc2")} <StyledLink href="/editor">Editor</StyledLink>.
               </Text>
             </StyledContentBody>
           </Paper>
 
           <div>
             <Title mb="lg" order={2} c="dark">
-              Features
+              {t("index.featuresTitle")}
             </Title>
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
               {features.map(feature => (
@@ -170,53 +172,45 @@ const Docs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Quick Start
+              {t("index.quickStartTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  1. Open the Editor
+                  {t("index.quickStartStep1Title")}
                 </Text>
                 <Text>
-                  Visit the <StyledLink href="/editor">Editor</StyledLink> and paste your JSON,
-                  YAML, CSV, or XML data.
+                  {t("index.quickStartStep1Desc1")} <StyledLink href="/editor">Editor</StyledLink>{" "}
+                  {t("index.quickStartStep1Desc2")}
                 </Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  2. Visualize Your Data
+                  {t("index.quickStartStep2Title")}
                 </Text>
-                <Text>
-                  See your data transform into an interactive graph. Use Graph View for exploring
-                  relationships or Tree View for hierarchical structure.
-                </Text>
+                <Text>{t("index.quickStartStep2Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  3. Use Tools
+                  {t("index.quickStartStep3Title")}
                 </Text>
-                <Text>
-                  Access powerful tools from the toolbar: convert formats, generate types, validate
-                  with JSON Schema, or query with jq/JSONPath.
-                </Text>
+                <Text>{t("index.quickStartStep3Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  4. Export & Share
+                  {t("index.quickStartStep4Title")}
                 </Text>
-                <Text>
-                  Download your visualization as an image or export your transformed data.
-                </Text>
+                <Text>{t("index.quickStartStep4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Supported Formats
+              {t("index.supportedFormatsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>JSON Visualization supports the following data formats:</Text>
+              <Text>{t("index.supportedFormatsDesc")}</Text>
               <SimpleGrid cols={{ base: 2, sm: 3 }} spacing="md">
                 <Text>• JSON</Text>
                 <Text>• YAML</Text>
@@ -225,22 +219,19 @@ const Docs = () => {
                 <Text>• TOML</Text>
               </SimpleGrid>
               <Text size="sm" c="dimmed" mt="md">
-                All formats can be visualized, validated, and converted to other formats.
+                {t("index.supportedFormatsNote")}
               </Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Privacy & Security
+              {t("index.privacyTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                Your privacy is our priority. All data processing happens entirely in your browser.
-                We never store, transmit, or have access to your data.
-              </Text>
+              <Text>{t("index.privacyDesc1")}</Text>
               <Text size="sm" c="dimmed">
-                You can use JSON Visualization offline once the page is loaded.
+                {t("index.privacyDesc2")}
               </Text>
             </StyledContentBody>
           </Paper>

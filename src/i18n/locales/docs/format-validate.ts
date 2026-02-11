@@ -263,41 +263,45 @@ export const formatValidateTranslations = {
     en: "Useful for comparing JSON files",
     vi: "Hữu ích để so sánh các file JSON",
   },
+  tipsTitle: {
+    en: "Tips & Best Practices",
+    vi: "Mẹo & Thực Hành Tốt Nhất",
+  },
   tip1: {
-    en: "Fix Errors as You Go",
-    vi: "Sửa Lỗi Ngay Khi Gặp",
+    en: "• Fix Errors as You Go",
+    vi: "• Sửa Lỗi Ngay Khi Gặp",
   },
   tip1Desc: {
     en: "Address validation errors immediately to avoid cascading issues in your data structure.",
     vi: "Giải quyết lỗi xác thực ngay lập tức để tránh các vấn đề lan truyền trong cấu trúc dữ liệu của bạn.",
   },
   tip2: {
-    en: "Use Consistent Formatting",
-    vi: "Sử Dụng Định Dạng Nhất Quán",
+    en: "• Use Consistent Formatting",
+    vi: "• Sử Dụng Định Dạng Nhất Quán",
   },
   tip2Desc: {
     en: "Let the editor handle formatting automatically to maintain consistency across your files.",
     vi: "Để trình soạn thảo xử lý định dạng tự động để duy trì tính nhất quán trong các file của bạn.",
   },
   tip3: {
-    en: "Check Error Messages",
-    vi: "Kiểm Tra Thông Báo Lỗi",
+    en: "• Check Error Messages",
+    vi: "• Kiểm Tra Thông Báo Lỗi",
   },
   tip3Desc: {
     en: "Hover over error indicators to see detailed messages that explain what's wrong and how to fix it.",
     vi: "Di chuột qua chỉ báo lỗi để xem thông báo chi tiết giải thích vấn đề và cách khắc phục.",
   },
   tip4: {
-    en: "Validate Before Sharing",
-    vi: "Xác Thực Trước Khi Chia Sẻ",
+    en: "• Validate Before Sharing",
+    vi: "• Xác Thực Trước Khi Chia Sẻ",
   },
   tip4Desc: {
     en: "Always ensure your data is valid before sharing it with others or using it in production.",
     vi: "Luôn đảm bảo dữ liệu của bạn hợp lệ trước khi chia sẻ với người khác hoặc sử dụng trong sản xuất.",
   },
   tip5: {
-    en: "Use JSON Schema for Advanced Validation",
-    vi: "Sử Dụng JSON Schema Cho Xác Thực Nâng Cao",
+    en: "• Use JSON Schema for Advanced Validation",
+    vi: "• Sử Dụng JSON Schema Cho Xác Thực Nâng Cao",
   },
   tip5Desc: {
     en: "For more complex validation rules, use",

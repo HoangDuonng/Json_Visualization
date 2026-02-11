@@ -1,11 +1,13 @@
 import type { Locale } from "../config";
+import { docsIndexTranslations } from "./docs-index";
+import { exportImageTranslations } from "./docs/export-image";
 import { formatConversionTranslations } from "./docs/format-conversion";
 import { formatValidateTranslations } from "./docs/format-validate";
-import { visualizationTranslations } from "./docs/visualization";
-import { typeGenerationTranslations } from "./docs/type-generation";
-import { jsonSchemaTranslations } from "./docs/json-schema";
 import { jqQueryTranslations } from "./docs/jq-query";
 import { jsonPathTranslations } from "./docs/json-path";
+import { jsonSchemaTranslations } from "./docs/json-schema";
+import { typeGenerationTranslations } from "./docs/type-generation";
+import { visualizationTranslations } from "./docs/visualization";
 
 export const docsTranslations = {
   // ==================== COMMON ====================
@@ -56,6 +58,9 @@ export const docsTranslations = {
     },
   },
 
+  // ==================== DOCS INDEX ====================
+  index: docsIndexTranslations,
+
   // ==================== VISUALIZATION ====================
   visualization: visualizationTranslations,
 
@@ -76,6 +81,9 @@ export const docsTranslations = {
 
   // ==================== JSON PATH ====================
   jsonPath: jsonPathTranslations,
+
+  // ==================== EXPORT IMAGE ====================
+  exportImage: exportImageTranslations,
 };
 
 export function getDocsTranslation(key: string, locale: Locale): string {

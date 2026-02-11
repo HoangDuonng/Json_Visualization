@@ -25,6 +25,7 @@ const StyledCodeBlock = styled.pre`
   font-family: ${MONO_FONT_FAMILY} !important;
   font-size: 14px;
   border: 1px solid #e9ecef;
+  margin: 8px 0;
 
   * {
     font-family: ${MONO_FONT_FAMILY} !important;
@@ -90,70 +91,62 @@ const JsonPathDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is JSONPath?
+              {t("jsonPath.whatIsJsonPath.title")}
             </Title>
             <StyledContentBody>
+              <Text>{t("jsonPath.whatIsJsonPath.description1")}</Text>
               <Text>
-                JSONPath is a query language for JSON, similar to XPath for XML. It allows you to
-                select and extract data from JSON documents using path expressions.
-              </Text>
-              <Text>
-                The root element is always referred to as <StyledInlineCode>$</StyledInlineCode>{" "}
-                regardless of whether it&apos;s an object or array. From there, you can navigate
-                through the structure using dot notation or bracket notation.
+                {t("jsonPath.whatIsJsonPath.description2a")} <StyledInlineCode>$</StyledInlineCode>{" "}
+                {t("jsonPath.whatIsJsonPath.description2b")}
               </Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Use
+              {t("jsonPath.howToUse.title")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  1. Open the Editor
+                  {t("jsonPath.howToUse.step1.title")}
                 </Text>
                 <Text>
-                  Load your JSON data in the{" "}
+                  {t("jsonPath.howToUse.step1.description")}{" "}
                   <StyledLink href="/editor">JSON Visualization Editor</StyledLink>.
                 </Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  2. Open JSON Path Tool
+                  {t("jsonPath.howToUse.step2.title")}
                 </Text>
-                <Text>
-                  Click on &quot;Tools&quot; in the toolbar and select &quot;JSON Path&quot;.
-                </Text>
+                <Text>{t("jsonPath.howToUse.step2.description")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  3. Enter Your Path Expression
+                  {t("jsonPath.howToUse.step3.title")}
                 </Text>
-                <Text>
-                  Type your JSONPath expression in the input field and click &quot;Run&quot;.
-                </Text>
+                <Text>{t("jsonPath.howToUse.step3.description")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  4. View Results
+                  {t("jsonPath.howToUse.step4.title")}
                 </Text>
-                <Text>The extracted data will be displayed in the editor.</Text>
+                <Text>{t("jsonPath.howToUse.step4.description")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Basic Syntax
+              {t("jsonPath.basicSyntax.title")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Operator</Table.Th>
-                    <Table.Th>Description</Table.Th>
+                    <Table.Th>{t("jsonPath.basicSyntax.operatorHeader")}</Table.Th>
+                    <Table.Th>{t("jsonPath.basicSyntax.descriptionHeader")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -161,55 +154,55 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>$</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Root element</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.root")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>@</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Current element (used in filters)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.current")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>.</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Child operator (dot notation)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.child")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>..</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Recursive descent (search all levels)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.recursive")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>*</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Wildcard (all elements)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.wildcard")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>[]</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Subscript operator (array index or object property)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.subscript")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>[,]</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Union operator (multiple indices or properties)</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.union")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>[start:end]</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Array slice operator</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.slice")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>[?()]</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Filter expression</Table.Td>
+                    <Table.Td>{t("jsonPath.basicSyntax.operators.filter")}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>
@@ -218,10 +211,10 @@ const JsonPathDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Practical Examples
+              {t("jsonPath.practicalExamples.title")}
             </Title>
             <StyledContentBody>
-              <Text fw={600}>Sample JSON Data:</Text>
+              <Text fw={600}>{t("jsonPath.practicalExamples.sampleData")}</Text>
               <StyledCodeBlock>
                 {`{
   "store": {
@@ -260,10 +253,10 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 1: Get all books
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[*]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Returns all book objects in the array
+                  {t("jsonPath.practicalExamples.example1.description")}
                 </Text>
               </div>
 
@@ -273,9 +266,9 @@ const JsonPathDocs = () => {
                 <Text fw={600} mb="xs">
                   Example 2: Get all book authors
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[*].author</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {'["Nigel Rees", "Evelyn Waugh", "Herman Melville"]'}
                 </StyledCodeBlock>
@@ -285,11 +278,11 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 3: Get all prices in the store
+                  {t("jsonPath.practicalExamples.example3.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store..price</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
                 <StyledCodeBlock>{"[8.95, 12.99, 8.99, 19.95]"}</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
                   The <StyledInlineCode>..</StyledInlineCode> operator searches recursively
@@ -300,11 +293,11 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 4: Get the first book
+                  {t("jsonPath.practicalExamples.example4.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[0]</StyledCodeBlock>
-                <Text mb="xs">Result:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.resultLabel")}</Text>
                 <StyledCodeBlock>
                   {`{
   "category": "reference",
@@ -319,12 +312,12 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 5: Get the last book
+                  {t("jsonPath.practicalExamples.example5.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[-1]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Negative indices count from the end
+                  {t("jsonPath.practicalExamples.example5.description")}
                 </Text>
               </div>
 
@@ -332,12 +325,12 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 6: Get first two books
+                  {t("jsonPath.practicalExamples.example6.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[0:2]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Array slice: start index (inclusive) to end index (exclusive)
+                  {t("jsonPath.practicalExamples.example6.description")}
                 </Text>
               </div>
 
@@ -345,12 +338,12 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 7: Filter books by price
+                  {t("jsonPath.practicalExamples.example7.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[?(@.price &lt; 10)]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Returns books with price less than 10
+                  {t("jsonPath.practicalExamples.example7.description")}
                 </Text>
               </div>
 
@@ -358,12 +351,12 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 8: Filter books with ISBN
+                  {t("jsonPath.practicalExamples.example8.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[?(@.isbn)]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Returns books that have an ISBN property
+                  {t("jsonPath.practicalExamples.example8.description")}
                 </Text>
               </div>
 
@@ -371,12 +364,12 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 9: Get specific properties
+                  {t("jsonPath.practicalExamples.example9.title")}
                 </Text>
-                <Text mb="xs">Path:</Text>
+                <Text mb="xs">{t("jsonPath.practicalExamples.pathLabel")}</Text>
                 <StyledCodeBlock>$.store.book[0,2]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Returns the first and third books (union operator)
+                  {t("jsonPath.practicalExamples.example9.description")}
                 </Text>
               </div>
             </StyledContentBody>
@@ -384,19 +377,22 @@ const JsonPathDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Filter Expressions
+              {t("jsonPath.filterExpressions.title")}
             </Title>
             <StyledContentBody>
               <Text mb="md">
-                Filter expressions use <StyledInlineCode>[?()]</StyledInlineCode> syntax with{" "}
-                <StyledInlineCode>@</StyledInlineCode> representing the current element.
+                {t("jsonPath.filterExpressions.description1")}{" "}
+                <StyledInlineCode>[?()]</StyledInlineCode>{" "}
+                {t("jsonPath.filterExpressions.description2")}{" "}
+                <StyledInlineCode>@</StyledInlineCode>{" "}
+                {t("jsonPath.filterExpressions.description3")}
               </Text>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Operator</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Example</Table.Th>
+                    <Table.Th>{t("jsonPath.basicSyntax.operatorHeader")}</Table.Th>
+                    <Table.Th>{t("jsonPath.basicSyntax.descriptionHeader")}</Table.Th>
+                    <Table.Th>{t("jsonPath.filterExpressions.exampleHeader")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -404,7 +400,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>==</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Equal to</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.equal.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.price == 8.95)]</StyledInlineCode>
                     </Table.Td>
@@ -413,7 +411,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>!=</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Not equal to</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.notEqual.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.category != &quot;fiction&quot;)]</StyledInlineCode>
                     </Table.Td>
@@ -422,7 +422,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>&lt;</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Less than</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.lessThan.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.price &lt; 10)]</StyledInlineCode>
                     </Table.Td>
@@ -431,7 +433,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>&lt;=</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Less than or equal</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.lessEqual.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.price &lt;= 10)]</StyledInlineCode>
                     </Table.Td>
@@ -440,7 +444,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>&gt;</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Greater than</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.greaterThan.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.price &gt; 10)]</StyledInlineCode>
                     </Table.Td>
@@ -449,7 +455,9 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>&gt;=</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Greater than or equal</Table.Td>
+                    <Table.Td>
+                      {t("jsonPath.filterExpressions.operators.greaterEqual.description")}
+                    </Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[?(@.price &gt;= 10)]</StyledInlineCode>
                     </Table.Td>
@@ -458,7 +466,7 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>&amp;&amp;</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Logical AND</Table.Td>
+                    <Table.Td>{t("jsonPath.filterExpressions.operators.and.description")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>
                         [?(@.price &lt; 10 &amp;&amp; @.category == &quot;fiction&quot;)]
@@ -469,7 +477,7 @@ const JsonPathDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>||</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Logical OR</Table.Td>
+                    <Table.Td>{t("jsonPath.filterExpressions.operators.or.description")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>
                         [?(@.category == &quot;fiction&quot; || @.category ==
@@ -484,60 +492,61 @@ const JsonPathDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("jsonPath.tipsBestPractices.title")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Always Start with $</Text>
+                <Text fw={600}>{t("jsonPath.tipsBestPractices.tip1.title")}</Text>
                 <Text>
-                  Every JSONPath expression must start with <StyledInlineCode>$</StyledInlineCode>{" "}
-                  to reference the root element.
+                  {t("jsonPath.tipsBestPractices.tip1.description1")}{" "}
+                  <StyledInlineCode>$</StyledInlineCode>{" "}
+                  {t("jsonPath.tipsBestPractices.tip1.description2")}
                 </Text>
               </div>
               <div>
-                <Text fw={600}>• Use Dot Notation for Simple Paths</Text>
+                <Text fw={600}>{t("jsonPath.tipsBestPractices.tip2.title")}</Text>
                 <Text>
-                  <StyledInlineCode>$.store.book</StyledInlineCode> is cleaner than{" "}
+                  <StyledInlineCode>$.store.book</StyledInlineCode>{" "}
+                  {t("jsonPath.tipsBestPractices.tip2.description1")}{" "}
                   <StyledInlineCode>$[&apos;store&apos;][&apos;book&apos;]</StyledInlineCode>
                 </Text>
               </div>
               <div>
-                <Text fw={600}>• Use Bracket Notation for Special Characters</Text>
+                <Text fw={600}>{t("jsonPath.tipsBestPractices.tip3.title")}</Text>
                 <Text>
-                  If property names contain spaces or special characters, use bracket notation:{" "}
+                  {t("jsonPath.tipsBestPractices.tip3.description1")}{" "}
                   <StyledInlineCode>$[&apos;property name&apos;]</StyledInlineCode>
                 </Text>
               </div>
               <div>
-                <Text fw={600}>• Test Incrementally</Text>
+                <Text fw={600}>{t("jsonPath.tipsBestPractices.tip4.title")}</Text>
                 <Text>
-                  Build complex paths step by step. Start with{" "}
-                  <StyledInlineCode>$.store</StyledInlineCode>, then add{" "}
-                  <StyledInlineCode>.book</StyledInlineCode>, then filters.
+                  {t("jsonPath.tipsBestPractices.tip4.description1")}{" "}
+                  <StyledInlineCode>$.store</StyledInlineCode>
+                  {t("jsonPath.tipsBestPractices.tip4.description2")}{" "}
+                  <StyledInlineCode>.book</StyledInlineCode>
+                  {t("jsonPath.tipsBestPractices.tip4.description3")}
                 </Text>
               </div>
               <div>
-                <Text fw={600}>• Understand Your Data Structure</Text>
-                <Text>
-                  Use the graph visualization to understand your JSON structure before writing path
-                  expressions.
-                </Text>
+                <Text fw={600}>{t("jsonPath.tipsBestPractices.tip5.title")}</Text>
+                <Text>{t("jsonPath.tipsBestPractices.tip5.description")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Common Use Cases
+              {t("jsonPath.commonUseCases.title")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  Extract All Values of a Specific Field
+                  {t("jsonPath.commonUseCases.useCase1.title")}
                 </Text>
                 <StyledCodeBlock>$..fieldName</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Recursively finds all occurrences of &quot;fieldName&quot; at any level
+                  {t("jsonPath.commonUseCases.useCase1.description")}
                 </Text>
               </div>
 
@@ -545,11 +554,11 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Get All Array Elements
+                  {t("jsonPath.commonUseCases.useCase2.title")}
                 </Text>
                 <StyledCodeBlock>$.arrayName[*]</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Returns all elements in the array
+                  {t("jsonPath.commonUseCases.useCase2.description")}
                 </Text>
               </div>
 
@@ -557,13 +566,13 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Filter by Multiple Conditions
+                  {t("jsonPath.commonUseCases.useCase3.title")}
                 </Text>
                 <StyledCodeBlock>
                   $.items[?(@.price &lt; 100 &amp;&amp; @.inStock == true)]
                 </StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Combines multiple filter conditions
+                  {t("jsonPath.commonUseCases.useCase3.description")}
                 </Text>
               </div>
 
@@ -571,11 +580,11 @@ const JsonPathDocs = () => {
 
               <div>
                 <Text fw={600} mb="xs">
-                  Get Nested Property from All Items
+                  {t("jsonPath.commonUseCases.useCase4.title")}
                 </Text>
                 <StyledCodeBlock>$.users[*].address.city</StyledCodeBlock>
                 <Text c="dimmed" size="sm">
-                  Extracts nested property from each array element
+                  {t("jsonPath.commonUseCases.useCase4.description")}
                 </Text>
               </div>
             </StyledContentBody>
@@ -583,13 +592,14 @@ const JsonPathDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("jsonPath.needHelp.title")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or check out the{" "}
-                <StyledLink href="/editor">Editor</StyledLink> to try it yourself.
+                {t("jsonPath.needHelp.description1")}{" "}
+                <StyledLink href="/docs">Documentation</StyledLink>{" "}
+                {t("jsonPath.needHelp.description2")} <StyledLink href="/editor">Editor</StyledLink>{" "}
+                {t("jsonPath.needHelp.description3")}
               </Text>
             </StyledContentBody>
           </Paper>

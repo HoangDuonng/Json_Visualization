@@ -85,66 +85,62 @@ const TypeGenerationDocs = () => {
             variant="light"
             styles={{ message: { color: "#1971c2" } }}
           >
-            JSON Visualization automatically generates type definitions from your data structure,
-            saving you time and reducing errors in your codebase.
+            {t("typeGeneration.alert")}
           </Alert>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is Type Generation?
+              {t("typeGeneration.whatIsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                Type generation analyzes your data structure and creates strongly-typed interfaces,
-                structs, or classes for your programming language of choice.
-              </Text>
+              <Text>{t("typeGeneration.whatIsDesc")}</Text>
               <Text fw={600} mt="md" mb="xs">
-                Benefits:
+                {t("typeGeneration.benefitsTitle")}
               </Text>
-              <Text>• Save time writing boilerplate type definitions</Text>
-              <Text>• Reduce errors with accurate type information</Text>
-              <Text>• Improve code completion and IntelliSense</Text>
-              <Text>• Ensure type safety across your application</Text>
-              <Text>• Keep types in sync with your data structure</Text>
+              <Text>• {t("typeGeneration.benefit1")}</Text>
+              <Text>• {t("typeGeneration.benefit2")}</Text>
+              <Text>• {t("typeGeneration.benefit3")}</Text>
+              <Text>• {t("typeGeneration.benefit4")}</Text>
+              <Text>• {t("typeGeneration.benefit5")}</Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Supported Languages
+              {t("typeGeneration.supportedTitle")}
             </Title>
             <StyledContentBody>
               <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
                 <div>
                   <Text fw={600} mb="xs">
-                    TypeScript
+                    {t("typeGeneration.typescript")}
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Generates interfaces and types for TypeScript projects
+                    {t("typeGeneration.typescriptDesc")}
                   </Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    Go
+                    {t("typeGeneration.go")}
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Creates structs with JSON tags for Go applications
+                    {t("typeGeneration.goDesc")}
                   </Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    Rust
+                    {t("typeGeneration.rust")}
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Generates structs with Serde annotations for Rust
+                    {t("typeGeneration.rustDesc")}
                   </Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    Kotlin
+                    {t("typeGeneration.kotlin")}
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Creates data classes for Kotlin projects
+                    {t("typeGeneration.kotlinDesc")}
                   </Text>
                 </div>
               </SimpleGrid>
@@ -153,46 +149,43 @@ const TypeGenerationDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Use
+              {t("typeGeneration.howToTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  Method 1: From Editor
+                  {t("typeGeneration.step1")}
                 </Text>
-                <Text>
-                  1. Open the <StyledLink href="/editor">Editor</StyledLink>
-                </Text>
-                <Text>2. Load your JSON, YAML, CSV, or XML data</Text>
-                <Text>3. Click Tools → Generate Types in the toolbar</Text>
-                <Text>4. Select your target language</Text>
-                <Text>5. Copy the generated types to your project</Text>
+                <Text>{t("typeGeneration.step1Desc")}</Text>
               </div>
-
-              <Divider my="md" />
-
               <div>
                 <Text fw={600} mb="xs">
-                  Method 2: Using Type Generator Pages
+                  {t("typeGeneration.step2")}
                 </Text>
-                <Text>
-                  1. Visit a specific generator page (e.g.,{" "}
-                  <StyledLink href="/type/json-to-typescript">JSON to TypeScript</StyledLink>)
+                <Text>{t("typeGeneration.step2Desc")}</Text>
+              </div>
+              <div>
+                <Text fw={600} mb="xs">
+                  {t("typeGeneration.step3")}
                 </Text>
-                <Text>2. Paste your data in the left panel</Text>
-                <Text>3. The generated types appear automatically in the right panel</Text>
-                <Text>4. Copy the types or download them as a file</Text>
+                <Text>{t("typeGeneration.step3Desc")}</Text>
+              </div>
+              <div>
+                <Text fw={600} mb="xs">
+                  {t("typeGeneration.step4")}
+                </Text>
+                <Text>{t("typeGeneration.step4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Generation Examples
+              {t("typeGeneration.examplesTitle")}
             </Title>
             <StyledContentBody>
               <Text fw={600} mb="xs">
-                Sample JSON Data:
+                {t("typeGeneration.inputLabel")}
               </Text>
               <StyledCodeBlock>
                 {`{
@@ -331,9 +324,7 @@ data class Profile(
               Type Mapping
             </Title>
             <StyledContentBody>
-              <Text mb="md">
-                JSON Visualization intelligently maps JSON types to language-specific types:
-              </Text>
+              <Text mb="md">{t("typeGeneration.typeMappingDesc")}</Text>
               <div>
                 <Text fw={600} mb="xs">
                   String
@@ -445,55 +436,38 @@ data class Profile(
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("typeGeneration.tipsTitle")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Use Representative Data</Text>
-                <Text>
-                  Provide sample data that includes all possible fields and types to generate
-                  complete type definitions.
-                </Text>
+                <Text fw={600}>{t("typeGeneration.tip1")}</Text>
+                <Text>{t("typeGeneration.tip1Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Review Generated Types</Text>
-                <Text>
-                  Always review the generated types to ensure they match your expectations,
-                  especially for optional fields.
-                </Text>
+                <Text fw={600}>{t("typeGeneration.tip2")}</Text>
+                <Text>{t("typeGeneration.tip2Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Handle Optional Fields</Text>
-                <Text>
-                  If your data has optional fields, make sure to include examples with and without
-                  those fields.
-                </Text>
+                <Text fw={600}>{t("typeGeneration.tip3")}</Text>
+                <Text>{t("typeGeneration.tip3Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Customize as Needed</Text>
-                <Text>
-                  Generated types are a starting point. Feel free to customize them for your
-                  specific use case.
-                </Text>
-              </div>
-              <div>
-                <Text fw={600}>• Keep Types Updated</Text>
-                <Text>
-                  When your data structure changes, regenerate types to keep them in sync.
-                </Text>
+                <Text fw={600}>{t("typeGeneration.tip4")}</Text>
+                <Text>{t("typeGeneration.tip4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("common.needHelp")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or try the{" "}
-                <StyledLink href="/type/json-to-typescript">Type Generator</StyledLink> directly.
+                {t("common.needHelpText")}{" "}
+                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                {t("common.directly")}.
               </Text>
             </StyledContentBody>
           </Paper>

@@ -14,8 +14,10 @@ import {
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
+import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
 const StyledContentBody = styled.div`
@@ -59,6 +61,8 @@ const StyledInlineCode = styled.code`
 `;
 
 const FormatConversionDocs = () => {
+  const { t } = useTranslation("docs");
+
   return (
     <Layout>
       <Head>
@@ -72,13 +76,18 @@ const FormatConversionDocs = () => {
       </Head>
       <Container size="lg" py={60}>
         <Stack gap="xl">
-          <div>
-            <Title order={1} c="dark" mb="sm">
-              Format Conversion
-            </Title>
-            <Text size="lg" c="dimmed">
-              Convert between JSON, YAML, CSV, XML, and TOML formats seamlessly
-            </Text>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}
+          >
+            <div>
+              <Title order={1} c="dark" mb="sm">
+                {t("formatConversion.title")}
+              </Title>
+              <Text size="lg" c="dimmed">
+                {t("formatConversion.subtitle")}
+              </Text>
+            </div>
+            <LanguageSwitcher />
           </div>
 
           <Alert
@@ -87,67 +96,61 @@ const FormatConversionDocs = () => {
             variant="light"
             styles={{ message: { color: "#1971c2" } }}
           >
-            JSON Visualization provides bidirectional conversion between multiple data formats,
-            preserving data structure and types during conversion.
+            {t("formatConversion.alert")}
           </Alert>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is Format Conversion?
+              {t("formatConversion.whatIsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                Format conversion allows you to transform data from one format to another without
-                losing information. This is useful when:
-              </Text>
-              <Text>• Working with APIs that require different data formats</Text>
-              <Text>• Migrating data between systems</Text>
-              <Text>• Converting configuration files</Text>
-              <Text>• Preparing data for different tools and platforms</Text>
-              <Text>• Transforming spreadsheet data to JSON or vice versa</Text>
+              <Text>{t("formatConversion.whatIsDesc")}</Text>
+              <Text>• {t("formatConversion.useCase1")}</Text>
+              <Text>• {t("formatConversion.useCase2")}</Text>
+              <Text>• {t("formatConversion.useCase3")}</Text>
+              <Text>• {t("formatConversion.useCase4")}</Text>
+              <Text>• {t("formatConversion.useCase5")}</Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Supported Conversions
+              {t("formatConversion.supportedTitle")}
             </Title>
             <StyledContentBody>
-              <Text mb="md">
-                JSON Visualization supports conversion between the following formats:
-              </Text>
+              <Text mb="md">{t("formatConversion.supportedDesc")}</Text>
               <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
                 <div>
                   <Text fw={600} mb="xs">
-                    From JSON
+                    {t("formatConversion.fromJson")}
                   </Text>
-                  <Text size="sm">• JSON to YAML</Text>
-                  <Text size="sm">• JSON to CSV</Text>
-                  <Text size="sm">• JSON to XML</Text>
+                  <Text size="sm">• {t("formatConversion.toYaml")}</Text>
+                  <Text size="sm">• {t("formatConversion.toCsv")}</Text>
+                  <Text size="sm">• {t("formatConversion.toXml")}</Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    From YAML
+                    {t("formatConversion.fromYaml")}
                   </Text>
-                  <Text size="sm">• YAML to JSON</Text>
-                  <Text size="sm">• YAML to CSV</Text>
-                  <Text size="sm">• YAML to XML</Text>
+                  <Text size="sm">• {t("formatConversion.yamlToJson")}</Text>
+                  <Text size="sm">• {t("formatConversion.yamlToCsv")}</Text>
+                  <Text size="sm">• {t("formatConversion.yamlToXml")}</Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    From CSV
+                    {t("formatConversion.fromCsv")}
                   </Text>
-                  <Text size="sm">• CSV to JSON</Text>
-                  <Text size="sm">• CSV to YAML</Text>
-                  <Text size="sm">• CSV to XML</Text>
+                  <Text size="sm">• {t("formatConversion.csvToJson")}</Text>
+                  <Text size="sm">• {t("formatConversion.csvToYaml")}</Text>
+                  <Text size="sm">• {t("formatConversion.csvToXml")}</Text>
                 </div>
                 <div>
                   <Text fw={600} mb="xs">
-                    From XML
+                    {t("formatConversion.fromXml")}
                   </Text>
-                  <Text size="sm">• XML to JSON</Text>
-                  <Text size="sm">• XML to YAML</Text>
-                  <Text size="sm">• XML to CSV</Text>
+                  <Text size="sm">• {t("formatConversion.xmlToJson")}</Text>
+                  <Text size="sm">• {t("formatConversion.xmlToYaml")}</Text>
+                  <Text size="sm">• {t("formatConversion.xmlToCsv")}</Text>
                 </div>
               </SimpleGrid>
             </StyledContentBody>
@@ -155,49 +158,50 @@ const FormatConversionDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Convert
+              {t("formatConversion.howToConvertTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  Method 1: Using the Editor
+                  {t("formatConversion.method1Title")}
                 </Text>
                 <Text>
-                  1. Open the <StyledLink href="/editor">Editor</StyledLink>
+                  1. {t("formatConversion.method1Step1")}{" "}
+                  <StyledLink href="/editor">Editor</StyledLink>
                 </Text>
-                <Text>2. Paste or load your source data</Text>
-                <Text>3. Click File → Download in the toolbar</Text>
-                <Text>4. Select your desired output format</Text>
-                <Text>5. Click Download to save the converted file</Text>
+                <Text>2. {t("formatConversion.method1Step2")}</Text>
+                <Text>3. {t("formatConversion.method1Step3")}</Text>
+                <Text>4. {t("formatConversion.method1Step4")}</Text>
+                <Text>5. {t("formatConversion.method1Step5")}</Text>
               </div>
 
               <Divider my="md" />
 
               <div>
                 <Text fw={600} mb="xs">
-                  Method 2: Using Converter Pages
+                  {t("formatConversion.method2Title")}
                 </Text>
                 <Text>
-                  1. Visit a specific converter page (e.g.,{" "}
+                  1. {t("formatConversion.method2Step1")}{" "}
                   <StyledLink href="/converter/json-to-yaml">JSON to YAML</StyledLink>)
                 </Text>
-                <Text>2. Paste your source data in the left panel</Text>
-                <Text>3. The converted output appears automatically in the right panel</Text>
-                <Text>4. Copy the result or download it as a file</Text>
+                <Text>2. {t("formatConversion.method2Step2")}</Text>
+                <Text>3. {t("formatConversion.method2Step3")}</Text>
+                <Text>4. {t("formatConversion.method2Step4")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Conversion Examples
+              {t("formatConversion.conversionExamplesTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  Example 1: JSON to YAML
+                  {t("formatConversion.example1Title")}
                 </Text>
-                <Text mb="xs">Input (JSON):</Text>
+                <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
                 <StyledCodeBlock>
                   {`{
   "name": "John Doe",
@@ -224,9 +228,9 @@ skills:
 
               <div>
                 <Text fw={600} mb="xs">
-                  Example 2: CSV to JSON
+                  {t("formatConversion.example2Title")}
                 </Text>
-                <Text mb="xs">Input (CSV):</Text>
+                <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
                 <StyledCodeBlock>
                   {`name,age,city
 Alice,25,New York
@@ -263,7 +267,7 @@ Charlie,35,Seattle`}
                 <Text fw={600} mb="xs">
                   Example 3: JSON to XML
                 </Text>
-                <Text mb="xs">Input (JSON):</Text>
+                <Text mb="xs">{t("formatConversion.inputLabel")}</Text>
                 <StyledCodeBlock>
                   {`{
   "book": {
@@ -324,15 +328,15 @@ database:
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Format Characteristics
+              {t("formatConversion.formatCharacteristicsTitle")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Format</Table.Th>
-                    <Table.Th>Best For</Table.Th>
-                    <Table.Th>Characteristics</Table.Th>
+                    <Table.Th>{t("formatConversion.tableFormat")}</Table.Th>
+                    <Table.Th>{t("formatConversion.tableBestFor")}</Table.Th>
+                    <Table.Th>{t("formatConversion.tableCharacteristics")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -340,36 +344,36 @@ database:
                     <Table.Td>
                       <StyledInlineCode>JSON</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>APIs, web applications, data exchange</Table.Td>
-                    <Table.Td>Lightweight, widely supported, easy to parse</Table.Td>
+                    <Table.Td>{t("formatConversion.jsonBestFor")}</Table.Td>
+                    <Table.Td>{t("formatConversion.jsonChar")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>YAML</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Configuration files, human-readable data</Table.Td>
-                    <Table.Td>Clean syntax, supports comments, indentation-based</Table.Td>
+                    <Table.Td>{t("formatConversion.yamlBestFor")}</Table.Td>
+                    <Table.Td>{t("formatConversion.yamlChar")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>CSV</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Tabular data, spreadsheets, data analysis</Table.Td>
-                    <Table.Td>Simple, flat structure, Excel-compatible</Table.Td>
+                    <Table.Td>{t("formatConversion.csvBestFor")}</Table.Td>
+                    <Table.Td>{t("formatConversion.csvChar")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>XML</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Enterprise systems, SOAP APIs, documents</Table.Td>
-                    <Table.Td>Verbose, supports attributes, schema validation</Table.Td>
+                    <Table.Td>{t("formatConversion.xmlBestFor")}</Table.Td>
+                    <Table.Td>{t("formatConversion.xmlChar")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>TOML</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Configuration files, settings</Table.Td>
-                    <Table.Td>Minimal, clear, easy to read and write</Table.Td>
+                    <Table.Td>{t("formatConversion.tomlBestFor")}</Table.Td>
+                    <Table.Td>{t("formatConversion.tomlChar")}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>
@@ -378,93 +382,80 @@ database:
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Conversion Limitations
+              {t("formatConversion.limitationsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                While JSON Visualization strives to preserve data integrity during conversion, some
-                limitations exist:
-              </Text>
+              <Text>{t("formatConversion.limitationsDesc")}</Text>
 
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  CSV Limitations
+                  {t("formatConversion.csvLimitationsTitle")}
                 </Text>
-                <Text>• CSV is a flat format and cannot represent nested structures directly</Text>
-                <Text>• Complex objects are flattened or serialized as strings</Text>
-                <Text>• Type information may be lost (everything becomes strings)</Text>
+                <Text>• {t("formatConversion.csvLimit1")}</Text>
+                <Text>• {t("formatConversion.csvLimit2")}</Text>
+                <Text>• {t("formatConversion.csvLimit3")}</Text>
               </div>
 
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  XML Limitations
+                  {t("formatConversion.xmlLimitationsTitle")}
                 </Text>
-                <Text>• Arrays may require special handling</Text>
-                <Text>• Attribute vs element distinction may not be preserved</Text>
-                <Text>• Root element naming conventions may vary</Text>
+                <Text>• {t("formatConversion.xmlLimit1")}</Text>
+                <Text>• {t("formatConversion.xmlLimit2")}</Text>
+                <Text>• {t("formatConversion.xmlLimit3")}</Text>
               </div>
 
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  YAML Limitations
+                  {t("formatConversion.yamlLimitationsTitle")}
                 </Text>
-                <Text>• Comments in YAML are lost when converting to other formats</Text>
-                <Text>• Some YAML-specific features may not translate</Text>
+                <Text>• {t("formatConversion.yamlLimit1")}</Text>
+                <Text>• {t("formatConversion.yamlLimit2")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("common.tipsAndBestPractices")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Validate Before Converting</Text>
-                <Text>
-                  Ensure your source data is valid before conversion to avoid errors in the output.
-                </Text>
+                <Text fw={600}>• {t("formatConversion.tip1")}</Text>
+                <Text>{t("formatConversion.tip1Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Understand Format Limitations</Text>
-                <Text>
-                  Be aware of the limitations of your target format, especially when converting
-                  complex nested structures to CSV.
-                </Text>
+                <Text fw={600}>• {t("formatConversion.tip2")}</Text>
+                <Text>{t("formatConversion.tip2Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Preview the Output</Text>
-                <Text>
-                  Always review the converted output to ensure it meets your requirements before
-                  using it in production.
-                </Text>
+                <Text fw={600}>• {t("formatConversion.tip3")}</Text>
+                <Text>{t("formatConversion.tip3Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use Appropriate Formats</Text>
-                <Text>
-                  Choose the right format for your use case: JSON for APIs, YAML for configs, CSV
-                  for tabular data.
-                </Text>
+                <Text fw={600}>• {t("formatConversion.tip4")}</Text>
+                <Text>{t("formatConversion.tip4Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Keep Backups</Text>
-                <Text>
-                  Always keep a copy of your original data before performing conversions, especially
-                  for critical data.
-                </Text>
+                <Text fw={600}>• {t("formatConversion.tip5")}</Text>
+                <Text>{t("formatConversion.tip5Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("common.needHelp")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or try the{" "}
-                <StyledLink href="/converter/json-to-yaml">Converter Tools</StyledLink> directly.
+                {t("common.needHelpText")}{" "}
+                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                {t("common.orTry")}{" "}
+                <StyledLink href="/converter/json-to-yaml">
+                  {t("formatConversion.converterTools")}
+                </StyledLink>{" "}
+                {t("common.directly")}.
               </Text>
             </StyledContentBody>
           </Paper>

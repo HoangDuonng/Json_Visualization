@@ -81,116 +81,107 @@ const FormatValidateDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is Format & Validate?
+              {t("formatValidate.whatIsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                Format & Validate provides two essential features for working with structured data:
-              </Text>
+              <Text>{t("formatValidate.whatIsDesc")}</Text>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  Formatting (Beautify)
+                  {t("formatValidate.formattingTitle")}
                 </Text>
-                <Text>
-                  Automatically formats your data with proper indentation, spacing, and structure,
-                  making it easier to read and maintain.
-                </Text>
+                <Text>{t("formatValidate.formattingDesc")}</Text>
               </div>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  Validation
+                  {t("formatValidate.validationTitle")}
                 </Text>
-                <Text>
-                  Checks your data for syntax errors, structural issues, and format violations in
-                  real-time, providing immediate feedback.
-                </Text>
+                <Text>{t("formatValidate.validationDesc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Supported Formats
+              {t("formatValidate.supportedFormatsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>Format & Validate works with the following data formats:</Text>
+              <Text>{t("formatValidate.supportedFormatsDesc")}</Text>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  JSON
+                  {t("formatValidate.jsonTitle")}
                 </Text>
-                <Text>• Validates JSON syntax</Text>
-                <Text>• Checks for missing commas, brackets, and quotes</Text>
-                <Text>• Formats with customizable indentation</Text>
-                <Text>• Detects trailing commas and other common errors</Text>
+                <Text>• {t("formatValidate.jsonFeature1")}</Text>
+                <Text>• {t("formatValidate.jsonFeature2")}</Text>
+                <Text>• {t("formatValidate.jsonFeature3")}</Text>
+                <Text>• {t("formatValidate.jsonFeature4")}</Text>
               </div>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  YAML
+                  {t("formatValidate.yamlTitle")}
                 </Text>
-                <Text>• Validates YAML syntax</Text>
-                <Text>• Checks indentation consistency</Text>
-                <Text>• Detects invalid characters and structure</Text>
-                <Text>• Preserves comments during formatting</Text>
+                <Text>• {t("formatValidate.yamlFeature1")}</Text>
+                <Text>• {t("formatValidate.yamlFeature2")}</Text>
+                <Text>• {t("formatValidate.yamlFeature3")}</Text>
+                <Text>• {t("formatValidate.yamlFeature4")}</Text>
               </div>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  CSV
+                  {t("formatValidate.csvTitle")}
                 </Text>
-                <Text>• Validates CSV structure</Text>
-                <Text>• Checks for consistent column counts</Text>
-                <Text>• Detects malformed rows</Text>
-                <Text>• Handles quoted fields correctly</Text>
+                <Text>• {t("formatValidate.csvFeature1")}</Text>
+                <Text>• {t("formatValidate.csvFeature2")}</Text>
+                <Text>• {t("formatValidate.csvFeature3")}</Text>
+                <Text>• {t("formatValidate.csvFeature4")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Use
+              {t("formatValidate.howToUseTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  Automatic Formatting
+                  {t("formatValidate.autoFormattingTitle")}
                 </Text>
                 <Text>
-                  1. Open the <StyledLink href="/editor">Editor</StyledLink>
+                  {t("formatValidate.autoFormatStep1")}{" "}
+                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>
                 </Text>
-                <Text>2. Paste or type your data</Text>
-                <Text>
-                  3. The editor automatically formats your data with proper indentation and spacing
-                </Text>
-                <Text>4. Use Ctrl+S (Cmd+S on Mac) to manually trigger formatting</Text>
+                <Text>{t("formatValidate.autoFormatStep2")}</Text>
+                <Text>{t("formatValidate.autoFormatStep3")}</Text>
+                <Text>{t("formatValidate.autoFormatStep4")}</Text>
               </div>
 
               <Divider my="md" />
 
               <div>
                 <Text fw={600} mb="xs">
-                  Real-time Validation
+                  {t("formatValidate.realtimeValidationTitle")}
                 </Text>
-                <Text>1. As you type, the editor validates your data in real-time</Text>
-                <Text>2. Syntax errors are highlighted with red underlines</Text>
-                <Text>3. Hover over errors to see detailed error messages</Text>
-                <Text>4. The bottom toolbar shows validation status and error count</Text>
+                <Text>{t("formatValidate.realtimeStep1")}</Text>
+                <Text>{t("formatValidate.realtimeStep2")}</Text>
+                <Text>{t("formatValidate.realtimeStep3")}</Text>
+                <Text>{t("formatValidate.realtimeStep4")}</Text>
               </div>
 
               <Divider my="md" />
 
               <div>
                 <Text fw={600} mb="xs">
-                  Error Navigation
+                  {t("formatValidate.errorNavigationTitle")}
                 </Text>
-                <Text>1. Click on error indicators in the gutter (left side of editor)</Text>
-                <Text>2. Use keyboard shortcuts to jump between errors</Text>
-                <Text>3. Check the bottom toolbar for a summary of all errors</Text>
+                <Text>{t("formatValidate.errorNavStep1")}</Text>
+                <Text>{t("formatValidate.errorNavStep2")}</Text>
+                <Text>{t("formatValidate.errorNavStep3")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Common Validation Errors
+              {t("formatValidate.commonErrorsTitle")}
             </Title>
             <StyledContentBody>
               <div>
@@ -200,9 +191,9 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Missing Comma</Text>
+                    <Text fw={600}>{t("formatValidate.missingComma")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`{
   "name": "John"
@@ -210,7 +201,7 @@ const FormatValidateDocs = () => {
 }`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`{
@@ -224,9 +215,9 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Trailing Comma</Text>
+                    <Text fw={600}>{t("formatValidate.trailingComma")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`{
   "name": "John",
@@ -234,7 +225,7 @@ const FormatValidateDocs = () => {
 }`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`{
@@ -248,9 +239,9 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Unquoted Keys</Text>
+                    <Text fw={600}>{t("formatValidate.unquotedKeys")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`{
   name: "John",
@@ -258,7 +249,7 @@ const FormatValidateDocs = () => {
 }`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`{
@@ -272,9 +263,9 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Single Quotes</Text>
+                    <Text fw={600}>{t("formatValidate.singleQuotes")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`{
   'name': 'John',
@@ -282,7 +273,7 @@ const FormatValidateDocs = () => {
 }`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`{
@@ -302,16 +293,16 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Inconsistent Indentation</Text>
+                    <Text fw={600}>{t("formatValidate.inconsistentIndentation")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`person:
   name: John
    age: 30`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`person:
@@ -324,15 +315,15 @@ const FormatValidateDocs = () => {
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Missing Space After Colon</Text>
+                    <Text fw={600}>{t("formatValidate.missingSpaceAfterColon")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`name:John
 age:30`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`name: John
@@ -350,16 +341,16 @@ age: 30`}
 
                 <div>
                   <Alert icon={<VscError size={20} />} color="red" variant="light" mb="md">
-                    <Text fw={600}>Inconsistent Column Count</Text>
+                    <Text fw={600}>{t("formatValidate.inconsistentColumnCount")}</Text>
                   </Alert>
-                  <Text mb="xs">Invalid:</Text>
+                  <Text mb="xs">{t("formatValidate.invalid")}</Text>
                   <StyledCodeBlock>
                     {`name,age,city
 John,30,New York
 Jane,25`}
                   </StyledCodeBlock>
                   <Alert icon={<VscPass size={20} />} color="green" variant="light" mt="md" mb="md">
-                    <Text fw={600}>Valid</Text>
+                    <Text fw={600}>{t("formatValidate.valid")}</Text>
                   </Alert>
                   <StyledCodeBlock>
                     {`name,age,city
@@ -373,74 +364,62 @@ Jane,25,Boston`}
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Formatting Options
+              {t("formatValidate.formattingOptionsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>The editor provides several formatting options:</Text>
+              <Text>{t("formatValidate.formattingOptionsDesc")}</Text>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  Indentation
+                  {t("formatValidate.indentationTitle")}
                 </Text>
-                <Text>• Default: 2 spaces</Text>
-                <Text>• Consistent indentation throughout the document</Text>
-                <Text>• Automatically adjusts nested structures</Text>
+                <Text>• {t("formatValidate.indentOption1")}</Text>
+                <Text>• {t("formatValidate.indentOption2")}</Text>
+                <Text>• {t("formatValidate.indentOption3")}</Text>
               </div>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  Line Breaks
+                  {t("formatValidate.lineBreaksTitle")}
                 </Text>
-                <Text>• Proper line breaks between elements</Text>
-                <Text>• Consistent spacing for readability</Text>
+                <Text>• {t("formatValidate.lineBreak1")}</Text>
+                <Text>• {t("formatValidate.lineBreak2")}</Text>
               </div>
               <div>
                 <Text fw={600} mt="md" mb="xs">
-                  Sorting (Optional)
+                  {t("formatValidate.sortingTitle")}
                 </Text>
-                <Text>• Sort object keys alphabetically</Text>
-                <Text>• Useful for comparing JSON files</Text>
+                <Text>• {t("formatValidate.sorting1")}</Text>
+                <Text>• {t("formatValidate.sorting2")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("formatValidate.tipsTitle")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Fix Errors as You Go</Text>
-                <Text>
-                  Address validation errors immediately to avoid cascading issues in your data
-                  structure.
-                </Text>
+                <Text fw={600}>{t("formatValidate.tip1")}</Text>
+                <Text>{t("formatValidate.tip1Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use Consistent Formatting</Text>
-                <Text>
-                  Let the editor handle formatting automatically to maintain consistency across your
-                  files.
-                </Text>
+                <Text fw={600}>{t("formatValidate.tip2")}</Text>
+                <Text>{t("formatValidate.tip2Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Check Error Messages</Text>
-                <Text>
-                  Hover over error indicators to see detailed messages that explain what&apos;s
-                  wrong and how to fix it.
-                </Text>
+                <Text fw={600}>{t("formatValidate.tip3")}</Text>
+                <Text>{t("formatValidate.tip3Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Validate Before Sharing</Text>
-                <Text>
-                  Always ensure your data is valid before sharing it with others or using it in
-                  production.
-                </Text>
+                <Text fw={600}>{t("formatValidate.tip4")}</Text>
+                <Text>{t("formatValidate.tip4Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use JSON Schema for Advanced Validation</Text>
+                <Text fw={600}>{t("formatValidate.tip5")}</Text>
                 <Text>
-                  For more complex validation rules, use{" "}
-                  <StyledLink href="/docs/json-schema">JSON Schema</StyledLink> to define custom
-                  validation logic.
+                  {t("formatValidate.tip5Desc")}{" "}
+                  <StyledLink href="/docs/json-schema">JSON Schema</StyledLink>{" "}
+                  {t("formatValidate.tip5Desc2")}
                 </Text>
               </div>
             </StyledContentBody>
@@ -448,13 +427,14 @@ Jane,25,Boston`}
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("common.needHelp")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or try the{" "}
-                <StyledLink href="/editor">Editor</StyledLink> directly.
+                {t("common.needHelpText")}{" "}
+                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                {t("common.directly")}.
               </Text>
             </StyledContentBody>
           </Paper>

@@ -90,76 +90,65 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              What is JSON Schema?
+              {t("jsonSchema.whatIsTitle")}
             </Title>
             <StyledContentBody>
-              <Text>
-                JSON Schema is a powerful tool for validating the structure of JSON data. It
-                provides a contract for what JSON data is required for a given application and how
-                to interact with it.
-              </Text>
-              <Text>In JSON Visualization, you can use JSON Schema to:</Text>
-              <Text>• Validate your JSON data against a schema</Text>
-              <Text>• Document the expected structure of your data</Text>
-              <Text>• Generate mock data based on schema definitions</Text>
-              <Text>• Ensure data consistency across your application</Text>
+              <Text>{t("jsonSchema.whatIsDesc")}</Text>
+              <Text>{t("jsonSchema.whatIsUsage")}</Text>
+              <Text>• {t("jsonSchema.usage1")}</Text>
+              <Text>• {t("jsonSchema.usage2")}</Text>
+              <Text>• {t("jsonSchema.usage3")}</Text>
+              <Text>• {t("jsonSchema.usage4")}</Text>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              How to Use
+              {t("jsonSchema.howToUseTitle")}
             </Title>
             <StyledContentBody>
               <div>
                 <Text fw={600} mb="xs">
-                  1. Open the Editor
+                  {t("jsonSchema.step1")}
                 </Text>
                 <Text>
-                  Load your JSON data in the{" "}
-                  <StyledLink href="/editor">JSON Visualization Editor</StyledLink>.
+                  {t("jsonSchema.step1Desc")}{" "}
+                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>.
                 </Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  2. Open JSON Schema Tool
+                  {t("jsonSchema.step2")}
                 </Text>
-                <Text>
-                  Click on &quot;Tools&quot; in the toolbar and select &quot;JSON Schema&quot;.
-                </Text>
+                <Text>{t("jsonSchema.step2Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  3. Enter Your Schema
+                  {t("jsonSchema.step3")}
                 </Text>
-                <Text>
-                  Type or paste your JSON Schema in the editor. You can use the example provided or
-                  create your own.
-                </Text>
+                <Text>{t("jsonSchema.step3Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  4. Apply Schema
+                  {t("jsonSchema.step4")}
                 </Text>
-                <Text>Click &quot;Apply&quot; to validate your JSON data against the schema.</Text>
+                <Text>{t("jsonSchema.step4Desc")}</Text>
               </div>
               <div>
                 <Text fw={600} mb="xs">
-                  5. View Validation Results
+                  {t("jsonSchema.step5")}
                 </Text>
-                <Text>
-                  Any validation errors will appear in the bottom toolbar of the editor pane.
-                </Text>
+                <Text>{t("jsonSchema.step5Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Basic Schema Structure
+              {t("jsonSchema.basicSchemaTitle")}
             </Title>
             <StyledContentBody>
-              <Text>A basic JSON Schema consists of several key properties:</Text>
+              <Text>{t("jsonSchema.basicSchemaDesc")}</Text>
               <StyledCodeBlock>
                 {`{
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -189,14 +178,14 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Common Keywords
+              {t("jsonSchema.commonKeywordsTitle")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Keyword</Table.Th>
-                    <Table.Th>Description</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableKeyword")}</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableDescription")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -204,59 +193,55 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>$schema</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>
-                      Declares which version of JSON Schema the schema is written in
-                    </Table.Td>
+                    <Table.Td>{t("jsonSchema.schemaKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>title</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>A short description of the schema</Table.Td>
+                    <Table.Td>{t("jsonSchema.titleKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>description</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>A detailed description of the schema or property</Table.Td>
+                    <Table.Td>{t("jsonSchema.descriptionKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>type</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>
-                      Defines the data type (string, number, integer, boolean, object, array, null)
-                    </Table.Td>
+                    <Table.Td>{t("jsonSchema.typeKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>properties</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Defines the properties of an object</Table.Td>
+                    <Table.Td>{t("jsonSchema.propertiesKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>required</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Array of property names that must be present</Table.Td>
+                    <Table.Td>{t("jsonSchema.requiredKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>enum</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Restricts value to a fixed set of values</Table.Td>
+                    <Table.Td>{t("jsonSchema.enumKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>minimum</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Minimum value for numbers</Table.Td>
+                    <Table.Td>{t("jsonSchema.minimumKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>maximum</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Maximum value for numbers</Table.Td>
+                    <Table.Td>{t("jsonSchema.maximumKeywordDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
@@ -301,7 +286,7 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Practical Examples
+              {t("jsonSchema.practicalExamplesTitle")}
             </Title>
             <StyledContentBody>
               <div>
@@ -491,7 +476,7 @@ const JsonSchemaDocs = () => {
                   Example 6: Advanced Schema with Definitions
                 </Text>
                 <Text c="dimmed" size="sm" mb="xs">
-                  Complex schema using definitions and references for reusable components
+                  {t("jsonSchema.example6Desc")}
                 </Text>
                 <StyledCodeBlock>
                   {`{
@@ -579,17 +564,16 @@ const JsonSchemaDocs = () => {
             </Title>
             <StyledContentBody>
               <Text>
-                The <StyledInlineCode>definitions</StyledInlineCode> keyword allows you to define
-                reusable schemas that can be referenced throughout your JSON Schema using{" "}
-                <StyledInlineCode>$ref</StyledInlineCode>.
+                {t("jsonSchema.definitionsDesc1")} <StyledInlineCode>definitions</StyledInlineCode>{" "}
+                {t("jsonSchema.definitionsDesc2")} <StyledInlineCode>$ref</StyledInlineCode>.
               </Text>
               <Text fw={600} mt="md" mb="xs">
                 Benefits:
               </Text>
-              <Text>• Reduces duplication in your schema</Text>
-              <Text>• Makes schemas more maintainable</Text>
-              <Text>• Allows for complex nested structures</Text>
-              <Text>• Enables schema composition and reuse</Text>
+              <Text>• {t("jsonSchema.benefit1Def")}</Text>
+              <Text>• {t("jsonSchema.benefit2Def")}</Text>
+              <Text>• {t("jsonSchema.benefit3Def")}</Text>
+              <Text>• {t("jsonSchema.benefit4Def")}</Text>
               <Text fw={600} mt="md" mb="xs">
                 Example:
               </Text>
@@ -619,15 +603,15 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Data Types
+              {t("jsonSchema.dataTypesTitle")}
             </Title>
             <StyledContentBody>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Type</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Example</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableType")}</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableDescription")}</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableExample")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -635,7 +619,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>string</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Text data</Table.Td>
+                    <Table.Td>{t("jsonSchema.stringTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>&quot;hello&quot;</StyledInlineCode>
                     </Table.Td>
@@ -644,7 +628,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>number</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Numeric data (integer or float)</Table.Td>
+                    <Table.Td>{t("jsonSchema.numberTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>42</StyledInlineCode>,{" "}
                       <StyledInlineCode>3.14</StyledInlineCode>
@@ -654,7 +638,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>integer</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Whole numbers only</Table.Td>
+                    <Table.Td>{t("jsonSchema.integerTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>42</StyledInlineCode>
                     </Table.Td>
@@ -663,7 +647,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>boolean</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>True or false</Table.Td>
+                    <Table.Td>{t("jsonSchema.booleanTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>true</StyledInlineCode>,{" "}
                       <StyledInlineCode>false</StyledInlineCode>
@@ -673,7 +657,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>object</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Key-value pairs</Table.Td>
+                    <Table.Td>{t("jsonSchema.objectTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>{'{"key": "value"}'}</StyledInlineCode>
                     </Table.Td>
@@ -682,7 +666,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>array</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Ordered list of values</Table.Td>
+                    <Table.Td>{t("jsonSchema.arrayTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>[1, 2, 3]</StyledInlineCode>
                     </Table.Td>
@@ -691,7 +675,7 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>null</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Null value</Table.Td>
+                    <Table.Td>{t("jsonSchema.nullTypeDesc")}</Table.Td>
                     <Table.Td>
                       <StyledInlineCode>null</StyledInlineCode>
                     </Table.Td>
@@ -703,17 +687,15 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              String Formats
+              {t("jsonSchema.stringFormatsTitle")}
             </Title>
             <StyledContentBody>
-              <Text mb="md">
-                JSON Schema supports various string formats for common data types:
-              </Text>
+              <Text mb="md">{t("jsonSchema.stringFormatsDesc")}</Text>
               <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th>Format</Table.Th>
-                    <Table.Th>Description</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableFormat")}</Table.Th>
+                    <Table.Th>{t("jsonSchema.tableDescription")}</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -721,49 +703,49 @@ const JsonSchemaDocs = () => {
                     <Table.Td>
                       <StyledInlineCode>date-time</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Date and time (RFC 3339)</Table.Td>
+                    <Table.Td>{t("jsonSchema.dateTimeFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>date</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Date only (YYYY-MM-DD)</Table.Td>
+                    <Table.Td>{t("jsonSchema.dateFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>time</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Time only (HH:MM:SS)</Table.Td>
+                    <Table.Td>{t("jsonSchema.timeFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>email</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Email address</Table.Td>
+                    <Table.Td>{t("jsonSchema.emailFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>uri</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Uniform Resource Identifier</Table.Td>
+                    <Table.Td>{t("jsonSchema.uriFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>hostname</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>Internet hostname</Table.Td>
+                    <Table.Td>{t("jsonSchema.hostnameFormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>ipv4</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>IPv4 address</Table.Td>
+                    <Table.Td>{t("jsonSchema.ipv4FormatDesc")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <StyledInlineCode>ipv6</StyledInlineCode>
                     </Table.Td>
-                    <Table.Td>IPv6 address</Table.Td>
+                    <Table.Td>{t("jsonSchema.ipv6FormatDesc")}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>
@@ -772,59 +754,49 @@ const JsonSchemaDocs = () => {
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={2} c="dark">
-              Tips & Best Practices
+              {t("jsonSchema.tipsTitle")}
             </Title>
             <StyledContentBody>
               <div>
-                <Text fw={600}>• Start Simple</Text>
-                <Text>Begin with basic type validation and add constraints incrementally.</Text>
+                <Text fw={600}>{t("jsonSchema.tip0")}</Text>
+                <Text>{t("jsonSchema.tip0Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use Descriptions</Text>
+                <Text fw={600}>{t("jsonSchema.tipUseDesc")}</Text>
                 <Text>
-                  Add <StyledInlineCode>description</StyledInlineCode> fields to document your
-                  schema for better understanding.
+                  {t("jsonSchema.tipUseDescText1")} <StyledInlineCode>description</StyledInlineCode>{" "}
+                  {t("jsonSchema.tipUseDescText2")}
                 </Text>
               </div>
               <div>
-                <Text fw={600}>• Be Specific with Types</Text>
-                <Text>
-                  Use <StyledInlineCode>integer</StyledInlineCode> instead of{" "}
-                  <StyledInlineCode>number</StyledInlineCode> when appropriate.
-                </Text>
+                <Text fw={600}>{t("jsonSchema.tip1")}</Text>
+                <Text>{t("jsonSchema.tip1Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Validate Required Fields</Text>
-                <Text>
-                  Always specify <StyledInlineCode>required</StyledInlineCode> array for mandatory
-                  properties.
-                </Text>
+                <Text fw={600}>{t("jsonSchema.tip2")}</Text>
+                <Text>{t("jsonSchema.tip2Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Use Enums for Fixed Values</Text>
-                <Text>
-                  When a property can only have specific values, use{" "}
-                  <StyledInlineCode>enum</StyledInlineCode> to restrict them.
-                </Text>
+                <Text fw={600}>{t("jsonSchema.tip3")}</Text>
+                <Text>{t("jsonSchema.tip3Desc")}</Text>
               </div>
               <div>
-                <Text fw={600}>• Test Your Schema</Text>
-                <Text>
-                  Validate your schema against sample data to ensure it works as expected.
-                </Text>
+                <Text fw={600}>{t("jsonSchema.tip4")}</Text>
+                <Text>{t("jsonSchema.tip4Desc")}</Text>
               </div>
             </StyledContentBody>
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
-              Need Help?
+              {t("common.needHelp")}
             </Title>
             <StyledContentBody>
               <Text>
-                If you encounter issues or have questions, visit our{" "}
-                <StyledLink href="/docs">Documentation</StyledLink> or try the{" "}
-                <StyledLink href="/tools/json-schema">JSON Schema Tool</StyledLink> directly.
+                {t("common.needHelpText")}{" "}
+                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                {t("common.directly")}.
               </Text>
             </StyledContentBody>
           </Paper>
