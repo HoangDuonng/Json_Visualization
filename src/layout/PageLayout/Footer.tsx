@@ -201,7 +201,16 @@ interface FooterProps {
   stars?: number;
 }
 
-export const Footer: React.FC<FooterProps> = ({ stars = 0 }) => {
+export const Footer: React.FC<FooterProps> = () => {
+  const [stars, setStars] = React.useState(0);
+
+  React.useEffect(() => {
+    fetch("https://api.github.com/repos/HoangDuonng/Json_Visualization")
+      .then(res => res.json())
+      .then(data => setStars(data?.stargazers_count || 0))
+      .catch(() => setStars(0));
+  }, []);
+
   return (
     <StyledFooter>
       <StyledFooterContent>

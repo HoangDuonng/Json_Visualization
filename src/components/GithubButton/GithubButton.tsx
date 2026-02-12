@@ -2,6 +2,7 @@ import React from "react";
 import { Flex } from "@mantine/core";
 import styled from "styled-components";
 import { FaGithub, FaStar } from "react-icons/fa6";
+import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 
 const StyledWrapper = styled.div`
   .codepen-button {
@@ -64,6 +65,10 @@ interface GithubButtonProps {
   href: string;
 }
 
+const StyledStarCount = styled.span`
+  font-family: ${MONO_FONT_FAMILY} !important;
+`;
+
 export const GithubButton: React.FC<GithubButtonProps> = ({ stars = 0, href }) => {
   return (
     <StyledWrapper>
@@ -75,7 +80,7 @@ export const GithubButton: React.FC<GithubButtonProps> = ({ stars = 0, href }) =
           </Flex>
           <Flex align="center" gap="2" style={{ opacity: 0.7 }}>
             <FaStar size="8" />
-            {stars.toLocaleString("en-US")}
+            <StyledStarCount>{stars.toLocaleString("en-US")}</StyledStarCount>
           </Flex>
         </span>
       </a>
