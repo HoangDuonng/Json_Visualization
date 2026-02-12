@@ -1,14 +1,25 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Container, Group, Paper, Stack, Text, Title, ThemeIcon, SimpleGrid } from "@mantine/core";
+import {
+  Container,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+  ThemeIcon,
+  SimpleGrid,
+  ActionIcon,
+} from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { FaBolt, FaToolbox } from "react-icons/fa";
-import { IoImages } from "react-icons/io5";
+import { IoImages, IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-icons/md";
 import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
+import { ChatBot } from "../components/ChatBot";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
 import { useTranslation } from "../i18n";
@@ -46,6 +57,7 @@ const StyledLink = styled.a`
 
 const Docs = () => {
   const { t, locale } = useTranslation("docs");
+  const [chatOpened, setChatOpened] = React.useState(false);
 
   const getLocalizedLink = (path: string) => {
     return locale === "vi" ? `${path}?lang=vi` : path;
@@ -126,7 +138,18 @@ const Docs = () => {
             <Title order={1} c="dark">
               {t("index.title")}
             </Title>
-            <LanguageSwitcher />
+            <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+              <ActionIcon
+                size="lg"
+                variant="light"
+                color="green"
+                onClick={() => setChatOpened(true)}
+                title="Chat Assistant"
+              >
+                <IoChatbubbleEllipsesOutline size={20} />
+              </ActionIcon>
+              <LanguageSwitcher />
+            </div>
           </div>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
@@ -237,6 +260,8 @@ const Docs = () => {
           </Paper>
         </Stack>
       </Container>
+
+      <ChatBot opened={chatOpened} onClose={() => setChatOpened(false)} />
     </Layout>
   );
 };
