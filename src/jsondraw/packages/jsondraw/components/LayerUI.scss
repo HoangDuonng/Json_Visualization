@@ -173,8 +173,7 @@
     }
   }
 
-  /* Ẩn Menu chính (3 gạch) và Nút mở thư viện (Library) theo yêu cầu của user */
-  .main-menu-trigger,
+  /* Ẩn Nút mở thư viện (Library) theo yêu cầu của user */
   .default-sidebar-trigger {
     display: none !important;
   }

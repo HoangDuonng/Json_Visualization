@@ -92,22 +92,26 @@ const DefaultMainMenu: React.FC<{
 }> = ({ UIOptions }) => {
   return (
     <MainMenu __fallback>
+      {/*
+       Open và Save.
+      */}
       <MainMenu.DefaultItems.LoadScene />
       <MainMenu.DefaultItems.SaveToActiveFile />
-      {/* FIXME we should to test for this inside the item itself */}
+
       {UIOptions.canvasActions.export && <MainMenu.DefaultItems.Export />}
-      {/* FIXME we should to test for this inside the item itself */}
-      {UIOptions.canvasActions.saveAsImage && <MainMenu.DefaultItems.SaveAsImage />}
-      <MainMenu.DefaultItems.SearchMenu />
-      <MainMenu.DefaultItems.Help />
-      <MainMenu.DefaultItems.ClearCanvas />
-      <MainMenu.Separator />
-      <MainMenu.Group title="JsonDraw links">
-        <MainMenu.DefaultItems.Socials />
-      </MainMenu.Group>
-      <MainMenu.Separator />
-      <MainMenu.DefaultItems.ToggleTheme />
-      <MainMenu.DefaultItems.ChangeCanvasBackground />
+      {/*
+        {UIOptions.canvasActions.saveAsImage && <MainMenu.DefaultItems.SaveAsImage />}
+        <MainMenu.DefaultItems.SearchMenu />
+        <MainMenu.DefaultItems.Help />
+        <MainMenu.DefaultItems.ClearCanvas />
+        <MainMenu.Separator />
+        <MainMenu.Group title="JsonDraw links">
+          <MainMenu.DefaultItems.Socials />
+        </MainMenu.Group>
+        <MainMenu.Separator />
+        <MainMenu.DefaultItems.ToggleTheme />
+        <MainMenu.DefaultItems.ChangeCanvasBackground />
+      */}
     </MainMenu>
   );
 };
@@ -115,8 +119,13 @@ const DefaultMainMenu: React.FC<{
 const DefaultOverwriteConfirmDialog = () => {
   return (
     <OverwriteConfirmDialog __fallback>
-      <OverwriteConfirmDialog.Actions.SaveToDisk />
-      <OverwriteConfirmDialog.Actions.ExportToImage />
+      {/*
+        Load from file.
+      */}
+      {/*
+        <OverwriteConfirmDialog.Actions.SaveToDisk />
+        <OverwriteConfirmDialog.Actions.ExportToImage />
+      */}
     </OverwriteConfirmDialog>
   );
 };

@@ -13,7 +13,7 @@ import { overwriteConfirmStateAtom } from "./OverwriteConfirmState";
 import "./OverwriteConfirm.scss";
 
 export type OverwriteConfirmDialogProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const OverwriteConfirmDialog = Object.assign(
@@ -39,6 +39,8 @@ const OverwriteConfirmDialog = Object.assign(
         setState((state) => ({ ...state, active: false }));
       };
 
+      const hasActions = React.Children.count(children) > 0;
+
       return (
         <OverwriteConfirmDialogTunnel.In>
           <Dialog onCloseRequest={handleClose} title={false} size={916}>
@@ -59,7 +61,7 @@ const OverwriteConfirmDialog = Object.assign(
                   onClick={handleConfirm}
                 />
               </div>
-              <Actions>{children}</Actions>
+              {hasActions && <Actions>{children}</Actions>}
             </div>
           </Dialog>
         </OverwriteConfirmDialogTunnel.In>
