@@ -89,7 +89,8 @@ interface LayerUIProps {
 
 const DefaultMainMenu: React.FC<{
   UIOptions: AppProps["UIOptions"];
-}> = ({ UIOptions }) => {
+  onClearDrawing?: () => void;
+}> = ({ UIOptions, onClearDrawing }) => {
   return (
     <MainMenu __fallback>
       {/*
@@ -99,6 +100,28 @@ const DefaultMainMenu: React.FC<{
       <MainMenu.DefaultItems.SaveToActiveFile />
 
       {UIOptions.canvasActions.export && <MainMenu.DefaultItems.Export />}
+      {onClearDrawing && (
+        <>
+          <MainMenu.Separator />
+          <MainMenu.Item
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            }
+            onSelect={onClearDrawing}
+          >
+            Clear Drawing
+          </MainMenu.Item>
+        </>
+      )}
       {/*
         {UIOptions.canvasActions.saveAsImage && <MainMenu.DefaultItems.SaveAsImage />}
         <MainMenu.DefaultItems.SearchMenu />
@@ -436,7 +459,7 @@ const LayerUI = ({
           tunneled away. We only render tunneled components that actually
         have defaults when host do not render anything. */}
 
-      <DefaultMainMenu UIOptions={UIOptions} />
+      <DefaultMainMenu UIOptions={UIOptions} onClearDrawing={UIOptions.canvasActions.clearDrawing} />
       <DefaultSidebar.Trigger
         __fallback
         icon={sidebarRightIcon}

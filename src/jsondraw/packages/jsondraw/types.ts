@@ -676,6 +676,7 @@ export type CanvasActions = Partial<{
   saveToActiveFile: boolean;
   toggleTheme: boolean | null;
   saveAsImage: boolean;
+  clearDrawing: () => void;
 }>;
 
 export type UIOptions = Partial<{
