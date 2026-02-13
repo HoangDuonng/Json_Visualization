@@ -441,7 +441,7 @@ import ConvertElementTypePopup, {
   getConversionTypeFromElements,
   convertElementTypePopupAtom,
   convertElementTypes,
-} from "./ConvertElementTypePopup";
+} from "./popups/ConvertElementTypePopup";
 import { activeEyeDropperAtom } from "./canvases/EyeDropper";
 import FollowMode from "./FollowMode/FollowMode";
 import LayerUI from "./LayerUI";
@@ -449,7 +449,7 @@ import { ElementCanvasButton } from "./MagicButton";
 import { SVGLayer } from "./canvases/SVGLayer";
 import { isSidebarDockedAtom } from "./Sidebar/Sidebar";
 import { Toast } from "./Toast";
-import UnlockPopup from "./UnlockPopup";
+import UnlockPopup from "./popups/UnlockPopup";
 import { StaticCanvas, InteractiveCanvas } from "./canvases";
 import NewElementCanvas from "./canvases/NewElementCanvas";
 import { isPointHittingLink, isPointHittingLinkIcon } from "./hyperlink/helpers";

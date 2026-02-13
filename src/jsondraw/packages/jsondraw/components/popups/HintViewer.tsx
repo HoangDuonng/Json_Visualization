@@ -13,14 +13,14 @@ import { isNodeInFlowchart } from "@jsondraw/element";
 
 import type { EditorInterface } from "@jsondraw/common";
 
-import { t } from "../i18n";
-import { getShortcutKey } from "../shortcut";
-import { isEraserActive } from "../appState";
-import { isGridModeEnabled } from "../snapping";
+import { t } from "../../i18n";
+import { getShortcutKey } from "../../shortcut";
+import { isEraserActive } from "../../appState";
+import { isGridModeEnabled } from "../../snapping";
 
 import "./HintViewer.scss";
 
-import type { AppClassProperties, UIAppState } from "../types";
+import type { AppClassProperties, UIAppState } from "../../types";
 
 interface HintViewerProps {
   appState: UIAppState;

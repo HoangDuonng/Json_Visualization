@@ -5,7 +5,7 @@ import type { JsonDrawElement } from "@jsondraw/element/types";
 import {
   getConversionTypeFromElements,
   convertElementTypePopupAtom,
-} from "../components/ConvertElementTypePopup";
+} from "../components/popups/ConvertElementTypePopup";
 import { editorJotaiStore } from "../editor-jotai";
 
 import { register } from "./register";

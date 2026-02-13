@@ -7,16 +7,16 @@ import { sceneCoordsToViewportCoords } from "@jsondraw/common";
 
 import { flushSync } from "react-dom";
 
-import { actionToggleElementLock } from "../actions";
-import { t } from "../i18n";
+import { actionToggleElementLock } from "../../actions";
+import { t } from "../../i18n";
 
 import "./UnlockPopup.scss";
 
-import { LockedIconFilled } from "./icons";
+import { LockedIconFilled } from "../icons";
 
-import type App from "./App";
+import type App from "../App";
 
-import type { AppState } from "../types";
+import type { AppState } from "../../types";
 
 const UnlockPopup = ({
   app,

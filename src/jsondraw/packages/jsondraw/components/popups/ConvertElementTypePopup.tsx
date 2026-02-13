@@ -76,12 +76,12 @@ import {
   mutateElement,
   ROUNDNESS,
   sceneCoordsToViewportCoords,
-} from "..";
-import { trackEvent } from "../analytics";
-import { atom } from "../editor-jotai";
+} from "../..";
+import { trackEvent } from "../../analytics";
+import { atom } from "../../editor-jotai";
 
 import "./ConvertElementTypePopup.scss";
-import { ToolButton } from "./ToolButton";
+import { ToolButton } from "../ToolButton";
 import {
   DiamondIcon,
   elbowArrowIcon,
@@ -90,11 +90,11 @@ import {
   RectangleIcon,
   roundArrowIcon,
   sharpArrowIcon,
-} from "./icons";
+} from "../icons";
 
-import type App from "./App";
+import type App from "../App";
 
-import type { AppClassProperties } from "../types";
+import type { AppClassProperties } from "../../types";
 
 const GAP_HORIZONTAL = 8;
 const GAP_VERTICAL = 10;

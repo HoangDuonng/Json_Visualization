@@ -40,7 +40,7 @@ import { EyeDropper, activeEyeDropperAtom } from "./canvases/EyeDropper";
 import { FixedSideContainer } from "./FixedSideContainer";
 import { HandButton } from "./HandButton";
 import { HelpDialog } from "./HelpDialog";
-import { HintViewer } from "./HintViewer";
+import { HintViewer } from "./popups/HintViewer";
 import { ImageExportDialog } from "./export/ImageExportDialog";
 import { Island } from "./Island";
 import { JSONExportDialog } from "./export/JSONExportDialog";
