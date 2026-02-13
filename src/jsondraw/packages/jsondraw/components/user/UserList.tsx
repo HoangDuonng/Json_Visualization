@@ -7,7 +7,7 @@ import type { ActionManager } from "../../actions/manager";
 import { t } from "../../i18n";
 import type { Collaborator, SocketId } from "../../types";
 import { useJsonDrawActionManager } from "../App";
-import { Island } from "../Island";
+import { Island } from "../layout/Island";
 import { ScrollableList } from "../ScrollableList";
 import { Tooltip } from "../Tooltip";
 import { QuickSearch } from "../search/QuickSearch";

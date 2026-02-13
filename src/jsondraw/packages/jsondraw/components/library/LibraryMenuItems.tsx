@@ -11,7 +11,7 @@ import type { JsonDrawProps, LibraryItem, LibraryItems, UIAppState } from "../..
 import { useEditorInterface } from "../App";
 import { Button } from "../Button";
 import Spinner from "../Spinner";
-import Stack from "../Stack";
+import Stack from "../layout/Stack";
 import { TextField } from "../TextField";
 import { LibraryMenuControlButtons } from "./LibraryMenuControlButtons";
 import { LibraryDropdownMenu } from "./LibraryMenuHeaderContent";

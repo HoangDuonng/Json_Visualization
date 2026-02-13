@@ -5,7 +5,7 @@ import React, { type ReactNode } from "react";
 import { isInteractive } from "@jsondraw/common";
 
 import { useEditorInterface } from "./App";
-import { Island } from "./Island";
+import { Island } from "./layout/Island";
 
 interface PropertiesPopoverProps {
   className?: string;

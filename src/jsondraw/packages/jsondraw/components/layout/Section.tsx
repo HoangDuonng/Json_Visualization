@@ -1,8 +1,8 @@
 import React from "react";
 
-import { t } from "../i18n";
+import { t } from "../../i18n";
 
-import { useJsonDrawContainer } from "./App";
+import { useJsonDrawContainer } from "../App";
 
 export const Section: React.FC<{
   heading: "canvasActions" | "selectedShapeActions" | "shapes";

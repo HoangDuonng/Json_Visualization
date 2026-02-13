@@ -444,7 +444,7 @@ import ConvertElementTypePopup, {
 } from "./popups/ConvertElementTypePopup";
 import { activeEyeDropperAtom } from "./canvases/EyeDropper";
 import FollowMode from "./FollowMode/FollowMode";
-import LayerUI from "./LayerUI";
+import LayerUI from "./layout/LayerUI";
 import { ElementCanvasButton } from "./MagicButton";
 import { SVGLayer } from "./canvases/SVGLayer";
 import { isSidebarDockedAtom } from "./Sidebar/Sidebar";

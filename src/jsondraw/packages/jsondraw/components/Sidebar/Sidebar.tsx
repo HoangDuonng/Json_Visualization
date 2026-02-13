@@ -21,7 +21,7 @@ import { useUIAppState } from "../../context/ui-appState";
 import { atom, useSetAtom } from "../../editor-jotai";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useEditorInterface, useJsonDrawSetAppState } from "../App";
-import { Island } from "../Island";
+import { Island } from "../layout/Island";
 
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarTabTrigger } from "./SidebarTabTrigger";

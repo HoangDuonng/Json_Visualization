@@ -5,8 +5,8 @@ import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { useCallback, useState } from "react";
 
 import { useEditorInterface } from "../App";
-import { Island } from "../Island";
-import Stack from "../Stack";
+import { Island } from "../layout/Island";
+import Stack from "../layout/Stack";
 
 const BASE_ALIGN_OFFSET = -4;
 const BASE_SIDE_OFFSET = 4;

@@ -60,7 +60,7 @@ import {
   useStylesPanelMode,
   useJsonDrawContainer,
 } from "./App";
-import Stack from "./Stack";
+import Stack from "./layout/Stack";
 import { ToolButton } from "./ToolButton";
 import { ToolPopover } from "./ToolPopover";
 import { Tooltip } from "./Tooltip";
@@ -84,7 +84,7 @@ import {
   pencilIcon,
 } from "./icons";
 
-import { Island } from "./Island";
+import { Island } from "./layout/Island";
 
 import type {
   AppClassProperties,

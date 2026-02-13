@@ -6,16 +6,16 @@ import {
 } from "@jsondraw/common";
 import type { MarkOptional, Merge } from "@jsondraw/common/utility-types";
 import clsx from "clsx";
-import "../components/dropdownMenu/DropdownMenu.scss";
-import { useTunnels } from "../context/tunnels";
-import { useUIAppState } from "../context/ui-appState";
-import { useJsonDrawSetAppState } from "./App";
-import { Sidebar } from "./Sidebar/Sidebar";
-import type { SidebarProps, SidebarTriggerProps } from "./Sidebar/common";
-import { withInternalFallback } from "./hoc/withInternalFallback";
-import { LibraryIcon, searchIcon } from "./icons";
-import { LibraryMenu } from "./library/LibraryMenu";
-import { SearchMenu } from "./search/SearchMenu";
+import "../dropdownMenu/DropdownMenu.scss";
+import { useTunnels } from "../../context/tunnels";
+import { useUIAppState } from "../../context/ui-appState";
+import { useJsonDrawSetAppState } from "../App";
+import { Sidebar } from "../Sidebar/Sidebar";
+import type { SidebarProps, SidebarTriggerProps } from "../Sidebar/common";
+import { withInternalFallback } from "../hoc/withInternalFallback";
+import { LibraryIcon, searchIcon } from "../icons";
+import { LibraryMenu } from "../library/LibraryMenu";
+import { SearchMenu } from "../search/SearchMenu";
 
 const DefaultSidebarTrigger = withInternalFallback(
   "DefaultSidebarTrigger",

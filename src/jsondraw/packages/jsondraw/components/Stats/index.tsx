@@ -17,7 +17,7 @@ import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
 import { t } from "../../i18n";
 import { isGridModeEnabled } from "../../snapping";
 import { useJsonDrawAppState, useJsonDrawSetAppState } from "../App";
-import { Island } from "../Island";
+import { Island } from "../layout/Island";
 import { CloseIcon } from "../icons";
 
 import Angle from "./Angle";

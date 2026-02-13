@@ -4,8 +4,8 @@ import { actionShortcuts } from "../../actions";
 import { useTunnels } from "../../context/tunnels";
 import { ExitZenModeButton, UndoRedoActions, ZoomActions } from "../Actions";
 import { HelpButton } from "../HelpButton";
-import { Section } from "../Section";
-import Stack from "../Stack";
+import { Section } from "../layout/Section";
+import Stack from "../layout/Stack";
 
 import type { ActionManager } from "../../actions/manager";
 import type { UIAppState } from "../../types";

@@ -2,26 +2,24 @@ import React from "react";
 
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
 
-import { useTunnels } from "../context/tunnels";
-import { t } from "../i18n";
-import { calculateScrollCenter } from "../scene";
-import { SCROLLBAR_WIDTH, SCROLLBAR_MARGIN } from "../scene/scrollbars";
+import { useTunnels } from "../../context/tunnels";
+import { t } from "../../i18n";
+import { calculateScrollCenter } from "../../scene";
+import { SCROLLBAR_WIDTH, SCROLLBAR_MARGIN } from "../../scene/scrollbars";
 
-import { ExitViewModeButton, MobileShapeActions } from "./Actions";
-import { MobileToolBar } from "./MobileToolBar";
-import { FixedSideContainer } from "./FixedSideContainer";
+import { ExitViewModeButton, MobileShapeActions } from "../Actions";
+import { MobileToolBar } from "../MobileToolBar";
+import { PenModeButton } from "../PenModeButton";
 
-import { Island } from "./Island";
-
-import { PenModeButton } from "./PenModeButton";
-
-import type { ActionManager } from "../actions/manager";
+import type { ActionManager } from "../../actions/manager";
 import type {
   AppClassProperties,
   AppProps,
   AppState,
   UIAppState,
-} from "../types";
+} from "../../types";
+import { FixedSideContainer } from "./FixedSideContainer";
+import { Island } from "./Island";
 import type { JSX } from "react";
 
 type MobileMenuProps = {

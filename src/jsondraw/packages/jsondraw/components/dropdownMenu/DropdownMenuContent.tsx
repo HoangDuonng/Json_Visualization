@@ -8,8 +8,8 @@ import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useStable } from "../../hooks/useStable";
 import { useEditorInterface } from "../App";
-import { Island } from "../Island";
-import Stack from "../Stack";
+import { Island } from "../layout/Island";
+import Stack from "../layout/Stack";
 
 import { DropdownMenuContentPropsContext } from "./common";
 

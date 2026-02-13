@@ -6,7 +6,7 @@ import { useCallbackRefState } from "../hooks/useCallbackRefState";
 import { t } from "../i18n";
 import { useJsonDrawContainer, useEditorInterface, useJsonDrawSetAppState } from "./App";
 import "./Dialog.scss";
-import { Island } from "./Island";
+import { Island } from "./layout/Island";
 import { Modal } from "./Modal";
 import { CloseIcon } from "./icons";
 import { isLibraryMenuOpenAtom } from "./library/LibraryMenu";
