@@ -1,4 +1,4 @@
-@use "../css/variables.module" as *;
+@use "../../css/variables.module" as *;
 
 .jsondraw {
   --avatar-size: 1.75rem;
@@ -110,8 +110,7 @@
     display: flex;
   }
 
-  .UserList__collaborator.is-muted
-    .UserList__collaborator-status-icon-microphone-muted {
+  .UserList__collaborator.is-muted .UserList__collaborator-status-icon-microphone-muted {
     color: var(--color-danger);
     filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.5));
   }

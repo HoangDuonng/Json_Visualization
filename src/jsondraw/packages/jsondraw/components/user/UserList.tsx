@@ -1,23 +1,17 @@
-import { Popover } from "radix-ui";
-import clsx from "clsx";
 import React, { useLayoutEffect } from "react";
-
 import { supportsResizeObserver, isShallowEqual } from "@jsondraw/common";
-
 import type { MarkRequired } from "@jsondraw/common/utility-types";
-
-import { t } from "../i18n";
-
-import { useJsonDrawActionManager } from "./App";
-import { Island } from "./Island";
-import { QuickSearch } from "./QuickSearch";
-import { ScrollableList } from "./ScrollableList";
-import { Tooltip } from "./Tooltip";
-
+import clsx from "clsx";
+import { Popover } from "radix-ui";
+import type { ActionManager } from "../../actions/manager";
+import { t } from "../../i18n";
+import type { Collaborator, SocketId } from "../../types";
+import { useJsonDrawActionManager } from "../App";
+import { Island } from "../Island";
+import { QuickSearch } from "../QuickSearch";
+import { ScrollableList } from "../ScrollableList";
+import { Tooltip } from "../Tooltip";
 import "./UserList.scss";
-
-import type { ActionManager } from "../actions/manager";
-import type { Collaborator, SocketId } from "../types";
 
 export type GoToCollaboratorComponentProps = {
   socketId: SocketId;
@@ -41,11 +35,7 @@ const ConditionalTooltipWrapper = ({
   children: React.ReactNode;
   username?: string | null;
 }) =>
-  shouldWrap ? (
-    <Tooltip label={username || "Unknown user"}>{children}</Tooltip>
-  ) : (
-    <>{children}</>
-  );
+  shouldWrap ? <Tooltip label={username || "Unknown user"}>{children}</Tooltip> : <>{children}</>;
 
 const renderCollaborator = ({
   actionManager,
@@ -83,13 +73,7 @@ const renderCollaborator = ({
 
 type UserListUserObject = Pick<
   Collaborator,
-  | "avatarUrl"
-  | "id"
-  | "socketId"
-  | "username"
-  | "isInCall"
-  | "isSpeaking"
-  | "isMuted"
+  "avatarUrl" | "id" | "socketId" | "username" | "isInCall" | "isSpeaking" | "isMuted"
 >;
 
 type UserListProps = {
@@ -113,28 +97,24 @@ export const UserList = React.memo(
   ({ className, mobile, collaborators, userToFollow }: UserListProps) => {
     const actionManager = useJsonDrawActionManager();
 
-    const uniqueCollaboratorsMap = new Map<
-      ClientId,
-      MarkRequired<Collaborator, "socketId">
-    >();
+    const uniqueCollaboratorsMap = new Map<ClientId, MarkRequired<Collaborator, "socketId">>();
 
     collaborators.forEach((collaborator, socketId) => {
       const userId = (collaborator.id || socketId) as ClientId;
       uniqueCollaboratorsMap.set(
         // filter on user id, else fall back on unique socketId
         userId,
-        { ...collaborator, socketId },
+        { ...collaborator, socketId }
       );
     });
 
-    const uniqueCollaboratorsArray = Array.from(
-      uniqueCollaboratorsMap.values(),
-    ).filter((collaborator) => collaborator.username?.trim());
+    const uniqueCollaboratorsArray = Array.from(uniqueCollaboratorsMap.values()).filter(
+      collaborator => collaborator.username?.trim()
+    );
 
     const [searchTerm, setSearchTerm] = React.useState("");
-    const filteredCollaborators = uniqueCollaboratorsArray.filter(
-      (collaborator) =>
-        collaborator.username?.toLowerCase().includes(searchTerm),
+    const filteredCollaborators = uniqueCollaboratorsArray.filter(collaborator =>
+      collaborator.username?.toLowerCase().includes(searchTerm)
     );
 
     const userListWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -152,7 +132,7 @@ export const UserList = React.memo(
           return;
         }
 
-        const resizeObserver = new ResizeObserver((entries) => {
+        const resizeObserver = new ResizeObserver(entries => {
           for (const entry of entries) {
             const { width } = entry.contentRect;
             updateMaxAvatars(width);
@@ -169,31 +149,28 @@ export const UserList = React.memo(
 
     const [maxAvatars, setMaxAvatars] = React.useState(DEFAULT_MAX_AVATARS);
 
-    const firstNCollaborators = uniqueCollaboratorsArray.slice(
-      0,
-      maxAvatars - 1,
-    );
+    const firstNCollaborators = uniqueCollaboratorsArray.slice(0, maxAvatars - 1);
 
-    const firstNAvatarsJSX = firstNCollaborators.map((collaborator) =>
+    const firstNAvatarsJSX = firstNCollaborators.map(collaborator =>
       renderCollaborator({
         actionManager,
         collaborator,
         socketId: collaborator.socketId,
         shouldWrapWithTooltip: true,
         isBeingFollowed: collaborator.socketId === userToFollow,
-      }),
+      })
     );
 
     return mobile ? (
       <div className={clsx("UserList UserList_mobile", className)}>
-        {uniqueCollaboratorsArray.map((collaborator) =>
+        {uniqueCollaboratorsArray.map(collaborator =>
           renderCollaborator({
             actionManager,
             collaborator,
             socketId: collaborator.socketId,
             shouldWrapWithTooltip: true,
             isBeingFollowed: collaborator.socketId === userToFollow,
-          }),
+          })
         )}
       </div>
     ) : (
@@ -219,8 +196,7 @@ export const UserList = React.memo(
                 sideOffset={10}
               >
                 <Island padding={2}>
-                  {uniqueCollaboratorsArray.length >=
-                    SHOW_COLLABORATORS_FILTER_AT && (
+                  {uniqueCollaboratorsArray.length >= SHOW_COLLABORATORS_FILTER_AT && (
                     <QuickSearch
                       placeholder={t("quickSearch.placeholder")}
                       onChange={setSearchTerm}
@@ -234,15 +210,14 @@ export const UserList = React.memo(
                     {filteredCollaborators.length > 0
                       ? [
                           <div className="hint">{t("userList.hint.text")}</div>,
-                          filteredCollaborators.map((collaborator) =>
+                          filteredCollaborators.map(collaborator =>
                             renderCollaborator({
                               actionManager,
                               collaborator,
                               socketId: collaborator.socketId,
                               withName: true,
-                              isBeingFollowed:
-                                collaborator.socketId === userToFollow,
-                            }),
+                              isBeingFollowed: collaborator.socketId === userToFollow,
+                            })
                           ),
                         ]
                       : []}
@@ -282,15 +257,11 @@ export const UserList = React.memo(
         // this checks order of collaborators in the map is the same
         // as previous render
         socketId !== nextCollaboratorSocketIds.next().value ||
-        !isShallowEqual(
-          collaborator,
-          nextCollaborator,
-          collaboratorComparatorKeys,
-        )
+        !isShallowEqual(collaborator, nextCollaborator, collaboratorComparatorKeys)
       ) {
         return false;
       }
     }
     return true;
-  },
+  }
 );

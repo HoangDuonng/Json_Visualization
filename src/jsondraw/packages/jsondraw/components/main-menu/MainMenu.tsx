@@ -1,17 +1,14 @@
 import React from "react";
-
 import { composeEventHandlers } from "@jsondraw/common";
-
 import { useTunnels } from "../../context/tunnels";
 import { useUIAppState } from "../../context/ui-appState";
 import { t } from "../../i18n";
 import { useEditorInterface, useJsonDrawSetAppState } from "../App";
-import { UserList } from "../UserList";
 import DropdownMenu from "../dropdownMenu/DropdownMenu";
 import DropdownMenuSub from "../dropdownMenu/DropdownMenuSub";
 import { withInternalFallback } from "../hoc/withInternalFallback";
 import { HamburgerMenuIcon } from "../icons";
-
+import { UserList } from "../user/UserList";
 import * as DefaultItems from "./DefaultItems";
 
 const MainMenu = Object.assign(
@@ -57,22 +54,21 @@ const MainMenu = Object.assign(
               align="start"
             >
               {children}
-              {editorInterface.formFactor === "phone" &&
-                appState.collaborators.size > 0 && (
-                  <fieldset className="UserList-Wrapper">
-                    <legend>{t("labels.collaborators")}</legend>
-                    <UserList
-                      mobile={true}
-                      collaborators={appState.collaborators}
-                      userToFollow={appState.userToFollow?.socketId || null}
-                    />
-                  </fieldset>
-                )}
+              {editorInterface.formFactor === "phone" && appState.collaborators.size > 0 && (
+                <fieldset className="UserList-Wrapper">
+                  <legend>{t("labels.collaborators")}</legend>
+                  <UserList
+                    mobile={true}
+                    collaborators={appState.collaborators}
+                    userToFollow={appState.userToFollow?.socketId || null}
+                  />
+                </fieldset>
+              )}
             </DropdownMenu.Content>
           </DropdownMenu>
         </MainMenuTunnel.In>
       );
-    },
+    }
   ),
   {
     Trigger: DropdownMenu.Trigger,
@@ -83,7 +79,7 @@ const MainMenu = Object.assign(
     Separator: DropdownMenu.Separator,
     Sub: DropdownMenuSub,
     DefaultItems,
-  },
+  }
 );
 
 export default MainMenu;

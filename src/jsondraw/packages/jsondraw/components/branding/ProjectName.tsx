@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-
 import { focusNearestParent, KEYS } from "@jsondraw/common";
-
-import { useJsonDrawContainer } from "./App";
-
-import "./TextInput.scss";
+import { useJsonDrawContainer } from "../App";
+import "../TextInput.scss";
 import "./ProjectName.scss";
 
 type Props = {
@@ -50,7 +47,7 @@ export const ProjectName = (props: Props) => {
         onKeyDown={handleKeyDown}
         id={`${id}-filename`}
         value={fileName}
-        onChange={(event) => setFileName(event.target.value)}
+        onChange={event => setFileName(event.target.value)}
       />
     </div>
   );

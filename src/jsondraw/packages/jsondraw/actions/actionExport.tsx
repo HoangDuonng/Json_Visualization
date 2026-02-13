@@ -1,37 +1,24 @@
-import {
-  KEYS,
-  DEFAULT_EXPORT_PADDING,
-  EXPORT_SCALES,
-  THEME,
-} from "@jsondraw/common";
-
+import { KEYS, DEFAULT_EXPORT_PADDING, EXPORT_SCALES, THEME } from "@jsondraw/common";
 import { getNonDeletedElements } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import type { Theme } from "@jsondraw/element/types";
-
 import { useEditorInterface } from "../components/App";
 import { CheckboxItem } from "../components/CheckboxItem";
 import { DarkModeToggle } from "../components/DarkModeToggle";
-import { ProjectName } from "../components/ProjectName";
 import { ToolButton } from "../components/ToolButton";
+import "../components/ToolIcon.scss";
 import { Tooltip } from "../components/Tooltip";
+import { ProjectName } from "../components/branding/ProjectName";
 import { ExportIcon, questionCircle, saveAs } from "../components/icons";
 import { loadFromJSON, saveAsJSON } from "../data";
 import { isImageFileHandle } from "../data/blob";
 import { nativeFileSystemSupported } from "../data/filesystem";
 import { resaveAsImageWithScene } from "../data/resave";
-
 import { t } from "../i18n";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
 import { getExportSize } from "../scene/export";
-
-import "../components/ToolIcon.scss";
-
-import { register } from "./register";
-
 import type { AppState } from "../types";
+import { register } from "./register";
 
 export const actionChangeProjectName = register<AppState["name"]>({
   name: "changeProjectName",
@@ -66,21 +53,15 @@ export const actionChangeExportScale = register<AppState["exportScale"]>({
   PanelComponent: ({ elements: allElements, appState, updateData }) => {
     const elements = getNonDeletedElements(allElements);
     const exportSelected = isSomeElementSelected(elements, appState);
-    const exportedElements = exportSelected
-      ? getSelectedElements(elements, appState)
-      : elements;
+    const exportedElements = exportSelected ? getSelectedElements(elements, appState) : elements;
 
     return (
       <>
-        {EXPORT_SCALES.map((s) => {
-          const [width, height] = getExportSize(
-            exportedElements,
-            DEFAULT_EXPORT_PADDING,
-            s,
-          );
+        {EXPORT_SCALES.map(s => {
+          const [width, height] = getExportSize(exportedElements, DEFAULT_EXPORT_PADDING, s);
 
           const scaleButtonTitle = `${t(
-            "imageExportDialog.label.scale",
+            "imageExportDialog.label.scale"
           )} ${s}x (${width}x${height})`;
 
           return (
@@ -103,9 +84,7 @@ export const actionChangeExportScale = register<AppState["exportScale"]>({
   },
 });
 
-export const actionChangeExportBackground = register<
-  AppState["exportBackground"]
->({
+export const actionChangeExportBackground = register<AppState["exportBackground"]>({
   name: "changeExportBackground",
   label: "imageExportDialog.label.withBackground",
   trackEvent: { category: "export", action: "toggleBackground" },
@@ -116,18 +95,13 @@ export const actionChangeExportBackground = register<
     };
   },
   PanelComponent: ({ appState, updateData }) => (
-    <CheckboxItem
-      checked={appState.exportBackground}
-      onChange={(checked) => updateData(checked)}
-    >
+    <CheckboxItem checked={appState.exportBackground} onChange={checked => updateData(checked)}>
       {t("imageExportDialog.label.withBackground")}
     </CheckboxItem>
   ),
 });
 
-export const actionChangeExportEmbedScene = register<
-  AppState["exportEmbedScene"]
->({
+export const actionChangeExportEmbedScene = register<AppState["exportEmbedScene"]>({
   name: "changeExportEmbedScene",
   label: "imageExportDialog.tooltip.embedScene",
   trackEvent: { category: "export", action: "embedScene" },
@@ -138,10 +112,7 @@ export const actionChangeExportEmbedScene = register<
     };
   },
   PanelComponent: ({ appState, updateData }) => (
-    <CheckboxItem
-      checked={appState.exportEmbedScene}
-      onChange={(checked) => updateData(checked)}
-    >
+    <CheckboxItem checked={appState.exportEmbedScene} onChange={checked => updateData(checked)}>
       {t("imageExportDialog.label.embedScene")}
       <Tooltip label={t("imageExportDialog.tooltip.embedScene")} long={true}>
         <div className="jsondraw-tooltip-icon">{questionCircle}</div>
@@ -167,12 +138,7 @@ export const actionSaveToActiveFile = register({
 
     try {
       const { fileHandle } = isImageFileHandle(appState.fileHandle)
-        ? await resaveAsImageWithScene(
-            elements,
-            appState,
-            app.files,
-            app.getName(),
-          )
+        ? await resaveAsImageWithScene(elements, appState, app.files, app.getName())
         : await saveAsJSON(elements, appState, app.files, app.getName());
 
       return {
@@ -183,10 +149,7 @@ export const actionSaveToActiveFile = register({
           toast: fileHandleExists
             ? {
                 message: fileHandle?.name
-                  ? t("toast.fileSavedToFilename").replace(
-                      "{filename}",
-                      `"${fileHandle.name}"`,
-                    )
+                  ? t("toast.fileSavedToFilename").replace("{filename}", `"${fileHandle.name}"`)
                   : t("toast.fileSaved"),
               }
             : null,
@@ -201,8 +164,7 @@ export const actionSaveToActiveFile = register({
       return { captureUpdate: CaptureUpdateAction.EVENTUALLY };
     }
   },
-  keyTest: (event) =>
-    event.key === KEYS.S && event[KEYS.CTRL_OR_CMD] && !event.shiftKey,
+  keyTest: event => event.key === KEYS.S && event[KEYS.CTRL_OR_CMD] && !event.shiftKey,
 });
 
 export const actionSaveFileToDisk = register({
@@ -220,7 +182,7 @@ export const actionSaveFileToDisk = register({
           fileHandle: null,
         },
         app.files,
-        app.getName(),
+        app.getName()
       );
       return {
         captureUpdate: CaptureUpdateAction.EVENTUALLY,
@@ -240,8 +202,7 @@ export const actionSaveFileToDisk = register({
       return { captureUpdate: CaptureUpdateAction.EVENTUALLY };
     }
   },
-  keyTest: (event) =>
-    event.key === KEYS.S && event.shiftKey && event[KEYS.CTRL_OR_CMD],
+  keyTest: event => event.key === KEYS.S && event.shiftKey && event[KEYS.CTRL_OR_CMD],
   PanelComponent: ({ updateData }) => (
     <ToolButton
       type="button"
@@ -261,9 +222,7 @@ export const actionLoadScene = register({
   label: "buttons.load",
   trackEvent: { category: "export" },
   predicate: (elements, appState, props, app) => {
-    return (
-      !!app.props.UIOptions.canvasActions.loadScene && !appState.viewModeEnabled
-    );
+    return !!app.props.UIOptions.canvasActions.loadScene && !appState.viewModeEnabled;
   },
   perform: async (elements, appState, _, app) => {
     try {
@@ -291,12 +250,10 @@ export const actionLoadScene = register({
       };
     }
   },
-  keyTest: (event) => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.O,
+  keyTest: event => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.O,
 });
 
-export const actionExportWithDarkMode = register<
-  AppState["exportWithDarkMode"]
->({
+export const actionExportWithDarkMode = register<AppState["exportWithDarkMode"]>({
   name: "exportWithDarkMode",
   label: "imageExportDialog.label.darkMode",
   trackEvent: { category: "export", action: "toggleTheme" },

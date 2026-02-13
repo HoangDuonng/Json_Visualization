@@ -1,22 +1,13 @@
-import clsx from "clsx";
-
-import { CaptureUpdateAction } from "@jsondraw/element";
-
 import { invariant } from "@jsondraw/common";
-
+import { CaptureUpdateAction } from "@jsondraw/element";
+import clsx from "clsx";
 import { getClientColor } from "../clients";
-import { Avatar } from "../components/Avatar";
-import {
-  eyeIcon,
-  microphoneIcon,
-  microphoneMutedIcon,
-} from "../components/icons";
+import { eyeIcon, microphoneIcon, microphoneMutedIcon } from "../components/icons";
+import { Avatar } from "../components/user/Avatar";
+import type { GoToCollaboratorComponentProps } from "../components/user/UserList";
 import { t } from "../i18n";
-
-import { register } from "./register";
-
-import type { GoToCollaboratorComponentProps } from "../components/UserList";
 import type { Collaborator } from "../types";
+import { register } from "./register";
 
 export const actionGoToCollaborator = register<Collaborator>({
   name: "goToCollaborator",
@@ -26,7 +17,7 @@ export const actionGoToCollaborator = register<Collaborator>({
   perform: (_elements, appState, collaborator) => {
     invariant(
       collaborator,
-      "actionGoToCollaborator: collaborator should be defined when actionGoToCollaborator is called",
+      "actionGoToCollaborator: collaborator should be defined when actionGoToCollaborator is called"
     );
 
     if (
@@ -105,9 +96,7 @@ export const actionGoToCollaborator = register<Collaborator>({
           src={collaborator.avatarUrl}
           className={statusClassNames}
         />
-        <div className="UserList__collaborator-name">
-          {collaborator.username}
-        </div>
+        <div className="UserList__collaborator-name">{collaborator.username}</div>
         <div className="UserList__collaborator-status-icons" aria-hidden>
           {isBeingFollowed && (
             <div
@@ -133,11 +122,7 @@ export const actionGoToCollaborator = register<Collaborator>({
           src={collaborator.avatarUrl}
           className={statusClassNames}
         />
-        {statusIconJSX && (
-          <div className="UserList__collaborator-status-icon">
-            {statusIconJSX}
-          </div>
-        )}
+        {statusIconJSX && <div className="UserList__collaborator-status-icon">{statusIconJSX}</div>}
       </div>
     );
   },

@@ -53,7 +53,7 @@ export const JsonDrawView = () => {
     // Scroll to content after a frame
     requestAnimationFrame(() => {
       setTimeout(() => {
-        api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.9 });
+        api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
       }, 50);
     });
   }, [nodes, edges]);
@@ -71,7 +71,7 @@ export const JsonDrawView = () => {
         requestAnimationFrame(() => {
           api.updateScene({ elements });
           setTimeout(() => {
-            api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.9 });
+            api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
           }, 300);
         });
       }

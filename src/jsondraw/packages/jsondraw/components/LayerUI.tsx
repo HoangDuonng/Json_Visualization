@@ -58,10 +58,10 @@ import Stack from "./Stack";
 import { Stats } from "./Stats";
 import { TTDDialog } from "./TTDDialog/TTDDialog";
 import "./Toolbar.scss";
-import { UserList } from "./UserList";
 import Footer from "./footer/Footer";
 import { sidebarRightIcon } from "./icons";
 import MainMenu from "./main-menu/MainMenu";
+import { UserList } from "./user/UserList";
 
 interface LayerUIProps {
   actionManager: ActionManager;

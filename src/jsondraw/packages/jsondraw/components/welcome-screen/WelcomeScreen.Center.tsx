@@ -1,13 +1,12 @@
+import type { JSX } from "react";
 import { actionLoadScene, actionShortcuts } from "../../actions";
 import { getShortcutFromShortcutName } from "../../actions/shortcuts";
 import { useTunnels } from "../../context/tunnels";
 import { useUIAppState } from "../../context/ui-appState";
 import { t, useI18n } from "../../i18n";
 import { useEditorInterface, useJsonDrawActionManager } from "../App";
-import { JsonDrawLogo } from "../JsonDrawLogo";
+import { JsonDrawLogo } from "../branding/JsonDrawLogo";
 import { HelpIcon, LoadIcon, usersIcon } from "../icons";
-
-import type { JSX } from "react";
 
 const WelcomeScreenMenuItemContent = ({
   icon,
@@ -120,9 +119,7 @@ Logo.displayName = "Logo";
 
 const Heading = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="welcome-screen-center__heading welcome-screen-decor Excalifont">
-      {children}
-    </div>
+    <div className="welcome-screen-center__heading welcome-screen-decor Excalifont">{children}</div>
   );
 };
 Heading.displayName = "Heading";
@@ -167,11 +164,7 @@ const MenuItemLoadScene = () => {
 };
 MenuItemLoadScene.displayName = "MenuItemLoadScene";
 
-const MenuItemLiveCollaborationTrigger = ({
-  onSelect,
-}: {
-  onSelect: () => any;
-}) => {
+const MenuItemLiveCollaborationTrigger = ({ onSelect }: { onSelect: () => any }) => {
   const { t } = useI18n();
   return (
     <WelcomeScreenMenuItem shortcut={null} onSelect={onSelect} icon={usersIcon}>
@@ -179,8 +172,7 @@ const MenuItemLiveCollaborationTrigger = ({
     </WelcomeScreenMenuItem>
   );
 };
-MenuItemLiveCollaborationTrigger.displayName =
-  "MenuItemLiveCollaborationTrigger";
+MenuItemLiveCollaborationTrigger.displayName = "MenuItemLiveCollaborationTrigger";
 
 // -----------------------------------------------------------------------------
 
