@@ -12,16 +12,16 @@ import { showSelectedShapeActions } from "@jsondraw/element";
 import { ShapeCache } from "@jsondraw/element";
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
 import clsx from "clsx";
-import { actionToggleStats } from "../actions";
-import type { ActionManager } from "../actions/manager";
-import { trackEvent } from "../analytics";
-import { isHandToolActive } from "../appState";
-import { TunnelsContext, useInitializeTunnels } from "../context/tunnels";
-import { UIAppStateContext } from "../context/ui-appState";
-import { useAtom, useAtomValue } from "../editor-jotai";
-import { t } from "../i18n";
-import type { Language } from "../i18n";
-import { calculateScrollCenter } from "../scene";
+import { actionToggleStats } from "../../actions";
+import type { ActionManager } from "../../actions/manager";
+import { trackEvent } from "../../analytics";
+import { isHandToolActive } from "../../appState";
+import { TunnelsContext, useInitializeTunnels } from "../../context/tunnels";
+import { UIAppStateContext } from "../../context/ui-appState";
+import { useAtom, useAtomValue } from "../../editor-jotai";
+import { t } from "../../i18n";
+import type { Language } from "../../i18n";
+import { calculateScrollCenter } from "../../scene";
 import type {
   AppProps,
   AppState,
@@ -29,11 +29,12 @@ import type {
   BinaryFiles,
   UIAppState,
   AppClassProperties,
-} from "../types";
+} from "../../types";
 import { SelectedShapeActions, ShapesSwitcher, CompactShapeActions } from "../Actions";
 import { ActiveConfirmDialog } from "../ActiveConfirmDialog";
 import { useEditorInterface, useStylesPanelMode } from "../App";
 import { DefaultSidebar } from "./DefaultSidebar";
+import { FixedSideContainer } from "./FixedSideContainer";
 import ElementLinkDialog from "../ElementLinkDialog";
 import { ErrorDialog } from "../ErrorDialog";
 import { EyeDropper, activeEyeDropperAtom } from "../canvases/EyeDropper";
