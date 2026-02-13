@@ -430,6 +430,7 @@ import type {
   GenerateDiagramToCode,
   NullableGridSize,
   Offsets,
+  JsonDrawInitialDataState,
 } from "../types";
 import { textWysiwyg } from "../wysiwyg/textWysiwyg";
 import { activeConfirmDialogAtom } from "./ActiveConfirmDialog";
@@ -745,7 +746,7 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    let data = null;
+    let data: any = null;
     try {
       data = JSON.parse(event.data);
     } catch (e) {}
@@ -2059,8 +2060,8 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ errorMessage: error.message });
       });
 
-    if (this.state.exportEmbedScene && fileHandle && isImageFileHandle(fileHandle)) {
-      this.setState({ fileHandle });
+    if (this.state.exportEmbedScene && fileHandle && isImageFileHandle(fileHandle as any)) {
+      this.setState({ fileHandle: fileHandle as any });
     }
   };
 
@@ -2460,7 +2461,7 @@ class App extends React.Component<AppProps, AppState> {
     if (!this.state.isLoading) {
       this.setState({ isLoading: true });
     }
-    let initialData = null;
+    let initialData: JsonDrawInitialDataState | null = null;
     try {
       if (typeof this.props.initialData === "function") {
         initialData = (await this.props.initialData()) || null;
@@ -5235,7 +5236,7 @@ class App extends React.Component<AppProps, AppState> {
     if (selectedElements.length === 1) {
       return isTextBindableContainer(selectedElements[0], false) ? selectedElements[0] : null;
     }
-    let hitElement = null;
+    let hitElement: JsonDrawElement | null = null;
     // We need to do hit testing from front (end of the array) to back (beginning of the array)
     for (let index = elements.length - 1; index >= 0; --index) {
       if (elements[index].isDeleted) {
@@ -6284,7 +6285,7 @@ class App extends React.Component<AppProps, AppState> {
     }
     if (this.state.selectedLinearElement) {
       let hoverPointIndex = -1;
-      let segmentMidPointHoveredCoords = null;
+      let segmentMidPointHoveredCoords: GlobalPoint | null = null;
       if (
         hitElementItself({
           point: pointFrom(scenePointerX, scenePointerY),
@@ -7960,7 +7961,7 @@ class App extends React.Component<AppProps, AppState> {
       // (specifically the `newElement`)
       flushSync(() => {
         this.setState(prevState => {
-          let linearElementEditor = null;
+          let linearElementEditor: LinearElementEditor | null = null;
           let nextSelectedElementIds = prevState.selectedElementIds;
           if (isLinearElement(element)) {
             linearElementEditor = new LinearElementEditor(
