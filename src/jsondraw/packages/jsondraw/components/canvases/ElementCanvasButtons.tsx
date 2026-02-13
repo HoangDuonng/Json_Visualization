@@ -6,11 +6,11 @@ import type {
   NonDeletedJsonDrawElement,
 } from "@jsondraw/element/types";
 
-import { useJsonDrawAppState } from "../components/App";
+import { useJsonDrawAppState } from "../App";
 
 import "./ElementCanvasButtons.scss";
 
-import type { AppState } from "../types";
+import type { AppState } from "../../types";
 
 const CONTAINER_PADDING = 5;
 

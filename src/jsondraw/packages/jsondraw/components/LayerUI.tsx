@@ -36,7 +36,7 @@ import { useEditorInterface, useStylesPanelMode } from "./App";
 import { DefaultSidebar } from "./DefaultSidebar";
 import ElementLinkDialog from "./ElementLinkDialog";
 import { ErrorDialog } from "./ErrorDialog";
-import { EyeDropper, activeEyeDropperAtom } from "./EyeDropper";
+import { EyeDropper, activeEyeDropperAtom } from "./canvases/EyeDropper";
 import { FixedSideContainer } from "./FixedSideContainer";
 import { HandButton } from "./HandButton";
 import { HelpDialog } from "./HelpDialog";

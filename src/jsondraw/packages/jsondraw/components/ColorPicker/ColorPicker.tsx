@@ -17,7 +17,7 @@ import { useAtom } from "../../editor-jotai";
 import { t } from "../../i18n";
 import { useJsonDrawContainer, useStylesPanelMode } from "../App";
 import { ButtonSeparator } from "../ButtonSeparator";
-import { activeEyeDropperAtom } from "../EyeDropper";
+import { activeEyeDropperAtom } from "../canvases/EyeDropper";
 import { PropertiesPopover } from "../PropertiesPopover";
 import { slashIcon, strokeIcon } from "../icons";
 import {

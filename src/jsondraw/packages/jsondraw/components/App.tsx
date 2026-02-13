@@ -341,7 +341,7 @@ import {
   type ParsedDataTransferFile,
 } from "../clipboard";
 import type { ClipboardData, PastedMixedContent } from "../clipboard";
-import { ElementCanvasButtons } from "../components/ElementCanvasButtons";
+import { ElementCanvasButtons } from "./canvases/ElementCanvasButtons";
 import {
   showHyperlinkTooltip,
   hideHyperlinkToolip,
@@ -442,11 +442,11 @@ import ConvertElementTypePopup, {
   convertElementTypePopupAtom,
   convertElementTypes,
 } from "./ConvertElementTypePopup";
-import { activeEyeDropperAtom } from "./EyeDropper";
+import { activeEyeDropperAtom } from "./canvases/EyeDropper";
 import FollowMode from "./FollowMode/FollowMode";
 import LayerUI from "./LayerUI";
 import { ElementCanvasButton } from "./MagicButton";
-import { SVGLayer } from "./SVGLayer";
+import { SVGLayer } from "./canvases/SVGLayer";
 import { isSidebarDockedAtom } from "./Sidebar/Sidebar";
 import { Toast } from "./Toast";
 import UnlockPopup from "./UnlockPopup";

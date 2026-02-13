@@ -5,18 +5,18 @@ import { EVENT, KEYS, rgbToHex } from "@jsondraw/common";
 
 import type { JsonDrawElement } from "@jsondraw/element/types";
 
-import { useUIAppState } from "../context/ui-appState";
-import { atom } from "../editor-jotai";
-import { useCreatePortalContainer } from "../hooks/useCreatePortalContainer";
-import { useOutsideClick } from "../hooks/useOutsideClick";
-import { useStable } from "../hooks/useStable";
-import { getSelectedElements } from "../scene";
+import { useUIAppState } from "../../context/ui-appState";
+import { atom } from "../../editor-jotai";
+import { useCreatePortalContainer } from "../../hooks/useCreatePortalContainer";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { useStable } from "../../hooks/useStable";
+import { getSelectedElements } from "../../scene";
 
-import { useApp, useJsonDrawContainer, useJsonDrawElements } from "./App";
+import { useApp, useJsonDrawContainer, useJsonDrawElements } from "../App";
 
 import "./EyeDropper.scss";
 
-import type { ColorPickerType } from "./ColorPicker/colorPickerUtils";
+import type { ColorPickerType } from "../ColorPicker/colorPickerUtils";
 
 export type EyeDropperProperties = {
   keepOpenOnAlt: boolean;

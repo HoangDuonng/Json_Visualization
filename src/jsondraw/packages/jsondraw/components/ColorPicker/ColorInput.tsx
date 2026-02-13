@@ -7,7 +7,7 @@ import { getShortcutKey } from "../..//shortcut";
 import { useAtom } from "../../editor-jotai";
 import { t } from "../../i18n";
 import { useEditorInterface } from "../App";
-import { activeEyeDropperAtom } from "../EyeDropper";
+import { activeEyeDropperAtom } from "../canvases/EyeDropper";
 import { eyeDropperIcon } from "../icons";
 
 import { activeColorPickerSectionAtom } from "./colorPickerUtils";
