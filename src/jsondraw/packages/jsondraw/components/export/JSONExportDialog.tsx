@@ -4,22 +4,22 @@ import { getFrame } from "@jsondraw/common";
 
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
 
-import { actionSaveFileToDisk } from "../actions/actionExport";
+import { actionSaveFileToDisk } from "../../actions/actionExport";
 
-import { trackEvent } from "../analytics";
-import { nativeFileSystemSupported } from "../data/filesystem";
-import { t } from "../i18n";
+import { trackEvent } from "../../analytics";
+import { nativeFileSystemSupported } from "../../data/filesystem";
+import { t } from "../../i18n";
 
-import { Card } from "./Card";
-import { Dialog } from "./Dialog";
-import { ToolButton } from "./ToolButton";
-import { exportToFileIcon, LinkIcon } from "./icons";
+import { Card } from "../Card";
+import { Dialog } from "../Dialog";
+import { ToolButton } from "../ToolButton";
+import { exportToFileIcon, LinkIcon } from "../icons";
 
 import "./ExportDialog.scss";
 
-import type { ActionManager } from "../actions/manager";
+import type { ActionManager } from "../../actions/manager";
 
-import type { ExportOpts, BinaryFiles, UIAppState } from "../types";
+import type { ExportOpts, BinaryFiles, UIAppState } from "../../types";
 
 export type ExportCB = (
   elements: readonly NonDeletedJsonDrawElement[],
