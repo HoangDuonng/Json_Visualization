@@ -91,10 +91,10 @@ const Module = (function () {
       read_ = function shell_read(filename, binary) {
         let ret;
         if (!nodeFS) {
-          nodeFS = require(["fs"].join());
+          nodeFS = require("fs");
         }
         if (!nodePath) {
-          nodePath = require(["path"].join());
+          nodePath = require("path");
         }
         filename = nodePath.normalize(filename);
         ret = nodeFS.readFileSync(filename);
@@ -4047,5 +4047,4 @@ const Module = (function () {
 })();
 
 export default Module;
-
 
