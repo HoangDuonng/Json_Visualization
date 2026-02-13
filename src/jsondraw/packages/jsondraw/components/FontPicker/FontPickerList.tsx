@@ -6,34 +6,17 @@ import React, {
   useCallback,
   type KeyboardEventHandler,
 } from "react";
-
-import { type FontFamilyValues } from "@jsondraw/element/types";
-
-import {
-  arrayToList,
-  debounce,
-  FONT_FAMILY,
-  getFontFamilyString,
-} from "@jsondraw/common";
-
+import type { JSX } from "react";
+import { arrayToList, debounce, FONT_FAMILY, getFontFamilyString } from "@jsondraw/common";
 import type { ValueOf } from "@jsondraw/common/utility-types";
-
+import { type FontFamilyValues } from "@jsondraw/element/types";
 import { Fonts } from "../../fonts";
 import { t } from "../../i18n";
-import {
-  useApp,
-  useAppProps,
-  useJsonDrawContainer,
-  useStylesPanelMode,
-} from "../App";
+import { useApp, useAppProps, useJsonDrawContainer, useStylesPanelMode } from "../App";
 import { PropertiesPopover } from "../PropertiesPopover";
-import { QuickSearch } from "../QuickSearch";
 import { ScrollableList } from "../ScrollableList";
 import DropdownMenuGroup from "../dropdownMenu/DropdownMenuGroup";
-import {
-  DropDownMenuItemBadgeType,
-  DropDownMenuItemBadge,
-} from "../dropdownMenu/DropdownMenuItem";
+import { DropDownMenuItemBadgeType, DropDownMenuItemBadge } from "../dropdownMenu/DropdownMenuItem";
 import MenuItemContent from "../dropdownMenu/DropdownMenuItemContent";
 import { getDropdownMenuItemClassName } from "../dropdownMenu/common";
 import {
@@ -42,10 +25,8 @@ import {
   FontFamilyNormalIcon,
   FreedrawIcon,
 } from "../icons";
-
+import { QuickSearch } from "../search/QuickSearch";
 import { fontPickerKeyHandler } from "./keyboardNavHandlers";
-
-import type { JSX } from "react";
 
 export interface FontDescriptor {
   value: number;
@@ -107,9 +88,7 @@ export const FontPickerList = React.memo(
     const allFonts = useMemo(
       () =>
         Array.from(Fonts.registered.entries())
-          .filter(
-            ([_, { metadata }]) => !metadata.private && !metadata.fallback,
-          )
+          .filter(([_, { metadata }]) => !metadata.private && !metadata.fallback)
           .map(([familyId, { metadata, fontFaces }]) => {
             const fontDescriptor = {
               value: familyId,
@@ -129,51 +108,47 @@ export const FontPickerList = React.memo(
 
             return fontDescriptor as FontDescriptor;
           })
-          .sort((a, b) =>
-            a.text.toLowerCase() > b.text.toLowerCase() ? 1 : -1,
-          ),
-      [],
+          .sort((a, b) => (a.text.toLowerCase() > b.text.toLowerCase() ? 1 : -1)),
+      []
     );
 
     const sceneFamilies = useMemo(
       () => new Set(fonts.getSceneFamilies()),
       // cache per selected font family, so hover re-render won't mess it up
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [selectedFontFamily],
+      [selectedFontFamily]
     );
 
     const sceneFonts = useMemo(
-      () => allFonts.filter((font) => sceneFamilies.has(font.value)), // always show all the fonts in the scene, even those that were deprecated
-      [allFonts, sceneFamilies],
+      () => allFonts.filter(font => sceneFamilies.has(font.value)), // always show all the fonts in the scene, even those that were deprecated
+      [allFonts, sceneFamilies]
     );
 
     const availableFonts = useMemo(
       () =>
         allFonts.filter(
-          (font) =>
-            !sceneFamilies.has(font.value) &&
-            (showDeprecatedFonts || !font.deprecated), // skip deprecated fonts
+          font => !sceneFamilies.has(font.value) && (showDeprecatedFonts || !font.deprecated) // skip deprecated fonts
         ),
-      [allFonts, sceneFamilies, showDeprecatedFonts],
+      [allFonts, sceneFamilies, showDeprecatedFonts]
     );
 
     const filteredFonts = useMemo(
       () =>
         arrayToList(
-          [...sceneFonts, ...availableFonts].filter((font) =>
-            font.text?.toLowerCase().includes(searchTerm),
-          ),
+          [...sceneFonts, ...availableFonts].filter(font =>
+            font.text?.toLowerCase().includes(searchTerm)
+          )
         ),
-      [sceneFonts, availableFonts, searchTerm],
+      [sceneFonts, availableFonts, searchTerm]
     );
 
     const hoveredFont = useMemo(() => {
       let font;
 
       if (hoveredFontFamily) {
-        font = filteredFonts.find((font) => font.value === hoveredFontFamily);
+        font = filteredFonts.find(font => font.value === hoveredFontFamily);
       } else if (selectedFontFamily) {
-        font = filteredFonts.find((font) => font.value === selectedFontFamily);
+        font = filteredFonts.find(font => font.value === selectedFontFamily);
       }
 
       if (!font && searchTerm) {
@@ -187,14 +162,7 @@ export const FontPickerList = React.memo(
       }
 
       return font;
-    }, [
-      hoveredFontFamily,
-      selectedFontFamily,
-      searchTerm,
-      filteredFonts,
-      onHover,
-      onLeave,
-    ]);
+    }, [hoveredFontFamily, selectedFontFamily, searchTerm, filteredFonts, onHover, onLeave]);
 
     // Create a wrapped onSelect function that preserves caret position
     const wrappedOnSelect = useCallback(
@@ -202,9 +170,7 @@ export const FontPickerList = React.memo(
         // Save caret position before font selection if editing text
         let savedSelection: { start: number; end: number } | null = null;
         if (app.state.editingTextElement) {
-          const textEditor = document.querySelector(
-            ".jsondraw-wysiwyg",
-          ) as HTMLTextAreaElement;
+          const textEditor = document.querySelector(".jsondraw-wysiwyg") as HTMLTextAreaElement;
           if (textEditor) {
             savedSelection = {
               start: textEditor.selectionStart,
@@ -218,9 +184,7 @@ export const FontPickerList = React.memo(
         // Restore caret position after font selection if editing text
         if (app.state.editingTextElement && savedSelection) {
           setTimeout(() => {
-            const textEditor = document.querySelector(
-              ".jsondraw-wysiwyg",
-            ) as HTMLTextAreaElement;
+            const textEditor = document.querySelector(".jsondraw-wysiwyg") as HTMLTextAreaElement;
             if (textEditor && savedSelection) {
               textEditor.focus();
               textEditor.selectionStart = savedSelection.start;
@@ -229,11 +193,11 @@ export const FontPickerList = React.memo(
           }, 0);
         }
       },
-      [onSelect, app.state.editingTextElement],
+      [onSelect, app.state.editingTextElement]
     );
 
     const onKeyDown = useCallback<KeyboardEventHandler<HTMLDivElement>>(
-      (event) => {
+      event => {
         const handled = fontPickerKeyHandler({
           event,
           inputRef,
@@ -249,7 +213,7 @@ export const FontPickerList = React.memo(
           event.stopPropagation();
         }
       },
-      [hoveredFont, filteredFonts, wrappedOnSelect, onHover, onClose],
+      [hoveredFont, filteredFonts, wrappedOnSelect, onHover, onClose]
     );
 
     useEffect(() => {
@@ -262,22 +226,16 @@ export const FontPickerList = React.memo(
     }, []);
 
     const sceneFilteredFonts = useMemo(
-      () => filteredFonts.filter((font) => sceneFamilies.has(font.value)),
-      [filteredFonts, sceneFamilies],
+      () => filteredFonts.filter(font => sceneFamilies.has(font.value)),
+      [filteredFonts, sceneFamilies]
     );
 
     const availableFilteredFonts = useMemo(
-      () => filteredFonts.filter((font) => !sceneFamilies.has(font.value)),
-      [filteredFonts, sceneFamilies],
+      () => filteredFonts.filter(font => !sceneFamilies.has(font.value)),
+      [filteredFonts, sceneFamilies]
     );
 
-    const FontPickerListItem = ({
-      font,
-      order,
-    }: {
-      font: FontDescriptor;
-      order: number;
-    }) => {
+    const FontPickerListItem = ({ font, order }: { font: FontDescriptor; order: number }) => {
       const ref = useRef<HTMLButtonElement>(null);
       const isHovered = font.value === hoveredFont?.value;
       const isSelected = font.value === selectedFontFamily;
@@ -303,7 +261,7 @@ export const FontPickerList = React.memo(
           title={font.text}
           // allow to tab between search and selected font
           tabIndex={isSelected ? 0 : -1}
-          onClick={(e) => {
+          onClick={e => {
             wrappedOnSelect(Number(e.currentTarget.value));
           }}
           onMouseMove={() => {
@@ -339,7 +297,7 @@ export const FontPickerList = React.memo(
           {sceneFilteredFonts.map((font, index) => (
             <FontPickerListItem key={font.value} font={font} order={index} />
           ))}
-        </DropdownMenuGroup>,
+        </DropdownMenuGroup>
       );
     }
 
@@ -353,7 +311,7 @@ export const FontPickerList = React.memo(
               order={index + sceneFilteredFonts.length}
             />
           ))}
-        </DropdownMenuGroup>,
+        </DropdownMenuGroup>
       );
     }
 
@@ -368,9 +326,7 @@ export const FontPickerList = React.memo(
           // Refocus text editor when font picker closes if we were editing text
           if (app.state.editingTextElement) {
             setTimeout(() => {
-              const textEditor = document.querySelector(
-                ".jsondraw-wysiwyg",
-              ) as HTMLTextAreaElement;
+              const textEditor = document.querySelector(".jsondraw-wysiwyg") as HTMLTextAreaElement;
               if (textEditor) {
                 textEditor.focus();
               }
@@ -399,5 +355,5 @@ export const FontPickerList = React.memo(
   },
   (prev, next) =>
     prev.selectedFontFamily === next.selectedFontFamily &&
-    prev.hoveredFontFamily === next.hoveredFontFamily,
+    prev.hoveredFontFamily === next.hoveredFontFamily
 );

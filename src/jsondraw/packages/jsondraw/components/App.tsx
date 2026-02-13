@@ -447,7 +447,6 @@ import FollowMode from "./FollowMode/FollowMode";
 import LayerUI from "./LayerUI";
 import { ElementCanvasButton } from "./MagicButton";
 import { SVGLayer } from "./SVGLayer";
-import { searchItemInFocusAtom } from "./SearchMenu";
 import { isSidebarDockedAtom } from "./Sidebar/Sidebar";
 import { Toast } from "./Toast";
 import UnlockPopup from "./UnlockPopup";
@@ -455,6 +454,7 @@ import { StaticCanvas, InteractiveCanvas } from "./canvases";
 import NewElementCanvas from "./canvases/NewElementCanvas";
 import { isPointHittingLink, isPointHittingLinkIcon } from "./hyperlink/helpers";
 import { MagicIcon, copyIcon, fullscreenIcon } from "./icons";
+import { searchItemInFocusAtom } from "./search/SearchMenu";
 import { findShapeByKey } from "./shapes";
 
 const AppContext = React.createContext<AppClassProperties>(null!);

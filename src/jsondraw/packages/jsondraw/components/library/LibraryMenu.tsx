@@ -1,12 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  memo,
-  useRef,
-} from "react";
-
+import React, { useState, useCallback, useMemo, useEffect, memo, useRef } from "react";
 import {
   LIBRARY_DISABLED_TYPES,
   randomId,
@@ -17,43 +9,26 @@ import {
   EVENT,
   CLASSES,
 } from "@jsondraw/common";
-
-import type {
-  JsonDrawElement,
-  NonDeletedJsonDrawElement,
-} from "@jsondraw/element/types";
-
-import { trackEvent } from "../analytics";
-import { useUIAppState } from "../context/ui-appState";
-import {
-  distributeLibraryItemsOnSquareGrid,
-  libraryItemsAtom,
-} from "../data/library";
-import { atom, useAtom } from "../editor-jotai";
-import { t } from "../i18n";
-
-import { getSelectedElements } from "../scene";
-
-import {
-  useApp,
-  useAppProps,
-  useJsonDrawElements,
-  useJsonDrawSetAppState,
-} from "./App";
-import { LibraryMenuControlButtons } from "./LibraryMenuControlButtons";
-import LibraryMenuItems from "./LibraryMenuItems";
-import Spinner from "./Spinner";
-
-import "./LibraryMenu.scss";
-
+import type { JsonDrawElement, NonDeletedJsonDrawElement } from "@jsondraw/element/types";
+import { trackEvent } from "../../analytics";
+import { useUIAppState } from "../../context/ui-appState";
+import { distributeLibraryItemsOnSquareGrid, libraryItemsAtom } from "../../data/library";
+import type Library from "../../data/library";
+import { atom, useAtom } from "../../editor-jotai";
+import { t } from "../../i18n";
+import { getSelectedElements } from "../../scene";
 import type {
   LibraryItems,
   LibraryItem,
   JsonDrawProps,
   UIAppState,
   AppClassProperties,
-} from "../types";
-import type Library from "../data/library";
+} from "../../types";
+import { useApp, useAppProps, useJsonDrawElements, useJsonDrawSetAppState } from "../App";
+import Spinner from "../Spinner";
+import "./LibraryMenu.scss";
+import { LibraryMenuControlButtons } from "./LibraryMenuControlButtons";
+import LibraryMenuItems from "./LibraryMenuItems";
 
 export const isLibraryMenuOpenAtom = atom(false);
 
@@ -91,11 +66,11 @@ const LibraryMenuContent = memo(
       (elements: LibraryItem["elements"]) => {
         const addToLibrary = async (
           processedElements: LibraryItem["elements"],
-          libraryItems: LibraryItems,
+          libraryItems: LibraryItems
         ) => {
           trackEvent("element", "addToLibrary", "ui");
           for (const type of LIBRARY_DISABLED_TYPES) {
-            if (processedElements.some((element) => element.type === type)) {
+            if (processedElements.some(element => element.type === type)) {
               return setAppState({
                 errorMessage: t(`errors.libraryElementTypeError.${type}`),
               });
@@ -117,18 +92,12 @@ const LibraryMenuContent = memo(
         };
         addToLibrary(elements, libraryItemsData.libraryItems);
       },
-      [onAddToLibrary, library, setAppState, libraryItemsData.libraryItems],
+      [onAddToLibrary, library, setAppState, libraryItemsData.libraryItems]
     );
 
-    const libraryItems = useMemo(
-      () => libraryItemsData.libraryItems,
-      [libraryItemsData],
-    );
+    const libraryItems = useMemo(() => libraryItemsData.libraryItems, [libraryItemsData]);
 
-    if (
-      libraryItemsData.status === "loading" &&
-      !libraryItemsData.isInitialized
-    ) {
+    if (libraryItemsData.status === "loading" && !libraryItemsData.isInitialized) {
       return (
         <LibraryMenuWrapper>
           <div className="layer-ui__library-message">
@@ -141,8 +110,7 @@ const LibraryMenuContent = memo(
       );
     }
 
-    const showBtn =
-      libraryItemsData.libraryItems.length > 0 || pendingElements.length > 0;
+    const showBtn = libraryItemsData.libraryItems.length > 0 || pendingElements.length > 0;
 
     return (
       <LibraryMenuWrapper>
@@ -169,12 +137,12 @@ const LibraryMenuContent = memo(
         )}
       </LibraryMenuWrapper>
     );
-  },
+  }
 );
 
 const getPendingElements = (
   elements: readonly NonDeletedJsonDrawElement[],
-  selectedElementIds: UIAppState["selectedElementIds"],
+  selectedElementIds: UIAppState["selectedElementIds"]
 ) => ({
   elements,
   pending: getSelectedElements(
@@ -183,22 +151,19 @@ const getPendingElements = (
     {
       includeBoundTextElement: true,
       includeElementsInFrames: true,
-    },
+    }
   ),
   selectedElementIds,
 });
 
-const usePendingElementsMemo = (
-  appState: UIAppState,
-  app: AppClassProperties,
-) => {
+const usePendingElementsMemo = (appState: UIAppState, app: AppClassProperties) => {
   const elements = useJsonDrawElements();
   const [state, setState] = useState(() =>
-    getPendingElements(elements, appState.selectedElementIds),
+    getPendingElements(elements, appState.selectedElementIds)
   );
 
   const selectedElementVersions = useRef(
-    new Map<JsonDrawElement["id"], JsonDrawElement["version"]>(),
+    new Map<JsonDrawElement["id"], JsonDrawElement["version"]>()
   );
 
   useEffect(() => {
@@ -215,12 +180,10 @@ const usePendingElementsMemo = (
       app.state.cursorButton === "up" &&
       app.state.activeTool.type === "selection"
     ) {
-      setState((prev) => {
+      setState(prev => {
         // if selectedElementIds changed, we don't have to compare versions
         // ---------------------------------------------------------------------
-        if (
-          !isShallowEqual(prev.selectedElementIds, appState.selectedElementIds)
-        ) {
+        if (!isShallowEqual(prev.selectedElementIds, appState.selectedElementIds)) {
           selectedElementVersions.current.clear();
           return getPendingElements(elements, appState.selectedElementIds);
         }
@@ -229,10 +192,7 @@ const usePendingElementsMemo = (
         const elementsMap = app.scene.getNonDeletedElementsMap();
         for (const id of Object.keys(appState.selectedElementIds)) {
           const currVersion = elementsMap.get(id)?.version;
-          if (
-            currVersion &&
-            currVersion !== selectedElementVersions.current.get(id)
-          ) {
+          if (currVersion && currVersion !== selectedElementVersions.current.get(id)) {
             // we can't update the selectedElementVersions in here
             // because of double render in StrictMode which would overwrite
             // the state in the second pass with the old `prev` state.
@@ -275,7 +235,7 @@ export const LibraryMenu = memo(() => {
     return addEventListener(
       document,
       EVENT.KEYDOWN,
-      (event) => {
+      event => {
         if (event.key === KEYS.ESCAPE && event.target instanceof HTMLElement) {
           const target = event.target;
           if (target.closest(`.${CLASSES.SIDEBAR}`)) {
@@ -307,7 +267,7 @@ export const LibraryMenu = memo(() => {
           }
         }
       },
-      { capture: true },
+      { capture: true }
     );
   }, [selectedItems, setAppState, app]);
 
@@ -316,7 +276,7 @@ export const LibraryMenu = memo(() => {
       onInsertElements(distributeLibraryItemsOnSquareGrid(libraryItems));
       app.focusContainer();
     },
-    [onInsertElements, app],
+    [onInsertElements, app]
   );
 
   const deselectItems = useCallback(() => {

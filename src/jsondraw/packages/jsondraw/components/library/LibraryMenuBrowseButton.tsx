@@ -1,8 +1,6 @@
 import { VERSIONS } from "@jsondraw/common";
-
-import { t } from "../i18n";
-
-import type { JsonDrawProps, UIAppState } from "../types";
+import { t } from "../../i18n";
+import type { JsonDrawProps, UIAppState } from "../../types";
 
 const LibraryMenuBrowseButton = ({
   theme,
@@ -13,8 +11,7 @@ const LibraryMenuBrowseButton = ({
   theme: UIAppState["theme"];
   id: string;
 }) => {
-  const referrer =
-    libraryReturnUrl || window.location.origin + window.location.pathname;
+  const referrer = libraryReturnUrl || window.location.origin + window.location.pathname;
   return (
     <a
       className="library-menu-browse-button"

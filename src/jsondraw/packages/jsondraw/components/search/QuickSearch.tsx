@@ -1,8 +1,6 @@
-import clsx from "clsx";
 import React from "react";
-
-import { searchIcon } from "./icons";
-
+import clsx from "clsx";
+import { searchIcon } from "../icons";
 import "./QuickSearch.scss";
 
 interface QuickSearchProps {
@@ -21,9 +19,9 @@ export const QuickSearch = React.forwardRef<HTMLInputElement, QuickSearchProps>(
           className="QuickSearch__input"
           type="text"
           placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value.trim().toLowerCase())}
+          onChange={e => onChange(e.target.value.trim().toLowerCase())}
         />
       </div>
     );
-  },
+  }
 );

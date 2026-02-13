@@ -1,49 +1,22 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MIME_TYPES, arrayToMap, nextAnimationFrame } from "@jsondraw/common";
-
 import { duplicateElements } from "@jsondraw/element";
-
 import clsx from "clsx";
-
-import { deburr } from "../deburr";
-
-import { useLibraryCache } from "../hooks/useLibraryItemSvg";
-import { useScrollPosition } from "../hooks/useScrollPosition";
-import { t } from "../i18n";
-
+import type { JsonDrawLibraryIds } from "../../data/types";
+import { deburr } from "../../deburr";
+import { useLibraryCache } from "../../hooks/useLibraryItemSvg";
+import { useScrollPosition } from "../../hooks/useScrollPosition";
+import { t } from "../../i18n";
+import type { JsonDrawProps, LibraryItem, LibraryItems, UIAppState } from "../../types";
+import { useEditorInterface } from "../App";
+import { Button } from "../Button";
+import Spinner from "../Spinner";
+import Stack from "../Stack";
+import { TextField } from "../TextField";
 import { LibraryMenuControlButtons } from "./LibraryMenuControlButtons";
 import { LibraryDropdownMenu } from "./LibraryMenuHeaderContent";
-import {
-  LibraryMenuSection,
-  LibraryMenuSectionGrid,
-} from "./LibraryMenuSection";
-
-import Spinner from "./Spinner";
-import Stack from "./Stack";
-
 import "./LibraryMenuItems.scss";
-
-import { TextField } from "./TextField";
-
-import { useEditorInterface } from "./App";
-
-import { Button } from "./Button";
-
-import type { JsonDrawLibraryIds } from "../data/types";
-
-import type {
-  JsonDrawProps,
-  LibraryItem,
-  LibraryItems,
-  UIAppState,
-} from "../types";
+import { LibraryMenuSection, LibraryMenuSectionGrid } from "./LibraryMenuSection";
 
 // using an odd number of items per batch so the rendering creates an irregular
 // pattern which looks more organic
@@ -87,9 +60,7 @@ export default function LibraryMenuItems({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { svgCache } = useLibraryCache();
-  const [lastSelectedItem, setLastSelectedItem] = useState<
-    LibraryItem["id"] | null
-  >(null);
+  const [lastSelectedItem, setLastSelectedItem] = useState<LibraryItem["id"] | null>(null);
 
   const [searchInputValue, setSearchInputValue] = useState("");
 
@@ -103,22 +74,20 @@ export default function LibraryMenuItems({
       return [];
     }
 
-    return libraryItems.filter((item) => {
+    return libraryItems.filter(item => {
       const itemName = item.name || "";
-      return (
-        itemName.trim() && deburr(itemName.toLowerCase()).includes(searchQuery)
-      );
+      return itemName.trim() && deburr(itemName.toLowerCase()).includes(searchQuery);
     });
   }, [libraryItems, searchInputValue]);
 
   const unpublishedItems = useMemo(
-    () => libraryItems.filter((item) => item.status !== "published"),
-    [libraryItems],
+    () => libraryItems.filter(item => item.status !== "published"),
+    [libraryItems]
   );
 
   const publishedItems = useMemo(
-    () => libraryItems.filter((item) => item.status === "published"),
-    [libraryItems],
+    () => libraryItems.filter(item => item.status === "published"),
+    [libraryItems]
   );
 
   const onItemSelectToggle = useCallback(
@@ -127,10 +96,8 @@ export default function LibraryMenuItems({
       const orderedItems = [...unpublishedItems, ...publishedItems];
       if (shouldSelect) {
         if (event.shiftKey && lastSelectedItem) {
-          const rangeStart = orderedItems.findIndex(
-            (item) => item.id === lastSelectedItem,
-          );
-          const rangeEnd = orderedItems.findIndex((item) => item.id === id);
+          const rangeStart = orderedItems.findIndex(item => item.id === lastSelectedItem);
+          const rangeEnd = orderedItems.findIndex(item => item.id === id);
 
           if (rangeStart === -1 || rangeEnd === -1) {
             onSelectItems([...selectedItems, id]);
@@ -141,18 +108,12 @@ export default function LibraryMenuItems({
           // Support both top-down and bottom-up selection by using min/max
           const minRange = Math.min(rangeStart, rangeEnd);
           const maxRange = Math.max(rangeStart, rangeEnd);
-          const nextSelectedIds = orderedItems.reduce(
-            (acc: LibraryItem["id"][], item, idx) => {
-              if (
-                (idx >= minRange && idx <= maxRange) ||
-                selectedItemsMap.has(item.id)
-              ) {
-                acc.push(item.id);
-              }
-              return acc;
-            },
-            [],
-          );
+          const nextSelectedIds = orderedItems.reduce((acc: LibraryItem["id"][], item, idx) => {
+            if ((idx >= minRange && idx <= maxRange) || selectedItemsMap.has(item.id)) {
+              acc.push(item.id);
+            }
+            return acc;
+          }, []);
           onSelectItems(nextSelectedIds);
         } else {
           onSelectItems([...selectedItems, id]);
@@ -160,16 +121,10 @@ export default function LibraryMenuItems({
         setLastSelectedItem(id);
       } else {
         setLastSelectedItem(null);
-        onSelectItems(selectedItems.filter((_id) => _id !== id));
+        onSelectItems(selectedItems.filter(_id => _id !== id));
       }
     },
-    [
-      lastSelectedItem,
-      onSelectItems,
-      publishedItems,
-      selectedItems,
-      unpublishedItems,
-    ],
+    [lastSelectedItem, onSelectItems, publishedItems, selectedItems, unpublishedItems]
   );
 
   useEffect(() => {
@@ -184,13 +139,11 @@ export default function LibraryMenuItems({
     (id: string) => {
       let targetElements;
       if (selectedItems.includes(id)) {
-        targetElements = libraryItems.filter((item) =>
-          selectedItems.includes(item.id),
-        );
+        targetElements = libraryItems.filter(item => selectedItems.includes(item.id));
       } else {
-        targetElements = libraryItems.filter((item) => item.id === id);
+        targetElements = libraryItems.filter(item => item.id === id);
       }
-      return targetElements.map((item) => {
+      return targetElements.map(item => {
         return {
           ...item,
           // duplicate each library item before inserting on canvas to confine
@@ -203,7 +156,7 @@ export default function LibraryMenuItems({
         };
       });
     },
-    [libraryItems, selectedItems],
+    [libraryItems, selectedItems]
   );
 
   const onItemDrag = useCallback(
@@ -213,12 +166,9 @@ export default function LibraryMenuItems({
       const data: JsonDrawLibraryIds = {
         itemIds: selectedItems.includes(id) ? selectedItems : [id],
       };
-      event.dataTransfer.setData(
-        MIME_TYPES.jsondrawlibIds,
-        JSON.stringify(data),
-      );
+      event.dataTransfer.setData(MIME_TYPES.jsondrawlibIds, JSON.stringify(data));
     },
-    [selectedItems],
+    [selectedItems]
   );
 
   const isItemSelected = useCallback(
@@ -228,7 +178,7 @@ export default function LibraryMenuItems({
       }
       return selectedItems.includes(id);
     },
-    [selectedItems],
+    [selectedItems]
   );
 
   const onAddToLibraryClick = useCallback(() => {
@@ -241,12 +191,11 @@ export default function LibraryMenuItems({
         onInsertLibraryItems(getInsertedElements(id));
       }
     },
-    [getInsertedElements, onInsertLibraryItems],
+    [getInsertedElements, onInsertLibraryItems]
   );
 
   const itemsRenderedPerBatch =
-    svgCache.size >=
-    (filteredItems.length ? filteredItems : libraryItems).length
+    svgCache.size >= (filteredItems.length ? filteredItems : libraryItems).length
       ? CACHED_ITEMS_RENDERED_PER_BATCH
       : ITEMS_RENDERED_PER_BATCH;
 
@@ -261,16 +210,12 @@ export default function LibraryMenuItems({
   const JSX_whenNotSearching = !IS_SEARCHING && (
     <>
       {!IS_LIBRARY_EMPTY && (
-        <div className="library-menu-items-container__header">
-          {t("labels.personalLib")}
-        </div>
+        <div className="library-menu-items-container__header">{t("labels.personalLib")}</div>
       )}
       {!pendingElements.length && !unpublishedItems.length ? (
         <div className="library-menu-items__no-items">
           {!publishedItems.length && (
-            <div className="library-menu-items__no-items__label">
-              {t("library.noItems")}
-            </div>
+            <div className="library-menu-items__no-items__label">{t("library.noItems")}</div>
           )}
           <div className="library-menu-items__no-items__hint">
             {publishedItems.length > 0
@@ -304,10 +249,7 @@ export default function LibraryMenuItems({
       )}
 
       {publishedItems.length > 0 && (
-        <div
-          className="library-menu-items-container__header"
-          style={{ marginTop: "0.75rem" }}
-        >
+        <div className="library-menu-items-container__header" style={{ marginTop: "0.75rem" }}>
           {t("labels.jsondrawLib")}
         </div>
       )}
@@ -335,8 +277,8 @@ export default function LibraryMenuItems({
           <div
             className="library-menu-items-container__header__hint"
             style={{ cursor: "pointer" }}
-            onPointerDown={(e) => e.preventDefault()}
-            onClick={(event) => {
+            onPointerDown={e => e.preventDefault()}
+            onClick={event => {
               setSearchInputValue("");
             }}
           >
@@ -358,11 +300,9 @@ export default function LibraryMenuItems({
         </LibraryMenuSectionGrid>
       ) : (
         <div className="library-menu-items__no-items">
-          <div className="library-menu-items__no-items__hint">
-            {t("library.search.noResults")}
-          </div>
+          <div className="library-menu-items__no-items__hint">{t("library.search.noResults")}</div>
           <Button
-            onPointerDown={(e) => e.preventDefault()}
+            onPointerDown={e => e.preventDefault()}
             onSelect={() => {
               setSearchInputValue("");
             }}
@@ -379,9 +319,7 @@ export default function LibraryMenuItems({
     <div
       className="library-menu-items-container"
       style={
-        pendingElements.length ||
-        unpublishedItems.length ||
-        publishedItems.length
+        pendingElements.length || unpublishedItems.length || publishedItems.length
           ? { justifyContent: "flex-start" }
           : { borderBottom: 0 }
       }
@@ -396,7 +334,7 @@ export default function LibraryMenuItems({
             })}
             placeholder={t("library.search.inputPlaceholder")}
             value={searchInputValue}
-            onChange={(value) => setSearchInputValue(value)}
+            onChange={value => setSearchInputValue(value)}
           />
         )}
         <LibraryDropdownMenu

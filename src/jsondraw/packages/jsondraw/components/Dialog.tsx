@@ -1,23 +1,15 @@
-import clsx from "clsx";
 import React, { useEffect, useState } from "react";
-
 import { KEYS, queryFocusableElements } from "@jsondraw/common";
-
+import clsx from "clsx";
 import { useSetAtom } from "../editor-jotai";
 import { useCallbackRefState } from "../hooks/useCallbackRefState";
 import { t } from "../i18n";
-
-import {
-  useJsonDrawContainer,
-  useEditorInterface,
-  useJsonDrawSetAppState,
-} from "./App";
+import { useJsonDrawContainer, useEditorInterface, useJsonDrawSetAppState } from "./App";
+import "./Dialog.scss";
 import { Island } from "./Island";
-import { isLibraryMenuOpenAtom } from "./LibraryMenu";
 import { Modal } from "./Modal";
 import { CloseIcon } from "./icons";
-
-import "./Dialog.scss";
+import { isLibraryMenuOpenAtom } from "./library/LibraryMenu";
 
 export type DialogSize = number | "small" | "regular" | "wide" | undefined;
 
@@ -71,17 +63,12 @@ export const Dialog = (props: DialogProps) => {
       if (event.key === KEYS.TAB) {
         const focusableElements = queryFocusableElements(islandNode);
         const { activeElement } = document;
-        const currentIndex = focusableElements.findIndex(
-          (element) => element === activeElement,
-        );
+        const currentIndex = focusableElements.findIndex(element => element === activeElement);
 
         if (currentIndex === 0 && event.shiftKey) {
           focusableElements[focusableElements.length - 1].focus();
           event.preventDefault();
-        } else if (
-          currentIndex === focusableElements.length - 1 &&
-          !event.shiftKey
-        ) {
+        } else if (currentIndex === focusableElements.length - 1 && !event.shiftKey) {
           focusableElements[0].focus();
           event.preventDefault();
         }

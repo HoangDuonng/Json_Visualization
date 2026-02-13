@@ -1,34 +1,25 @@
-import clsx from "clsx";
-
 import {
   CANVAS_SEARCH_TAB,
   DEFAULT_SIDEBAR,
   LIBRARY_SIDEBAR_TAB,
   composeEventHandlers,
 } from "@jsondraw/common";
-
 import type { MarkOptional, Merge } from "@jsondraw/common/utility-types";
-
+import clsx from "clsx";
+import "../components/dropdownMenu/DropdownMenu.scss";
 import { useTunnels } from "../context/tunnels";
 import { useUIAppState } from "../context/ui-appState";
-
-import "../components/dropdownMenu/DropdownMenu.scss";
-
 import { useJsonDrawSetAppState } from "./App";
-import { LibraryMenu } from "./LibraryMenu";
-import { SearchMenu } from "./SearchMenu";
 import { Sidebar } from "./Sidebar/Sidebar";
+import type { SidebarProps, SidebarTriggerProps } from "./Sidebar/common";
 import { withInternalFallback } from "./hoc/withInternalFallback";
 import { LibraryIcon, searchIcon } from "./icons";
-
-import type { SidebarProps, SidebarTriggerProps } from "./Sidebar/common";
+import { LibraryMenu } from "./library/LibraryMenu";
+import { SearchMenu } from "./search/SearchMenu";
 
 const DefaultSidebarTrigger = withInternalFallback(
   "DefaultSidebarTrigger",
-  (
-    props: Omit<SidebarTriggerProps, "name"> &
-      React.HTMLAttributes<HTMLDivElement>,
-  ) => {
+  (props: Omit<SidebarTriggerProps, "name"> & React.HTMLAttributes<HTMLDivElement>) => {
     const { DefaultSidebarTriggerTunnel } = useTunnels();
     return (
       <DefaultSidebarTriggerTunnel.In>
@@ -39,17 +30,13 @@ const DefaultSidebarTrigger = withInternalFallback(
         />
       </DefaultSidebarTriggerTunnel.In>
     );
-  },
+  }
 );
 DefaultSidebarTrigger.displayName = "DefaultSidebarTrigger";
 
 const DefaultTabTriggers = ({ children }: { children: React.ReactNode }) => {
   const { DefaultSidebarTabTriggersTunnel } = useTunnels();
-  return (
-    <DefaultSidebarTabTriggersTunnel.In>
-      {children}
-    </DefaultSidebarTabTriggersTunnel.In>
-  );
+  return <DefaultSidebarTabTriggersTunnel.In>{children}</DefaultSidebarTabTriggersTunnel.In>;
 };
 DefaultTabTriggers.displayName = "DefaultTabTriggers";
 
@@ -82,16 +69,14 @@ export const DefaultSidebar = Object.assign(
           name="default"
           key="default"
           className={clsx("default-sidebar", className)}
-          docked={
-            isForceDocked || (docked ?? appState.defaultSidebarDockedPreference)
-          }
+          docked={isForceDocked || (docked ?? appState.defaultSidebarDockedPreference)}
           onDock={
             // `onDock=false` disables docking.
             // if `docked` passed, but no onDock passed, disable manual docking.
             isForceDocked || onDock === false || (!onDock && docked != null)
               ? undefined
               : // compose to allow the host app to listen on default behavior
-                composeEventHandlers(onDock, (docked) => {
+                composeEventHandlers(onDock, docked => {
                   setAppState({ defaultSidebarDockedPreference: docked });
                 })
           }
@@ -99,12 +84,8 @@ export const DefaultSidebar = Object.assign(
           <Sidebar.Tabs>
             <Sidebar.Header>
               <Sidebar.TabTriggers>
-                <Sidebar.TabTrigger tab={CANVAS_SEARCH_TAB}>
-                  {searchIcon}
-                </Sidebar.TabTrigger>
-                <Sidebar.TabTrigger tab={LIBRARY_SIDEBAR_TAB}>
-                  {LibraryIcon}
-                </Sidebar.TabTrigger>
+                <Sidebar.TabTrigger tab={CANVAS_SEARCH_TAB}>{searchIcon}</Sidebar.TabTrigger>
+                <Sidebar.TabTrigger tab={LIBRARY_SIDEBAR_TAB}>{LibraryIcon}</Sidebar.TabTrigger>
                 <DefaultSidebarTabTriggersTunnel.Out />
               </Sidebar.TabTriggers>
             </Sidebar.Header>
@@ -118,10 +99,10 @@ export const DefaultSidebar = Object.assign(
           </Sidebar.Tabs>
         </Sidebar>
       );
-    },
+    }
   ),
   {
     Trigger: DefaultSidebarTrigger,
     TabTriggers: DefaultTabTriggers,
-  },
+  }
 );

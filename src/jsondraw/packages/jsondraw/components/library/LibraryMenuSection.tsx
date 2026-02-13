@@ -1,14 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
-
-import type { JsonDrawElement, NonDeleted } from "@jsondraw/element/types";
-
-import { useTransition } from "../hooks/useTransition";
-
-import { EmptyLibraryUnit, LibraryUnit } from "./LibraryUnit";
-
-import type { SvgCache } from "../hooks/useLibraryItemSvg";
-import type { LibraryItem } from "../types";
 import type { ReactNode } from "react";
+import type { JsonDrawElement, NonDeleted } from "@jsondraw/element/types";
+import type { SvgCache } from "../../hooks/useLibraryItemSvg";
+import { useTransition } from "../../hooks/useTransition";
+import type { LibraryItem } from "../../types";
+import { EmptyLibraryUnit, LibraryUnit } from "./LibraryUnit";
 
 type LibraryOrPendingItem = readonly (
   | LibraryItem
@@ -28,11 +24,7 @@ interface Props {
   itemsRenderedPerBatch: number;
 }
 
-export const LibraryMenuSectionGrid = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const LibraryMenuSectionGrid = ({ children }: { children: ReactNode }) => {
   return <div className="library-menu-items-container__grid">{children}</div>;
 };
 
@@ -78,5 +70,5 @@ export const LibraryMenuSection = memo(
         })}
       </>
     );
-  },
+  }
 );

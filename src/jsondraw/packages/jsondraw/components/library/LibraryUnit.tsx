@@ -1,16 +1,12 @@
-import clsx from "clsx";
 import { memo, useRef, useState } from "react";
-
-import { useLibraryItemSvg } from "../hooks/useLibraryItemSvg";
-
-import { useEditorInterface } from "./App";
-import { CheckboxItem } from "./CheckboxItem";
-import { PlusIcon } from "./icons";
-
+import clsx from "clsx";
+import { useLibraryItemSvg } from "../../hooks/useLibraryItemSvg";
+import type { SvgCache } from "../../hooks/useLibraryItemSvg";
+import type { LibraryItem } from "../../types";
+import { useEditorInterface } from "../App";
+import { CheckboxItem } from "../CheckboxItem";
+import { PlusIcon } from "../icons";
 import "./LibraryUnit.scss";
-
-import type { LibraryItem } from "../types";
-import type { SvgCache } from "../hooks/useLibraryItemSvg";
 
 export const LibraryUnit = memo(
   ({
@@ -37,9 +33,7 @@ export const LibraryUnit = memo(
 
     const [isHovered, setIsHovered] = useState(false);
     const isMobile = useEditorInterface().formFactor === "phone";
-    const adder = isPending && (
-      <div className="library-unit__adder">{PlusIcon}</div>
-    );
+    const adder = isPending && <div className="library-unit__adder">{PlusIcon}</div>;
 
     return (
       <div
@@ -60,7 +54,7 @@ export const LibraryUnit = memo(
           draggable={!!elements}
           onClick={
             !!elements || !!isPending
-              ? (event) => {
+              ? event => {
                   if (id && event.shiftKey) {
                     onToggle(id, event);
                   } else {
@@ -69,7 +63,7 @@ export const LibraryUnit = memo(
                 }
               : undefined
           }
-          onDragStart={(event) => {
+          onDragStart={event => {
             if (!id) {
               event.preventDefault();
               return;
@@ -88,9 +82,7 @@ export const LibraryUnit = memo(
         )}
       </div>
     );
-  },
+  }
 );
 
-export const EmptyLibraryUnit = () => (
-  <div className="library-unit library-unit--skeleton" />
-);
+export const EmptyLibraryUnit = () => <div className="library-unit library-unit--skeleton" />;
