@@ -1,11 +1,15 @@
 [
   {
     "title": "What is JSON Visualization and what does it do?",
-    "content": "JSON Visualization is an online JSON viewer tool designed to visualize and analyze various data formats, including JSON, YAML, CSV, XML and more. It transforms complex data into intuitive graphs and tree views, making it ideal for developers, data analysts, and anyone working with structured data."
+    "content": "JSON Visualization is an online tool designed to visualize and analyze various data formats, including JSON, YAML, CSV, XML and more. It transforms complex data into intuitive graphs, tree views, and interactive whiteboard diagrams, making it ideal for developers, data analysts, and anyone working with structured data."
   },
   {
-    "title": "How is it different than traditional JSON viewers?",
-    "content": "While traditional JSON Viewers and JSON formatters only allow you to work with raw data on text editors, JSON Visualization offers a unique visual representation of your data, making it easier to understand and analyze complex data structures. It provides a tree view and graph view to help you visualize your data in different ways."
+    "title": "What is the Draw (Whiteboard) view?",
+    "content": "The Draw view is a powerful whiteboard-style canvas that lets you visualize your JSON data as hand-drawn diagrams. It automatically converts your data structure into interactive nodes and arrows, giving you a more visual and creative way to explore relationships in your data. You can also freely draw, annotate, and rearrange elements on the canvas."
+  },
+  {
+    "title": "How do I switch between Graph view and Draw view?",
+    "content": "You can switch between views using the toggle buttons at the top of the editor. The Graph view provides a traditional structured layout, while the Draw view offers a free-form whiteboard experience where you can interact with your data visually."
   },
   {
     "title": "Is JSON Visualization free?",
@@ -13,23 +17,19 @@
   },
   {
     "title": "Is my data secure?",
-    "content": "Yes. When you paste or import your data into the editor, it's processed only on your browser to create the visualization without going into our servers."
-  },
-  {
-    "title": "Can I convert JSON to other formats using JSON Visualization?",
-    "content": "Yes, JSON Visualization offers robust data conversion capabilities. You can easily convert JSON to YAML, XML to JSON, CSV to JSON and other popular formats."
+    "content": "Yes. When you paste or import your data into the editor, it's processed entirely in your browser to create the visualization. Your data never leaves your device or gets sent to any server."
   },
   {
     "title": "What kind of data formats are supported?",
-    "content": "A wide range of data formats are supported including JSON, YAML, XML, CSV, and TOML."
+    "content": "A wide range of data formats are supported including JSON, YAML, XML, CSV, and TOML. You can also convert between these formats directly within the tool."
   },
   {
-    "title": "What size of data can I visualize?",
-    "content": "It supports approximately 300 KB. It might vary depending on the complexity of the data and your hardware."
+    "title": "Can I export the generated diagrams?",
+    "content": "Yes, you can export your visualizations as PNG, JPEG, or SVG files from both the Graph view and the Draw view."
   },
   {
-    "title": "Can I export the generated graphs?",
-    "content": "Yes, you can export the generated graphs as PNG, JPEG, or SVG files."
+    "title": "What tools are available in the Draw view?",
+    "content": "The Draw view includes a variety of drawing tools such as shapes (rectangles, diamonds, ellipses), arrows, lines, text, free-hand drawing, and more. You can customize colors, stroke styles, and arrange elements however you like."
   },
   {
     "title": "Can I contribute to the project?",
