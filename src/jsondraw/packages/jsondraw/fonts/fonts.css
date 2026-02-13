@@ -1,0 +1,51 @@
+/* Only UI fonts here, which are needed before the editor initializes. */
+/* These cannot be dynamically prepended with `JSONDRAW_ASSET_PATH`. */
+/* WARN: The following content is replaced during jsondraw-app build  */
+
+@font-face {
+  font-family: "Assistant";
+  src: url(../fonts/Assistant/Assistant-Regular.woff2) format("woff2");
+  font-weight: 400;
+  style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Assistant";
+  src: url(../fonts/Assistant/Assistant-Medium.woff2) format("woff2");
+  font-weight: 500;
+  style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Assistant";
+  src: url(../fonts/Assistant/Assistant-SemiBold.woff2) format("woff2");
+  font-weight: 600;
+  style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Assistant";
+  src: url(../fonts/Assistant/Assistant-Bold.woff2) format("woff2");
+  font-weight: 700;
+  style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Excalifont";
+  src: url("./Excalifont/Excalifont-Regular-a88b72a24fb54c9f94e3b5fdaa7481c9.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Excalifont";
+  src: url("./Excalifont/Excalifont-Regular-623ccf21b21ef6b3a0d87738f77eb071.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  display: swap;
+}

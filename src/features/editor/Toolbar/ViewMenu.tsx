@@ -32,6 +32,7 @@ export const ViewMenu = () => {
           data={[
             { value: ViewMode.Graph, label: "Graph" },
             { value: ViewMode.Tree, label: "Tree" },
+            { value: ViewMode.JsonDraw, label: "JsonDraw" },
           ]}
           fullWidth
           orientation="vertical"

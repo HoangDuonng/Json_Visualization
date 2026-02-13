@@ -2,6 +2,7 @@ import React from "react";
 import { useSessionStorage } from "@mantine/hooks";
 import styled from "styled-components";
 import { ViewMode } from "../../enums/viewMode.enum";
+import { JsonDrawView } from "./views/JsonDrawView";
 import { GraphView } from "./views/GraphView";
 import { TreeView } from "./views/TreeView";
 
@@ -36,6 +37,7 @@ const View = () => {
 
   if (viewMode === ViewMode.Graph) return <GraphView />;
   if (viewMode === ViewMode.Tree) return <TreeView />;
+  if (viewMode === ViewMode.JsonDraw) return <JsonDrawView />;
   return null;
 };
 

@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Flex, Group } from "@mantine/core";
 import styled from "styled-components";
 import toast from "react-hot-toast";
-import { AiOutlineFullscreen } from "react-icons/ai";
+import { AiOutlineFullscreen, AiOutlineLayout } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa6";
 import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
+import useGraph from "../views/GraphView/stores/useGraph";
 import { FileMenu } from "./FileMenu";
 import { ThemeToggle } from "./ThemeToggle";
 import { ToolsMenu } from "./ToolsMenu";
@@ -53,6 +54,12 @@ export const Toolbar = () => {
         <FileMenu />
         <ViewMenu />
         <ToolsMenu />
+        <StyledToolElement
+          title="Toggle Editor"
+          onClick={() => useGraph.getState().toggleFullscreen(!useGraph.getState().fullscreen)}
+        >
+          <AiOutlineLayout size="20" />
+        </StyledToolElement>
       </Group>
       <Group gap="xs" justify="right" w="100%" style={{ flexWrap: "nowrap" }}>
         <ThemeToggle />

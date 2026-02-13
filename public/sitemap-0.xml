@@ -14,6 +14,14 @@
 <url><loc>https://jsonvisualization.nguuyen.io.vn/converter/yaml-to-json</loc><changefreq>never</changefreq><priority>0.7</priority></url>
 <url><loc>https://jsonvisualization.nguuyen.io.vn/converter/yaml-to-xml</loc><changefreq>never</changefreq><priority>0.7</priority></url>
 <url><loc>https://jsonvisualization.nguuyen.io.vn/docs</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/export-image</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/format-conversion</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/format-validate</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/jq-query</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/json-path</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/json-schema</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/type-generation</loc><changefreq>never</changefreq><priority>0.7</priority></url>
+<url><loc>https://jsonvisualization.nguuyen.io.vn/docs/visualization</loc><changefreq>never</changefreq><priority>0.7</priority></url>
 <url><loc>https://jsonvisualization.nguuyen.io.vn/editor</loc><changefreq>never</changefreq><priority>0.7</priority></url>
 <url><loc>https://jsonvisualization.nguuyen.io.vn/legal/privacy</loc><changefreq>never</changefreq><priority>0.7</priority></url>
 <url><loc>https://jsonvisualization.nguuyen.io.vn/legal/terms</loc><changefreq>never</changefreq><priority>0.7</priority></url>
