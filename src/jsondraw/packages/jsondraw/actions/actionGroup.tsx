@@ -1,9 +1,7 @@
+import { KEYS, randomId, arrayToMap } from "@jsondraw/common";
 import { getNonDeletedElements } from "@jsondraw/element";
-
 import { newElementWith } from "@jsondraw/element";
-
 import { isBoundToContainer } from "@jsondraw/element";
-
 import {
   frameAndChildrenSelectedTogether,
   getElementsInResizingFrame,
@@ -13,9 +11,6 @@ import {
   removeElementsFromFrame,
   replaceAllElementsInFrame,
 } from "@jsondraw/element";
-
-import { KEYS, randomId, arrayToMap } from "@jsondraw/common";
-
 import {
   getSelectedGroupIds,
   selectGroup,
@@ -25,40 +20,26 @@ import {
   removeFromSelectedGroups,
   isElementInGroup,
 } from "@jsondraw/element";
-
 import { syncMovedIndices } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import type {
   JsonDrawElement,
   JsonDrawTextElement,
   OrderedJsonDrawElement,
 } from "@jsondraw/element/types";
-
-import { ToolButton } from "../components/ToolButton";
 import { UngroupIcon, GroupIcon } from "../components/icons";
-
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
-
 import { isSomeElementSelected } from "../scene";
-
 import { getShortcutKey } from "../shortcut";
-
-import { register } from "./register";
-
 import type { AppClassProperties, AppState } from "../types";
+import { register } from "./register";
 
 const allElementsInSameGroup = (elements: readonly JsonDrawElement[]) => {
   if (elements.length >= 2) {
     const groupIds = elements[0].groupIds;
     for (const groupId of groupIds) {
-      if (
-        elements.reduce(
-          (acc, element) => acc && isElementInGroup(element, groupId),
-          true,
-        )
-      ) {
+      if (elements.reduce((acc, element) => acc && isElementInGroup(element, groupId), true)) {
         return true;
       }
     }
@@ -69,7 +50,7 @@ const allElementsInSameGroup = (elements: readonly JsonDrawElement[]) => {
 const enableActionGroup = (
   elements: readonly JsonDrawElement[],
   appState: AppState,
-  app: AppClassProperties,
+  app: AppClassProperties
 ) => {
   const selectedElements = app.scene.getSelectedElements({
     selectedElementIds: appState.selectedElementIds,
@@ -86,14 +67,14 @@ const enableActionGroup = (
 export const actionGroup = register({
   name: "group",
   label: "labels.group",
-  icon: (appState) => <GroupIcon theme={appState.theme} />,
+  icon: appState => <GroupIcon theme={appState.theme} />,
   trackEvent: { category: "element" },
   perform: (elements, appState, _, app) => {
     const selectedElements = getRootElements(
       app.scene.getSelectedElements({
         selectedElementIds: appState.selectedElementIds,
         includeBoundTextElement: true,
-      }),
+      })
     );
     if (selectedElements.length < 2) {
       // nothing to group
@@ -108,13 +89,9 @@ export const actionGroup = register({
     if (selectedGroupIds.length === 1) {
       const selectedGroupId = selectedGroupIds[0];
       const elementIdsInGroup = new Set(
-        getElementsInGroup(elements, selectedGroupId).map(
-          (element) => element.id,
-        ),
+        getElementsInGroup(elements, selectedGroupId).map(element => element.id)
       );
-      const selectedElementIds = new Set(
-        selectedElements.map((element) => element.id),
-      );
+      const selectedElementIds = new Set(selectedElements.map(element => element.id));
       const combinedSet = new Set([
         ...Array.from(elementIdsInGroup),
         ...Array.from(selectedElementIds),
@@ -134,33 +111,26 @@ export const actionGroup = register({
     // this includes the case where we are grouping elements inside a frame
     // and elements outside that frame
     const groupingElementsFromDifferentFrames =
-      new Set(selectedElements.map((element) => element.frameId)).size > 1;
+      new Set(selectedElements.map(element => element.frameId)).size > 1;
     // when it happens, we want to remove elements that are in the frame
     // and are going to be grouped from the frame (mouthful, I know)
     if (groupingElementsFromDifferentFrames) {
       const frameElementsMap = groupByFrameLikes(selectedElements);
 
       frameElementsMap.forEach((elementsInFrame, frameId) => {
-        removeElementsFromFrame(
-          elementsInFrame,
-          app.scene.getNonDeletedElementsMap(),
-        );
+        removeElementsFromFrame(elementsInFrame, app.scene.getNonDeletedElementsMap());
       });
     }
 
     const newGroupId = randomId();
     const selectElementIds = arrayToMap(selectedElements);
 
-    nextElements = nextElements.map((element) => {
+    nextElements = nextElements.map(element => {
       if (!selectElementIds.get(element.id)) {
         return element;
       }
       return newElementWith(element, {
-        groupIds: addToGroup(
-          element.groupIds,
-          newGroupId,
-          appState.editingGroupId,
-        ),
+        groupIds: addToGroup(element.groupIds, newGroupId, appState.editingGroupId),
       });
     });
     // keep the z order within the group the same, but move them
@@ -168,17 +138,15 @@ export const actionGroup = register({
     const elementsInGroup = getElementsInGroup(nextElements, newGroupId);
     const lastElementInGroup = elementsInGroup[elementsInGroup.length - 1];
     const lastGroupElementIndex = nextElements.lastIndexOf(
-      lastElementInGroup as OrderedJsonDrawElement,
+      lastElementInGroup as OrderedJsonDrawElement
     );
     const elementsAfterGroup = nextElements.slice(lastGroupElementIndex + 1);
     const elementsBeforeGroup = nextElements
       .slice(0, lastGroupElementIndex)
-      .filter(
-        (updatedElement) => !isElementInGroup(updatedElement, newGroupId),
-      );
+      .filter(updatedElement => !isElementInGroup(updatedElement, newGroupId));
     const reorderedElements = syncMovedIndices(
       [...elementsBeforeGroup, ...elementsInGroup, ...elementsAfterGroup],
-      arrayToMap(elementsInGroup),
+      arrayToMap(elementsInGroup)
     );
 
     return {
@@ -187,17 +155,15 @@ export const actionGroup = register({
         ...selectGroup(
           newGroupId,
           { ...appState, selectedGroupIds: {} },
-          getNonDeletedElements(nextElements),
+          getNonDeletedElements(nextElements)
         ),
       },
       elements: reorderedElements,
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  predicate: (elements, appState, _, app) =>
-    enableActionGroup(elements, appState, app),
-  keyTest: (event) =>
-    !event.shiftKey && event[KEYS.CTRL_OR_CMD] && event.key === KEYS.G,
+  predicate: (elements, appState, _, app) => enableActionGroup(elements, appState, app),
+  keyTest: event => !event.shiftKey && event[KEYS.CTRL_OR_CMD] && event.key === KEYS.G,
   PanelComponent: ({ elements, appState, updateData, app }) => (
     <ToolButton
       hidden={!enableActionGroup(elements, appState, app)}
@@ -214,7 +180,7 @@ export const actionGroup = register({
 export const actionUngroup = register({
   name: "ungroup",
   label: "labels.ungroup",
-  icon: (appState) => <UngroupIcon theme={appState.theme} />,
+  icon: appState => <UngroupIcon theme={appState.theme} />,
   trackEvent: { category: "element" },
   perform: (elements, appState, _, app) => {
     const groupIds = getSelectedGroupIds(appState);
@@ -231,14 +197,11 @@ export const actionUngroup = register({
     let nextElements = [...elements];
 
     const boundTextElementIds: JsonDrawTextElement["id"][] = [];
-    nextElements = nextElements.map((element) => {
+    nextElements = nextElements.map(element => {
       if (isBoundToContainer(element)) {
         boundTextElementIds.push(element.id);
       }
-      const nextGroupIds = removeFromSelectedGroups(
-        element.groupIds,
-        appState.selectedGroupIds,
-      );
+      const nextGroupIds = removeFromSelectedGroups(element.groupIds, appState.selectedGroupIds);
       if (nextGroupIds.length === element.groupIds.length) {
         return element;
       }
@@ -251,48 +214,39 @@ export const actionUngroup = register({
       appState,
       getNonDeletedElements(nextElements),
       appState,
-      null,
+      null
     );
 
     const selectedElements = app.scene.getSelectedElements(appState);
 
     const selectedElementFrameIds = new Set(
-      selectedElements
-        .filter((element) => element.frameId)
-        .map((element) => element.frameId!),
+      selectedElements.filter(element => element.frameId).map(element => element.frameId!)
     );
 
-    const targetFrames = getFrameLikeElements(elements).filter((frame) =>
-      selectedElementFrameIds.has(frame.id),
+    const targetFrames = getFrameLikeElements(elements).filter(frame =>
+      selectedElementFrameIds.has(frame.id)
     );
 
-    targetFrames.forEach((frame) => {
+    targetFrames.forEach(frame => {
       if (frame) {
         nextElements = replaceAllElementsInFrame(
           nextElements,
-          getElementsInResizingFrame(
-            nextElements,
-            frame,
-            appState,
-            elementsMap,
-          ),
+          getElementsInResizingFrame(nextElements, frame, appState, elementsMap),
           frame,
-          app,
+          app
         );
       }
     });
 
     // remove binded text elements from selection
-    updateAppState.selectedElementIds = Object.entries(
-      updateAppState.selectedElementIds,
-    ).reduce(
+    updateAppState.selectedElementIds = Object.entries(updateAppState.selectedElementIds).reduce(
       (acc: { [key: JsonDrawElement["id"]]: true }, [id, selected]) => {
         if (selected && !boundTextElementIds.includes(id)) {
           acc[id] = true;
         }
         return acc;
       },
-      {},
+      {}
     );
 
     return {
@@ -301,10 +255,7 @@ export const actionUngroup = register({
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) =>
-    event.shiftKey &&
-    event[KEYS.CTRL_OR_CMD] &&
-    event.key === KEYS.G.toUpperCase(),
+  keyTest: event => event.shiftKey && event[KEYS.CTRL_OR_CMD] && event.key === KEYS.G.toUpperCase(),
   predicate: (elements, appState) => getSelectedGroupIds(appState).length > 0,
 
   PanelComponent: ({ elements, appState, updateData }) => (

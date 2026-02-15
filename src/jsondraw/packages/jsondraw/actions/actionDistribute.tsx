@@ -1,36 +1,19 @@
-import { getNonDeletedElements } from "@jsondraw/element";
-
-import { isFrameLikeElement } from "@jsondraw/element";
-
 import { CODES, KEYS, arrayToMap } from "@jsondraw/common";
-
+import { getNonDeletedElements } from "@jsondraw/element";
+import { isFrameLikeElement } from "@jsondraw/element";
 import { updateFrameMembershipOfSelectedElements } from "@jsondraw/element";
-
 import { distributeElements } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import { getSelectedElementsByGroup } from "@jsondraw/element";
-
-import type { JsonDrawElement } from "@jsondraw/element/types";
-
 import type { Distribution } from "@jsondraw/element";
-
-import { ToolButton } from "../components/ToolButton";
-import {
-  DistributeHorizontallyIcon,
-  DistributeVerticallyIcon,
-} from "../components/icons";
-
+import type { JsonDrawElement } from "@jsondraw/element/types";
+import { DistributeHorizontallyIcon, DistributeVerticallyIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
-
 import { isSomeElementSelected } from "../scene";
-
 import { getShortcutKey } from "../shortcut";
-
-import { register } from "./register";
-
 import type { AppClassProperties, AppState } from "../types";
+import { register } from "./register";
 
 const enableActionGroup = (appState: AppState, app: AppClassProperties) => {
   const selectedElements = app.scene.getSelectedElements(appState);
@@ -38,10 +21,10 @@ const enableActionGroup = (appState: AppState, app: AppClassProperties) => {
     getSelectedElementsByGroup(
       selectedElements,
       app.scene.getNonDeletedElementsMap(),
-      appState as Readonly<AppState>,
+      appState as Readonly<AppState>
     ).length > 2 &&
     // TODO enable distributing frames when implemented properly
-    !selectedElements.some((el) => isFrameLikeElement(el))
+    !selectedElements.some(el => isFrameLikeElement(el))
   );
 };
 
@@ -49,7 +32,7 @@ const distributeSelectedElements = (
   elements: readonly JsonDrawElement[],
   appState: Readonly<AppState>,
   app: AppClassProperties,
-  distribution: Distribution,
+  distribution: Distribution
 ) => {
   const selectedElements = app.scene.getSelectedElements(appState);
 
@@ -58,15 +41,15 @@ const distributeSelectedElements = (
     app.scene.getNonDeletedElementsMap(),
     distribution,
     appState,
-    app.scene,
+    app.scene
   );
 
   const updatedElementsMap = arrayToMap(updatedElements);
 
   return updateFrameMembershipOfSelectedElements(
-    elements.map((element) => updatedElementsMap.get(element.id) || element),
+    elements.map(element => updatedElementsMap.get(element.id) || element),
     appState,
-    app,
+    app
   );
 };
 
@@ -84,17 +67,14 @@ export const distributeHorizontally = register({
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) =>
-    !event[KEYS.CTRL_OR_CMD] && event.altKey && event.code === CODES.H,
+  keyTest: event => !event[KEYS.CTRL_OR_CMD] && event.altKey && event.code === CODES.H,
   PanelComponent: ({ elements, appState, updateData, app }) => (
     <ToolButton
       hidden={!enableActionGroup(appState, app)}
       type="button"
       icon={DistributeHorizontallyIcon}
       onClick={() => updateData(null)}
-      title={`${t("labels.distributeHorizontally")} — ${getShortcutKey(
-        "Alt+H",
-      )}`}
+      title={`${t("labels.distributeHorizontally")} — ${getShortcutKey("Alt+H")}`}
       aria-label={t("labels.distributeHorizontally")}
       visible={isSomeElementSelected(getNonDeletedElements(elements), appState)}
     />
@@ -115,8 +95,7 @@ export const distributeVertically = register({
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) =>
-    !event[KEYS.CTRL_OR_CMD] && event.altKey && event.code === CODES.V,
+  keyTest: event => !event[KEYS.CTRL_OR_CMD] && event.altKey && event.code === CODES.V,
   PanelComponent: ({ elements, appState, updateData, app }) => (
     <ToolButton
       hidden={!enableActionGroup(appState, app)}

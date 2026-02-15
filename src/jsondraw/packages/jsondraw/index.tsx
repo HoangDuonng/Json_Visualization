@@ -254,10 +254,10 @@ export { CaptureUpdateAction } from "@jsondraw/element";
 export { parseLibraryTokensFromUrl, useHandleLibrary } from "./data/library";
 
 export { Sidebar } from "./components/Sidebar/Sidebar";
-export { Button } from "./components/Button";
+export { Button } from "./components/ui/Button";
 export { Footer };
 export { MainMenu };
-export { Ellipsify } from "./components/Ellipsify";
+export { Ellipsify } from "./components/ui/Ellipsify";
 export { useEditorInterface, useStylesPanelMode } from "./components/App";
 export { WelcomeScreen };
 export { LiveCollaborationTrigger };

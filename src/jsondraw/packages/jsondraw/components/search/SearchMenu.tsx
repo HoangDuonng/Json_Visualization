@@ -15,9 +15,9 @@ import { useStable } from "../../hooks/useStable";
 import { t } from "../../i18n";
 import type { AppClassProperties, SearchMatch } from "../../types";
 import { useApp, useJsonDrawSetAppState } from "../App";
-import { Button } from "../Button";
-import { TextField } from "../TextField";
 import { collapseDownIcon, upIcon, searchIcon, frameToolIcon, TextIcon } from "../icons";
+import { Button } from "../ui/Button";
+import { TextField } from "../ui/TextField";
 import "./SearchMenu.scss";
 
 const searchQueryAtom = atom<string>("");

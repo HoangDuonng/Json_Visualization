@@ -1,8 +1,6 @@
-import { useEditorInterface } from "../App";
-
-import { Ellipsify } from "../Ellipsify";
-
 import type { JSX } from "react";
+import { useEditorInterface } from "../App";
+import { Ellipsify } from "../ui/Ellipsify";
 
 const MenuItemContent = ({
   textStyle,

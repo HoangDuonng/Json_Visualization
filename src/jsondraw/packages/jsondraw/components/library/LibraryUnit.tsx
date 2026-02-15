@@ -4,8 +4,8 @@ import { useLibraryItemSvg } from "../../hooks/useLibraryItemSvg";
 import type { SvgCache } from "../../hooks/useLibraryItemSvg";
 import type { LibraryItem } from "../../types";
 import { useEditorInterface } from "../App";
-import { CheckboxItem } from "../CheckboxItem";
 import { PlusIcon } from "../icons";
+import { CheckboxItem } from "../ui/CheckboxItem";
 import "./LibraryUnit.scss";
 
 export const LibraryUnit = memo(

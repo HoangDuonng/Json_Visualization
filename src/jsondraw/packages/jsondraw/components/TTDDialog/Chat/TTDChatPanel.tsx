@@ -1,21 +1,13 @@
+import { ChatInterface } from ".";
+import { useAtom } from "../../../editor-jotai";
 import { t } from "../../../i18n";
 import { ArrowRightIcon } from "../../icons";
-
-import { InlineIcon } from "../../InlineIcon";
-
-import { TTDDialogPanel } from "../TTDDialogPanel";
-
-import { useAtom } from "../../../editor-jotai";
-
+import { InlineIcon } from "../../ui/InlineIcon";
 import { rateLimitsAtom } from "../TTDContext";
-
-import { ChatHistoryMenu } from "./ChatHistoryMenu";
-
-import { ChatInterface } from ".";
-
+import { TTDDialogPanel } from "../TTDDialogPanel";
 import type { TTDPanelAction } from "../TTDDialogPanel";
-
 import type { SavedChat, TChat, TTTDDialog } from "../types";
+import { ChatHistoryMenu } from "./ChatHistoryMenu";
 
 export const TTDChatPanel = ({
   chatId,
@@ -82,10 +74,7 @@ export const TTDChatPanel = ({
           count: rateLimits.rateLimitRemaining,
         }),
         variant: "rateLimit",
-        className:
-          rateLimits.rateLimitRemaining < 5
-            ? "ttd-dialog-panel__rate-limit--danger"
-            : "",
+        className: rateLimits.rateLimitRemaining < 5 ? "ttd-dialog-panel__rate-limit--danger" : "",
       });
     }
 

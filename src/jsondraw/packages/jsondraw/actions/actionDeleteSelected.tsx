@@ -1,51 +1,32 @@
-import {
-  KEYS,
-  MOBILE_ACTION_BUTTON_BG,
-  updateActiveTool,
-} from "@jsondraw/common";
-
+import { KEYS, MOBILE_ACTION_BUTTON_BG, updateActiveTool } from "@jsondraw/common";
 import { getNonDeletedElements } from "@jsondraw/element";
 import { fixBindingsAfterDeletion } from "@jsondraw/element";
 import { LinearElementEditor } from "@jsondraw/element";
 import { newElementWith } from "@jsondraw/element";
 import { getContainerElement } from "@jsondraw/element";
-import {
-  isBoundToContainer,
-  isElbowArrow,
-  isFrameLikeElement,
-} from "@jsondraw/element";
+import { isBoundToContainer, isElbowArrow, isFrameLikeElement } from "@jsondraw/element";
 import { getFrameChildren } from "@jsondraw/element";
-
-import {
-  getElementsInGroup,
-  selectGroupsForSelectedElements,
-} from "@jsondraw/element";
-
+import { getElementsInGroup, selectGroupsForSelectedElements } from "@jsondraw/element";
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import type { JsonDrawElement } from "@jsondraw/element/types";
-
+import { useStylesPanelMode } from "..";
+import { TrashIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
-import { TrashIcon } from "../components/icons";
-import { ToolButton } from "../components/ToolButton";
-
-import { useStylesPanelMode } from "..";
-
-import { register } from "./register";
-
 import type { AppClassProperties, AppState } from "../types";
+import { register } from "./register";
 
 const deleteSelectedElements = (
   elements: readonly JsonDrawElement[],
   appState: AppState,
-  app: AppClassProperties,
+  app: AppClassProperties
 ) => {
   const framesToBeDeleted = new Set(
     getSelectedElements(
-      elements.filter((el) => isFrameLikeElement(el)),
-      appState,
-    ).map((el) => el.id),
+      elements.filter(el => isFrameLikeElement(el)),
+      appState
+    ).map(el => el.id)
   );
 
   const selectedElementIds: Record<JsonDrawElement["id"], true> = {};
@@ -75,11 +56,9 @@ const deleteSelectedElements = (
 
   let shouldSelectEditingGroup = true;
 
-  const nextElements = elements.map((el) => {
+  const nextElements = elements.map(el => {
     if (appState.selectedElementIds[el.id]) {
-      const boundElement = isBoundToContainer(el)
-        ? getContainerElement(el, elementsMap)
-        : null;
+      const boundElement = isBoundToContainer(el) ? getContainerElement(el, elementsMap) : null;
 
       if (el.frameId && framesToBeDeleted.has(el.frameId)) {
         shouldSelectEditingGroup = false;
@@ -87,24 +66,17 @@ const deleteSelectedElements = (
         return el;
       }
 
-      if (
-        boundElement?.frameId &&
-        framesToBeDeleted.has(boundElement?.frameId)
-      ) {
+      if (boundElement?.frameId && framesToBeDeleted.has(boundElement?.frameId)) {
         return el;
       }
 
       if (el.boundElements) {
-        el.boundElements.forEach((candidate) => {
+        el.boundElements.forEach(candidate => {
           const bound = app.scene.getNonDeletedElementsMap().get(candidate.id);
           if (bound && isElbowArrow(bound)) {
             app.scene.mutateElement(bound, {
-              startBinding:
-                el.id === bound.startBinding?.elementId
-                  ? null
-                  : bound.startBinding,
-              endBinding:
-                el.id === bound.endBinding?.elementId ? null : bound.endBinding,
+              startBinding: el.id === bound.startBinding?.elementId ? null : bound.startBinding,
+              endBinding: el.id === bound.endBinding?.elementId ? null : bound.endBinding,
             });
           }
         });
@@ -131,10 +103,9 @@ const deleteSelectedElements = (
 
   // select next eligible element in currently editing group or supergroup
   if (shouldSelectEditingGroup && appState.editingGroupId) {
-    const elems = getElementsInGroup(
-      nextElements,
-      appState.editingGroupId,
-    ).filter((el) => !el.isDeleted);
+    const elems = getElementsInGroup(nextElements, appState.editingGroupId).filter(
+      el => !el.isDeleted
+    );
     if (elems.length > 1) {
       if (elems[0]) {
         selectedElementIds[elems[0].id] = true;
@@ -147,20 +118,16 @@ const deleteSelectedElements = (
 
       const lastElementInGroup = elems[0];
       if (lastElementInGroup) {
-        const editingGroupIdx = lastElementInGroup.groupIds.findIndex(
-          (groupId) => {
-            return groupId === appState.editingGroupId;
-          },
-        );
+        const editingGroupIdx = lastElementInGroup.groupIds.findIndex(groupId => {
+          return groupId === appState.editingGroupId;
+        });
         const superGroupId = lastElementInGroup.groupIds[editingGroupIdx + 1];
         if (superGroupId) {
-          const elems = getElementsInGroup(nextElements, superGroupId).filter(
-            (el) => !el.isDeleted,
-          );
+          const elems = getElementsInGroup(nextElements, superGroupId).filter(el => !el.isDeleted);
           if (elems.length > 1) {
             nextEditingGroupId = superGroupId;
 
-            elems.forEach((el) => {
+            elems.forEach(el => {
               selectedElementIds[el.id] = true;
             });
           }
@@ -180,7 +147,7 @@ const deleteSelectedElements = (
         },
         nextElements,
         appState,
-        null,
+        null
       ),
     },
   };
@@ -188,12 +155,12 @@ const deleteSelectedElements = (
 
 const handleGroupEditingState = (
   appState: AppState,
-  elements: readonly JsonDrawElement[],
+  elements: readonly JsonDrawElement[]
 ): AppState => {
   if (appState.editingGroupId) {
     const siblingElements = getElementsInGroup(
       getNonDeletedElements(elements),
-      appState.editingGroupId!,
+      appState.editingGroupId!
     );
     if (siblingElements.length) {
       return {
@@ -212,13 +179,9 @@ export const actionDeleteSelected = register({
   trackEvent: { category: "element", action: "delete" },
   perform: (elements, appState, formData, app) => {
     if (appState.selectedLinearElement?.isEditing) {
-      const { elementId, selectedPointsIndices } =
-        appState.selectedLinearElement;
+      const { elementId, selectedPointsIndices } = appState.selectedLinearElement;
       const elementsMap = app.scene.getNonDeletedElementsMap();
-      const linearElement = LinearElementEditor.getElement(
-        elementId,
-        elementsMap,
-      );
+      const linearElement = LinearElementEditor.getElement(elementId, elementsMap);
       if (!linearElement) {
         return false;
       }
@@ -232,7 +195,7 @@ export const actionDeleteSelected = register({
 
       // case: deleting all points
       if (selectedPointsIndices.length >= linearElement.points.length) {
-        const nextElements = elements.map((el) => {
+        const nextElements = elements.map(el => {
           if (el.id === linearElement.id) {
             return newElementWith(el, { isDeleted: true });
           }
@@ -250,11 +213,7 @@ export const actionDeleteSelected = register({
         };
       }
 
-      LinearElementEditor.deletePoints(
-        linearElement,
-        app,
-        selectedPointsIndices,
-      );
+      LinearElementEditor.deletePoints(linearElement, app, selectedPointsIndices);
 
       return {
         elements,
@@ -263,21 +222,22 @@ export const actionDeleteSelected = register({
           selectedLinearElement: {
             ...appState.selectedLinearElement,
             selectedPointsIndices:
-              selectedPointsIndices?.[0] > 0
-                ? [selectedPointsIndices[0] - 1]
-                : [0],
+              selectedPointsIndices?.[0] > 0 ? [selectedPointsIndices[0] - 1] : [0],
           },
         },
         captureUpdate: CaptureUpdateAction.IMMEDIATELY,
       };
     }
 
-    let { elements: nextElements, appState: nextAppState } =
-      deleteSelectedElements(elements, appState, app);
+    let { elements: nextElements, appState: nextAppState } = deleteSelectedElements(
+      elements,
+      appState,
+      app
+    );
 
     fixBindingsAfterDeletion(
       nextElements,
-      nextElements.filter((el) => el.isDeleted),
+      nextElements.filter(el => el.isDeleted)
     );
 
     nextAppState = handleGroupEditingState(nextAppState, nextElements);
@@ -294,17 +254,13 @@ export const actionDeleteSelected = register({
         activeEmbeddable: null,
         selectedLinearElement: null,
       },
-      captureUpdate: isSomeElementSelected(
-        getNonDeletedElements(elements),
-        appState,
-      )
+      captureUpdate: isSomeElementSelected(getNonDeletedElements(elements), appState)
         ? CaptureUpdateAction.IMMEDIATELY
         : CaptureUpdateAction.EVENTUALLY,
     };
   },
   keyTest: (event, appState, elements) =>
-    (event.key === KEYS.BACKSPACE || event.key === KEYS.DELETE) &&
-    !event[KEYS.CTRL_OR_CMD],
+    (event.key === KEYS.BACKSPACE || event.key === KEYS.DELETE) && !event[KEYS.CTRL_OR_CMD],
   PanelComponent: ({ elements, appState, updateData, app }) => {
     const isMobile = useStylesPanelMode() === "mobile";
 
@@ -315,9 +271,7 @@ export const actionDeleteSelected = register({
         title={t("labels.delete")}
         aria-label={t("labels.delete")}
         onClick={() => updateData(null)}
-        disabled={
-          !isSomeElementSelected(getNonDeletedElements(elements), appState)
-        }
+        disabled={!isSomeElementSelected(getNonDeletedElements(elements), appState)}
         style={{
           ...(isMobile && appState.openPopup !== "compactOtherProperties"
             ? MOBILE_ACTION_BUTTON_BG

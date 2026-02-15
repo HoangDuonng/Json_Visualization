@@ -1,9 +1,6 @@
-import clsx from "clsx";
-
 import { THEME } from "@jsondraw/common";
-
 import type { Theme } from "@jsondraw/element/types";
-
+import clsx from "clsx";
 import {
   actionClearCanvas,
   actionLoadScene,
@@ -22,7 +19,6 @@ import { trackEvent } from "../../analytics";
 import { useUIAppState } from "../../context/ui-appState";
 import { useSetAtom } from "../../editor-jotai";
 import { useI18n } from "../../i18n";
-import { activeConfirmDialogAtom } from "../dialogs/ActiveConfirmDialog";
 import {
   useJsonDrawSetAppState,
   useJsonDrawActionManager,
@@ -31,7 +27,7 @@ import {
   useApp,
 } from "../App";
 import { openConfirmModal } from "../OverwriteConfirm/OverwriteConfirmState";
-import Trans from "../Trans";
+import { activeConfirmDialogAtom } from "../dialogs/ActiveConfirmDialog";
 import DropdownMenuItem from "../dropdownMenu/DropdownMenuItem";
 import DropdownMenuItemCheckbox from "../dropdownMenu/DropdownMenuItemCheckbox";
 import DropdownMenuItemContentRadio from "../dropdownMenu/DropdownMenuItemContentRadio";
@@ -52,7 +48,7 @@ import {
   TrashIcon,
   usersIcon,
 } from "../icons";
-
+import Trans from "../ui/Trans";
 import "./DefaultItems.scss";
 
 export const LoadScene = () => {
@@ -74,7 +70,7 @@ export const LoadScene = () => {
         description: (
           <Trans
             i18nKey="overwriteConfirm.modal.loadFromFile.description"
-            bold={(text) => <strong>{text}</strong>}
+            bold={text => <strong>{text}</strong>}
             br={() => <br />}
           />
         ),
@@ -230,7 +226,7 @@ export const ToggleTheme = (
     | {
         allowSystemTheme?: false;
         onSelect?: (theme: Theme) => void;
-      },
+      }
 ) => {
   const { t } = useI18n();
   const appState = useUIAppState();
@@ -272,14 +268,12 @@ export const ToggleTheme = (
 
   return (
     <DropdownMenuItem
-      onSelect={(event) => {
+      onSelect={event => {
         // do not close the menu when changing theme
         event.preventDefault();
 
         if (props?.onSelect) {
-          props.onSelect(
-            appState.theme === THEME.DARK ? THEME.LIGHT : THEME.DARK,
-          );
+          props.onSelect(appState.theme === THEME.DARK ? THEME.LIGHT : THEME.DARK);
         } else {
           return actionManager.executeAction(actionToggleTheme);
         }
@@ -287,15 +281,9 @@ export const ToggleTheme = (
       icon={appState.theme === THEME.DARK ? SunIcon : MoonIcon}
       data-testid="toggle-dark-mode"
       shortcut={shortcut}
-      aria-label={
-        appState.theme === THEME.DARK
-          ? t("buttons.lightMode")
-          : t("buttons.darkMode")
-      }
+      aria-label={appState.theme === THEME.DARK ? t("buttons.lightMode") : t("buttons.darkMode")}
     >
-      {appState.theme === THEME.DARK
-        ? t("buttons.lightMode")
-        : t("buttons.darkMode")}
+      {appState.theme === THEME.DARK ? t("buttons.lightMode") : t("buttons.darkMode")}
     </DropdownMenuItem>
   );
 };
@@ -307,10 +295,7 @@ export const ChangeCanvasBackground = () => {
   const actionManager = useJsonDrawActionManager();
   const appProps = useAppProps();
 
-  if (
-    appState.viewModeEnabled ||
-    !appProps.UIOptions.canvasActions.changeViewBackgroundColor
-  ) {
+  if (appState.viewModeEnabled || !appProps.UIOptions.canvasActions.changeViewBackgroundColor) {
     return null;
   }
   return (
@@ -363,11 +348,7 @@ export const Socials = () => {
       >
         GitHub
       </DropdownMenuItemLink>
-      <DropdownMenuItemLink
-        icon={XBrandIcon}
-        href="https://x.com/jsondraw"
-        aria-label="X"
-      >
+      <DropdownMenuItemLink icon={XBrandIcon} href="https://x.com/jsondraw" aria-label="X">
         {t("labels.followUs")}
       </DropdownMenuItemLink>
       <DropdownMenuItemLink
@@ -415,7 +396,7 @@ const PreferencesToggleToolLockItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.activeTool.locked}
       shortcut={getShortcutFromShortcutName("toolLock")}
-      onSelect={(event) => {
+      onSelect={event => {
         app.toggleLock();
         event.preventDefault();
       }}
@@ -433,7 +414,7 @@ const PreferencesToggleSnapModeItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.objectsSnapModeEnabled}
       shortcut={getShortcutFromShortcutName("objectsSnapMode")}
-      onSelect={(event) => {
+      onSelect={event => {
         actionManager.executeAction(actionToggleObjectsSnapMode);
         event.preventDefault();
       }}
@@ -452,7 +433,7 @@ export const PreferencesToggleGridModeItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.gridModeEnabled}
       shortcut={getShortcutFromShortcutName("gridMode")}
-      onSelect={(event) => {
+      onSelect={event => {
         actionManager.executeAction(actionToggleGridMode);
         event.preventDefault();
       }}
@@ -470,7 +451,7 @@ export const PreferencesToggleZenModeItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.zenModeEnabled}
       shortcut={getShortcutFromShortcutName("zenMode")}
-      onSelect={(event) => {
+      onSelect={event => {
         actionManager.executeAction(actionToggleZenMode);
         event.preventDefault();
       }}
@@ -488,7 +469,7 @@ const PreferencesToggleViewModeItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.viewModeEnabled}
       shortcut={getShortcutFromShortcutName("viewMode")}
-      onSelect={(event) => {
+      onSelect={event => {
         actionManager.executeAction(actionToggleViewMode);
         event.preventDefault();
       }}
@@ -506,7 +487,7 @@ const PreferencesToggleElementPropertiesItem = () => {
     <DropdownMenuItemCheckbox
       checked={appState.stats.open}
       shortcut={getShortcutFromShortcutName("stats")}
-      onSelect={(event) => {
+      onSelect={event => {
         actionManager.executeAction(actionToggleStats);
         event.preventDefault();
       }}

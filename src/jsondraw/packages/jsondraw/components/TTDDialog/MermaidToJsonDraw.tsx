@@ -1,17 +1,14 @@
 import { useState, useRef, useEffect, useDeferredValue } from "react";
-
 import { EDITOR_LS_KEYS, debounce, isDevEnv } from "@jsondraw/common";
-
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
-
-import { useApp } from "../App";
-import { ArrowRightIcon } from "../icons";
+import { useUIAppState } from "../../context/ui-appState";
 import { EditorLocalStorage } from "../../data/EditorLocalStorage";
 import { t } from "../../i18n";
-import Trans from "../Trans";
-
-import { useUIAppState } from "../../context/ui-appState";
-
+import type { BinaryFiles } from "../../types";
+import { useApp } from "../App";
+import { ArrowRightIcon } from "../icons";
+import Trans from "../ui/Trans";
+import "./MermaidToJsonDraw.scss";
 import { TTDDialogInput } from "./TTDDialogInput";
 import { TTDDialogOutput } from "./TTDDialogOutput";
 import { TTDDialogPanel } from "./TTDDialogPanel";
@@ -23,10 +20,6 @@ import {
   saveMermaidDataToStorage,
   resetPreview,
 } from "./common";
-
-import "./MermaidToJsonDraw.scss";
-
-import type { BinaryFiles } from "../../types";
 import type { MermaidToJsonDrawLibProps } from "./types";
 
 const MERMAID_EXAMPLE =
@@ -42,9 +35,7 @@ const MermaidToJsonDraw = ({
   isActive?: boolean;
 }) => {
   const [text, setText] = useState(
-    () =>
-      EditorLocalStorage.get<string>(EDITOR_LS_KEYS.MERMAID_TO_JSONDRAW) ||
-      MERMAID_EXAMPLE,
+    () => EditorLocalStorage.get<string>(EDITOR_LS_KEYS.MERMAID_TO_JSONDRAW) || MERMAID_EXAMPLE
   );
   const deferredText = useDeferredValue(text.trim());
   const [error, setError] = useState<Error | null>(null);
@@ -95,7 +86,7 @@ const MermaidToJsonDraw = ({
     () => () => {
       debouncedSaveMermaidDefinition.flush();
     },
-    [],
+    []
   );
 
   const onInsertToEditor = () => {
@@ -112,17 +103,9 @@ const MermaidToJsonDraw = ({
       <div className="ttd-dialog-desc">
         <Trans
           i18nKey="mermaid.description"
-          flowchartLink={(el) => (
-            <a href="https://mermaid.js.org/syntax/flowchart.html">{el}</a>
-          )}
-          sequenceLink={(el) => (
-            <a href="https://mermaid.js.org/syntax/sequenceDiagram.html">
-              {el}
-            </a>
-          )}
-          classLink={(el) => (
-            <a href="https://mermaid.js.org/syntax/classDiagram.html">{el}</a>
-          )}
+          flowchartLink={el => <a href="https://mermaid.js.org/syntax/flowchart.html">{el}</a>}
+          sequenceLink={el => <a href="https://mermaid.js.org/syntax/sequenceDiagram.html">{el}</a>}
+          classLink={el => <a href="https://mermaid.js.org/syntax/classDiagram.html">{el}</a>}
         />
       </div>
       <TTDDialogPanels>
@@ -130,7 +113,7 @@ const MermaidToJsonDraw = ({
           <TTDDialogInput
             input={text}
             placeholder={t("mermaid.inputPlaceholder")}
-            onChange={(event) => setText(event.target.value)}
+            onChange={event => setText(event.target.value)}
             onKeyboardSubmit={() => {
               onInsertToEditor();
             }}

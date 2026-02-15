@@ -1,8 +1,7 @@
 import clsx from "clsx";
-
-import Spinner from "../Spinner";
 import { t } from "../../i18n";
 import { alertTriangleIcon } from "../icons";
+import Spinner from "../ui/Spinner";
 
 interface TTDDialogOutputProps {
   error: Error | null;
@@ -18,28 +17,14 @@ export const TTDDialogOutput = ({
   hideErrorDetails,
 }: TTDDialogOutputProps) => {
   return (
-    <div
-      className={`ttd-dialog-output-wrapper ${
-        error ? "ttd-dialog-output-wrapper--error" : ""
-      }`}
-    >
+    <div className={`ttd-dialog-output-wrapper ${error ? "ttd-dialog-output-wrapper--error" : ""}`}>
       {error && (
-        <div
-          key="error"
-          data-testid="ttd-dialog-output-error"
-          className="ttd-dialog-output-error"
-        >
+        <div key="error" data-testid="ttd-dialog-output-error" className="ttd-dialog-output-error">
           <div className="ttd-dialog-output-error-content">
-            <div className="ttd-dialog-output-error-icon">
-              {alertTriangleIcon}
-            </div>
-            <div className="ttd-dialog-output-error-title">
-              {t("ttd.error")}
-            </div>
+            <div className="ttd-dialog-output-error-icon">{alertTriangleIcon}</div>
+            <div className="ttd-dialog-output-error-title">{t("ttd.error")}</div>
             <div className="ttd-dialog-output-error-message">
-              {hideErrorDetails
-                ? t("chat.errors.mermaidParseError")
-                : error.message}
+              {hideErrorDetails ? t("chat.errors.mermaidParseError") : error.message}
             </div>
           </div>
         </div>

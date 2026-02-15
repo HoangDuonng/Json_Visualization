@@ -13,8 +13,6 @@ import { type FontFamilyValues } from "@jsondraw/element/types";
 import { Fonts } from "../../fonts";
 import { t } from "../../i18n";
 import { useApp, useAppProps, useJsonDrawContainer, useStylesPanelMode } from "../App";
-import { PropertiesPopover } from "../PropertiesPopover";
-import { ScrollableList } from "../ScrollableList";
 import DropdownMenuGroup from "../dropdownMenu/DropdownMenuGroup";
 import { DropDownMenuItemBadgeType, DropDownMenuItemBadge } from "../dropdownMenu/DropdownMenuItem";
 import MenuItemContent from "../dropdownMenu/DropdownMenuItemContent";
@@ -26,6 +24,8 @@ import {
   FreedrawIcon,
 } from "../icons";
 import { QuickSearch } from "../search/QuickSearch";
+import { PropertiesPopover } from "../ui/PropertiesPopover";
+import { ScrollableList } from "../ui/ScrollableList";
 import { fontPickerKeyHandler } from "./keyboardNavHandlers";
 
 export interface FontDescriptor {

@@ -1,6 +1,4 @@
-import { exportToCanvas } from "@jsondraw/utils/export";
 import React, { useEffect, useRef, useState } from "react";
-
 import {
   DEFAULT_EXPORT_PADDING,
   EXPORT_IMAGE_TYPES,
@@ -8,9 +6,8 @@ import {
   EXPORT_SCALES,
   cloneJSON,
 } from "@jsondraw/common";
-
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
-
+import { exportToCanvas } from "@jsondraw/utils/export";
 import {
   actionExportWithDarkMode,
   actionChangeExportBackground,
@@ -18,27 +15,22 @@ import {
   actionChangeExportScale,
   actionChangeProjectName,
 } from "../../actions/actionExport";
+import type { ActionManager } from "../../actions/manager";
 import { probablySupportsClipboardBlob } from "../../clipboard";
 import { prepareElementsForExport } from "../../data";
 import { canvasToBlob } from "../../data/blob";
 import { nativeFileSystemSupported } from "../../data/filesystem";
 import { useCopyStatus } from "../../hooks/useCopiedIndicator";
-
 import { t } from "../../i18n";
 import { isSomeElementSelected } from "../../scene";
-
-import { copyIcon, downloadIcon, helpIcon } from "../icons";
-import { Dialog } from "../dialogs/Dialog";
-import { RadioGroup } from "../RadioGroup";
-import { Switch } from "../Switch";
-import { Tooltip } from "../Tooltip";
-import { FilledButton } from "../FilledButton";
-
-import "./ImageExportDialog.scss";
-
-import type { ActionManager } from "../../actions/manager";
-
 import type { AppClassProperties, BinaryFiles, UIAppState } from "../../types";
+import { Dialog } from "../dialogs/Dialog";
+import { copyIcon, downloadIcon, helpIcon } from "../icons";
+import { FilledButton } from "../ui/FilledButton";
+import { RadioGroup } from "../ui/RadioGroup";
+import { Switch } from "../ui/Switch";
+import { Tooltip } from "../ui/Tooltip";
+import "./ImageExportDialog.scss";
 
 export const ErrorCanvasPreview = () => {
   return (
@@ -69,22 +61,15 @@ const ImageExportModal = ({
   onExportImage,
   name,
 }: ImageExportModalProps) => {
-  const hasSelection = isSomeElementSelected(
-    elementsSnapshot,
-    appStateSnapshot,
-  );
+  const hasSelection = isSomeElementSelected(elementsSnapshot, appStateSnapshot);
 
   const [projectName, setProjectName] = useState(name);
   const [exportSelectionOnly, setExportSelectionOnly] = useState(hasSelection);
   const [exportWithBackground, setExportWithBackground] = useState(
-    appStateSnapshot.exportBackground,
+    appStateSnapshot.exportBackground
   );
-  const [exportDarkMode, setExportDarkMode] = useState(
-    appStateSnapshot.exportWithDarkMode,
-  );
-  const [embedScene, setEmbedScene] = useState(
-    appStateSnapshot.exportEmbedScene,
-  );
+  const [exportDarkMode, setExportDarkMode] = useState(appStateSnapshot.exportWithDarkMode);
+  const [embedScene, setEmbedScene] = useState(appStateSnapshot.exportEmbedScene);
   const [exportScale, setExportScale] = useState(appStateSnapshot.exportScale);
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -96,19 +81,12 @@ const ImageExportModal = ({
     // if user changes setting right after export to clipboard, reset the status
     // so they don't have to wait for the timeout to click the button again
     resetCopyStatus();
-  }, [
-    projectName,
-    exportWithBackground,
-    exportDarkMode,
-    exportScale,
-    embedScene,
-    resetCopyStatus,
-  ]);
+  }, [projectName, exportWithBackground, exportDarkMode, exportScale, embedScene, resetCopyStatus]);
 
   const { exportedElements, exportingFrame } = prepareElementsForExport(
     elementsSnapshot,
     appStateSnapshot,
-    exportSelectionOnly,
+    exportSelectionOnly
   );
 
   useEffect(() => {
@@ -137,7 +115,7 @@ const ImageExportModal = ({
       maxWidthOrHeight: Math.max(maxWidth, maxHeight),
       exportingFrame,
     })
-      .then((canvas) => {
+      .then(canvas => {
         setRenderError(null);
         // if converting to blob fails, there's some problem that will
         // likely prevent preview and export (e.g. canvas too big)
@@ -145,14 +123,14 @@ const ImageExportModal = ({
           .then(() => {
             previewNode.replaceChildren(canvas);
           })
-          .catch((e) => {
+          .catch(e => {
             if (e.name === "CANVAS_POSSIBLY_TOO_BIG") {
               throw new Error(t("canvasError.canvasTooBig"));
             }
             throw e;
           });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         setRenderError(error);
       });
@@ -182,13 +160,9 @@ const ImageExportModal = ({
               className="TextInput"
               value={projectName}
               style={{ width: "30ch" }}
-              onChange={(event) => {
+              onChange={event => {
                 setProjectName(event.target.value);
-                actionManager.executeAction(
-                  actionChangeProjectName,
-                  "ui",
-                  event.target.value,
-                );
+                actionManager.executeAction(actionChangeProjectName, "ui", event.target.value);
               }}
             />
           )}
@@ -204,7 +178,7 @@ const ImageExportModal = ({
             <Switch
               name="exportOnlySelected"
               checked={exportSelectionOnly}
-              onChange={(checked) => {
+              onChange={checked => {
                 setExportSelectionOnly(checked);
               }}
             />
@@ -217,30 +191,19 @@ const ImageExportModal = ({
           <Switch
             name="exportBackgroundSwitch"
             checked={exportWithBackground}
-            onChange={(checked) => {
+            onChange={checked => {
               setExportWithBackground(checked);
-              actionManager.executeAction(
-                actionChangeExportBackground,
-                "ui",
-                checked,
-              );
+              actionManager.executeAction(actionChangeExportBackground, "ui", checked);
             }}
           />
         </ExportSetting>
-        <ExportSetting
-          label={t("imageExportDialog.label.darkMode")}
-          name="exportDarkModeSwitch"
-        >
+        <ExportSetting label={t("imageExportDialog.label.darkMode")} name="exportDarkModeSwitch">
           <Switch
             name="exportDarkModeSwitch"
             checked={exportDarkMode}
-            onChange={(checked) => {
+            onChange={checked => {
               setExportDarkMode(checked);
-              actionManager.executeAction(
-                actionExportWithDarkMode,
-                "ui",
-                checked,
-              );
+              actionManager.executeAction(actionExportWithDarkMode, "ui", checked);
             }}
           />
         </ExportSetting>
@@ -252,28 +215,21 @@ const ImageExportModal = ({
           <Switch
             name="exportEmbedSwitch"
             checked={embedScene}
-            onChange={(checked) => {
+            onChange={checked => {
               setEmbedScene(checked);
-              actionManager.executeAction(
-                actionChangeExportEmbedScene,
-                "ui",
-                checked,
-              );
+              actionManager.executeAction(actionChangeExportEmbedScene, "ui", checked);
             }}
           />
         </ExportSetting>
-        <ExportSetting
-          label={t("imageExportDialog.label.scale")}
-          name="exportScale"
-        >
+        <ExportSetting label={t("imageExportDialog.label.scale")} name="exportScale">
           <RadioGroup
             name="exportScale"
             value={exportScale}
-            onChange={(scale) => {
+            onChange={scale => {
               setExportScale(scale);
               actionManager.executeAction(actionChangeExportScale, "ui", scale);
             }}
-            choices={EXPORT_SCALES.map((scale) => ({
+            choices={EXPORT_SCALES.map(scale => ({
               value: scale,
               label: `${scale}\u00d7`,
             }))}
@@ -311,13 +267,9 @@ const ImageExportModal = ({
               label={t("imageExportDialog.title.copyPngToClipboard")}
               status={copyStatus}
               onClick={async () => {
-                await onExportImage(
-                  EXPORT_IMAGE_TYPES.clipboard,
-                  exportedElements,
-                  {
-                    exportingFrame,
-                  },
-                );
+                await onExportImage(EXPORT_IMAGE_TYPES.clipboard, exportedElements, {
+                  exportingFrame,
+                });
                 onCopy();
               }}
               icon={copyIcon}
@@ -338,18 +290,10 @@ type ExportSettingProps = {
   name?: string;
 };
 
-const ExportSetting = ({
-  label,
-  children,
-  tooltip,
-  name,
-}: ExportSettingProps) => {
+const ExportSetting = ({ label, children, tooltip, name }: ExportSettingProps) => {
   return (
     <div className="ImageExportModal__settings__setting" title={label}>
-      <label
-        htmlFor={name}
-        className="ImageExportModal__settings__setting__label"
-      >
+      <label htmlFor={name} className="ImageExportModal__settings__setting__label">
         {label}
         {tooltip && (
           <Tooltip label={tooltip} long={true}>
@@ -357,9 +301,7 @@ const ExportSetting = ({
           </Tooltip>
         )}
       </label>
-      <div className="ImageExportModal__settings__setting__content">
-        {children}
-      </div>
+      <div className="ImageExportModal__settings__setting__content">{children}</div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { focusNearestParent, KEYS } from "@jsondraw/common";
 import { useJsonDrawContainer } from "../App";
-import "../TextInput.scss";
+import "../ui/TextInput.scss";
 import "./ProjectName.scss";
 
 type Props = {

@@ -7,9 +7,9 @@ import { t } from "../../i18n";
 import { calculateScrollCenter } from "../../scene";
 import { SCROLLBAR_WIDTH, SCROLLBAR_MARGIN } from "../../scene/scrollbars";
 
-import { ExitViewModeButton, MobileShapeActions } from "../Actions";
-import { MobileToolBar } from "../MobileToolBar";
-import { PenModeButton } from "../PenModeButton";
+import { ExitViewModeButton, MobileShapeActions } from "../toolbar/Actions";
+import { MobileToolBar } from "../toolbar/MobileToolBar";
+import { PenModeButton } from "../toolbar/PenModeButton";
 
 import type { ActionManager } from "../../actions/manager";
 import type {

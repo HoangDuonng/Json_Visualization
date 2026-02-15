@@ -1,33 +1,21 @@
-import {
-  isWindows,
-  KEYS,
-  matchKey,
-  arrayToMap,
-  MOBILE_ACTION_BUTTON_BG,
-} from "@jsondraw/common";
-
+import { isWindows, KEYS, matchKey, arrayToMap, MOBILE_ACTION_BUTTON_BG } from "@jsondraw/common";
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import { orderByFractionalIndex } from "@jsondraw/element";
-
 import type { SceneElementsMap } from "@jsondraw/element/types";
-
-import { ToolButton } from "../components/ToolButton";
+import { useStylesPanelMode } from "..";
 import { UndoIcon, RedoIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { HistoryChangedEvent } from "../history";
+import type { History } from "../history";
 import { useEmitter } from "../hooks/useEmitter";
 import { t } from "../i18n";
-
-import { useStylesPanelMode } from "..";
-
-import type { History } from "../history";
 import type { AppClassProperties, AppState } from "../types";
 import type { Action, ActionResult } from "./types";
 
 const executeHistoryAction = (
   app: AppClassProperties,
   appState: Readonly<AppState>,
-  updater: () => [SceneElementsMap, AppState] | void,
+  updater: () => [SceneElementsMap, AppState] | void
 ): ActionResult => {
   if (
     !appState.multiElement &&
@@ -47,9 +35,7 @@ const executeHistoryAction = (
     const [nextElementsMap, nextAppState] = result;
 
     // order by fractional indices in case the map was accidently modified in the meantime
-    const nextElements = orderByFractionalIndex(
-      Array.from(nextElementsMap.values()),
-    );
+    const nextElements = orderByFractionalIndex(Array.from(nextElementsMap.values()));
 
     return {
       appState: nextAppState,
@@ -63,7 +49,7 @@ const executeHistoryAction = (
 
 type ActionCreator = (history: History) => Action;
 
-export const createUndoAction: ActionCreator = (history) => ({
+export const createUndoAction: ActionCreator = history => ({
   name: "undo",
   label: "buttons.undo",
   icon: UndoIcon,
@@ -71,17 +57,13 @@ export const createUndoAction: ActionCreator = (history) => ({
   viewMode: false,
   perform: (elements, appState, value, app) =>
     executeHistoryAction(app, appState, () =>
-      history.undo(arrayToMap(elements) as SceneElementsMap, appState),
+      history.undo(arrayToMap(elements) as SceneElementsMap, appState)
     ),
-  keyTest: (event) =>
-    event[KEYS.CTRL_OR_CMD] && matchKey(event, KEYS.Z) && !event.shiftKey,
+  keyTest: event => event[KEYS.CTRL_OR_CMD] && matchKey(event, KEYS.Z) && !event.shiftKey,
   PanelComponent: ({ appState, updateData, data, app }) => {
     const { isUndoStackEmpty } = useEmitter<HistoryChangedEvent>(
       history.onHistoryChangedEmitter,
-      new HistoryChangedEvent(
-        history.isUndoStackEmpty,
-        history.isRedoStackEmpty,
-      ),
+      new HistoryChangedEvent(history.isUndoStackEmpty, history.isRedoStackEmpty)
     );
     const isMobile = useStylesPanelMode() === "mobile";
 
@@ -102,7 +84,7 @@ export const createUndoAction: ActionCreator = (history) => ({
   },
 });
 
-export const createRedoAction: ActionCreator = (history) => ({
+export const createRedoAction: ActionCreator = history => ({
   name: "redo",
   label: "buttons.redo",
   icon: RedoIcon,
@@ -110,18 +92,15 @@ export const createRedoAction: ActionCreator = (history) => ({
   viewMode: false,
   perform: (elements, appState, __, app) =>
     executeHistoryAction(app, appState, () =>
-      history.redo(arrayToMap(elements) as SceneElementsMap, appState),
+      history.redo(arrayToMap(elements) as SceneElementsMap, appState)
     ),
-  keyTest: (event) =>
+  keyTest: event =>
     (event[KEYS.CTRL_OR_CMD] && event.shiftKey && matchKey(event, KEYS.Z)) ||
     (isWindows && event.ctrlKey && !event.shiftKey && matchKey(event, KEYS.Y)),
   PanelComponent: ({ appState, updateData, data, app }) => {
     const { isRedoStackEmpty } = useEmitter(
       history.onHistoryChangedEmitter,
-      new HistoryChangedEvent(
-        history.isUndoStackEmpty,
-        history.isRedoStackEmpty,
-      ),
+      new HistoryChangedEvent(history.isUndoStackEmpty, history.isRedoStackEmpty)
     );
     const isMobile = useStylesPanelMode() === "mobile";
 

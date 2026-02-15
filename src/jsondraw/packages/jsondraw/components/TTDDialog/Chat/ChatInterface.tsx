@@ -1,18 +1,12 @@
 import React, { useRef, useEffect, useLayoutEffect } from "react";
-import { KEYS } from "@jsondraw/common";
-
-import { ArrowRightIcon, stop as StopIcon } from "../../icons";
-import { InlineIcon } from "../../InlineIcon";
-
-import { t } from "../../../i18n";
-
-import { TTDWelcomeMessage } from "../TTDWelcomeMessage";
-
-import { ChatMessage } from "./ChatMessage";
-
-import type { TChat, TTTDDialog } from "../types";
-
 import type { FormEventHandler } from "react";
+import { KEYS } from "@jsondraw/common";
+import { t } from "../../../i18n";
+import { ArrowRightIcon, stop as StopIcon } from "../../icons";
+import { InlineIcon } from "../../ui/InlineIcon";
+import { TTDWelcomeMessage } from "../TTDWelcomeMessage";
+import type { TChat, TTTDDialog } from "../types";
+import { ChatMessage } from "./ChatMessage";
 
 export const ChatInterface = ({
   chatId,
@@ -95,13 +89,11 @@ export const ChatInterface = ({
   };
 
   const canSend =
-    currentPrompt.trim().length > 3 &&
-    !isGenerating &&
-    (rateLimits?.rateLimitRemaining ?? 1) > 0;
+    currentPrompt.trim().length > 3 && !isGenerating && (rateLimits?.rateLimitRemaining ?? 1) > 0;
 
   const canStop = isGenerating && !!onAbort;
 
-  const onInput: FormEventHandler<HTMLTextAreaElement> = (ev) => {
+  const onInput: FormEventHandler<HTMLTextAreaElement> = ev => {
     const target = ev.target as HTMLTextAreaElement;
     target.style.height = "auto";
     target.style.height = `${Math.min(target.scrollHeight, 120)}px`;
@@ -132,9 +124,7 @@ export const ChatInterface = ({
               isLastMessage={index === messages.length - 1}
               renderWarning={renderWarning}
               // so we don't allow to repair parse errors which aren't the last message
-              allowFixingParseError={
-                message.errorType === "parse" && index === messages.length - 1
-              }
+              allowFixingParseError={message.errorType === "parse" && index === messages.length - 1}
             />
           ))
         )}
@@ -146,9 +136,7 @@ export const ChatInterface = ({
           <div
             className="chat-interface__input-wrapper"
             style={{
-              borderColor: isGenerating
-                ? "var(--dialog-border-color)"
-                : undefined,
+              borderColor: isGenerating ? "var(--dialog-border-color)" : undefined,
             }}
           >
             <textarea
@@ -162,10 +150,10 @@ export const ChatInterface = ({
                 isGenerating
                   ? t("chat.generating")
                   : rateLimits?.rateLimitRemaining === 0
-                  ? t("chat.rateLimit.messageLimitInputPlaceholder")
-                  : messages.length > 0
-                  ? t("chat.inputPlaceholderWithMessages")
-                  : t("chat.inputPlaceholder", { shortcut: "Shift + Enter" })
+                    ? t("chat.rateLimit.messageLimitInputPlaceholder")
+                    : messages.length > 0
+                      ? t("chat.inputPlaceholderWithMessages")
+                      : t("chat.inputPlaceholder", { shortcut: "Shift + Enter" })
               }
               disabled={rateLimits?.rateLimitRemaining === 0}
               rows={1}
@@ -178,10 +166,7 @@ export const ChatInterface = ({
               disabled={!canSend && !canStop}
               type="button"
             >
-              <InlineIcon
-                size="1.5em"
-                icon={isGenerating ? StopIcon : ArrowRightIcon}
-              />
+              <InlineIcon size="1.5em" icon={isGenerating ? StopIcon : ArrowRightIcon} />
             </button>
           </div>
         </div>

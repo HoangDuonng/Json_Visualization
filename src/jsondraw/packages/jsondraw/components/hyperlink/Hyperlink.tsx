@@ -1,23 +1,5 @@
-import { pointFrom, type GlobalPoint } from "@jsondraw/math";
-import clsx from "clsx";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { EVENT, HYPERLINK_TOOLTIP_DELAY, KEYS } from "@jsondraw/common";
-
-import { getElementAbsoluteCoords } from "@jsondraw/element";
-
-import { hitElementBoundingBox } from "@jsondraw/element";
-
-import { isElementLink } from "@jsondraw/element";
-
-import { getEmbedLink, embeddableURLValidator } from "@jsondraw/element";
-
 import {
   sceneCoordsToViewportCoords,
   viewportCoordsToSceneCoords,
@@ -25,32 +7,29 @@ import {
   isLocalLink,
   normalizeLink,
 } from "@jsondraw/common";
-
+import { getElementAbsoluteCoords } from "@jsondraw/element";
+import { hitElementBoundingBox } from "@jsondraw/element";
+import { isElementLink } from "@jsondraw/element";
+import { getEmbedLink, embeddableURLValidator } from "@jsondraw/element";
 import { isEmbeddableElement } from "@jsondraw/element";
-
 import type { Scene } from "@jsondraw/element";
-
 import type {
   ElementsMap,
   JsonDrawEmbeddableElement,
   NonDeletedJsonDrawElement,
 } from "@jsondraw/element/types";
-
+import { pointFrom, type GlobalPoint } from "@jsondraw/math";
+import clsx from "clsx";
 import { trackEvent } from "../../analytics";
-import { getTooltipDiv, updateTooltipPosition } from "../../components/Tooltip";
-
+import { getTooltipDiv, updateTooltipPosition } from "../../components/ui/Tooltip";
 import { t } from "../../i18n";
-
-import { useAppProps, useEditorInterface, useJsonDrawAppState } from "../App";
-import { ToolButton } from "../ToolButton";
-import { FreedrawIcon, TrashIcon, elementLinkIcon } from "../icons";
 import { getSelectedElements } from "../../scene";
-
-import { getLinkHandleFromCoords } from "./helpers";
-
-import "./Hyperlink.scss";
-
 import type { AppState, JsonDrawProps, UIAppState } from "../../types";
+import { useAppProps, useEditorInterface, useJsonDrawAppState } from "../App";
+import { FreedrawIcon, TrashIcon, elementLinkIcon } from "../icons";
+import { ToolButton } from "../toolbar/ToolButton";
+import "./Hyperlink.scss";
+import { getLinkHandleFromCoords } from "./helpers";
 
 const POPUP_WIDTH = 380;
 const POPUP_HEIGHT = 42;
@@ -60,10 +39,7 @@ const AUTO_HIDE_TIMEOUT = 500;
 
 let IS_HYPERLINK_TOOLTIP_VISIBLE = false;
 
-const embeddableLinkCache = new Map<
-  JsonDrawEmbeddableElement["id"],
-  string
->();
+const embeddableLinkCache = new Map<JsonDrawEmbeddableElement["id"], string>();
 
 export const Hyperlink = ({
   element,
@@ -77,13 +53,8 @@ export const Hyperlink = ({
   scene: Scene;
   setAppState: React.Component<any, AppState>["setState"];
   onLinkOpen: JsonDrawProps["onLinkOpen"];
-  setToast: (
-    toast: { message: string; closable?: boolean; duration?: number } | null,
-  ) => void;
-  updateEmbedValidationStatus: (
-    element: JsonDrawEmbeddableElement,
-    status: boolean,
-  ) => void;
+  setToast: (toast: { message: string; closable?: boolean; duration?: number } | null) => void;
+  updateEmbedValidationStatus: (element: JsonDrawEmbeddableElement, status: boolean) => void;
 }) => {
   const elementsMap = scene.getNonDeletedElementsMap();
   const appState = useJsonDrawAppState();
@@ -137,26 +108,14 @@ export const Hyperlink = ({
             closable: true,
           });
         }
-        const ar = embedLink
-          ? embedLink.intrinsicSize.w / embedLink.intrinsicSize.h
-          : 1;
-        const hasLinkChanged =
-          embeddableLinkCache.get(element.id) !== element.link;
+        const ar = embedLink ? embedLink.intrinsicSize.w / embedLink.intrinsicSize.h : 1;
+        const hasLinkChanged = embeddableLinkCache.get(element.id) !== element.link;
         scene.mutateElement(element, {
           ...(hasLinkChanged
             ? {
-                width:
-                  embedLink?.type === "video"
-                    ? width > height
-                      ? width
-                      : height * ar
-                    : width,
+                width: embedLink?.type === "video" ? (width > height ? width : height * ar) : width,
                 height:
-                  embedLink?.type === "video"
-                    ? width > height
-                      ? width / ar
-                      : height
-                    : height,
+                  embedLink?.type === "video" ? (width > height ? width / ar : height) : height,
               }
             : {}),
           link,
@@ -209,7 +168,7 @@ export const Hyperlink = ({
         element,
         elementsMap,
         appState,
-        pointFrom(event.clientX, event.clientY),
+        pointFrom(event.clientX, event.clientY)
       ) as boolean;
       if (shouldHide) {
         timeoutId = window.setTimeout(() => {
@@ -264,9 +223,9 @@ export const Hyperlink = ({
           placeholder={t("labels.link.hint")}
           ref={inputRef}
           value={inputVal}
-          onChange={(event) => setInputVal(event.target.value)}
+          onChange={event => setInputVal(event.target.value)}
           autoFocus
-          onKeyDown={(event) => {
+          onKeyDown={event => {
             event.stopPropagation();
             // prevent cmd/ctrl+k shortcut when editing link
             if (event[KEYS.CTRL_OR_CMD] && event.key === KEYS.K) {
@@ -283,18 +242,15 @@ export const Hyperlink = ({
           href={normalizeLink(element.link || "")}
           className="jsondraw-hyperlinkContainer-link"
           target={isLocalLink(element.link) ? "_self" : "_blank"}
-          onClick={(event) => {
+          onClick={event => {
             if (element.link && onLinkOpen) {
-              const customEvent = wrapEvent(
-                EVENT.JSONDRAW_LINK,
-                event.nativeEvent,
-              );
+              const customEvent = wrapEvent(EVENT.JSONDRAW_LINK, event.nativeEvent);
               onLinkOpen(
                 {
                   ...element,
                   link: normalizeLink(element.link),
                 },
-                customEvent,
+                customEvent
               );
               if (customEvent.defaultPrevented) {
                 event.preventDefault();
@@ -306,9 +262,7 @@ export const Hyperlink = ({
           {element.link}
         </a>
       ) : (
-        <div className="jsondraw-hyperlinkContainer-link">
-          {t("labels.link.empty")}
-        </div>
+        <div className="jsondraw-hyperlinkContainer-link">{t("labels.link.empty")}</div>
       )}
       <div className="jsondraw-hyperlinkContainer__buttons">
         {!isEditing && (
@@ -356,12 +310,12 @@ export const Hyperlink = ({
 const getCoordsForPopover = (
   element: NonDeletedJsonDrawElement,
   appState: AppState,
-  elementsMap: ElementsMap,
+  elementsMap: ElementsMap
 ) => {
   const [x1, y1] = getElementAbsoluteCoords(element, elementsMap);
   const { x: viewportX, y: viewportY } = sceneCoordsToViewportCoords(
     { sceneX: x1 + element.width / 2, sceneY: y1 },
-    appState,
+    appState
   );
   const x = viewportX - appState.offsetLeft - POPUP_WIDTH / 2;
   const y = viewportY - appState.offsetTop - SPACE_BOTTOM;
@@ -370,14 +324,14 @@ const getCoordsForPopover = (
 
 export const getContextMenuLabel = (
   elements: readonly NonDeletedJsonDrawElement[],
-  appState: UIAppState,
+  appState: UIAppState
 ) => {
   const selectedElements = getSelectedElements(elements, appState);
   const label = isEmbeddableElement(selectedElements[0])
     ? "labels.link.editEmbed"
     : selectedElements[0]?.link
-    ? "labels.link.edit"
-    : "labels.link.create";
+      ? "labels.link.edit"
+      : "labels.link.create";
   return label;
 };
 
@@ -385,21 +339,21 @@ let HYPERLINK_TOOLTIP_TIMEOUT_ID: number | null = null;
 export const showHyperlinkTooltip = (
   element: NonDeletedJsonDrawElement,
   appState: AppState,
-  elementsMap: ElementsMap,
+  elementsMap: ElementsMap
 ) => {
   if (HYPERLINK_TOOLTIP_TIMEOUT_ID) {
     clearTimeout(HYPERLINK_TOOLTIP_TIMEOUT_ID);
   }
   HYPERLINK_TOOLTIP_TIMEOUT_ID = window.setTimeout(
     () => renderTooltip(element, appState, elementsMap),
-    HYPERLINK_TOOLTIP_DELAY,
+    HYPERLINK_TOOLTIP_DELAY
   );
 };
 
 const renderTooltip = (
   element: NonDeletedJsonDrawElement,
   appState: AppState,
-  elementsMap: ElementsMap,
+  elementsMap: ElementsMap
 ) => {
   if (!element.link) {
     return;
@@ -418,12 +372,12 @@ const renderTooltip = (
   const [linkX, linkY, linkWidth, linkHeight] = getLinkHandleFromCoords(
     [x1, y1, x2, y2],
     element.angle,
-    appState,
+    appState
   );
 
   const linkViewportCoords = sceneCoordsToViewportCoords(
     { sceneX: linkX, sceneY: linkY },
-    appState,
+    appState
   );
 
   updateTooltipPosition(
@@ -434,7 +388,7 @@ const renderTooltip = (
       width: linkWidth,
       height: linkHeight,
     },
-    "top",
+    "top"
   );
   trackEvent("hyperlink", "tooltip", "link-icon");
 
@@ -454,12 +408,9 @@ const shouldHideLinkPopup = (
   element: NonDeletedJsonDrawElement,
   elementsMap: ElementsMap,
   appState: AppState,
-  [clientX, clientY]: GlobalPoint,
+  [clientX, clientY]: GlobalPoint
 ): Boolean => {
-  const { x: sceneX, y: sceneY } = viewportCoordsToSceneCoords(
-    { clientX, clientY },
-    appState,
-  );
+  const { x: sceneX, y: sceneY } = viewportCoordsToSceneCoords({ clientX, clientY }, appState);
 
   const threshold = 15 / appState.zoom.value;
   // hitbox to prevent hiding when hovered in element bounding box
@@ -468,20 +419,11 @@ const shouldHideLinkPopup = (
   }
   const [x1, y1, x2] = getElementAbsoluteCoords(element, elementsMap);
   // hit box to prevent hiding when hovered in the vertical area between element and popover
-  if (
-    sceneX >= x1 &&
-    sceneX <= x2 &&
-    sceneY >= y1 - SPACE_BOTTOM &&
-    sceneY <= y1
-  ) {
+  if (sceneX >= x1 && sceneX <= x2 && sceneY >= y1 - SPACE_BOTTOM && sceneY <= y1) {
     return false;
   }
   // hit box to prevent hiding when hovered around popover within threshold
-  const { x: popoverX, y: popoverY } = getCoordsForPopover(
-    element,
-    appState,
-    elementsMap,
-  );
+  const { x: popoverX, y: popoverY } = getCoordsForPopover(element, appState, elementsMap);
 
   if (
     clientX >= popoverX - threshold &&

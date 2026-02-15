@@ -1,16 +1,12 @@
-import { isEmbeddableElement } from "@jsondraw/element";
-
 import { KEYS } from "@jsondraw/common";
-
+import { isEmbeddableElement } from "@jsondraw/element";
 import { CaptureUpdateAction } from "@jsondraw/element";
-
-import { ToolButton } from "../components/ToolButton";
 import { getContextMenuLabel } from "../components/hyperlink/Hyperlink";
 import { LinkIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
 import { getSelectedElements } from "../scene";
 import { getShortcutKey } from "../shortcut";
-
 import { register } from "./register";
 
 export const actionLink = register({
@@ -33,7 +29,7 @@ export const actionLink = register({
     };
   },
   trackEvent: { category: "hyperlink", action: "click" },
-  keyTest: (event) => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.K,
+  keyTest: event => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.K,
   predicate: (elements, appState) => {
     const selectedElements = getSelectedElements(elements, appState);
     return selectedElements.length === 1;
@@ -47,9 +43,7 @@ export const actionLink = register({
         icon={LinkIcon}
         aria-label={t(getContextMenuLabel(elements, appState))}
         title={`${
-          isEmbeddableElement(elements[0])
-            ? t("labels.link.labelEmbed")
-            : t("labels.link.label")
+          isEmbeddableElement(elements[0]) ? t("labels.link.labelEmbed") : t("labels.link.label")
         } - ${getShortcutKey("CtrlOrCmd+K")}`}
         onClick={() => updateData(null)}
         selected={selectedElements.length === 1 && !!selectedElements[0].link}

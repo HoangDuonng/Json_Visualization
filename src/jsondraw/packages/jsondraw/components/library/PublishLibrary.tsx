@@ -16,9 +16,9 @@ import { t } from "../../i18n";
 import type { LibraryItems, LibraryItem, UIAppState } from "../../types";
 import { Dialog } from "../dialogs/Dialog";
 import DialogActionButton from "../dialogs/DialogActionButton";
-import { ToolButton } from "../ToolButton";
-import Trans from "../Trans";
 import { CloseIcon } from "../icons";
+import { ToolButton } from "../toolbar/ToolButton";
+import Trans from "../ui/Trans";
 import "./PublishLibrary.scss";
 
 interface PublishLibraryDataParams {

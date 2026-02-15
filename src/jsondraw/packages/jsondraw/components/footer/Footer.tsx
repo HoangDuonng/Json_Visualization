@@ -2,8 +2,8 @@ import clsx from "clsx";
 
 import { actionShortcuts } from "../../actions";
 import { useTunnels } from "../../context/tunnels";
-import { ExitZenModeButton, UndoRedoActions, ZoomActions } from "../Actions";
-import { HelpButton } from "../HelpButton";
+import { ExitZenModeButton, UndoRedoActions, ZoomActions } from "../toolbar/Actions";
+import { HelpButton } from "../toolbar/HelpButton";
 import { Section } from "../layout/Section";
 import Stack from "../layout/Stack";
 

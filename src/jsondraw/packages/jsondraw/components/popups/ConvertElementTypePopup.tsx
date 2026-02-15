@@ -81,7 +81,7 @@ import { trackEvent } from "../../analytics";
 import { atom } from "../../editor-jotai";
 
 import "./ConvertElementTypePopup.scss";
-import { ToolButton } from "../ToolButton";
+import { ToolButton } from "../toolbar/ToolButton";
 import {
   DiamondIcon,
   elbowArrowIcon,

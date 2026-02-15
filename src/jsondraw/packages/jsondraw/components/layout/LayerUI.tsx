@@ -30,38 +30,38 @@ import type {
   UIAppState,
   AppClassProperties,
 } from "../../types";
-import { SelectedShapeActions, ShapesSwitcher, CompactShapeActions } from "../Actions";
-import { ActiveConfirmDialog } from "../dialogs/ActiveConfirmDialog";
 import { useEditorInterface, useStylesPanelMode } from "../App";
-import { DefaultSidebar } from "./DefaultSidebar";
-import { FixedSideContainer } from "./FixedSideContainer";
-import ElementLinkDialog from "../dialogs/ElementLinkDialog";
-import { ErrorDialog } from "../dialogs/ErrorDialog";
-import { EyeDropper, activeEyeDropperAtom } from "../canvases/EyeDropper";
-import { HandButton } from "../HandButton";
-import { HelpDialog } from "../dialogs/HelpDialog";
-import { HintViewer } from "../popups/HintViewer";
-import { ImageExportDialog } from "../export/ImageExportDialog";
-import { Island } from "./Island";
-import { JSONExportDialog } from "../export/JSONExportDialog";
-import { LaserPointerButton } from "../LaserPointerButton";
-import "./LayerUI.scss";
-import { LoadingMessage } from "../LoadingMessage";
-import { LockButton } from "../LockButton";
-import { MobileMenu } from "./MobileMenu";
 import { OverwriteConfirmDialog } from "../OverwriteConfirm/OverwriteConfirm";
-import { PasteChartDialog } from "../dialogs/PasteChartDialog";
-import { PenModeButton } from "../PenModeButton";
-import { Section } from "./Section";
 import { isSidebarDockedAtom } from "../Sidebar/Sidebar";
-import Stack from "./Stack";
 import { Stats } from "../Stats";
 import { TTDDialog } from "../TTDDialog/TTDDialog";
-import "../Toolbar.scss";
+import { EyeDropper, activeEyeDropperAtom } from "../canvases/EyeDropper";
+import { ActiveConfirmDialog } from "../dialogs/ActiveConfirmDialog";
+import ElementLinkDialog from "../dialogs/ElementLinkDialog";
+import { ErrorDialog } from "../dialogs/ErrorDialog";
+import { HelpDialog } from "../dialogs/HelpDialog";
+import { PasteChartDialog } from "../dialogs/PasteChartDialog";
+import { ImageExportDialog } from "../export/ImageExportDialog";
+import { JSONExportDialog } from "../export/JSONExportDialog";
 import Footer from "../footer/Footer";
 import { sidebarRightIcon } from "../icons";
 import MainMenu from "../main-menu/MainMenu";
+import { HintViewer } from "../popups/HintViewer";
+import { SelectedShapeActions, ShapesSwitcher, CompactShapeActions } from "../toolbar/Actions";
+import { HandButton } from "../toolbar/HandButton";
+import { LaserPointerButton } from "../toolbar/LaserPointerButton";
+import { LockButton } from "../toolbar/LockButton";
+import { PenModeButton } from "../toolbar/PenModeButton";
+import "../toolbar/Toolbar.scss";
+import { LoadingMessage } from "../ui/LoadingMessage";
 import { UserList } from "../user/UserList";
+import { DefaultSidebar } from "./DefaultSidebar";
+import { FixedSideContainer } from "./FixedSideContainer";
+import { Island } from "./Island";
+import "./LayerUI.scss";
+import { MobileMenu } from "./MobileMenu";
+import { Section } from "./Section";
+import Stack from "./Stack";
 
 interface LayerUIProps {
   actionManager: ActionManager;
@@ -459,7 +459,10 @@ const LayerUI = ({
           tunneled away. We only render tunneled components that actually
         have defaults when host do not render anything. */}
 
-      <DefaultMainMenu UIOptions={UIOptions} onClearDrawing={UIOptions.canvasActions.clearDrawing} />
+      <DefaultMainMenu
+        UIOptions={UIOptions}
+        onClearDrawing={UIOptions.canvasActions.clearDrawing}
+      />
       <DefaultSidebar.Trigger
         __fallback
         icon={sidebarRightIcon}

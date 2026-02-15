@@ -1,13 +1,9 @@
 import { isImageElement } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import type { JsonDrawImageElement } from "@jsondraw/element/types";
-
-import { ToolButton } from "../components/ToolButton";
 import { cropIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
-
 import { register } from "./register";
 
 export const actionToggleCropEditor = register({

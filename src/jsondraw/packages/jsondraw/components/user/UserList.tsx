@@ -8,9 +8,9 @@ import { t } from "../../i18n";
 import type { Collaborator, SocketId } from "../../types";
 import { useJsonDrawActionManager } from "../App";
 import { Island } from "../layout/Island";
-import { ScrollableList } from "../ScrollableList";
-import { Tooltip } from "../Tooltip";
 import { QuickSearch } from "../search/QuickSearch";
+import { ScrollableList } from "../ui/ScrollableList";
+import { Tooltip } from "../ui/Tooltip";
 import "./UserList.scss";
 
 export type GoToCollaboratorComponentProps = {

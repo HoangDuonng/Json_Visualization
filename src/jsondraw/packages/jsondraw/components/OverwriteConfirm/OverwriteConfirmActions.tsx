@@ -1,10 +1,9 @@
 import React from "react";
-
 import { actionSaveFileToDisk } from "../../actions";
 import { actionChangeExportEmbedScene } from "../../actions/actionExport";
 import { useI18n } from "../../i18n";
 import { useJsonDrawActionManager, useJsonDrawSetAppState } from "../App";
-import { FilledButton } from "../FilledButton";
+import { FilledButton } from "../ui/FilledButton";
 
 export type ActionProps = {
   title: string;
@@ -13,18 +12,11 @@ export type ActionProps = {
   onClick: () => void;
 };
 
-export const Action = ({
-  title,
-  children,
-  actionLabel,
-  onClick,
-}: ActionProps) => {
+export const Action = ({ title, children, actionLabel, onClick }: ActionProps) => {
   return (
     <div className="OverwriteConfirm__Actions__Action">
       <h4>{title}</h4>
-      <div className="OverwriteConfirm__Actions__Action__content">
-        {children}
-      </div>
+      <div className="OverwriteConfirm__Actions__Action__content">{children}</div>
       <FilledButton
         variant="outlined"
         color="muted"
@@ -80,7 +72,7 @@ const Actions = Object.assign(
   {
     ExportToImage,
     SaveToDisk,
-  },
+  }
 );
 
 export { Actions };

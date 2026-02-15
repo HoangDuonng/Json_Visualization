@@ -1,34 +1,16 @@
-import {
-  DEFAULT_GRID_SIZE,
-  KEYS,
-  MOBILE_ACTION_BUTTON_BG,
-  arrayToMap,
-} from "@jsondraw/common";
-
+import { DEFAULT_GRID_SIZE, KEYS, MOBILE_ACTION_BUTTON_BG, arrayToMap } from "@jsondraw/common";
 import { getNonDeletedElements } from "@jsondraw/element";
-
 import { LinearElementEditor } from "@jsondraw/element";
-
-import {
-  getSelectedElements,
-  getSelectionStateForElements,
-} from "@jsondraw/element";
-
+import { getSelectedElements, getSelectionStateForElements } from "@jsondraw/element";
 import { syncMovedIndices } from "@jsondraw/element";
-
 import { duplicateElements } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
-import { ToolButton } from "../components/ToolButton";
+import { useStylesPanelMode } from "..";
 import { DuplicateIcon } from "../components/icons";
-
+import { ToolButton } from "../components/toolbar/ToolButton";
 import { t } from "../i18n";
 import { isSomeElementSelected } from "../scene";
 import { getShortcutKey } from "../shortcut";
-
-import { useStylesPanelMode } from "..";
-
 import { register } from "./register";
 
 export const actionDuplicateSelection = register({
@@ -45,10 +27,7 @@ export const actionDuplicateSelection = register({
     if (appState.selectedLinearElement?.isEditing) {
       // TODO: Invariants should be checked here instead of duplicateSelectedPoints()
       try {
-        const newAppState = LinearElementEditor.duplicateSelectedPoints(
-          appState,
-          app.scene,
-        );
+        const newAppState = LinearElementEditor.duplicateSelectedPoints(appState, app.scene);
 
         return {
           elements,
@@ -67,7 +46,7 @@ export const actionDuplicateSelection = register({
         getSelectedElements(elements, appState, {
           includeBoundTextElement: true,
           includeElementsInFrames: true,
-        }),
+        })
       ),
       appState,
       randomizeSeed: true,
@@ -83,32 +62,26 @@ export const actionDuplicateSelection = register({
     });
 
     if (app.props.onDuplicate && elementsWithDuplicates) {
-      const mappedElements = app.props.onDuplicate(
-        elementsWithDuplicates,
-        elements,
-      );
+      const mappedElements = app.props.onDuplicate(elementsWithDuplicates, elements);
       if (mappedElements) {
         elementsWithDuplicates = mappedElements;
       }
     }
 
     return {
-      elements: syncMovedIndices(
-        elementsWithDuplicates,
-        arrayToMap(duplicatedElements),
-      ),
+      elements: syncMovedIndices(elementsWithDuplicates, arrayToMap(duplicatedElements)),
       appState: {
         ...appState,
         ...getSelectionStateForElements(
           duplicatedElements,
           getNonDeletedElements(elementsWithDuplicates),
-          appState,
+          appState
         ),
       },
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.D,
+  keyTest: event => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.D,
   PanelComponent: ({ elements, appState, updateData, app }) => {
     const isMobile = useStylesPanelMode() === "mobile";
 
@@ -116,14 +89,10 @@ export const actionDuplicateSelection = register({
       <ToolButton
         type="button"
         icon={DuplicateIcon}
-        title={`${t("labels.duplicateSelection")} — ${getShortcutKey(
-          "CtrlOrCmd+D",
-        )}`}
+        title={`${t("labels.duplicateSelection")} — ${getShortcutKey("CtrlOrCmd+D")}`}
         aria-label={t("labels.duplicateSelection")}
         onClick={() => updateData(null)}
-        disabled={
-          !isSomeElementSelected(getNonDeletedElements(elements), appState)
-        }
+        disabled={!isSomeElementSelected(getNonDeletedElements(elements), appState)}
         style={{
           ...(isMobile && appState.openPopup !== "compactOtherProperties"
             ? MOBILE_ACTION_BUTTON_BG

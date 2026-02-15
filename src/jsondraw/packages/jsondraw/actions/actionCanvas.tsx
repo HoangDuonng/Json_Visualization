@@ -1,5 +1,3 @@
-import { clamp, roundToStep } from "@jsondraw/math";
-
 import {
   DEFAULT_CANVAS_BACKGROUND_PICKS,
   CURSOR_TYPE,
@@ -11,23 +9,14 @@ import {
   CODES,
   KEYS,
 } from "@jsondraw/common";
-
 import { getNonDeletedElements } from "@jsondraw/element";
 import { newElementWith } from "@jsondraw/element";
 import { getCommonBounds, type SceneBounds } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
 import type { JsonDrawElement } from "@jsondraw/element/types";
-
-import {
-  getDefaultAppState,
-  isEraserActive,
-  isHandToolActive,
-} from "../appState";
+import { clamp, roundToStep } from "@jsondraw/math";
+import { getDefaultAppState, isEraserActive, isHandToolActive } from "../appState";
 import { ColorPicker } from "../components/ColorPicker/ColorPicker";
-import { ToolButton } from "../components/ToolButton";
-import { Tooltip } from "../components/Tooltip";
 import {
   handIcon,
   LassoIcon,
@@ -39,17 +28,16 @@ import {
   ZoomOutIcon,
   ZoomResetIcon,
 } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
+import { Tooltip } from "../components/ui/Tooltip";
 import { setCursor } from "../cursor";
-
 import { t } from "../i18n";
 import { getNormalizedZoom } from "../scene";
 import { centerScrollOn } from "../scene/scroll";
 import { getStateForZoom } from "../scene/zoom";
 import { getShortcutKey } from "../shortcut";
-
-import { register } from "./register";
-
 import type { AppState, Offsets } from "../types";
+import { register } from "./register";
 
 export const actionChangeViewBackgroundColor = register<Partial<AppState>>({
   name: "changeViewBackgroundColor",
@@ -57,8 +45,7 @@ export const actionChangeViewBackgroundColor = register<Partial<AppState>>({
   trackEvent: false,
   predicate: (elements, appState, props, app) => {
     return (
-      !!app.props.UIOptions.canvasActions.changeViewBackgroundColor &&
-      !appState.viewModeEnabled
+      !!app.props.UIOptions.canvasActions.changeViewBackgroundColor && !appState.viewModeEnabled
     );
   },
   perform: (_, appState, value) => {
@@ -78,7 +65,7 @@ export const actionChangeViewBackgroundColor = register<Partial<AppState>>({
         label={t("labels.canvasBackground")}
         type="canvasBackground"
         color={appState.viewBackgroundColor}
-        onChange={(color) => updateData({ viewBackgroundColor: color })}
+        onChange={color => updateData({ viewBackgroundColor: color })}
         data-testid="canvas-background-picker"
         elements={elements}
         appState={appState}
@@ -103,9 +90,7 @@ export const actionClearCanvas = register({
   perform: (elements, appState, _, app) => {
     app.imageCache.clear();
     return {
-      elements: elements.map((element) =>
-        newElementWith(element, { isDeleted: true }),
-      ),
+      elements: elements.map(element => newElementWith(element, { isDeleted: true })),
       appState: {
         ...getDefaultAppState(),
         files: {},
@@ -148,7 +133,7 @@ export const actionZoomIn = register({
             viewportY: appState.height / 2 + appState.offsetTop,
             nextZoom: getNormalizedZoom(appState.zoom.value + ZOOM_STEP),
           },
-          appState,
+          appState
         ),
         userToFollow: null,
       },
@@ -168,7 +153,7 @@ export const actionZoomIn = register({
       }}
     />
   ),
-  keyTest: (event) =>
+  keyTest: event =>
     (event.code === CODES.EQUAL || event.code === CODES.NUM_ADD) &&
     (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
 });
@@ -189,7 +174,7 @@ export const actionZoomOut = register({
             viewportY: appState.height / 2 + appState.offsetTop,
             nextZoom: getNormalizedZoom(appState.zoom.value - ZOOM_STEP),
           },
-          appState,
+          appState
         ),
         userToFollow: null,
       },
@@ -209,7 +194,7 @@ export const actionZoomOut = register({
       }}
     />
   ),
-  keyTest: (event) =>
+  keyTest: event =>
     (event.code === CODES.MINUS || event.code === CODES.NUM_SUBTRACT) &&
     (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
 });
@@ -230,7 +215,7 @@ export const actionResetZoom = register({
             viewportY: appState.height / 2 + appState.offsetTop,
             nextZoom: getNormalizedZoom(1),
           },
-          appState,
+          appState
         ),
         userToFollow: null,
       },
@@ -252,7 +237,7 @@ export const actionResetZoom = register({
       </ToolButton>
     </Tooltip>
   ),
-  keyTest: (event) =>
+  keyTest: event =>
     (event.code === CODES.ZERO || event.code === CODES.NUM_ZERO) &&
     (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
 });
@@ -260,7 +245,7 @@ export const actionResetZoom = register({
 const zoomValueToFitBoundsOnViewport = (
   bounds: SceneBounds,
   viewportDimensions: { width: number; height: number },
-  viewportZoomFactor: number = 1, // default to 1 if not provided
+  viewportZoomFactor: number = 1 // default to 1 if not provided
 ) => {
   const [x1, y1, x2, y2] = bounds;
   const commonBoundsWidth = x2 - x1;
@@ -269,8 +254,7 @@ const zoomValueToFitBoundsOnViewport = (
   const zoomValueForHeight = viewportDimensions.height / commonBoundsHeight;
   const smallestZoomValue = Math.min(zoomValueForWidth, zoomValueForHeight);
 
-  const adjustedZoomValue =
-    smallestZoomValue * clamp(viewportZoomFactor, 0.1, 1);
+  const adjustedZoomValue = smallestZoomValue * clamp(viewportZoomFactor, 0.1, 1);
 
   return Math.min(adjustedZoomValue, 1);
 };
@@ -305,10 +289,8 @@ export const zoomToFitBounds = ({
   const canvasOffsetRight = canvasOffsets?.right ?? 0;
   const canvasOffsetBottom = canvasOffsets?.bottom ?? 0;
 
-  const effectiveCanvasWidth =
-    appState.width - canvasOffsetLeft - canvasOffsetRight;
-  const effectiveCanvasHeight =
-    appState.height - canvasOffsetTop - canvasOffsetBottom;
+  const effectiveCanvasWidth = appState.width - canvasOffsetLeft - canvasOffsetRight;
+  const effectiveCanvasHeight = appState.height - canvasOffsetTop - canvasOffsetBottom;
 
   let adjustedZoomValue;
 
@@ -319,7 +301,7 @@ export const zoomToFitBounds = ({
     adjustedZoomValue =
       Math.min(
         effectiveCanvasWidth / commonBoundsWidth,
-        effectiveCanvasHeight / commonBoundsHeight,
+        effectiveCanvasHeight / commonBoundsHeight
       ) * viewportZoomFactor;
   } else {
     adjustedZoomValue = zoomValueToFitBoundsOnViewport(
@@ -328,12 +310,12 @@ export const zoomToFitBounds = ({
         width: effectiveCanvasWidth,
         height: effectiveCanvasHeight,
       },
-      viewportZoomFactor,
+      viewportZoomFactor
     );
   }
 
   const newZoomValue = getNormalizedZoom(
-    clamp(roundToStep(adjustedZoomValue, ZOOM_STEP, "floor"), minZoom, maxZoom),
+    clamp(roundToStep(adjustedZoomValue, ZOOM_STEP, "floor"), minZoom, maxZoom)
   );
 
   const centerScroll = centerScrollOn({
@@ -411,11 +393,8 @@ export const actionZoomToFitSelectionInViewport = register({
   },
   // NOTE shift-2 should have been assigned actionZoomToFitSelection.
   // TBD on how proceed
-  keyTest: (event) =>
-    event.code === CODES.TWO &&
-    event.shiftKey &&
-    !event.altKey &&
-    !event[KEYS.CTRL_OR_CMD],
+  keyTest: event =>
+    event.code === CODES.TWO && event.shiftKey && !event.altKey && !event[KEYS.CTRL_OR_CMD],
 });
 
 export const actionZoomToFitSelection = register({
@@ -436,11 +415,8 @@ export const actionZoomToFitSelection = register({
     });
   },
   // NOTE this action should use shift-2 per figma, alas
-  keyTest: (event) =>
-    event.code === CODES.THREE &&
-    event.shiftKey &&
-    !event.altKey &&
-    !event[KEYS.CTRL_OR_CMD],
+  keyTest: event =>
+    event.code === CODES.THREE && event.shiftKey && !event.altKey && !event[KEYS.CTRL_OR_CMD],
 });
 
 export const actionZoomToFit = register({
@@ -459,36 +435,29 @@ export const actionZoomToFit = register({
       fitToViewport: false,
       canvasOffsets: app.getEditorUIOffsets(),
     }),
-  keyTest: (event) =>
-    event.code === CODES.ONE &&
-    event.shiftKey &&
-    !event.altKey &&
-    !event[KEYS.CTRL_OR_CMD],
+  keyTest: event =>
+    event.code === CODES.ONE && event.shiftKey && !event.altKey && !event[KEYS.CTRL_OR_CMD],
 });
 
 export const actionToggleTheme = register<AppState["theme"]>({
   name: "toggleTheme",
   label: (_, appState) => {
-    return appState.theme === THEME.DARK
-      ? "buttons.lightMode"
-      : "buttons.darkMode";
+    return appState.theme === THEME.DARK ? "buttons.lightMode" : "buttons.darkMode";
   },
   keywords: ["toggle", "dark", "light", "mode", "theme"],
-  icon: (appState, elements) =>
-    appState.theme === THEME.LIGHT ? MoonIcon : SunIcon,
+  icon: (appState, elements) => (appState.theme === THEME.LIGHT ? MoonIcon : SunIcon),
   viewMode: true,
   trackEvent: { category: "canvas" },
   perform: (_, appState, value) => {
     return {
       appState: {
         ...appState,
-        theme:
-          value || (appState.theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT),
+        theme: value || (appState.theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT),
       },
       captureUpdate: CaptureUpdateAction.EVENTUALLY,
     };
   },
-  keyTest: (event) => event.altKey && event.shiftKey && event.code === CODES.D,
+  keyTest: event => event.altKey && event.shiftKey && event.code === CODES.D,
   predicate: (elements, appState, props, app) => {
     return !!app.props.UIOptions.canvasActions.toggleTheme;
   },
@@ -526,7 +495,7 @@ export const actionToggleEraserTool = register({
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) => event.key === KEYS.E,
+  keyTest: event => event.key === KEYS.E,
 });
 
 export const actionToggleLassoTool = register({
@@ -600,6 +569,5 @@ export const actionToggleHandTool = register({
       captureUpdate: CaptureUpdateAction.IMMEDIATELY,
     };
   },
-  keyTest: (event) =>
-    !event.altKey && !event[KEYS.CTRL_OR_CMD] && event.key === KEYS.H,
+  keyTest: event => !event.altKey && !event[KEYS.CTRL_OR_CMD] && event.key === KEYS.H,
 });

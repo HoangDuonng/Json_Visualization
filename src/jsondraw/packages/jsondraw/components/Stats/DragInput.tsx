@@ -1,30 +1,18 @@
-import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-
 import { EVENT, KEYS, cloneJSON } from "@jsondraw/common";
-
 import { deepCopyElement } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
-import type { ElementsMap, JsonDrawElement } from "@jsondraw/element/types";
-
 import type { Scene } from "@jsondraw/element";
-
-import { useApp, useJsonDrawSetAppState } from "../App";
-import { InlineIcon } from "../InlineIcon";
-
-import { SMALLEST_DELTA } from "./utils";
-
-import "./DragInput.scss";
-
-import type { StatsInputProperty } from "./utils";
+import type { ElementsMap, JsonDrawElement } from "@jsondraw/element/types";
+import clsx from "clsx";
 import type { AppState } from "../../types";
+import { useApp, useJsonDrawSetAppState } from "../App";
+import { InlineIcon } from "../ui/InlineIcon";
+import "./DragInput.scss";
+import { SMALLEST_DELTA } from "./utils";
+import type { StatsInputProperty } from "./utils";
 
-export type DragInputCallbackType<
-  P extends StatsInputProperty,
-  E = JsonDrawElement,
-> = (props: {
+export type DragInputCallbackType<P extends StatsInputProperty, E = JsonDrawElement> = (props: {
   accumulatedChange: number;
   instantChange: number;
   originalElements: readonly E[];
@@ -47,10 +35,7 @@ export type DragFinishedCallbackType<E = JsonDrawElement> = (props: {
   originalAppState: AppState;
 }) => void;
 
-interface StatsDragInputProps<
-  T extends StatsInputProperty,
-  E = JsonDrawElement,
-> {
+interface StatsDragInputProps<T extends StatsInputProperty, E = JsonDrawElement> {
   label: string | React.ReactNode;
   icon?: React.ReactNode;
   value: number | "Mixed";
@@ -66,10 +51,7 @@ interface StatsDragInputProps<
   dragFinishedCallback?: DragFinishedCallbackType;
 }
 
-const StatsDragInput = <
-  T extends StatsInputProperty,
-  E extends JsonDrawElement = JsonDrawElement,
->({
+const StatsDragInput = <T extends StatsInputProperty, E extends JsonDrawElement = JsonDrawElement>({
   label,
   icon,
   dragInputCallback,
@@ -111,11 +93,7 @@ const StatsDragInput = <
     stateRef.current.lastUpdatedValue = inputValue;
   }, [value]);
 
-  const handleInputValue = (
-    updatedValue: string,
-    elements: readonly E[],
-    appState: AppState,
-  ) => {
+  const handleInputValue = (updatedValue: string, elements: readonly E[], appState: AppState) => {
     if (!stateRef.current.updatePending) {
       return false;
     }
@@ -148,7 +126,7 @@ const StatsDragInput = <
         nextValue: rounded,
         property,
         originalAppState: appState,
-        setInputValue: (value) => setInputValue(String(value)),
+        setInputValue: value => setInputValue(String(value)),
         app,
         setAppState,
       });
@@ -178,23 +156,15 @@ const StatsDragInput = <
         callbacks.handleInputValue?.(
           nextValue,
           stateRef.current.originalElements,
-          stateRef.current.originalAppState,
+          stateRef.current.originalAppState
         );
       }
 
       // generally not needed, but in case `pointerup` doesn't fire and
       // we don't remove the listeners that way, we should at least remove
       // on unmount
-      window.removeEventListener(
-        EVENT.POINTER_MOVE,
-        callbacks.onPointerMove!,
-        false,
-      );
-      window.removeEventListener(
-        EVENT.POINTER_UP,
-        callbacks.onPointerUp!,
-        false,
-      );
+      window.removeEventListener(EVENT.POINTER_MOVE, callbacks.onPointerMove!, false);
+      window.removeEventListener(EVENT.POINTER_UP, callbacks.onPointerUp!, false);
     };
   }, [
     // we need to track change of `editable` state as mount/unmount
@@ -211,14 +181,11 @@ const StatsDragInput = <
   }
 
   return (
-    <div
-      className={clsx("drag-input-container", !editable && "disabled")}
-      data-testid={label}
-    >
+    <div className={clsx("drag-input-container", !editable && "disabled")} data-testid={label}>
       <div
         className="drag-input-label"
         ref={labelRef}
-        onPointerDown={(event) => {
+        onPointerDown={event => {
           if (inputRef.current && editable) {
             document.body.classList.add("jsondraw-cursor-resize");
 
@@ -240,7 +207,7 @@ const StatsDragInput = <
               }, new Map());
 
             let originalElements: readonly E[] | null = elements.map(
-              (element) => originalElementsMap!.get(element.id) as E,
+              element => originalElementsMap!.get(element.id) as E
             );
 
             const originalAppState: AppState = cloneJSON(appState);
@@ -249,11 +216,7 @@ const StatsDragInput = <
             let stepChange = 0;
 
             const onPointerMove = (event: PointerEvent) => {
-              if (
-                lastPointer &&
-                originalElementsMap !== null &&
-                originalElements !== null
-              ) {
+              if (lastPointer && originalElementsMap !== null && originalElements !== null) {
                 const instantChange = event.clientX - lastPointer.x;
 
                 if (instantChange !== 0) {
@@ -261,8 +224,7 @@ const StatsDragInput = <
 
                   if (Math.abs(stepChange) >= sensitivity) {
                     stepChange =
-                      Math.sign(stepChange) *
-                      Math.floor(Math.abs(stepChange) / sensitivity);
+                      Math.sign(stepChange) * Math.floor(Math.abs(stepChange) / sensitivity);
 
                     accumulatedChange += stepChange;
 
@@ -276,7 +238,7 @@ const StatsDragInput = <
                       property,
                       scene,
                       originalAppState,
-                      setInputValue: (value) => setInputValue(String(value)),
+                      setInputValue: value => setInputValue(String(value)),
                       app,
                       setAppState,
                     });
@@ -293,11 +255,7 @@ const StatsDragInput = <
             };
 
             const onPointerUp = () => {
-              window.removeEventListener(
-                EVENT.POINTER_MOVE,
-                onPointerMove,
-                false,
-              );
+              window.removeEventListener(EVENT.POINTER_MOVE, onPointerMove, false);
 
               app.syncActionResult({
                 captureUpdate: CaptureUpdateAction.IMMEDIATELY,
@@ -341,13 +299,10 @@ const StatsDragInput = <
         className="drag-input"
         autoComplete="off"
         spellCheck="false"
-        onKeyDown={(event) => {
+        onKeyDown={event => {
           if (editable) {
             const eventTarget = event.target;
-            if (
-              eventTarget instanceof HTMLInputElement &&
-              event.key === KEYS.ENTER
-            ) {
+            if (eventTarget instanceof HTMLInputElement && event.key === KEYS.ENTER) {
               handleInputValue(eventTarget.value, elements, appState);
               app.focusContainer();
             }
@@ -355,23 +310,23 @@ const StatsDragInput = <
         }}
         ref={inputRef}
         value={inputValue}
-        onChange={(event) => {
+        onChange={event => {
           stateRef.current.updatePending = true;
           setInputValue(event.target.value);
         }}
-        onFocus={(event) => {
+        onFocus={event => {
           event.target.select();
           stateRef.current.originalElements = elements;
           stateRef.current.originalAppState = cloneJSON(appState);
         }}
-        onBlur={(event) => {
+        onBlur={event => {
           if (!inputValue) {
             setInputValue(value.toString());
           } else if (editable) {
             handleInputValue(
               event.target.value,
               stateRef.current.originalElements,
-              stateRef.current.originalAppState,
+              stateRef.current.originalAppState
             );
           }
         }}

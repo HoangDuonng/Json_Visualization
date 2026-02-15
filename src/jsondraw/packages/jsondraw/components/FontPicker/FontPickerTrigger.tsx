@@ -1,14 +1,10 @@
-import { Popover } from "radix-ui";
-
 import { MOBILE_ACTION_BUTTON_BG } from "@jsondraw/common";
-
 import type { FontFamilyValues } from "@jsondraw/element/types";
-
+import { Popover } from "radix-ui";
 import { t } from "../../i18n";
-import { ButtonIcon } from "../ButtonIcon";
-import { TextIcon } from "../icons";
-
 import { useJsonDrawSetAppState } from "../App";
+import { TextIcon } from "../icons";
+import { ButtonIcon } from "../ui/ButtonIcon";
 
 interface FontPickerTriggerProps {
   selectedFontFamily: FontFamilyValues | null;
@@ -42,9 +38,8 @@ export const FontPickerTrigger = ({
           testId={"font-family-show-fonts"}
           active={isOpened}
           onClick={() => {
-            setAppState((appState) => ({
-              openPopup:
-                appState.openPopup === "fontFamily" ? null : appState.openPopup,
+            setAppState(appState => ({
+              openPopup: appState.openPopup === "fontFamily" ? null : appState.openPopup,
             }));
           }}
           style={{

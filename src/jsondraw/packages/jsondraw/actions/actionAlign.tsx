@@ -16,7 +16,7 @@ import type { JsonDrawElement } from "@jsondraw/element/types";
 
 import type { Alignment } from "@jsondraw/element";
 
-import { ToolButton } from "../components/ToolButton";
+import { ToolButton } from "../components/toolbar/ToolButton";
 import {
   AlignBottomIcon,
   AlignLeftIcon,

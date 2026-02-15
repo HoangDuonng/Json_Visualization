@@ -13,10 +13,10 @@ import type { LibraryItem, LibraryItems, UIAppState } from "../../types";
 import { useApp, useJsonDrawSetAppState } from "../App";
 import ConfirmDialog from "../dialogs/ConfirmDialog";
 import { Dialog } from "../dialogs/Dialog";
-import { ToolButton } from "../ToolButton";
-import Trans from "../Trans";
 import DropdownMenu from "../dropdownMenu/DropdownMenu";
 import { DotsIcon, ExportIcon, LoadIcon, publishIcon, TrashIcon } from "../icons";
+import { ToolButton } from "../toolbar/ToolButton";
+import Trans from "../ui/Trans";
 import { isLibraryMenuOpenAtom } from "./LibraryMenu";
 import PublishLibrary from "./PublishLibrary";
 

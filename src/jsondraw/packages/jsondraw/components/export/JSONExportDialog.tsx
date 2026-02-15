@@ -1,30 +1,19 @@
 import React from "react";
-
 import { getFrame } from "@jsondraw/common";
-
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
-
 import { actionSaveFileToDisk } from "../../actions/actionExport";
-
+import type { ActionManager } from "../../actions/manager";
 import { trackEvent } from "../../analytics";
 import { nativeFileSystemSupported } from "../../data/filesystem";
 import { t } from "../../i18n";
-
-import { Card } from "../Card";
+import type { ExportOpts, BinaryFiles, UIAppState } from "../../types";
 import { Dialog } from "../dialogs/Dialog";
-import { ToolButton } from "../ToolButton";
 import { exportToFileIcon, LinkIcon } from "../icons";
-
+import { ToolButton } from "../toolbar/ToolButton";
+import { Card } from "../ui/Card";
 import "./ExportDialog.scss";
 
-import type { ActionManager } from "../../actions/manager";
-
-import type { ExportOpts, BinaryFiles, UIAppState } from "../../types";
-
-export type ExportCB = (
-  elements: readonly NonDeletedJsonDrawElement[],
-  scale?: number,
-) => void;
+export type ExportCB = (elements: readonly NonDeletedJsonDrawElement[], scale?: number) => void;
 
 const JSONExportModal = ({
   elements,
@@ -55,8 +44,7 @@ const JSONExportModal = ({
             <h2>{t("exportDialog.disk_title")}</h2>
             <div className="Card-details">
               {t("exportDialog.disk_details")}
-              {!nativeFileSystemSupported &&
-                actionManager.renderAction("changeProjectName")}
+              {!nativeFileSystemSupported && actionManager.renderAction("changeProjectName")}
             </div>
             <ToolButton
               className="Card-button"
@@ -93,8 +81,7 @@ const JSONExportModal = ({
             />
           </Card>
         )}
-        {exportOpts.renderCustomUI &&
-          exportOpts.renderCustomUI(elements, appState, files, canvas)}
+        {exportOpts.renderCustomUI && exportOpts.renderCustomUI(elements, appState, files, canvas)}
       </div>
     </div>
   );

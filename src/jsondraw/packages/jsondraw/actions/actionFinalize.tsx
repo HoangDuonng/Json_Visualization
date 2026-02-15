@@ -1,19 +1,3 @@
-import { pointFrom } from "@jsondraw/math";
-
-import { bindOrUnbindBindingElement } from "@jsondraw/element/binding";
-import {
-  isValidPolygon,
-  LinearElementEditor,
-  newElementWith,
-} from "@jsondraw/element";
-
-import {
-  isBindingElement,
-  isFreeDrawElement,
-  isLinearElement,
-  isLineElement,
-} from "@jsondraw/element";
-
 import {
   KEYS,
   arrayToMap,
@@ -21,28 +5,31 @@ import {
   shouldRotateWithDiscreteAngle,
   updateActiveTool,
 } from "@jsondraw/common";
+import { isValidPolygon, LinearElementEditor, newElementWith } from "@jsondraw/element";
+import {
+  isBindingElement,
+  isFreeDrawElement,
+  isLinearElement,
+  isLineElement,
+} from "@jsondraw/element";
 import { isPathALoop } from "@jsondraw/element";
-
 import { isInvisiblySmallElement } from "@jsondraw/element";
-
 import { CaptureUpdateAction } from "@jsondraw/element";
-
-import type { GlobalPoint, LocalPoint } from "@jsondraw/math";
+import { bindOrUnbindBindingElement } from "@jsondraw/element/binding";
 import type {
   JsonDrawElement,
   JsonDrawLinearElement,
   NonDeleted,
   PointsPositionUpdates,
 } from "@jsondraw/element/types";
-
-import { t } from "../i18n";
-import { resetCursor } from "../cursor";
+import { pointFrom } from "@jsondraw/math";
+import type { GlobalPoint, LocalPoint } from "@jsondraw/math";
 import { done } from "../components/icons";
-import { ToolButton } from "../components/ToolButton";
-
-import { register } from "./register";
-
+import { ToolButton } from "../components/toolbar/ToolButton";
+import { resetCursor } from "../cursor";
+import { t } from "../i18n";
 import type { AppState } from "../types";
+import { register } from "./register";
 
 type FormData = {
   event: PointerEvent;
@@ -62,24 +49,21 @@ export const actionFinalize = register<FormData>({
       const { event, sceneCoords } = data;
       const element = LinearElementEditor.getElement(
         appState.selectedLinearElement.elementId,
-        elementsMap,
+        elementsMap
       );
 
-      invariant(
-        element,
-        "Arrow element should exist if selectedLinearElement is set",
-      );
+      invariant(element, "Arrow element should exist if selectedLinearElement is set");
 
       invariant(
         sceneCoords,
-        "sceneCoords should be defined if actionFinalize is called with event",
+        "sceneCoords should be defined if actionFinalize is called with event"
       );
 
       const linearElementEditor = LinearElementEditor.handlePointerUp(
         event,
         appState.selectedLinearElement,
         appState,
-        app.scene,
+        app.scene
       );
 
       if (
@@ -100,9 +84,9 @@ export const actionFinalize = register<FormData>({
                 element,
                 pointFrom<GlobalPoint>(
                   sceneCoords.x - linearElementEditor.pointerOffset.x,
-                  sceneCoords.y - linearElementEditor.pointerOffset.y,
+                  sceneCoords.y - linearElementEditor.pointerOffset.y
                 ),
-                elementsMap,
+                elementsMap
               ),
             });
 
@@ -119,7 +103,7 @@ export const actionFinalize = register<FormData>({
             newArrow,
             altKey: event.altKey,
             angleLocked: shouldRotateWithDiscreteAngle(event),
-          },
+          }
         );
       } else if (isLineElement(element)) {
         if (
@@ -140,7 +124,7 @@ export const actionFinalize = register<FormData>({
 
         if (element && isInvisiblySmallElement(element)) {
           // TODO: #7348 in theory this gets recorded by the store, so the invisible elements could be restored by the undo/redo, which might be not what we would want
-          newElements = newElements.map((el) => {
+          newElements = newElements.map(el => {
             if (el.id === element.id) {
               return newElementWith(el, {
                 isDeleted: true,
@@ -155,7 +139,7 @@ export const actionFinalize = register<FormData>({
         return {
           elements:
             element.points.length < 2 || isInvisiblySmallElement(element)
-              ? elements.map((el) => {
+              ? elements.map(el => {
                   if (el.id === element.id) {
                     return newElementWith(el, { isDeleted: true });
                   }
@@ -194,15 +178,12 @@ export const actionFinalize = register<FormData>({
     let element: NonDeleted<JsonDrawElement> | null = null;
     if (appState.multiElement) {
       element = appState.multiElement;
-    } else if (
-      appState.newElement?.type === "freedraw" ||
-      isBindingElement(appState.newElement)
-    ) {
+    } else if (appState.newElement?.type === "freedraw" || isBindingElement(appState.newElement)) {
       element = appState.newElement;
     } else if (Object.keys(appState.selectedElementIds).length === 1) {
-      const candidate = elementsMap.get(
-        Object.keys(appState.selectedElementIds)[0],
-      ) as NonDeleted<JsonDrawLinearElement> | undefined;
+      const candidate = elementsMap.get(Object.keys(appState.selectedElementIds)[0]) as
+        | NonDeleted<JsonDrawLinearElement>
+        | undefined;
       if (candidate) {
         element = candidate;
       }
@@ -218,10 +199,7 @@ export const actionFinalize = register<FormData>({
       ) {
         const { points } = element;
         const { lastCommittedPoint } = appState.selectedLinearElement;
-        if (
-          !lastCommittedPoint ||
-          points[points.length - 1] !== lastCommittedPoint
-        ) {
+        if (!lastCommittedPoint || points[points.length - 1] !== lastCommittedPoint) {
           scene.mutateElement(element, {
             points: element.points.slice(0, -1),
           });
@@ -230,7 +208,7 @@ export const actionFinalize = register<FormData>({
 
       if (element && isInvisiblySmallElement(element)) {
         // TODO: #7348 in theory this gets recorded by the store, so the invisible elements could be restored by the undo/redo, which might be not what we would want
-        newElements = newElements.map((el) => {
+        newElements = newElements.map(el => {
           if (el.id === element?.id) {
             return newElementWith(el, { isDeleted: true });
           }
@@ -248,9 +226,7 @@ export const actionFinalize = register<FormData>({
           const linePoints = element.points;
           const firstPoint = linePoints[0];
           const points: LocalPoint[] = linePoints.map((p, index) =>
-            index === linePoints.length - 1
-              ? pointFrom(firstPoint[0], firstPoint[1])
-              : p,
+            index === linePoints.length - 1 ? pointFrom(firstPoint[0], firstPoint[1]) : p
           );
           if (isLineElement(element)) {
             scene.mutateElement(element, {
@@ -272,11 +248,7 @@ export const actionFinalize = register<FormData>({
       }
     }
 
-    if (
-      (!appState.activeTool.locked &&
-        appState.activeTool.type !== "freedraw") ||
-      !element
-    ) {
+    if ((!appState.activeTool.locked && appState.activeTool.type !== "freedraw") || !element) {
       resetCursor(interactiveCanvas);
     }
 
@@ -302,9 +274,7 @@ export const actionFinalize = register<FormData>({
     selectedLinearElement = selectedLinearElement
       ? {
           ...selectedLinearElement,
-          isEditing: appState.newElement
-            ? false
-            : selectedLinearElement.isEditing,
+          isEditing: appState.newElement ? false : selectedLinearElement.isEditing,
           initialState: {
             ...selectedLinearElement.initialState,
             lastClickedPoint: -1,
@@ -319,9 +289,7 @@ export const actionFinalize = register<FormData>({
         ...appState,
         cursorButton: "up",
         activeTool:
-          (appState.activeTool.locked ||
-            appState.activeTool.type === "freedraw") &&
-          element
+          (appState.activeTool.locked || appState.activeTool.type === "freedraw") && element
             ? appState.activeTool
             : activeTool,
         activeEmbeddable: null,
@@ -332,9 +300,7 @@ export const actionFinalize = register<FormData>({
         startBoundElement: null,
         suggestedBinding: null,
         selectedElementIds:
-          element &&
-          !appState.activeTool.locked &&
-          appState.activeTool.type !== "freedraw"
+          element && !appState.activeTool.locked && appState.activeTool.type !== "freedraw"
             ? {
                 ...appState.selectedElementIds,
                 [element.id]: true,
@@ -351,8 +317,7 @@ export const actionFinalize = register<FormData>({
     (event.key === KEYS.ESCAPE &&
       (appState.selectedLinearElement?.isEditing ||
         (!appState.newElement && appState.multiElement === null))) ||
-    ((event.key === KEYS.ESCAPE || event.key === KEYS.ENTER) &&
-      appState.multiElement !== null),
+    ((event.key === KEYS.ESCAPE || event.key === KEYS.ENTER) && appState.multiElement !== null),
   PanelComponent: ({ appState, updateData, data }) => (
     <ToolButton
       type="button"

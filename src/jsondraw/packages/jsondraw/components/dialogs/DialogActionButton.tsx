@@ -1,10 +1,7 @@
-import clsx from "clsx";
-
-import Spinner from "../Spinner";
-
-import "./DialogActionButton.scss";
-
 import type { ReactNode } from "react";
+import clsx from "clsx";
+import Spinner from "../ui/Spinner";
+import "./DialogActionButton.scss";
 
 interface DialogActionButtonProps {
   label: string;
@@ -33,9 +30,7 @@ const DialogActionButton = ({
       onClick={onClick}
       {...rest}
     >
-      {children && (
-        <div style={isLoading ? { visibility: "hidden" } : {}}>{children}</div>
-      )}
+      {children && <div style={isLoading ? { visibility: "hidden" } : {}}>{children}</div>}
       <div style={isLoading ? { visibility: "hidden" } : {}}>{label}</div>
       {isLoading && (
         <div style={{ position: "absolute", inset: 0 }}>

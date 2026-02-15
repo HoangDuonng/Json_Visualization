@@ -1,5 +1,5 @@
 import { useEditorInterface } from "../App";
-import { RadioGroup } from "../RadioGroup";
+import { RadioGroup } from "../ui/RadioGroup";
 
 type Props<T> = {
   value: T;
@@ -28,12 +28,7 @@ const DropdownMenuItemContentRadio = <T,>({
     <>
       <div className="dropdown-menu-item-base dropdown-menu-item-bare">
         <label className="dropdown-menu-item__text">{children}</label>
-        <RadioGroup
-          name={name}
-          value={value}
-          onChange={onChange}
-          choices={choices}
-        />
+        <RadioGroup name={name} value={value} onChange={onChange} choices={choices} />
       </div>
       {shortcut && editorInterface.formFactor !== "phone" && (
         <div className="dropdown-menu-item__shortcut dropdown-menu-item__shortcut--orphaned">

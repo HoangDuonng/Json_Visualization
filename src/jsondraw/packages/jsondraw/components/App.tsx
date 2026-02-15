@@ -341,7 +341,6 @@ import {
   type ParsedDataTransferFile,
 } from "../clipboard";
 import type { ClipboardData, PastedMixedContent } from "../clipboard";
-import { ElementCanvasButtons } from "./canvases/ElementCanvasButtons";
 import {
   showHyperlinkTooltip,
   hideHyperlinkToolip,
@@ -433,29 +432,30 @@ import type {
   JsonDrawInitialDataState,
 } from "../types";
 import { textWysiwyg } from "../wysiwyg/textWysiwyg";
-import { activeConfirmDialogAtom } from "./dialogs/ActiveConfirmDialog";
 import BraveMeasureTextError from "./BraveMeasureTextError";
 import { ContextMenu, CONTEXT_MENU_SEPARATOR } from "./ContextMenu";
 import type { ContextMenuItems } from "./ContextMenu";
+import FollowMode from "./FollowMode/FollowMode";
+import { isSidebarDockedAtom } from "./Sidebar/Sidebar";
+import { StaticCanvas, InteractiveCanvas } from "./canvases";
+import { ElementCanvasButtons } from "./canvases/ElementCanvasButtons";
+import { activeEyeDropperAtom } from "./canvases/EyeDropper";
+import NewElementCanvas from "./canvases/NewElementCanvas";
+import { SVGLayer } from "./canvases/SVGLayer";
+import { activeConfirmDialogAtom } from "./dialogs/ActiveConfirmDialog";
+import { isPointHittingLink, isPointHittingLinkIcon } from "./hyperlink/helpers";
+import { MagicIcon, copyIcon, fullscreenIcon } from "./icons";
+import LayerUI from "./layout/LayerUI";
 import ConvertElementTypePopup, {
   getConversionTypeFromElements,
   convertElementTypePopupAtom,
   convertElementTypes,
 } from "./popups/ConvertElementTypePopup";
-import { activeEyeDropperAtom } from "./canvases/EyeDropper";
-import FollowMode from "./FollowMode/FollowMode";
-import LayerUI from "./layout/LayerUI";
-import { ElementCanvasButton } from "./MagicButton";
-import { SVGLayer } from "./canvases/SVGLayer";
-import { isSidebarDockedAtom } from "./Sidebar/Sidebar";
-import { Toast } from "./Toast";
 import UnlockPopup from "./popups/UnlockPopup";
-import { StaticCanvas, InteractiveCanvas } from "./canvases";
-import NewElementCanvas from "./canvases/NewElementCanvas";
-import { isPointHittingLink, isPointHittingLinkIcon } from "./hyperlink/helpers";
-import { MagicIcon, copyIcon, fullscreenIcon } from "./icons";
 import { searchItemInFocusAtom } from "./search/SearchMenu";
 import { findShapeByKey } from "./shapes";
+import { ElementCanvasButton } from "./toolbar/MagicButton";
+import { Toast } from "./ui/Toast";
 
 const AppContext = React.createContext<AppClassProperties>(null!);
 const AppPropsContext = React.createContext<AppProps>(null!);

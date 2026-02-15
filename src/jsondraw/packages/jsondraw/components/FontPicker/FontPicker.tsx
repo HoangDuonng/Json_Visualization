@@ -1,24 +1,15 @@
-import { Popover } from "radix-ui";
-import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-
 import { FONT_FAMILY } from "@jsondraw/common";
-
 import type { FontFamilyValues } from "@jsondraw/element/types";
-
+import clsx from "clsx";
+import { Popover } from "radix-ui";
 import { t } from "../../i18n";
-import { RadioSelection } from "../RadioSelection";
-import { ButtonSeparator } from "../ButtonSeparator";
-import {
-  FontFamilyCodeIcon,
-  FontFamilyNormalIcon,
-  FreedrawIcon,
-} from "../icons";
-
+import { FontFamilyCodeIcon, FontFamilyNormalIcon, FreedrawIcon } from "../icons";
+import { ButtonSeparator } from "../ui/ButtonSeparator";
+import { RadioSelection } from "../ui/RadioSelection";
+import "./FontPicker.scss";
 import { FontPickerList } from "./FontPickerList";
 import { FontPickerTrigger } from "./FontPickerTrigger";
-
-import "./FontPicker.scss";
 
 export const DEFAULT_FONTS = [
   {
@@ -41,7 +32,7 @@ export const DEFAULT_FONTS = [
   },
 ];
 
-const defaultFontFamilies = new Set(DEFAULT_FONTS.map((x) => x.value));
+const defaultFontFamilies = new Set(DEFAULT_FONTS.map(x => x.value));
 
 export const isDefaultFont = (fontFamily: number | null) => {
   if (!fontFamily) {
@@ -80,7 +71,7 @@ export const FontPicker = React.memo(
           onSelect(value);
         }
       },
-      [onSelect],
+      [onSelect]
     );
 
     return (
@@ -126,5 +117,5 @@ export const FontPicker = React.memo(
   (prev, next) =>
     prev.isOpened === next.isOpened &&
     prev.selectedFontFamily === next.selectedFontFamily &&
-    prev.hoveredFontFamily === next.hoveredFontFamily,
+    prev.hoveredFontFamily === next.hoveredFontFamily
 );

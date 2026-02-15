@@ -25,7 +25,7 @@ import type {
   AppClassProperties,
 } from "../../types";
 import { useApp, useAppProps, useJsonDrawElements, useJsonDrawSetAppState } from "../App";
-import Spinner from "../Spinner";
+import Spinner from "../ui/Spinner";
 import "./LibraryMenu.scss";
 import { LibraryMenuControlButtons } from "./LibraryMenuControlButtons";
 import LibraryMenuItems from "./LibraryMenuItems";

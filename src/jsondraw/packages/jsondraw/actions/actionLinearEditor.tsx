@@ -3,10 +3,10 @@ import { isElbowArrow, isLinearElement, isLineElement } from "@jsondraw/element"
 import { toggleLinePolygonState, CaptureUpdateAction } from "@jsondraw/element";
 import { newElementWith } from "@jsondraw/element/mutateElement";
 import type { JsonDrawLinearElement, JsonDrawLineElement } from "@jsondraw/element/types";
-import { ButtonIcon } from "../components/ButtonIcon";
 import { DEFAULT_CATEGORIES } from "../components/CommandPalette/CommandPalette";
-import { ToolButton } from "../components/ToolButton";
 import { lineEditorIcon, polygonIcon } from "../components/icons";
+import { ToolButton } from "../components/toolbar/ToolButton";
+import { ButtonIcon } from "../components/ui/ButtonIcon";
 import { t } from "../i18n";
 import { register } from "./register";
 

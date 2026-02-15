@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-
 import type { Theme } from "@jsondraw/element/types";
-
 import { defaultLang, languages, setLanguage } from "../i18n";
-
-import { LoadingMessage } from "./LoadingMessage";
-
 import type { Language } from "../i18n";
+import { LoadingMessage } from "./ui/LoadingMessage";
 
 interface Props {
   langCode: Language["code"];
@@ -22,8 +18,7 @@ export const InitializeApp = (props: Props) => {
       await setLanguage(currentLang);
       setLoading(false);
     };
-    const currentLang =
-      languages.find((lang) => lang.code === props.langCode) || defaultLang;
+    const currentLang = languages.find(lang => lang.code === props.langCode) || defaultLang;
     updateLang();
   }, [props.langCode]);
 

@@ -1,11 +1,8 @@
 import clsx from "clsx";
-
 import { t } from "../../../i18n";
-import { historyIcon, TrashIcon } from "../../icons";
 import DropdownMenu from "../../dropdownMenu/DropdownMenu";
-
-import { FilledButton } from "../../FilledButton";
-
+import { historyIcon, TrashIcon } from "../../icons";
+import { FilledButton } from "../../ui/FilledButton";
 import type { SavedChat } from "../types";
 
 interface ChatHistoryMenuProps {
@@ -54,7 +51,7 @@ export const ChatHistoryMenu = ({
             </DropdownMenu.Trigger>
             <DropdownMenu.Content onClickOutside={onClose} onSelect={onClose}>
               <>
-                {savedChats.map((chat) => (
+                {savedChats.map(chat => (
                   <DropdownMenu.ItemCustom
                     key={chat.id}
                     className={clsx("ttd-chat-menu-item", {
@@ -64,12 +61,10 @@ export const ChatHistoryMenu = ({
                       onRestoreChat(chat);
                     }}
                   >
-                    <span className="ttd-chat-menu-item__title">
-                      {chat.title}
-                    </span>
+                    <span className="ttd-chat-menu-item__title">{chat.title}</span>
                     <button
                       className="ttd-chat-menu-item__delete"
-                      onClick={(e) => onDeleteChat(chat.id, e)}
+                      onClick={e => onDeleteChat(chat.id, e)}
                       title={t("chat.deleteChat")}
                       aria-label={t("chat.deleteChat")}
                       type="button"

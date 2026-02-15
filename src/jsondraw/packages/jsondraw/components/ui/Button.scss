@@ -1,0 +1,7 @@
+@use "../../css/theme" as *;
+
+.jsondraw {
+  .jsondraw-button {
+    @include outlineButtonStyles;
+  }
+}

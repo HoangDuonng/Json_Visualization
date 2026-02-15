@@ -1,5 +1,5 @@
-import { InlineIcon } from "../InlineIcon";
 import { collapseDownIcon, collapseUpIcon } from "../icons";
+import { InlineIcon } from "../ui/InlineIcon";
 
 interface CollapsibleProps {
   label: React.ReactNode;
@@ -34,15 +34,9 @@ const Collapsible = ({
         onClick={openTrigger}
       >
         {label}
-        {showCollapsedIcon && (
-          <InlineIcon icon={open ? collapseUpIcon : collapseDownIcon} />
-        )}
+        {showCollapsedIcon && <InlineIcon icon={open ? collapseUpIcon : collapseDownIcon} />}
       </div>
-      {open && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {children}
-        </div>
-      )}
+      {open && <div style={{ display: "flex", flexDirection: "column" }}>{children}</div>}
     </>
   );
 };

@@ -1,12 +1,10 @@
-import clsx from "clsx";
 import { useContext } from "react";
-
+import clsx from "clsx";
 import { t } from "../../i18n";
 import { useEditorInterface } from "../App";
-import { Button } from "../Button";
-import { Tooltip } from "../Tooltip";
 import { CloseIcon, PinIcon } from "../icons";
-
+import { Button } from "../ui/Button";
+import { Tooltip } from "../ui/Tooltip";
 import { SidebarPropsContext } from "./common";
 
 export const SidebarHeader = ({
@@ -19,15 +17,10 @@ export const SidebarHeader = ({
   const editorInterface = useEditorInterface();
   const props = useContext(SidebarPropsContext);
 
-  const renderDockButton = !!(
-    editorInterface.canFitSidebar && props.shouldRenderDockButton
-  );
+  const renderDockButton = !!(editorInterface.canFitSidebar && props.shouldRenderDockButton);
 
   return (
-    <div
-      className={clsx("sidebar__header", className)}
-      data-testid="sidebar-header"
-    >
+    <div className={clsx("sidebar__header", className)} data-testid="sidebar-header">
       {children}
       <div className="sidebar__header__buttons">
         {renderDockButton && (

@@ -1,42 +1,34 @@
-import { Popover } from "radix-ui";
-import clsx from "clsx";
 import { useRef, useEffect } from "react";
-
 import {
   COLOR_OUTLINE_CONTRAST_THRESHOLD,
   COLOR_PALETTE,
   isColorDark,
   isWritableElement,
 } from "@jsondraw/common";
-
 import type { ColorTuple, ColorPaletteCustom } from "@jsondraw/common";
-
 import type { JsonDrawElement } from "@jsondraw/element/types";
-
+import clsx from "clsx";
+import { Popover } from "radix-ui";
 import { useAtom } from "../../editor-jotai";
-import { t } from "../../i18n";
-import { useJsonDrawContainer, useStylesPanelMode } from "../App";
-import { ButtonSeparator } from "../ButtonSeparator";
-import { activeEyeDropperAtom } from "../canvases/EyeDropper";
-import { PropertiesPopover } from "../PropertiesPopover";
-import { slashIcon, strokeIcon } from "../icons";
 import {
   saveCaretPosition,
   restoreCaretPosition,
   temporarilyDisableTextEditorBlur,
 } from "../../hooks/useTextEditorFocus";
-
+import { t } from "../../i18n";
+import type { AppState } from "../../types";
+import { useJsonDrawContainer, useStylesPanelMode } from "../App";
+import { activeEyeDropperAtom } from "../canvases/EyeDropper";
+import { slashIcon, strokeIcon } from "../icons";
+import { ButtonSeparator } from "../ui/ButtonSeparator";
+import { PropertiesPopover } from "../ui/PropertiesPopover";
 import { ColorInput } from "./ColorInput";
+import "./ColorPicker.scss";
 import { Picker } from "./Picker";
 import PickerHeading from "./PickerHeading";
 import { TopPicks } from "./TopPicks";
 import { activeColorPickerSectionAtom } from "./colorPickerUtils";
-
-import "./ColorPicker.scss";
-
 import type { ColorPickerType } from "./colorPickerUtils";
-
-import type { AppState } from "../../types";
 
 interface ColorPickerProps {
   type: ColorPickerType;
@@ -66,14 +58,7 @@ const ColorPickerPopupContent = ({
   appState,
 }: Pick<
   ColorPickerProps,
-  | "type"
-  | "color"
-  | "onChange"
-  | "label"
-  | "elements"
-  | "palette"
-  | "updateData"
-  | "appState"
+  "type" | "color" | "onChange" | "label" | "elements" | "palette" | "updateData" | "appState"
 > & {
   getOpenPopup: () => AppState["openPopup"];
 }) => {
@@ -91,7 +76,7 @@ const ColorPickerPopupContent = ({
       <ColorInput
         color={color || ""}
         label={label}
-        onChange={(color) => {
+        onChange={color => {
           onChange(color);
         }}
         colorPickerType={type}
@@ -112,14 +97,14 @@ const ColorPickerPopupContent = ({
       style={{ maxWidth: "13rem" }}
       // Improve focus handling for text editing scenarios
       preventAutoFocusOnTouch={!!appState.editingTextElement}
-      onFocusOutside={(event) => {
+      onFocusOutside={event => {
         // refocus due to eye dropper
         if (!isWritableElement(event.target)) {
           focusPickerContent();
         }
         event.preventDefault();
       }}
-      onPointerDownOutside={(event) => {
+      onPointerDownOutside={event => {
         if (eyeDropperState) {
           // prevent from closing if we click outside the popover
           // while eyedropping (e.g. click when clicking the sidebar;
@@ -137,9 +122,7 @@ const ColorPickerPopupContent = ({
         // Refocus text editor when popover closes if we were editing text
         if (appState.editingTextElement) {
           setTimeout(() => {
-            const textEditor = document.querySelector(
-              ".jsondraw-wysiwyg",
-            ) as HTMLTextAreaElement;
+            const textEditor = document.querySelector(".jsondraw-wysiwyg") as HTMLTextAreaElement;
             if (textEditor) {
               textEditor.focus();
             }
@@ -152,11 +135,9 @@ const ColorPickerPopupContent = ({
           ref={colorPickerContentRef}
           palette={palette}
           color={color}
-          onChange={(changedColor) => {
+          onChange={changedColor => {
             // Save caret position before color change if editing text
-            const savedSelection = appState.editingTextElement
-              ? saveCaretPosition()
-              : null;
+            const savedSelection = appState.editingTextElement ? saveCaretPosition() : null;
 
             onChange(changedColor);
 
@@ -165,8 +146,8 @@ const ColorPickerPopupContent = ({
               restoreCaretPosition(savedSelection);
             }
           }}
-          onEyeDropperToggle={(force) => {
-            setEyeDropperState((state) => {
+          onEyeDropperToggle={force => {
+            setEyeDropperState(state => {
               if (force) {
                 state = state || {
                   keepOpenOnAlt: true,
@@ -186,7 +167,7 @@ const ColorPickerPopupContent = ({
                   };
             });
           }}
-          onEscape={(event) => {
+          onEscape={event => {
             if (eyeDropperState) {
               setEyeDropperState(null);
             } else {
@@ -245,18 +226,13 @@ const ColorPickerTrigger = ({
       type="button"
       className={clsx("color-picker__button active-color properties-trigger", {
         "is-transparent": !color || color === "transparent",
-        "has-outline":
-          !color || !isColorDark(color, COLOR_OUTLINE_CONTRAST_THRESHOLD),
+        "has-outline": !color || !isColorDark(color, COLOR_OUTLINE_CONTRAST_THRESHOLD),
         "compact-sizing": isCompactMode,
         "mobile-border": isMobileMode,
       })}
       aria-label={label}
       style={color ? { "--swatch-color": color } : undefined}
-      title={
-        type === "elementStroke"
-          ? t("labels.showStroke")
-          : t("labels.showBackground")
-      }
+      title={type === "elementStroke" ? t("labels.showStroke") : t("labels.showBackground")}
       data-openpopup={type}
       onClick={handleClick}
     >
@@ -266,9 +242,7 @@ const ColorPickerTrigger = ({
           <span
             style={{
               color:
-                color && isColorDark(color, COLOR_OUTLINE_CONTRAST_THRESHOLD)
-                  ? "#fff"
-                  : "#111",
+                color && isColorDark(color, COLOR_OUTLINE_CONTRAST_THRESHOLD) ? "#fff" : "#111",
             }}
           >
             {strokeIcon}
@@ -307,17 +281,12 @@ export const ColorPicker = ({
         })}
       >
         {!isCompactMode && (
-          <TopPicks
-            activeColor={color}
-            onChange={onChange}
-            type={type}
-            topPicks={topPicks}
-          />
+          <TopPicks activeColor={color} onChange={onChange} type={type} topPicks={topPicks} />
         )}
         {!isCompactMode && <ButtonSeparator />}
         <Popover.Root
           open={appState.openPopup === type}
-          onOpenChange={(open) => {
+          onOpenChange={open => {
             if (open) {
               updateData({ openPopup: type });
             }

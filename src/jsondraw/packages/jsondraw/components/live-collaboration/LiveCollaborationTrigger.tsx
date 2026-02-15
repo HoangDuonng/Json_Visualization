@@ -1,12 +1,9 @@
-import clsx from "clsx";
-
 import { MQ_MIN_WIDTH_DESKTOP, type EditorInterface } from "@jsondraw/common";
-
-import { t } from "../../i18n";
-import { Button } from "../Button";
-import { share } from "../icons";
+import clsx from "clsx";
 import { useUIAppState } from "../../context/ui-appState";
-
+import { t } from "../../i18n";
+import { share } from "../icons";
+import { Button } from "../ui/Button";
 import "./LiveCollaborationTrigger.scss";
 
 const LiveCollaborationTrigger = ({
@@ -22,8 +19,7 @@ const LiveCollaborationTrigger = ({
   const appState = useUIAppState();
 
   const showIconOnly =
-    editorInterface?.formFactor !== "desktop" ||
-    appState.width < MQ_MIN_WIDTH_DESKTOP;
+    editorInterface?.formFactor !== "desktop" || appState.width < MQ_MIN_WIDTH_DESKTOP;
 
   return (
     <Button
@@ -36,9 +32,7 @@ const LiveCollaborationTrigger = ({
     >
       {showIconOnly ? share : t("labels.share")}
       {appState.collaborators.size > 0 && (
-        <div className="CollabButton-collaborators">
-          {appState.collaborators.size}
-        </div>
+        <div className="CollabButton-collaborators">{appState.collaborators.size}</div>
       )}
     </Button>
   );
