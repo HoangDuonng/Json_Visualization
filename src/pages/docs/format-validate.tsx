@@ -37,7 +37,7 @@ const FormatValidateDocs = () => {
           ...SEO,
           title: `${t("formatValidate.title")} Documentation - JSON Visualization`,
           description: t("formatValidate.subtitle"),
-          canonical: "https://jsonvisualization.nguuyen.io.vn/docs/format-validate",
+          canonical: "https://jsonviz.online/docs/format-validate",
         })}
       </Head>
       <Container size="lg" py={60}>

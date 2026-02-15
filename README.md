@@ -9,7 +9,7 @@
   <p align="center">
     The open-source JSON Editor.
     <br />
-    <a href="https://jsonvisualization.nguuyen.io.vn"><strong>Learn more »</strong></a>
+    <a href="https://jsonviz.online"><strong>Learn more »</strong></a>
     <br />
     <br />
     <a href="https://github.com/HoangDuonng/Json_Visualization/issues">Issues</a>

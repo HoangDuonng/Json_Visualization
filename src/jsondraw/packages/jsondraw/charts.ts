@@ -1,5 +1,3 @@
-import { pointFrom } from "@jsondraw/math";
-
 import {
   COLOR_PALETTE,
   DEFAULT_CHART_COLOR_INDEX,
@@ -11,16 +9,10 @@ import {
   isDevEnv,
   FONT_SIZES,
 } from "@jsondraw/common";
-
-import {
-  newTextElement,
-  newLinearElement,
-  newElement,
-} from "@jsondraw/element";
-
-import type { Radians } from "@jsondraw/math";
-
+import { newTextElement, newLinearElement, newElement } from "@jsondraw/element";
 import type { NonDeletedJsonDrawElement } from "@jsondraw/element/types";
+import { pointFrom } from "@jsondraw/math";
+import type { Radians } from "@jsondraw/math";
 
 export type ChartElements = readonly NonDeletedJsonDrawElement[];
 
@@ -54,7 +46,7 @@ export const tryParseNumber = (s: string): number | null => {
 };
 
 const isNumericColumn = (lines: string[][], columnIndex: number) =>
-  lines.slice(1).every((line) => tryParseNumber(line[columnIndex]) !== null);
+  lines.slice(1).every(line => tryParseNumber(line[columnIndex]) !== null);
 
 /**
  * @private exported for testing
@@ -72,9 +64,7 @@ export const tryParseCells = (cells: string[][]): ParseSpreadsheetResult => {
     }
 
     const hasHeader = tryParseNumber(cells[0][0]) === null;
-    const values = (hasHeader ? cells.slice(1) : cells).map((line) =>
-      tryParseNumber(line[0]),
-    );
+    const values = (hasHeader ? cells.slice(1) : cells).map(line => tryParseNumber(line[0]));
 
     if (values.length < 2) {
       return { type: NOT_SPREADSHEET, reason: "Less than two rows" };
@@ -97,9 +87,7 @@ export const tryParseCells = (cells: string[][]): ParseSpreadsheetResult => {
     return { type: NOT_SPREADSHEET, reason: "Value is not numeric" };
   }
 
-  const [labelColumnIndex, valueColumnIndex] = valueColumnNumeric
-    ? [0, 1]
-    : [1, 0];
+  const [labelColumnIndex, valueColumnIndex] = valueColumnNumeric ? [0, 1] : [1, 0];
   const hasHeader = tryParseNumber(cells[0][valueColumnIndex]) === null;
   const rows = hasHeader ? cells.slice(1) : cells;
 
@@ -111,8 +99,8 @@ export const tryParseCells = (cells: string[][]): ParseSpreadsheetResult => {
     type: VALID_SPREADSHEET,
     spreadsheet: {
       title: hasHeader ? cells[0][valueColumnIndex] : null,
-      labels: rows.map((row) => row[labelColumnIndex]),
-      values: rows.map((row) => tryParseNumber(row[valueColumnIndex])!),
+      labels: rows.map(row => row[labelColumnIndex]),
+      values: rows.map(row => tryParseNumber(row[valueColumnIndex])!),
     },
   };
 };
@@ -137,14 +125,14 @@ export const tryParseSpreadsheet = (text: string): ParseSpreadsheetResult => {
   let lines = text
     .trim()
     .split("\n")
-    .map((line) => line.trim().split("\t"));
+    .map(line => line.trim().split("\t"));
 
   // Check for comma separated files
   if (lines.length && lines[0].length !== 2) {
     lines = text
       .trim()
       .split("\n")
-      .map((line) => line.trim().split(","));
+      .map(line => line.trim().split(","));
   }
 
   if (lines.length === 0) {
@@ -152,7 +140,7 @@ export const tryParseSpreadsheet = (text: string): ParseSpreadsheetResult => {
   }
 
   const numColsFirstLine = lines[0].length;
-  const isSpreadsheet = lines.every((line) => line.length === numColsFirstLine);
+  const isSpreadsheet = lines.every(line => line.length === numColsFirstLine);
 
   if (!isSpreadsheet) {
     return {
@@ -190,8 +178,7 @@ const commonProps = {
 } as const;
 
 const getChartDimensions = (spreadsheet: Spreadsheet) => {
-  const chartWidth =
-    (BAR_WIDTH + BAR_GAP) * spreadsheet.values.length + BAR_GAP;
+  const chartWidth = (BAR_WIDTH + BAR_GAP) * spreadsheet.values.length + BAR_GAP;
   const chartHeight = BAR_HEIGHT + BAR_GAP * 2;
   return { chartWidth, chartHeight };
 };
@@ -201,7 +188,7 @@ const chartXLabels = (
   x: number,
   y: number,
   groupId: string,
-  backgroundColor: string,
+  backgroundColor: string
 ): ChartElements => {
   return (
     spreadsheet.labels?.map((label, index) => {
@@ -227,7 +214,7 @@ const chartYLabels = (
   x: number,
   y: number,
   groupId: string,
-  backgroundColor: string,
+  backgroundColor: string
 ): ChartElements => {
   const minYLabel = newTextElement({
     groupIds: [groupId],
@@ -257,7 +244,7 @@ const chartLines = (
   x: number,
   y: number,
   groupId: string,
-  backgroundColor: string,
+  backgroundColor: string
 ): ChartElements => {
   const { chartWidth, chartHeight } = getChartDimensions(spreadsheet);
   const xLine = newLinearElement({
@@ -298,14 +285,14 @@ const chartLines = (
   return [xLine, yLine, maxLine];
 };
 
-// For the maths behind it https://jsondraw.com/#json=6320864370884608,O_5xfD-Agh32tytHpRJx1g
+// For the maths behind it https://jsonviz.online/#json=6320864370884608,O_5xfD-Agh32tytHpRJx1g
 const chartBaseElements = (
   spreadsheet: Spreadsheet,
   x: number,
   y: number,
   groupId: string,
   backgroundColor: string,
-  debug?: boolean,
+  debug?: boolean
 ): ChartElements => {
   const { chartWidth, chartHeight } = getChartDimensions(spreadsheet);
 
@@ -347,11 +334,7 @@ const chartBaseElements = (
   ];
 };
 
-const chartTypeBar = (
-  spreadsheet: Spreadsheet,
-  x: number,
-  y: number,
-): ChartElements => {
+const chartTypeBar = (spreadsheet: Spreadsheet, x: number, y: number): ChartElements => {
   const max = Math.max(...spreadsheet.values);
   const groupId = randomId();
   const backgroundColor = bgColors[Math.floor(Math.random() * bgColors.length)];
@@ -370,24 +353,10 @@ const chartTypeBar = (
     });
   });
 
-  return [
-    ...bars,
-    ...chartBaseElements(
-      spreadsheet,
-      x,
-      y,
-      groupId,
-      backgroundColor,
-      isDevEnv(),
-    ),
-  ];
+  return [...bars, ...chartBaseElements(spreadsheet, x, y, groupId, backgroundColor, isDevEnv())];
 };
 
-const chartTypeLine = (
-  spreadsheet: Spreadsheet,
-  x: number,
-  y: number,
-): ChartElements => {
+const chartTypeLine = (spreadsheet: Spreadsheet, x: number, y: number): ChartElements => {
   const max = Math.max(...spreadsheet.values);
   const groupId = randomId();
   const backgroundColor = bgColors[Math.floor(Math.random() * bgColors.length)];
@@ -401,10 +370,10 @@ const chartTypeLine = (
     index++;
   }
 
-  const maxX = Math.max(...points.map((element) => element[0]));
-  const maxY = Math.max(...points.map((element) => element[1]));
-  const minX = Math.min(...points.map((element) => element[0]));
-  const minY = Math.min(...points.map((element) => element[1]));
+  const maxX = Math.max(...points.map(element => element[0]));
+  const maxY = Math.max(...points.map(element => element[1]));
+  const minX = Math.min(...points.map(element => element[0]));
+  const minY = Math.min(...points.map(element => element[1]));
 
   const line = newLinearElement({
     backgroundColor,
@@ -454,14 +423,7 @@ const chartTypeLine = (
   });
 
   return [
-    ...chartBaseElements(
-      spreadsheet,
-      x,
-      y,
-      groupId,
-      backgroundColor,
-      isDevEnv(),
-    ),
+    ...chartBaseElements(spreadsheet, x, y, groupId, backgroundColor, isDevEnv()),
     line,
     ...lines,
     ...dots,
@@ -472,7 +434,7 @@ export const renderSpreadsheet = (
   chartType: string,
   spreadsheet: Spreadsheet,
   x: number,
-  y: number,
+  y: number
 ): ChartElements => {
   if (chartType === "line") {
     return chartTypeLine(spreadsheet, x, y);

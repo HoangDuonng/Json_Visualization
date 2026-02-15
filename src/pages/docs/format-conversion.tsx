@@ -58,7 +58,7 @@ const FormatConversionDocs = () => {
           title: "Format Conversion Documentation - JSON Visualization",
           description:
             "Learn how to convert between JSON, YAML, CSV, XML, and TOML formats seamlessly in JSON Visualization.",
-          canonical: "https://jsonvisualization.nguuyen.io.vn/docs/format-conversion",
+          canonical: "https://jsonviz.online/docs/format-conversion",
         })}
       </Head>
       <Container size="lg" py={60}>

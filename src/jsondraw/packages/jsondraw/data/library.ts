@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-
 import {
   URL_HASH_KEYS,
   URL_QUERY_KEYS,
@@ -16,26 +15,15 @@ import {
   Queue,
   Emitter,
 } from "@jsondraw/common";
-
-import { hashElementsVersion, hashString } from "@jsondraw/element";
-
-import { getCommonBoundingBox } from "@jsondraw/element";
-
-import type { JsonDrawElement } from "@jsondraw/element/types";
-
 import type { MaybePromise } from "@jsondraw/common/utility-types";
-
+import { hashElementsVersion, hashString } from "@jsondraw/element";
+import { getCommonBoundingBox } from "@jsondraw/element";
+import type { JsonDrawElement } from "@jsondraw/element/types";
+import type App from "../components/App";
 import { atom, editorJotaiStore } from "../editor-jotai";
-
 import { AbortError } from "../errors";
 import { libraryItemSvgsCache } from "../hooks/useLibraryItemSvg";
 import { t } from "../i18n";
-
-import { loadLibraryFromBlob } from "./blob";
-import { restoreLibraryItems } from "./restore";
-
-import type App from "../components/App";
-
 import type {
   LibraryItems,
   LibraryItem,
@@ -43,6 +31,8 @@ import type {
   LibraryItemsSource,
   LibraryItems_anyVersion,
 } from "../types";
+import { loadLibraryFromBlob } from "./blob";
+import { restoreLibraryItems } from "./restore";
 
 /**
  * format: hostname or hostname/pathname
@@ -52,7 +42,7 @@ import type {
  * boundaries
  **/
 const ALLOWED_LIBRARY_URLS = [
-  "jsondraw.com",
+  "jsonviz.online",
   // when installing from github PRs
   "raw.githubusercontent.com/jsondraw/jsondraw-libraries",
 ];
@@ -69,9 +59,7 @@ type LibraryUpdate = {
 // such as schema version
 export type LibraryPersistedData = { libraryItems: LibraryItems };
 
-const onLibraryUpdateEmitter = new Emitter<
-  [update: LibraryUpdate, libraryItems: LibraryItems]
->();
+const onLibraryUpdateEmitter = new Emitter<[update: LibraryUpdate, libraryItems: LibraryItems]>();
 
 export type LibraryAdatapterSource = "load" | "save";
 
@@ -113,17 +101,13 @@ export const libraryItemsAtom = atom<{
   libraryItems: LibraryItems;
 }>({ status: "loaded", isInitialized: false, libraryItems: [] });
 
-const cloneLibraryItems = (libraryItems: LibraryItems): LibraryItems =>
-  cloneJSON(libraryItems);
+const cloneLibraryItems = (libraryItems: LibraryItems): LibraryItems => cloneJSON(libraryItems);
 
 /**
  * checks if library item does not exist already in current library
  */
-const isUniqueItem = (
-  existingLibraryItems: LibraryItems,
-  targetLibraryItem: LibraryItem,
-) => {
-  return !existingLibraryItems.find((libraryItem) => {
+const isUniqueItem = (existingLibraryItems: LibraryItems, targetLibraryItem: LibraryItem) => {
+  return !existingLibraryItems.find(libraryItem => {
     if (libraryItem.elements.length !== targetLibraryItem.elements.length) {
       return false;
     }
@@ -133,8 +117,7 @@ const isUniqueItem = (
     return libraryItem.elements.every((libItemJsonDrawItem, idx) => {
       return (
         libItemJsonDrawItem.id === targetLibraryItem.elements[idx].id &&
-        libItemJsonDrawItem.versionNonce ===
-          targetLibraryItem.elements[idx].versionNonce
+        libItemJsonDrawItem.versionNonce === targetLibraryItem.elements[idx].versionNonce
       );
     });
   });
@@ -144,7 +127,7 @@ const isUniqueItem = (
     sorted first. */
 export const mergeLibraryItems = (
   localItems: LibraryItems,
-  otherItems: LibraryItems,
+  otherItems: LibraryItems
 ): LibraryItems => {
   const newItems = [];
   for (const item of otherItems) {
@@ -164,7 +147,7 @@ export const mergeLibraryItems = (
  */
 const createLibraryUpdate = (
   prevLibraryItems: LibraryItems,
-  nextLibraryItems: LibraryItems,
+  nextLibraryItems: LibraryItems
 ): LibraryUpdate => {
   const nextItemsMap = arrayToMap(nextLibraryItems);
 
@@ -215,7 +198,7 @@ class Library {
 
   private notifyListeners = () => {
     if (this.updateQueue.length > 0) {
-      editorJotaiStore.set(libraryItemsAtom, (s) => ({
+      editorJotaiStore.set(libraryItemsAtom, s => ({
         status: "loading",
         libraryItems: this.currLibraryItems,
         isInitialized: s.isInitialized,
@@ -237,7 +220,7 @@ class Library {
         // for internal use in `useHandleLibrary` hook
         onLibraryUpdateEmitter.trigger(
           createLibraryUpdate(prevLibraryItems, nextLibraryItems),
-          nextLibraryItems,
+          nextLibraryItems
         );
       } catch (error) {
         console.error(error);
@@ -266,10 +249,9 @@ class Library {
    * @returns latest cloned libraryItems. Awaits all in-progress updates first.
    */
   getLatestLibrary = (): Promise<LibraryItems> => {
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
       try {
-        const libraryItems = await (this.getLastUpdateTask() ||
-          this.currLibraryItems);
+        const libraryItems = await (this.getLastUpdateTask() || this.currLibraryItems);
         if (this.updateQueue.length > 0) {
           resolve(this.getLatestLibrary());
         } else {
@@ -323,7 +305,7 @@ class Library {
             window.confirm(
               t("alerts.confirmAddLibrary", {
                 numShapes: nextItems.length,
-              }),
+              })
             )
           ) {
             if (prompt) {
@@ -362,9 +344,7 @@ class Library {
     libraryItems:
       | LibraryItems
       | Promise<LibraryItems>
-      | ((
-          latestLibraryItems: LibraryItems,
-        ) => LibraryItems | Promise<LibraryItems>),
+      | ((latestLibraryItems: LibraryItems) => LibraryItems | Promise<LibraryItems>)
   ): Promise<LibraryItems> => {
     const task = new Promise<LibraryItems>(async (resolve, reject) => {
       try {
@@ -381,7 +361,7 @@ class Library {
         reject(error);
       }
     })
-      .catch((error) => {
+      .catch(error => {
         if (error.name === "AbortError") {
           console.warn("Library update aborted by user");
           return this.currLibraryItems;
@@ -389,7 +369,7 @@ class Library {
         throw error;
       })
       .finally(() => {
-        this.updateQueue = this.updateQueue.filter((_task) => _task !== task);
+        this.updateQueue = this.updateQueue.filter(_task => _task !== task);
         this.notifyListeners();
       });
 
@@ -402,9 +382,7 @@ class Library {
 
 export default Library;
 
-export const distributeLibraryItemsOnSquareGrid = (
-  libraryItems: LibraryItems,
-) => {
+export const distributeLibraryItemsOnSquareGrid = (libraryItems: LibraryItems) => {
   const PADDING = 50;
   const ITEMS_PER_ROW = Math.ceil(Math.sqrt(libraryItems.length));
 
@@ -466,7 +444,7 @@ export const distributeLibraryItemsOnSquareGrid = (
     const offsetCenterY = (maxHeightCurrRow - height) / 2;
     resElements.push(
       // eslint-disable-next-line no-loop-func
-      ...item.elements.map((element) => ({
+      ...item.elements.map(element => ({
         ...element,
         x:
           element.x +
@@ -484,7 +462,7 @@ export const distributeLibraryItemsOnSquareGrid = (
           offsetCenterY -
           // subtract minY so that given item starts at 0 coord
           minY,
-      })),
+      }))
     );
     colOffsetX += maxWidthCurrCol + PADDING;
     index++;
@@ -499,25 +477,19 @@ export const validateLibraryUrl = (
   /**
    * @returns `true` if the URL is valid, throws otherwise.
    */
-  validator:
-    | ((libraryUrl: string) => boolean)
-    | string[] = ALLOWED_LIBRARY_URLS,
+  validator: ((libraryUrl: string) => boolean) | string[] = ALLOWED_LIBRARY_URLS
 ): true => {
   if (
     typeof validator === "function"
       ? validator(libraryUrl)
-      : validator.some((allowedUrlDef) => {
-          const allowedUrl = new URL(
-            `https://${allowedUrlDef.replace(/^https?:\/\//, "")}`,
-          );
+      : validator.some(allowedUrlDef => {
+          const allowedUrl = new URL(`https://${allowedUrlDef.replace(/^https?:\/\//, "")}`);
 
           const { hostname, pathname } = new URL(libraryUrl);
 
           return (
             new RegExp(`(^|\\.)${allowedUrl.hostname}$`).test(hostname) &&
-            new RegExp(
-              `^${allowedUrl.pathname.replace(/\/+$/, "")}(/+|$)`,
-            ).test(pathname)
+            new RegExp(`^${allowedUrl.pathname.replace(/\/+$/, "")}(/+|$)`).test(pathname)
           );
         })
   ) {
@@ -530,9 +502,7 @@ export const validateLibraryUrl = (
 export const parseLibraryTokensFromUrl = () => {
   const libraryUrl =
     // current
-    new URLSearchParams(window.location.hash.slice(1)).get(
-      URL_HASH_KEYS.addLibrary,
-    ) ||
+    new URLSearchParams(window.location.hash.slice(1)).get(URL_HASH_KEYS.addLibrary) ||
     // legacy, kept for compat reasons
     new URLSearchParams(window.location.search).get(URL_QUERY_KEYS.addLibrary);
   const idToken = libraryUrl
@@ -548,7 +518,7 @@ class AdapterTransaction {
   static async getLibraryItems(
     adapter: LibraryPersistenceAdapter,
     source: LibraryAdatapterSource,
-    _queue = true,
+    _queue = true
   ): Promise<LibraryItems> {
     const task = () =>
       new Promise<LibraryItems>(async (resolve, reject) => {
@@ -569,7 +539,7 @@ class AdapterTransaction {
 
   static run = async <T>(
     adapter: LibraryPersistenceAdapter,
-    fn: (transaction: AdapterTransaction) => Promise<T>,
+    fn: (transaction: AdapterTransaction) => Promise<T>
   ) => {
     const transaction = new AdapterTransaction(adapter);
     return AdapterTransaction.queue.push(() => fn(transaction));
@@ -598,23 +568,21 @@ const getLibraryItemHash = (item: LibraryItem) => {
 export const getLibraryItemsHash = (items: LibraryItems) => {
   return hashString(
     items
-      .map((item) => getLibraryItemHash(item))
+      .map(item => getLibraryItemHash(item))
       .sort()
-      .join(),
+      .join()
   );
 };
 
 const persistLibraryUpdate = async (
   adapter: LibraryPersistenceAdapter,
-  update: LibraryUpdate,
+  update: LibraryUpdate
 ): Promise<LibraryItems> => {
   try {
     librarySaveCounter++;
 
-    return await AdapterTransaction.run(adapter, async (transaction) => {
-      const nextLibraryItemsMap = arrayToMap(
-        await transaction.getLibraryItems("save"),
-      );
+    return await AdapterTransaction.run(adapter, async transaction => {
+      const nextLibraryItemsMap = arrayToMap(await transaction.getLibraryItems("save"));
 
       for (const [id] of update.deletedItems) {
         nextLibraryItemsMap.delete(id);
@@ -655,9 +623,7 @@ const persistLibraryUpdate = async (
         }
       }
 
-      const nextLibraryItems = addedItems.concat(
-        Array.from(nextLibraryItemsMap.values()),
-      );
+      const nextLibraryItems = addedItems.concat(Array.from(nextLibraryItemsMap.values()));
 
       const version = getLibraryItemsHash(nextLibraryItems);
 
@@ -679,7 +645,7 @@ export const useHandleLibrary = (
     jsondrawAPI: JsonDrawImperativeAPI | null;
     /**
      * Return `true` if the library install url should be allowed.
-     * If not supplied, only the jsondraw.com base domain is allowed.
+     * If not supplied, only the jsonviz.online base domain is allowed.
      */
     validateLibraryUrl?: (libraryUrl: string) => boolean;
   } & (
@@ -698,7 +664,7 @@ export const useHandleLibrary = (
          */
         migrationAdapter?: LibraryMigrationAdapter;
       }
-  ),
+  )
 ) => {
   const { jsondrawAPI } = opts;
 
@@ -743,7 +709,7 @@ export const useHandleLibrary = (
       // wait for the tab to be focused before continuing in case we'll prompt
       // for confirmation
       await (shouldPrompt && document.hidden
-        ? new Promise<void>((resolve) => {
+        ? new Promise<void>(resolve => {
             window.addEventListener("focus", () => resolve(), {
               once: true,
             });
@@ -803,16 +769,13 @@ export const useHandleLibrary = (
     }
 
     // ------ (A) init load (legacy) -------------------------------------------
-    if (
-      "getInitialLibraryItems" in optsRef.current &&
-      optsRef.current.getInitialLibraryItems
-    ) {
+    if ("getInitialLibraryItems" in optsRef.current && optsRef.current.getInitialLibraryItems) {
       console.warn(
-        "useHandleLibrar `opts.getInitialLibraryItems` is deprecated. Use `opts.adapter` instead.",
+        "useHandleLibrar `opts.getInitialLibraryItems` is deprecated. Use `opts.adapter` instead."
       );
 
       Promise.resolve(optsRef.current.getInitialLibraryItems())
-        .then((libraryItems) => {
+        .then(libraryItems => {
           jsondrawAPI.updateLibrary({
             libraryItems,
             // merge with current library items because we may have already
@@ -822,9 +785,7 @@ export const useHandleLibrary = (
           });
         })
         .catch((error: any) => {
-          console.error(
-            `UseHandeLibrary getInitialLibraryItems failed: ${error?.message}`,
-          );
+          console.error(`UseHandeLibrary getInitialLibraryItems failed: ${error?.message}`);
         });
     }
 
@@ -849,7 +810,7 @@ export const useHandleLibrary = (
       if (migrationAdapter) {
         initDataPromise.resolve(
           promiseTry(migrationAdapter.load)
-            .then(async (libraryData) => {
+            .then(async libraryData => {
               let restoredData: LibraryItems | null = null;
               try {
                 // if no library data to migrate, assume no migration needed
@@ -859,30 +820,23 @@ export const useHandleLibrary = (
                   return AdapterTransaction.getLibraryItems(adapter, "load");
                 }
 
-                restoredData = restoreLibraryItems(
-                  libraryData.libraryItems || [],
-                  "published",
-                );
+                restoredData = restoreLibraryItems(libraryData.libraryItems || [], "published");
 
                 // we don't queue this operation because it's running inside
                 // a promise that's running inside Library update queue itself
                 const nextItems = await persistLibraryUpdate(
                   adapter,
-                  createLibraryUpdate([], restoredData),
+                  createLibraryUpdate([], restoredData)
                 );
                 try {
                   await migrationAdapter.clear();
                 } catch (error: any) {
-                  console.error(
-                    `couldn't delete legacy library data: ${error.message}`,
-                  );
+                  console.error(`couldn't delete legacy library data: ${error.message}`);
                 }
                 // migration suceeded, load migrated data
                 return nextItems;
               } catch (error: any) {
-                console.error(
-                  `couldn't migrate legacy library data: ${error.message}`,
-                );
+                console.error(`couldn't migrate legacy library data: ${error.message}`);
                 // migration failed, load data from previous store, if any
                 return restoredData;
               }
@@ -892,18 +846,16 @@ export const useHandleLibrary = (
               console.error(`error during library migration: ${error.message}`);
               // as a default, load latest library from current data source
               return AdapterTransaction.getLibraryItems(adapter, "load");
-            }),
+            })
         );
       } else {
-        initDataPromise.resolve(
-          promiseTry(AdapterTransaction.getLibraryItems, adapter, "load"),
-        );
+        initDataPromise.resolve(promiseTry(AdapterTransaction.getLibraryItems, adapter, "load"));
       }
 
       // load initial (or migrated) library
       jsondrawAPI
         .updateLibrary({
-          libraryItems: initDataPromise.then((libraryItems) => {
+          libraryItems: initDataPromise.then(libraryItems => {
             const _libraryItems = libraryItems || [];
             lastSavedLibraryItemsHash = getLibraryItemsHash(_libraryItems);
             return _libraryItems;
@@ -940,44 +892,37 @@ export const useHandleLibrary = (
     () => {
       // on update, merge with current library items and persist
       // -----------------------------------------------------------------------
-      const unsubOnLibraryUpdate = onLibraryUpdateEmitter.on(
-        async (update, nextLibraryItems) => {
-          const isLoaded = isLibraryLoadedRef.current;
-          // we want to operate with the latest adapter, but we don't want this
-          // effect to rerun on every adapter change in case host apps' adapter
-          // isn't stable
-          const adapter =
-            ("adapter" in optsRef.current && optsRef.current.adapter) || null;
-          try {
-            if (adapter) {
-              if (
-                // if nextLibraryItems hash identical to previously saved hash,
-                // exit early, even if actual upstream state ends up being
-                // different (e.g. has more data than we have locally), as it'd
-                // be low-impact scenario.
-                lastSavedLibraryItemsHash !==
-                getLibraryItemsHash(nextLibraryItems)
-              ) {
-                await persistLibraryUpdate(adapter, update);
-              }
-            }
-          } catch (error: any) {
-            console.error(
-              `couldn't persist library update: ${error.message}`,
-              update,
-            );
-
-            // currently we only show error if an editor is loaded
-            if (isLoaded && optsRef.current.jsondrawAPI) {
-              optsRef.current.jsondrawAPI.updateScene({
-                appState: {
-                  errorMessage: t("errors.saveLibraryError"),
-                },
-              });
+      const unsubOnLibraryUpdate = onLibraryUpdateEmitter.on(async (update, nextLibraryItems) => {
+        const isLoaded = isLibraryLoadedRef.current;
+        // we want to operate with the latest adapter, but we don't want this
+        // effect to rerun on every adapter change in case host apps' adapter
+        // isn't stable
+        const adapter = ("adapter" in optsRef.current && optsRef.current.adapter) || null;
+        try {
+          if (adapter) {
+            if (
+              // if nextLibraryItems hash identical to previously saved hash,
+              // exit early, even if actual upstream state ends up being
+              // different (e.g. has more data than we have locally), as it'd
+              // be low-impact scenario.
+              lastSavedLibraryItemsHash !== getLibraryItemsHash(nextLibraryItems)
+            ) {
+              await persistLibraryUpdate(adapter, update);
             }
           }
-        },
-      );
+        } catch (error: any) {
+          console.error(`couldn't persist library update: ${error.message}`, update);
+
+          // currently we only show error if an editor is loaded
+          if (isLoaded && optsRef.current.jsondrawAPI) {
+            optsRef.current.jsondrawAPI.updateScene({
+              appState: {
+                errorMessage: t("errors.saveLibraryError"),
+              },
+            });
+          }
+        }
+      });
 
       const onUnload = (event: Event) => {
         if (librarySaveCounter) {
@@ -996,6 +941,6 @@ export const useHandleLibrary = (
     },
     [
       // this effect must not have any deps so it doesn't rerun
-    ],
+    ]
   );
 };

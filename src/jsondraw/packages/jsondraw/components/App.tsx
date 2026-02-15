@@ -1448,7 +1448,7 @@ class App extends React.Component<AppProps, AppState> {
               }}
             >
               <div
-                //this is a hack that addresses isse with embedded jsondraw.com embeddable
+                //this is a hack that addresses isse with embedded jsonviz.online embeddable
                 //https://github.com/jsondraw/jsondraw/pull/6691#issuecomment-1607383938
                 /*ref={(ref) => {
                   if (!this.jsondrawContainerRef.current) {
@@ -3949,7 +3949,7 @@ class App extends React.Component<AppProps, AppState> {
        *  - `CaptureUpdateAction.NEVER`: Updates never make it to undo/redo stack. Use for remote updates or scene initialization.
        *  - `CaptureUpdateAction.EVENTUALLY`: Updates will be eventually be captured as part of a future increment.
        *
-       * Check [API docs](https://docs.jsondraw.com/docs/@jsondraw/jsondraw/api/props/jsondraw-api#captureUpdate) for more details.
+       * Check [API docs](https://docs.jsonviz.online/docs/@jsondraw/jsondraw/api/props/jsondraw-api#captureUpdate) for more details.
        *
        * @default CaptureUpdateAction.EVENTUALLY
        */

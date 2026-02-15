@@ -1,22 +1,10 @@
-import {
-  FONT_FAMILY,
-  VERTICAL_ALIGN,
-  escapeDoubleQuotes,
-  getFontString,
-} from "@jsondraw/common";
-
-import type { JsonDrawProps } from "@jsondraw/jsondraw/types";
+import { FONT_FAMILY, VERTICAL_ALIGN, escapeDoubleQuotes, getFontString } from "@jsondraw/common";
 import type { MarkRequired } from "@jsondraw/common/utility-types";
-
+import type { JsonDrawProps } from "@jsondraw/jsondraw/types";
 import { newTextElement } from "./newElement";
 import { wrapText } from "./textWrapping";
 import { isIframeElement } from "./typeChecks";
-
-import type {
-  JsonDrawElement,
-  JsonDrawIframeLikeElement,
-  IframeData,
-} from "./types";
+import type { JsonDrawElement, JsonDrawIframeLikeElement, IframeData } from "./types";
 
 type IframeDataWithSandbox = MarkRequired<IframeData, "sandbox">;
 
@@ -30,16 +18,13 @@ const RE_VIMEO =
 const RE_FIGMA = /^https:\/\/(?:www\.)?figma\.com/;
 
 const RE_GH_GIST = /^https:\/\/gist\.github\.com\/([\w_-]+)\/([\w_-]+)/;
-const RE_GH_GIST_EMBED =
-  /^<script[\s\S]*?\ssrc=["'](https:\/\/gist\.github\.com\/.*?)\.js["']/i;
+const RE_GH_GIST_EMBED = /^<script[\s\S]*?\ssrc=["'](https:\/\/gist\.github\.com\/.*?)\.js["']/i;
 
 const RE_MSFORMS = /^(?:https?:\/\/)?forms\.microsoft\.com\//;
 
 // not anchored to start to allow <blockquote> twitter embeds
-const RE_TWITTER =
-  /(?:https?:\/\/)?(?:(?:w){3}\.)?(?:twitter|x)\.com\/[^/]+\/status\/(\d+)/;
-const RE_TWITTER_EMBED =
-  /^<blockquote[\s\S]*?\shref=["'](https?:\/\/(?:twitter|x)\.com\/[^"']*)/i;
+const RE_TWITTER = /(?:https?:\/\/)?(?:(?:w){3}\.)?(?:twitter|x)\.com\/[^/]+\/status\/(\d+)/;
+const RE_TWITTER_EMBED = /^<blockquote[\s\S]*?\shref=["'](https?:\/\/(?:twitter|x)\.com\/[^"']*)/i;
 
 const RE_VALTOWN =
   /^https:\/\/(?:www\.)?val\.town\/(v|embed)\/[a-zA-Z_$][0-9a-zA-Z_$]+\.[a-zA-Z_$][0-9a-zA-Z_$]+/;
@@ -47,8 +32,7 @@ const RE_VALTOWN =
 const RE_GENERIC_EMBED =
   /^<(?:iframe|blockquote)[\s\S]*?\s(?:src|href)=["']([^"']*)["'][\s\S]*?>$/i;
 
-const RE_GIPHY =
-  /giphy.com\/(?:clips|embed|gifs)\/[a-zA-Z0-9]*?-?([a-zA-Z0-9]+)(?:[^a-zA-Z0-9]|$)/;
+const RE_GIPHY = /giphy.com\/(?:clips|embed|gifs)\/[a-zA-Z0-9]*?-?([a-zA-Z0-9]+)(?:[^a-zA-Z0-9]|$)/;
 
 const RE_REDDIT =
   /^(?:http(?:s)?:\/\/)?(?:www\.)?reddit\.com\/r\/([a-zA-Z0-9_]+)\/comments\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)\/?(?:\?[^#\s]*)?(?:#[^\s]*)?$/;
@@ -61,8 +45,7 @@ const parseYouTubeTimestamp = (url: string): number => {
 
   try {
     const urlObj = new URL(url.startsWith("http") ? url : `https://${url}`);
-    timeParam =
-      urlObj.searchParams.get("t") || urlObj.searchParams.get("start");
+    timeParam = urlObj.searchParams.get("t") || urlObj.searchParams.get("start");
   } catch (error) {
     const timeMatch = url.match(/[?&#](?:t|start)=([^&#\s]+)/);
     timeParam = timeMatch?.[1];
@@ -91,7 +74,7 @@ const ALLOWED_DOMAINS = new Set([
   "vimeo.com",
   "player.vimeo.com",
   "figma.com",
-  "link.jsondraw.com",
+  "link.jsonviz.online",
   "gist.github.com",
   "twitter.com",
   "x.com",
@@ -121,9 +104,7 @@ export const createSrcDoc = (body: string) => {
   return `<html><body>${body}</body></html>`;
 };
 
-export const getEmbedLink = (
-  link: string | null | undefined,
-): IframeDataWithSandbox | null => {
+export const getEmbedLink = (link: string | null | undefined): IframeDataWithSandbox | null => {
   if (!link) {
     return null;
   }
@@ -134,9 +115,7 @@ export const getEmbedLink = (
 
   const originalLink = link;
 
-  const allowSameOrigin = ALLOW_SAME_ORIGIN.has(
-    matchHostname(link, ALLOW_SAME_ORIGIN) || "",
-  );
+  const allowSameOrigin = ALLOW_SAME_ORIGIN.has(matchHostname(link, ALLOW_SAME_ORIGIN) || "");
 
   let type: "video" | "generic" = "generic";
   let aspectRatio = { w: 560, h: 840 };
@@ -178,9 +157,7 @@ export const getEmbedLink = (
   const vimeoLink = link.match(RE_VIMEO);
   if (vimeoLink?.[1]) {
     const target = vimeoLink?.[1];
-    const error = !/^\d+$/.test(target)
-      ? new URIError("Invalid embed link format")
-      : undefined;
+    const error = !/^\d+$/.test(target) ? new URIError("Invalid embed link format") : undefined;
     type = "video";
     link = `https://player.vimeo.com/video/${target}?api=1`;
     aspectRatio = { w: 560, h: 315 };
@@ -204,9 +181,7 @@ export const getEmbedLink = (
   const figmaLink = link.match(RE_FIGMA);
   if (figmaLink) {
     type = "generic";
-    link = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
-      link,
-    )}`;
+    link = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(link)}`;
     aspectRatio = { w: 550, h: 550 };
     embeddedLinkCache.set(originalLink, {
       link,
@@ -224,8 +199,7 @@ export const getEmbedLink = (
 
   const valLink = link.match(RE_VALTOWN);
   if (valLink) {
-    link =
-      valLink[1] === "embed" ? valLink[0] : valLink[0].replace("/v", "/embed");
+    link = valLink[1] === "embed" ? valLink[0] : valLink[0].replace("/v", "/embed");
     embeddedLinkCache.set(originalLink, {
       link,
       intrinsicSize: aspectRatio,
@@ -250,15 +224,13 @@ export const getEmbedLink = (
     // Note that we don't attempt to parse the username as it can consist of
     // non-latin1 characters, and the username in the url can be set to anything
     // without affecting the embed.
-    const safeURL = escapeDoubleQuotes(
-      `https://twitter.com/x/status/${postId}`,
-    );
+    const safeURL = escapeDoubleQuotes(`https://twitter.com/x/status/${postId}`);
 
     const ret: IframeDataWithSandbox = {
       type: "document",
       srcdoc: (theme: string) =>
         createSrcDoc(
-          `<blockquote class="twitter-tweet" data-dnt="true" data-theme="${theme}"><a href="${safeURL}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`,
+          `<blockquote class="twitter-tweet" data-dnt="true" data-theme="${theme}"><a href="${safeURL}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
         ),
       intrinsicSize: { w: 480, h: 480 },
       sandbox: { allowSameOrigin },
@@ -269,14 +241,12 @@ export const getEmbedLink = (
 
   if (RE_REDDIT.test(link)) {
     const [, page, postId, title] = link.match(RE_REDDIT)!;
-    const safeURL = escapeDoubleQuotes(
-      `https://reddit.com/r/${page}/comments/${postId}/${title}`,
-    );
+    const safeURL = escapeDoubleQuotes(`https://reddit.com/r/${page}/comments/${postId}/${title}`);
     const ret: IframeDataWithSandbox = {
       type: "document",
       srcdoc: (theme: string) =>
         createSrcDoc(
-          `<blockquote class="reddit-embed-bq" data-embed-theme="${theme}"><a href="${safeURL}"></a><br></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>`,
+          `<blockquote class="reddit-embed-bq" data-embed-theme="${theme}"><a href="${safeURL}"></a><br></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>`
         ),
       intrinsicSize: { w: 480, h: 480 },
       sandbox: { allowSameOrigin },
@@ -287,9 +257,7 @@ export const getEmbedLink = (
 
   if (RE_GH_GIST.test(link)) {
     const [, user, gistId] = link.match(RE_GH_GIST)!;
-    const safeURL = escapeDoubleQuotes(
-      `https://gist.github.com/${user}/${gistId}`,
-    );
+    const safeURL = escapeDoubleQuotes(`https://gist.github.com/${user}/${gistId}`);
     const ret: IframeDataWithSandbox = {
       type: "document",
       srcdoc: () =>
@@ -323,19 +291,18 @@ export const getEmbedLink = (
 };
 
 export const createPlaceholderEmbeddableLabel = (
-  element: JsonDrawIframeLikeElement,
+  element: JsonDrawIframeLikeElement
 ): JsonDrawElement => {
   let text: string;
   if (isIframeElement(element)) {
     text = "IFrame element";
   } else {
-    text =
-      !element.link || element?.link === "" ? "Empty Web-Embed" : element.link;
+    text = !element.link || element?.link === "" ? "Empty Web-Embed" : element.link;
   }
 
   const fontSize = Math.max(
     Math.min(element.width / 2, element.width / text.length),
-    element.width / 30,
+    element.width / 30
   );
   const fontFamily = FONT_FAMILY.Helvetica;
 
@@ -347,8 +314,7 @@ export const createPlaceholderEmbeddableLabel = (
   return newTextElement({
     x: element.x + element.width / 2,
     y: element.y + element.height / 2,
-    strokeColor:
-      element.strokeColor !== "transparent" ? element.strokeColor : "black",
+    strokeColor: element.strokeColor !== "transparent" ? element.strokeColor : "black",
     backgroundColor: "transparent",
     fontFamily,
     fontSize,
@@ -362,7 +328,7 @@ export const createPlaceholderEmbeddableLabel = (
 const matchHostname = (
   url: string,
   /** using a Set assumes it already contains normalized bare domains */
-  allowedHostnames: Set<string> | string,
+  allowedHostnames: Set<string> | string
 ): string | null => {
   try {
     const { hostname } = new URL(url);
@@ -374,10 +340,7 @@ const matchHostname = (
         return bareDomain;
       }
 
-      const bareDomainWithFirstSubdomainWildcarded = bareDomain.replace(
-        /^([^.]+)/,
-        "*",
-      );
+      const bareDomainWithFirstSubdomainWildcarded = bareDomain.replace(/^([^.]+)/, "*");
       if (ALLOWED_DOMAINS.has(bareDomainWithFirstSubdomainWildcarded)) {
         return bareDomainWithFirstSubdomainWildcarded;
       }
@@ -424,7 +387,7 @@ export const maybeParseEmbedSrc = (str: string): string => {
 
 export const embeddableURLValidator = (
   url: string | null | undefined,
-  validateEmbeddable: JsonDrawProps["validateEmbeddable"],
+  validateEmbeddable: JsonDrawProps["validateEmbeddable"]
 ): boolean => {
   if (!url) {
     return false;

@@ -47,7 +47,7 @@ const JsonSchemaDocs = () => {
           ...SEO,
           title: `${t("jsonSchema.title")} Documentation - JSON Visualization`,
           description: t("jsonSchema.subtitle"),
-          canonical: "https://jsonvisualization.nguuyen.io.vn/docs/json-schema",
+          canonical: "https://jsonviz.online/docs/json-schema",
         })}
       </Head>
       <Container size="lg" py={60}>

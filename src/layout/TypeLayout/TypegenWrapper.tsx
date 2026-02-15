@@ -62,7 +62,7 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
         {generateNextSeo({
           ...SEO,
           title: `${fromLabel} to ${toLabel} | JSON Visualization`,
-          canonical: `https://jsonvisualization.nguuyen.io.vn/converter/${from}-to-${to}`,
+          canonical: `https://jsonviz.online/converter/${from}-to-${to}`,
           description: `Instantly generate ${toLabel} from ${fromLabel} using this free online tool. Paste your ${fromLabel} and get the generated ${toLabel} instantly.`,
         })}
       </Head>

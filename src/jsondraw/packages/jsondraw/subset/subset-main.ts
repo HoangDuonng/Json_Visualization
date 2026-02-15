@@ -1,8 +1,6 @@
 import { isServerEnv, promiseTry } from "@jsondraw/common";
-
 import { WorkerInTheMainChunkError, WorkerUrlNotDefinedError } from "../errors";
 import { WorkerPool } from "../workers";
-
 import type { Commands } from "./subset-shared.chunk";
 
 let shouldUseWorkers = typeof Worker !== "undefined";
@@ -11,7 +9,7 @@ let shouldUseWorkers = typeof Worker !== "undefined";
  * Tries to subset glyphs in a font based on the used codepoints, returning the font as dataurl.
  * Under the hood utilizes worker threads (Web Workers, if available), otherwise fallbacks to the main thread.
  *
- * Check the following diagram for details: link.jsondraw.com/readonly/MbbnWPSWXgadXdtmzgeO
+ * Check the following diagram for details: link.jsonviz.online/readonly/MbbnWPSWXgadXdtmzgeO
  *
  * @param arrayBuffer font data buffer in the woff2 format
  * @param codePoints codepoints used to subset the glyphs
@@ -20,10 +18,9 @@ let shouldUseWorkers = typeof Worker !== "undefined";
  */
 export const subsetWoff2GlyphsByCodepoints = async (
   arrayBuffer: ArrayBuffer,
-  codePoints: Array<number>,
+  codePoints: Array<number>
 ): Promise<string> => {
-  const { Commands, subsetToBase64, toBase64 } =
-    await lazyLoadSharedSubsetChunk();
+  const { Commands, subsetToBase64, toBase64 } = await lazyLoadSharedSubsetChunk();
 
   if (!shouldUseWorkers) {
     return subsetToBase64(arrayBuffer, codePoints);
@@ -41,7 +38,7 @@ export const subsetWoff2GlyphsByCodepoints = async (
           arrayBuffer: arrayBufferCopy,
           codePoints,
         } as const,
-        { transfer: [arrayBufferCopy] },
+        { transfer: [arrayBufferCopy] }
       );
 
       // encode on the main thread to avoid copying large binary strings (as dataurl) between threads
@@ -54,15 +51,11 @@ export const subsetWoff2GlyphsByCodepoints = async (
         // don't log the expected errors server-side
         !(
           isServerEnv() &&
-          (e instanceof WorkerUrlNotDefinedError ||
-            e instanceof WorkerInTheMainChunkError)
+          (e instanceof WorkerUrlNotDefinedError || e instanceof WorkerInTheMainChunkError)
         )
       ) {
         // eslint-disable-next-line no-console
-        console.error(
-          "Failed to use workers for subsetting, falling back to the main thread.",
-          e,
-        );
+        console.error("Failed to use workers for subsetting, falling back to the main thread.", e);
       }
 
       // fallback to the main thread
@@ -99,8 +92,9 @@ type SubsetWorkerData = {
   codePoints: Array<number>;
 };
 
-type SubsetWorkerResult<T extends SubsetWorkerData["command"]> =
-  T extends typeof Commands.Subset ? ArrayBuffer : never;
+type SubsetWorkerResult<T extends SubsetWorkerData["command"]> = T extends typeof Commands.Subset
+  ? ArrayBuffer
+  : never;
 
 let workerPool: Promise<
   WorkerPool<SubsetWorkerData, SubsetWorkerResult<SubsetWorkerData["command"]>>

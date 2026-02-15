@@ -122,7 +122,7 @@ const JSONSchemaTool = () => {
           title: "JSON Schema Validator & Generator",
           description:
             "Use our JSON Schema Validator & Generator tool to easily validate and generate JSON schemas, and generate data from JSON schemas. Simply input your JSON data, generate the corresponding schema, and validate your data with ease.",
-          canonical: "https://jsonvisualization.nguuyen.io.vn/tools/json-schema",
+          canonical: "https://jsonviz.online/tools/json-schema",
         })}
       </Head>
       <Container mt="xl" mb="xl" pb="xl" size="xl">

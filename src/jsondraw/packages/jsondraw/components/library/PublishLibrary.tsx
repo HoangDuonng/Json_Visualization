@@ -357,7 +357,7 @@ const PublishLibrary = ({
             <Trans
               i18nKey="publishDialog.noteDescription"
               link={el => (
-                <a href="https://libraries.jsondraw.com" target="_blank" rel="noopener">
+                <a href="https://libraries.jsonviz.online" target="_blank" rel="noopener">
                   {el}
                 </a>
               )}

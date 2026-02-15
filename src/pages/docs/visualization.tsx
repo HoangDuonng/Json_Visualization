@@ -46,7 +46,7 @@ const VisualizationDocs = () => {
           ...SEO,
           title: `${t("visualization.title")} Documentation - JSON Visualization`,
           description: t("visualization.subtitle"),
-          canonical: `https://jsonvisualization.nguuyen.io.vn/${locale === "vi" ? "vi/" : ""}docs/visualization`,
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/visualization`,
         })}
       </Head>
       <Container size="lg" py={60}>

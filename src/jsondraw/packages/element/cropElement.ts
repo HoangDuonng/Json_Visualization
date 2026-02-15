@@ -13,13 +13,11 @@ import {
   isCloseTo,
 } from "@jsondraw/math";
 import { type Point } from "points-on-curve";
-
 import {
   elementCenterPoint,
   getElementAbsoluteCoords,
   getResizedElementAbsoluteCoords,
 } from "./bounds";
-
 import type { TransformHandleType } from "./transformHandles";
 import type {
   ElementsMap,
@@ -39,10 +37,9 @@ export const cropElement = (
   naturalHeight: number,
   pointerX: number,
   pointerY: number,
-  widthAspectRatio?: number,
+  widthAspectRatio?: number
 ) => {
-  const { width: uncroppedWidth, height: uncroppedHeight } =
-    getUncroppedWidthAndHeight(element);
+  const { width: uncroppedWidth, height: uncroppedHeight } = getUncroppedWidthAndHeight(element);
 
   const naturalWidthToUncropped = naturalWidth / uncroppedWidth;
   const naturalHeightToUncropped = naturalHeight / uncroppedHeight;
@@ -64,7 +61,7 @@ export const cropElement = (
   const rotatedPointer = pointRotateRads(
     pointFrom(pointerX, pointerY),
     elementCenterPoint(element, elementsMap),
-    -element.angle as Radians,
+    -element.angle as Radians
   );
 
   pointerX = rotatedPointer[0];
@@ -95,7 +92,7 @@ export const cropElement = (
     nextHeight = clamp(
       element.height - changeInHeight,
       MINIMAL_CROP_SIZE,
-      isFlippedByY ? uncroppedHeight - croppedTop : element.height + croppedTop,
+      isFlippedByY ? uncroppedHeight - croppedTop : element.height + croppedTop
     );
   }
 
@@ -104,7 +101,7 @@ export const cropElement = (
     nextHeight = clamp(
       element.height + changeInHeight,
       MINIMAL_CROP_SIZE,
-      isFlippedByY ? element.height + croppedTop : uncroppedHeight - croppedTop,
+      isFlippedByY ? element.height + croppedTop : uncroppedHeight - croppedTop
     );
   }
 
@@ -114,7 +111,7 @@ export const cropElement = (
     nextWidth = clamp(
       element.width + changeInWidth,
       MINIMAL_CROP_SIZE,
-      isFlippedByX ? element.width + croppedLeft : uncroppedWidth - croppedLeft,
+      isFlippedByX ? element.width + croppedLeft : uncroppedWidth - croppedLeft
     );
   }
 
@@ -122,7 +119,7 @@ export const cropElement = (
     nextWidth = clamp(
       element.width - changeInWidth,
       MINIMAL_CROP_SIZE,
-      isFlippedByX ? uncroppedWidth - croppedLeft : element.width + croppedLeft,
+      isFlippedByX ? uncroppedWidth - croppedLeft : element.width + croppedLeft
     );
   }
 
@@ -133,10 +130,7 @@ export const cropElement = (
 
   updateCropWidthAndHeight(crop);
 
-  const adjustFlipForHandle = (
-    handle: TransformHandleType,
-    crop: ImageCrop,
-  ) => {
+  const adjustFlipForHandle = (handle: TransformHandleType, crop: ImageCrop) => {
     updateCropWidthAndHeight(crop);
     if (handle.includes("n")) {
       if (!isFlippedByY) {
@@ -164,16 +158,11 @@ export const cropElement = (
     case "n": {
       if (widthAspectRatio) {
         const distanceToLeft = croppedLeft + element.width / 2;
-        const distanceToRight =
-          uncroppedWidth - croppedLeft - element.width / 2;
+        const distanceToRight = uncroppedWidth - croppedLeft - element.width / 2;
 
         const MAX_WIDTH = Math.min(distanceToLeft, distanceToRight) * 2;
 
-        nextWidth = clamp(
-          nextHeight * widthAspectRatio,
-          MINIMAL_CROP_SIZE,
-          MAX_WIDTH,
-        );
+        nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
         nextHeight = nextWidth / widthAspectRatio;
       }
 
@@ -188,16 +177,11 @@ export const cropElement = (
     case "s": {
       if (widthAspectRatio) {
         const distanceToLeft = croppedLeft + element.width / 2;
-        const distanceToRight =
-          uncroppedWidth - croppedLeft - element.width / 2;
+        const distanceToRight = uncroppedWidth - croppedLeft - element.width / 2;
 
         const MAX_WIDTH = Math.min(distanceToLeft, distanceToRight) * 2;
 
-        nextWidth = clamp(
-          nextHeight * widthAspectRatio,
-          MINIMAL_CROP_SIZE,
-          MAX_WIDTH,
-        );
+        nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
         nextHeight = nextWidth / widthAspectRatio;
       }
 
@@ -212,16 +196,11 @@ export const cropElement = (
     case "w": {
       if (widthAspectRatio) {
         const distanceToTop = croppedTop + element.height / 2;
-        const distanceToBottom =
-          uncroppedHeight - croppedTop - element.height / 2;
+        const distanceToBottom = uncroppedHeight - croppedTop - element.height / 2;
 
         const MAX_HEIGHT = Math.min(distanceToTop, distanceToBottom) * 2;
 
-        nextHeight = clamp(
-          nextWidth / widthAspectRatio,
-          MINIMAL_CROP_SIZE,
-          MAX_HEIGHT,
-        );
+        nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
         nextWidth = nextHeight * widthAspectRatio;
       }
 
@@ -236,16 +215,11 @@ export const cropElement = (
     case "e": {
       if (widthAspectRatio) {
         const distanceToTop = croppedTop + element.height / 2;
-        const distanceToBottom =
-          uncroppedHeight - croppedTop - element.height / 2;
+        const distanceToBottom = uncroppedHeight - croppedTop - element.height / 2;
 
         const MAX_HEIGHT = Math.min(distanceToTop, distanceToBottom) * 2;
 
-        nextHeight = clamp(
-          nextWidth / widthAspectRatio,
-          MINIMAL_CROP_SIZE,
-          MAX_HEIGHT,
-        );
+        nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
         nextWidth = nextHeight * widthAspectRatio;
       }
 
@@ -264,22 +238,14 @@ export const cropElement = (
             ? uncroppedHeight - croppedTop
             : croppedTop + element.height;
 
-          nextHeight = clamp(
-            nextWidth / widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_HEIGHT,
-          );
+          nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
           nextWidth = nextHeight * widthAspectRatio;
         } else {
           const MAX_WIDTH = isFlippedByX
             ? croppedLeft + element.width
             : uncroppedWidth - croppedLeft;
 
-          nextWidth = clamp(
-            nextHeight * widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_WIDTH,
-          );
+          nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
           nextHeight = nextWidth / widthAspectRatio;
         }
       }
@@ -293,22 +259,14 @@ export const cropElement = (
           const MAX_HEIGHT = isFlippedByY
             ? uncroppedHeight - croppedTop
             : croppedTop + element.height;
-          nextHeight = clamp(
-            nextWidth / widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_HEIGHT,
-          );
+          nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
           nextWidth = nextHeight * widthAspectRatio;
         } else {
           const MAX_WIDTH = isFlippedByX
             ? uncroppedWidth - croppedLeft
             : croppedLeft + element.width;
 
-          nextWidth = clamp(
-            nextHeight * widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_WIDTH,
-          );
+          nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
           nextHeight = nextWidth / widthAspectRatio;
         }
       }
@@ -323,22 +281,14 @@ export const cropElement = (
             ? croppedTop + element.height
             : uncroppedHeight - croppedTop;
 
-          nextHeight = clamp(
-            nextWidth / widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_HEIGHT,
-          );
+          nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
           nextWidth = nextHeight * widthAspectRatio;
         } else {
           const MAX_WIDTH = isFlippedByX
             ? croppedLeft + element.width
             : uncroppedWidth - croppedLeft;
 
-          nextWidth = clamp(
-            nextHeight * widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_WIDTH,
-          );
+          nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
           nextHeight = nextWidth / widthAspectRatio;
         }
       }
@@ -353,22 +303,14 @@ export const cropElement = (
             ? croppedTop + element.height
             : uncroppedHeight - croppedTop;
 
-          nextHeight = clamp(
-            nextWidth / widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_HEIGHT,
-          );
+          nextHeight = clamp(nextWidth / widthAspectRatio, MINIMAL_CROP_SIZE, MAX_HEIGHT);
           nextWidth = nextHeight * widthAspectRatio;
         } else {
           const MAX_WIDTH = isFlippedByX
             ? uncroppedWidth - croppedLeft
             : croppedLeft + element.width;
 
-          nextWidth = clamp(
-            nextHeight * widthAspectRatio,
-            MINIMAL_CROP_SIZE,
-            MAX_WIDTH,
-          );
+          nextWidth = clamp(nextHeight * widthAspectRatio, MINIMAL_CROP_SIZE, MAX_WIDTH);
           nextHeight = nextWidth / widthAspectRatio;
         }
       }
@@ -385,14 +327,11 @@ export const cropElement = (
     transformHandle,
     nextWidth,
     nextHeight,
-    !!widthAspectRatio,
+    !!widthAspectRatio
   );
 
   // reset crop to null if we're back to orig size
-  if (
-    isCloseTo(crop.width, crop.naturalWidth) &&
-    isCloseTo(crop.height, crop.naturalHeight)
-  ) {
+  if (isCloseTo(crop.width, crop.naturalWidth) && isCloseTo(crop.height, crop.naturalHeight)) {
     crop = null;
   }
 
@@ -410,20 +349,24 @@ const recomputeOrigin = (
   transformHandle: TransformHandleType,
   width: number,
   height: number,
-  shouldMaintainAspectRatio?: boolean,
+  shouldMaintainAspectRatio?: boolean
 ) => {
   const [x1, y1, x2, y2] = getResizedElementAbsoluteCoords(
     stateAtCropStart,
     stateAtCropStart.width,
     stateAtCropStart.height,
-    true,
+    true
   );
   const startTopLeft = pointFrom(x1, y1);
   const startBottomRight = pointFrom(x2, y2);
   const startCenter: any = pointCenter(startTopLeft, startBottomRight);
 
-  const [newBoundsX1, newBoundsY1, newBoundsX2, newBoundsY2] =
-    getResizedElementAbsoluteCoords(stateAtCropStart, width, height, true);
+  const [newBoundsX1, newBoundsY1, newBoundsX2, newBoundsY2] = getResizedElementAbsoluteCoords(
+    stateAtCropStart,
+    width,
+    height,
+    true
+  );
   const newBoundsWidth = newBoundsX2 - newBoundsX1;
   const newBoundsHeight = newBoundsY2 - newBoundsY1;
 
@@ -462,11 +405,7 @@ const recomputeOrigin = (
     newTopLeft[1] + Math.abs(newBoundsHeight) / 2,
   ];
   const rotatedNewCenter = pointRotateRads(newCenter, startCenter, angle);
-  newTopLeft = pointRotateRads(
-    rotatedTopLeft,
-    rotatedNewCenter,
-    -angle as Radians,
-  );
+  newTopLeft = pointRotateRads(rotatedTopLeft, rotatedNewCenter, -angle as Radians);
 
   const newOrigin = [...newTopLeft];
   newOrigin[0] += stateAtCropStart.x - newBoundsX1;
@@ -475,30 +414,25 @@ const recomputeOrigin = (
   return newOrigin;
 };
 
-// refer to https://link.jsondraw.com/l/6rfy1007QOo/6stx5PmRn0k
+// refer to https://link.jsonviz.online/l/6rfy1007QOo/6stx5PmRn0k
 export const getUncroppedImageElement = (
   element: JsonDrawImageElement,
-  elementsMap: ElementsMap,
+  elementsMap: ElementsMap
 ) => {
   if (element.crop) {
     const { width, height } = getUncroppedWidthAndHeight(element);
 
-    const [x1, y1, x2, y2, cx, cy] = getElementAbsoluteCoords(
-      element,
-      elementsMap,
-    );
+    const [x1, y1, x2, y2, cx, cy] = getElementAbsoluteCoords(element, elementsMap);
 
     const topLeftVector = vectorFromPoint(
-      pointRotateRads(pointFrom(x1, y1), pointFrom(cx, cy), element.angle),
+      pointRotateRads(pointFrom(x1, y1), pointFrom(cx, cy), element.angle)
     );
     const topRightVector = vectorFromPoint(
-      pointRotateRads(pointFrom(x2, y1), pointFrom(cx, cy), element.angle),
+      pointRotateRads(pointFrom(x2, y1), pointFrom(cx, cy), element.angle)
     );
-    const topEdgeNormalized = vectorNormalize(
-      vectorSubtract(topRightVector, topLeftVector),
-    );
+    const topEdgeNormalized = vectorNormalize(vectorSubtract(topRightVector, topLeftVector));
     const bottomLeftVector = vectorFromPoint(
-      pointRotateRads(pointFrom(x1, y2), pointFrom(cx, cy), element.angle),
+      pointRotateRads(pointFrom(x1, y2), pointFrom(cx, cy), element.angle)
     );
     const leftEdgeVector = vectorSubtract(bottomLeftVector, topLeftVector);
     const leftEdgeNormalized = vectorNormalize(leftEdgeVector);
@@ -508,28 +442,22 @@ export const getUncroppedImageElement = (
     const rotatedTopLeft = vectorAdd(
       vectorAdd(
         topLeftVector,
-        vectorScale(
-          topEdgeNormalized,
-          (-cropX * width) / element.crop.naturalWidth,
-        ),
+        vectorScale(topEdgeNormalized, (-cropX * width) / element.crop.naturalWidth)
       ),
-      vectorScale(
-        leftEdgeNormalized,
-        (-cropY * height) / element.crop.naturalHeight,
-      ),
+      vectorScale(leftEdgeNormalized, (-cropY * height) / element.crop.naturalHeight)
     );
 
     const center = pointFromVector(
       vectorAdd(
         vectorAdd(rotatedTopLeft, vectorScale(topEdgeNormalized, width / 2)),
-        vectorScale(leftEdgeNormalized, height / 2),
-      ),
+        vectorScale(leftEdgeNormalized, height / 2)
+      )
     );
 
     const unrotatedTopLeft = pointRotateRads(
       pointFromVector(rotatedTopLeft),
       center,
-      -element.angle as Radians,
+      -element.angle as Radians
     );
 
     const uncroppedElement: JsonDrawImageElement = {
@@ -549,10 +477,8 @@ export const getUncroppedImageElement = (
 
 export const getUncroppedWidthAndHeight = (element: JsonDrawImageElement) => {
   if (element.crop) {
-    const width =
-      element.width / (element.crop.width / element.crop.naturalWidth);
-    const height =
-      element.height / (element.crop.height / element.crop.naturalHeight);
+    const width = element.width / (element.crop.width / element.crop.naturalWidth);
+    const height = element.height / (element.crop.height / element.crop.naturalHeight);
 
     return {
       width,
@@ -566,10 +492,7 @@ export const getUncroppedWidthAndHeight = (element: JsonDrawImageElement) => {
   };
 };
 
-const adjustCropPosition = (
-  crop: ImageCrop,
-  scale: JsonDrawImageElement["scale"],
-) => {
+const adjustCropPosition = (crop: ImageCrop, scale: JsonDrawImageElement["scale"]) => {
   let cropX = crop.x;
   let cropY = crop.y;
 
@@ -590,10 +513,7 @@ const adjustCropPosition = (
   };
 };
 
-export const getFlipAdjustedCropPosition = (
-  element: JsonDrawImageElement,
-  natural = false,
-) => {
+export const getFlipAdjustedCropPosition = (element: JsonDrawImageElement, natural = false) => {
   const crop = element.crop;
   if (!crop) {
     return null;

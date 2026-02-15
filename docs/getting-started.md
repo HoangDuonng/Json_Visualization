@@ -10,24 +10,27 @@ JSON Visualization is a free, open-source web application that transforms JSON, 
 
 ### 1. Open the Editor
 
-Visit [jsonvisualization.nguuyen.io.vn](https://jsonvisualization.nguuyen.io.vn) and click **"Open Editor"** or navigate to `/editor`.
+Visit [jsonviz.online](https://jsonviz.online) and click **"Open Editor"** or navigate to `/editor`.
 
 ### 2. Add Your Data
 
 You have three ways to add data:
 
 **Option A: Paste directly**
+
 1. Click in the text editor on the left
 2. Paste your JSON, YAML, CSV, XML, or TOML data
 3. The graph updates automatically
 
 **Option B: Upload a file**
+
 1. Click **File** → **Import**
 2. Choose **"From File"**
 3. Select your data file
 4. Click **Open**
 
 **Option C: Load from URL**
+
 1. Click **File** → **Import**
 2. Choose **"From URL"**
 3. Enter the URL to your data file
@@ -48,6 +51,7 @@ The graph view shows your data structure:
   - Gray: Null values
 
 **Navigation:**
+
 - **Zoom**: Mouse wheel or pinch gesture
 - **Pan**: Click and drag the canvas
 - **Focus**: Click a node to highlight it
@@ -81,12 +85,14 @@ Let's visualize a simple JSON object:
 ```
 
 **Steps:**
+
 1. Copy the JSON above
 2. Open the editor
 3. Paste into the text editor
 4. See the graph appear instantly!
 
 You should see:
+
 - A root node for the main object
 - Child nodes for each property
 - A nested object for `address`
@@ -103,6 +109,7 @@ Convert your data to different formats:
 3. Your data is converted automatically
 
 Supported conversions:
+
 - JSON ↔ YAML ↔ CSV ↔ XML
 
 ### Generate Code Types
@@ -116,6 +123,7 @@ Generate TypeScript, Go, Rust, or Kotlin types:
 ### Validate Your Data
 
 The editor validates your data automatically:
+
 - ✅ Green indicator: Valid
 - ❌ Red indicator: Invalid (check error message at bottom)
 
@@ -131,14 +139,14 @@ Save your visualization:
 
 Speed up your workflow:
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + S` | Save/Download |
-| `Ctrl/Cmd + O` | Open file |
-| `Ctrl/Cmd + F` | Search |
-| `Ctrl/Cmd + Z` | Undo |
-| `Ctrl/Cmd + Shift + Z` | Redo |
-| `Ctrl/Cmd + /` | Toggle comment |
+| Shortcut               | Action         |
+| ---------------------- | -------------- |
+| `Ctrl/Cmd + S`         | Save/Download  |
+| `Ctrl/Cmd + O`         | Open file      |
+| `Ctrl/Cmd + F`         | Search         |
+| `Ctrl/Cmd + Z`         | Undo           |
+| `Ctrl/Cmd + Shift + Z` | Redo           |
+| `Ctrl/Cmd + /`         | Toggle comment |
 
 See [Keyboard Shortcuts](reference/keyboard-shortcuts.md) for the complete list.
 
@@ -147,6 +155,7 @@ See [Keyboard Shortcuts](reference/keyboard-shortcuts.md) for the complete list.
 ### Large Files
 
 For files with many nodes:
+
 - Use **Collapse** to hide nested structures
 - Use **Search** to find specific nodes
 - Consider the node limit (default: 1000 nodes)
@@ -154,6 +163,7 @@ For files with many nodes:
 ### Complex Data
 
 For complex structures:
+
 - Start with **Tree View** for overview
 - Switch to **Graph View** for relationships
 - Use **Focus** to highlight specific paths
@@ -161,6 +171,7 @@ For complex structures:
 ### Performance
 
 For best performance:
+
 - Keep files under 5MB
 - Collapse large arrays/objects
 - Use search instead of scrolling
@@ -168,6 +179,7 @@ For best performance:
 ## Privacy & Security
 
 **Your data never leaves your browser:**
+
 - All processing happens locally
 - No data is sent to any server
 - No tracking or analytics on your data

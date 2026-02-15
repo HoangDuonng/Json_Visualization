@@ -9,7 +9,7 @@ export const SEO: DefaultSeoProps = {
     type: "website",
     images: [
       {
-        url: "https://nguuyen.io.vn/jsonvisualization.png",
+        url: "https://jsonviz.online/jsonvisualization.png",
         width: 1200,
         height: 627,
       },

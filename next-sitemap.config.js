@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://jsonvisualization.nguuyen.io.vn",
+  siteUrl: "https://jsonviz.online",
   exclude: ["/widget"],
   autoLastmod: false,
   changefreq: "never",

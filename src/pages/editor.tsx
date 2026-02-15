@@ -97,7 +97,7 @@ const EditorPage = () => {
           title: "Editor | JSON Visualization",
           description:
             "JSON Visualization Editor is a tool for visualizing into graphs, analyzing, editing, formatting, querying, transforming and validating JSON, CSV, YAML, XML, and more.",
-          canonical: "https://jsonvisualization.nguuyen.io.vn/editor",
+          canonical: "https://jsonviz.online/editor",
         })}
       </Head>
       <ThemeProvider theme={darkmodeEnabled ? darkTheme : lightTheme}>

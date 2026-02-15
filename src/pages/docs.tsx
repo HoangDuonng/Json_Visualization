@@ -129,7 +129,7 @@ const Docs = () => {
           ...SEO,
           title: "Documentation - JSON Visualization",
           description: "Learn about JSON Visualization features and how to use them.",
-          canonical: "https://jsonvisualization.nguuyen.io.vn/docs",
+          canonical: "https://jsonviz.online/docs",
         })}
       </Head>
       <Container size="xl" py={60}>

@@ -59,16 +59,16 @@ const config = {
         // Neutralize Vite-specific env vars
         "import.meta.env.VITE_APP_DISABLE_SENTRY": JSON.stringify("true"),
         "import.meta.env.VITE_APP_ENABLE_TRACKING": JSON.stringify("false"),
-        "import.meta.env.VITE_APP_LIBRARY_URL": JSON.stringify("https://libraries.jsondraw.com"),
+        "import.meta.env.VITE_APP_LIBRARY_URL": JSON.stringify("https://libraries.jsonviz.online"),
         "import.meta.env.VITE_APP_LIBRARY_BACKEND": JSON.stringify(
           "https://us-central1-jsondraw-room-persistence.cloudfunctions.net/libraries"
         ),
         "import.meta.env.VITE_APP_AI_BACKEND": JSON.stringify(""),
         "import.meta.env.VITE_APP_BACKEND_V2_GET_URL": JSON.stringify(
-          "https://json.jsondraw.com/api/v2/"
+          "https://json.jsonviz.online/api/v2/"
         ),
         "import.meta.env.VITE_APP_BACKEND_V2_POST_URL": JSON.stringify(
-          "https://json.jsondraw.com/api/v2/post/"
+          "https://json.jsonviz.online/api/v2/post/"
         ),
         "import.meta.env.VITE_APP_FIREBASE_CONFIG": JSON.stringify("{}"),
         "import.meta.env.VITE_APP_PORTAL_URL": JSON.stringify(""),

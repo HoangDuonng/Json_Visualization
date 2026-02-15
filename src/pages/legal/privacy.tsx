@@ -14,7 +14,7 @@ const Privacy = () => {
           ...SEO,
           title: "Privacy Policy - JSON Visualization",
           description: "JSON Visualization Privacy Policy",
-          canonical: "https://jsonvisualization.nguuyen.io.vn/legal/privacy",
+          canonical: "https://jsonviz.online/legal/privacy",
         })}
       </Head>
       <Container my={50} size="md" pb="lg">

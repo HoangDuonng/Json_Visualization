@@ -53,7 +53,7 @@ const JQQueryDocs = () => {
           ...SEO,
           title: `${t("jqQuery.title")} Documentation - JSON Visualization`,
           description: t("jqQuery.subtitle"),
-          canonical: "https://jsonvisualization.nguuyen.io.vn/docs/jq-query",
+          canonical: "https://jsonviz.online/docs/jq-query",
         })}
       </Head>
       <Container size="lg" py={60}>

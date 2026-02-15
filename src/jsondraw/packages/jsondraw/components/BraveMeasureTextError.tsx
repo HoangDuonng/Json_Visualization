@@ -19,7 +19,7 @@ const BraveMeasureTextError = () => {
         <Trans
           i18nKey="errors.brave_measure_text_error.line3"
           link={el => (
-            <a href="http://docs.jsondraw.com/docs/@jsondraw/jsondraw/faq#turning-off-aggresive-block-fingerprinting-in-brave-browser">
+            <a href="https://docs.jsonviz.online/docs/@jsondraw/jsondraw/faq#turning-off-aggresive-block-fingerprinting-in-brave-browser">
               {el}
             </a>
           )}

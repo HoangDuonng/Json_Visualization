@@ -8,7 +8,7 @@ const ExternalMode = () => {
     if (process.env.NEXT_PUBLIC_DISABLE_EXTERNAL_MODE === "false") {
       if (typeof window !== "undefined") {
         if (window.location.pathname.includes("widget")) return setExternal(false);
-        if (window.location.host !== "jsonvisualization.nguuyen.io.vn") return setExternal(true);
+        if (window.location.host !== "jsonviz.online") return setExternal(true);
         return setExternal(false);
       }
     }
