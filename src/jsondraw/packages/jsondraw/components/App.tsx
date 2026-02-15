@@ -433,7 +433,7 @@ import type {
   JsonDrawInitialDataState,
 } from "../types";
 import { textWysiwyg } from "../wysiwyg/textWysiwyg";
-import { activeConfirmDialogAtom } from "./ActiveConfirmDialog";
+import { activeConfirmDialogAtom } from "./dialogs/ActiveConfirmDialog";
 import BraveMeasureTextError from "./BraveMeasureTextError";
 import { ContextMenu, CONTEXT_MENU_SEPARATOR } from "./ContextMenu";
 import type { ContextMenuItems } from "./ContextMenu";

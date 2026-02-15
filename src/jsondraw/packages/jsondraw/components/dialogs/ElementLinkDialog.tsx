@@ -11,17 +11,17 @@ import type { JsonDrawElement } from "@jsondraw/element/types";
 
 import type { Scene } from "@jsondraw/element";
 
-import { t } from "../i18n";
-import { getSelectedElements } from "../scene";
+import { t } from "../../i18n";
+import { getSelectedElements } from "../../scene";
 
 import DialogActionButton from "./DialogActionButton";
-import { TextField } from "./TextField";
-import { ToolButton } from "./ToolButton";
-import { TrashIcon } from "./icons";
+import { TextField } from "../TextField";
+import { ToolButton } from "../ToolButton";
+import { TrashIcon } from "../icons";
 
 import "./ElementLinkDialog.scss";
 
-import type { AppProps, AppState, UIAppState } from "../types";
+import type { AppProps, AppState, UIAppState } from "../../types";
 const ElementLinkDialog = ({
   sourceElementId,
   onClose,

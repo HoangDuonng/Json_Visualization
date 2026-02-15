@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { KEYS, queryFocusableElements } from "@jsondraw/common";
 import clsx from "clsx";
-import { useSetAtom } from "../editor-jotai";
-import { useCallbackRefState } from "../hooks/useCallbackRefState";
-import { t } from "../i18n";
-import { useJsonDrawContainer, useEditorInterface, useJsonDrawSetAppState } from "./App";
+import { useSetAtom } from "../../editor-jotai";
+import { useCallbackRefState } from "../../hooks/useCallbackRefState";
+import { t } from "../../i18n";
+import { useJsonDrawContainer, useEditorInterface, useJsonDrawSetAppState } from "../App";
 import "./Dialog.scss";
-import { Island } from "./layout/Island";
+import { Island } from "../layout/Island";
 import { Modal } from "./Modal";
-import { CloseIcon } from "./icons";
-import { isLibraryMenuOpenAtom } from "./library/LibraryMenu";
+import { CloseIcon } from "../icons";
+import { isLibraryMenuOpenAtom } from "../library/LibraryMenu";
 
 export type DialogSize = number | "small" | "regular" | "wide" | undefined;
 

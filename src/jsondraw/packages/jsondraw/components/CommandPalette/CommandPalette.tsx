@@ -37,7 +37,7 @@ import {
   useJsonDrawActionManager,
   useJsonDrawSetAppState,
 } from "../App";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../dialogs/Dialog";
 import { InlineIcon } from "../InlineIcon";
 import { TextField } from "../TextField";
 import { getSelectedElements } from "../../scene";
@@ -57,7 +57,7 @@ import {
 import { SHAPES } from "../shapes";
 import { canChangeBackgroundColor, canChangeStrokeColor } from "../Actions";
 import { useStableCallback } from "../../hooks/useStableCallback";
-import { activeConfirmDialogAtom } from "../ActiveConfirmDialog";
+import { activeConfirmDialogAtom } from "../dialogs/ActiveConfirmDialog";
 import { useStable } from "../../hooks/useStable";
 
 import { Ellipsify } from "../Ellipsify";

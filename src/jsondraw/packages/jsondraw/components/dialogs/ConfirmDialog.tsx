@@ -1,12 +1,12 @@
 import { flushSync } from "react-dom";
-import { useSetAtom } from "../editor-jotai";
-import { t } from "../i18n";
-import { useJsonDrawContainer, useJsonDrawSetAppState } from "./App";
+import { useSetAtom } from "../../editor-jotai";
+import { t } from "../../i18n";
+import { useJsonDrawContainer, useJsonDrawSetAppState } from "../App";
 import "./ConfirmDialog.scss";
 import { Dialog } from "./Dialog";
 import type { DialogProps } from "./Dialog";
 import DialogActionButton from "./DialogActionButton";
-import { isLibraryMenuOpenAtom } from "./library/LibraryMenu";
+import { isLibraryMenuOpenAtom } from "../library/LibraryMenu";
 
 interface Props extends Omit<DialogProps, "onCloseRequest"> {
   onConfirm: () => void;

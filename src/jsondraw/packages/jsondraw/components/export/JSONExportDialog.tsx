@@ -11,7 +11,7 @@ import { nativeFileSystemSupported } from "../../data/filesystem";
 import { t } from "../../i18n";
 
 import { Card } from "../Card";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../dialogs/Dialog";
 import { ToolButton } from "../ToolButton";
 import { exportToFileIcon, LinkIcon } from "../icons";
 

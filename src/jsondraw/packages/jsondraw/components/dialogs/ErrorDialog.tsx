@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { t } from "../i18n";
+import { t } from "../../i18n";
 
-import { useJsonDrawContainer } from "./App";
+import { useJsonDrawContainer } from "../App";
 import { Dialog } from "./Dialog";
 
 export const ErrorDialog = ({

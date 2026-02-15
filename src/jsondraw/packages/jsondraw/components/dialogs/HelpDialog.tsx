@@ -4,13 +4,13 @@ import { isDarwin, isFirefox, isWindows } from "@jsondraw/common";
 
 import { KEYS } from "@jsondraw/common";
 
-import { getShortcutFromShortcutName } from "../actions/shortcuts";
-import { probablySupportsClipboardBlob } from "../clipboard";
-import { t } from "../i18n";
-import { getShortcutKey } from "../shortcut";
+import { getShortcutFromShortcutName } from "../../actions/shortcuts";
+import { probablySupportsClipboardBlob } from "../../clipboard";
+import { t } from "../../i18n";
+import { getShortcutKey } from "../../shortcut";
 
 import { Dialog } from "./Dialog";
-import { ExternalLinkIcon, GithubIcon, youtubeIcon } from "./icons";
+import { ExternalLinkIcon, GithubIcon, youtubeIcon } from "../icons";
 
 import "./HelpDialog.scss";
 

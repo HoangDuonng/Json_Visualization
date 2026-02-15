@@ -1,8 +1,8 @@
-import { actionClearCanvas } from "../actions";
-import { atom, useAtom } from "../editor-jotai";
-import { t } from "../i18n";
+import { actionClearCanvas } from "../../actions";
+import { atom, useAtom } from "../../editor-jotai";
+import { t } from "../../i18n";
 
-import { useJsonDrawActionManager } from "./App";
+import { useJsonDrawActionManager } from "../App";
 import ConfirmDialog from "./ConfirmDialog";
 
 export const activeConfirmDialogAtom = atom<"clearCanvas" | null>(null);

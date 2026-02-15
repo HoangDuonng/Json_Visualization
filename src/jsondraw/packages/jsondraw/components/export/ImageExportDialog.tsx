@@ -28,7 +28,7 @@ import { t } from "../../i18n";
 import { isSomeElementSelected } from "../../scene";
 
 import { copyIcon, downloadIcon, helpIcon } from "../icons";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../dialogs/Dialog";
 import { RadioGroup } from "../RadioGroup";
 import { Switch } from "../Switch";
 import { Tooltip } from "../Tooltip";

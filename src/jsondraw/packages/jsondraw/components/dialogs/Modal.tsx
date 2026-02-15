@@ -4,11 +4,11 @@ import { createPortal } from "react-dom";
 
 import { KEYS } from "@jsondraw/common";
 
-import { useCreatePortalContainer } from "../hooks/useCreatePortalContainer";
+import { useCreatePortalContainer } from "../../hooks/useCreatePortalContainer";
 
 import "./Modal.scss";
 
-import type { AppState } from "../types";
+import type { AppState } from "../../types";
 
 export const Modal: React.FC<{
   className?: string;

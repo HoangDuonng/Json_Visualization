@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useUIAppState } from "../../context/ui-appState";
 import { t } from "../../i18n";
 import { useApp } from "../App";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../dialogs/Dialog";
 import { withInternalFallback } from "../hoc/withInternalFallback";
 
 import MermaidToJsonDraw from "./MermaidToJsonDraw";

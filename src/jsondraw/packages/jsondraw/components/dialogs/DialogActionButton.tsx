@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
 import "./DialogActionButton.scss";
 

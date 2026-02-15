@@ -2,7 +2,7 @@ import React from "react";
 
 import { useTunnels } from "../../context/tunnels";
 import { useAtom } from "../../editor-jotai";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../dialogs/Dialog";
 import { FilledButton } from "../FilledButton";
 import { withInternalFallback } from "../hoc/withInternalFallback";
 import { alertTriangleIcon } from "../icons";

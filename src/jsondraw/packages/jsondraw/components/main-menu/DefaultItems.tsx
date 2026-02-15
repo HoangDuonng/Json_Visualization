@@ -22,7 +22,7 @@ import { trackEvent } from "../../analytics";
 import { useUIAppState } from "../../context/ui-appState";
 import { useSetAtom } from "../../editor-jotai";
 import { useI18n } from "../../i18n";
-import { activeConfirmDialogAtom } from "../ActiveConfirmDialog";
+import { activeConfirmDialogAtom } from "../dialogs/ActiveConfirmDialog";
 import {
   useJsonDrawSetAppState,
   useJsonDrawActionManager,

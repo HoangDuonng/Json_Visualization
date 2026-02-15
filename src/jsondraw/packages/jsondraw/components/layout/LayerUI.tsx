@@ -31,15 +31,15 @@ import type {
   AppClassProperties,
 } from "../../types";
 import { SelectedShapeActions, ShapesSwitcher, CompactShapeActions } from "../Actions";
-import { ActiveConfirmDialog } from "../ActiveConfirmDialog";
+import { ActiveConfirmDialog } from "../dialogs/ActiveConfirmDialog";
 import { useEditorInterface, useStylesPanelMode } from "../App";
 import { DefaultSidebar } from "./DefaultSidebar";
 import { FixedSideContainer } from "./FixedSideContainer";
-import ElementLinkDialog from "../ElementLinkDialog";
-import { ErrorDialog } from "../ErrorDialog";
+import ElementLinkDialog from "../dialogs/ElementLinkDialog";
+import { ErrorDialog } from "../dialogs/ErrorDialog";
 import { EyeDropper, activeEyeDropperAtom } from "../canvases/EyeDropper";
 import { HandButton } from "../HandButton";
-import { HelpDialog } from "../HelpDialog";
+import { HelpDialog } from "../dialogs/HelpDialog";
 import { HintViewer } from "../popups/HintViewer";
 import { ImageExportDialog } from "../export/ImageExportDialog";
 import { Island } from "./Island";
@@ -50,7 +50,7 @@ import { LoadingMessage } from "../LoadingMessage";
 import { LockButton } from "../LockButton";
 import { MobileMenu } from "./MobileMenu";
 import { OverwriteConfirmDialog } from "../OverwriteConfirm/OverwriteConfirm";
-import { PasteChartDialog } from "../PasteChartDialog";
+import { PasteChartDialog } from "../dialogs/PasteChartDialog";
 import { PenModeButton } from "../PenModeButton";
 import { Section } from "./Section";
 import { isSidebarDockedAtom } from "../Sidebar/Sidebar";
