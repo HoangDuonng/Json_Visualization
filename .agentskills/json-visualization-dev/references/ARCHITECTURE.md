@@ -5,15 +5,17 @@ Detailed technical architecture of JSON Visualization.
 ## System architecture
 
 ```
-User Input (JSON/YAML/CSV/XML/TOML)
+User Input (JSON/YAML/CSV/XML)
          ↓
    TextEditor (Monaco)
          ↓
    useFile Store (Zustand)
          ↓
-   jsonParser.ts (Parse to graph nodes)
+   contentToJson (Parse to JSON)
          ↓
-   useGraph Store (Graph state)
+   useJson Store (JSON string)
+         ↓
+   useGraph.setGraph (parser)
          ↓
    GraphView (Reaflow rendering)
          ↓
@@ -28,37 +30,40 @@ User Input (JSON/YAML/CSV/XML/TOML)
    - `contents`: Raw file content
    - `format`: FileFormat enum
    - `error`: Parse errors
-   - Actions: `setContents`, `setFormat`, `checkFormat`
+   - Actions: `setContents`, `setFormat`, `setError`, `checkEditorSession`
 
-2. **useJson** - Parsed JSON state
-   - `json`: Parsed JSON object
+2. **useJson** - Parsed JSON string state
+   - `json`: JSON string
    - `getJson()`: Getter function
 
 3. **useGraph** - Graph visualization state
    - `nodes`: Graph nodes array
    - `edges`: Graph edges array
-   - `collapsedNodes`: Set of collapsed node IDs
-   - Actions: `setGraph`, `expandNodes`, `collapseNodes`
+   - `viewPort`: Zoom/pan state
+   - `direction`: Layout direction
+   - `aboveSupportedLimit`: Node limit flag
+   - Actions: `setGraph`, `setLoading`, `setDirection`, `setViewPort`
 
 4. **useConfig** - App configuration
-   - `viewMode`: Graph or Tree view
-   - Theme settings
-   - Layout preferences
+   - `darkmodeEnabled`, `imagePreviewEnabled`, `liveTransformEnabled`
+   - `gesturesEnabled`, `rulersEnabled`
 
-5. **useModal** - Modal state
-   - Active modal type
-   - Modal data
+5. **useModal** - Modal visibility map
+   - Boolean flags keyed by `ModalName`
+   - Action: `setVisible(name, open)`
 
 ### State flow
 
 ```
 User edits → TextEditor → useFile.setContents()
                               ↓
-                    Debounced parse (600ms)
+                    Debounced parse (400ms)
                               ↓
-                    jsonParser.ts traverse()
+                    contentToJson(contents, format)
                               ↓
-                    useGraph.setGraph(nodes, edges)
+                    useJson.setJson(JSON.stringify(json))
+                              ↓
+                    useGraph.setGraph(json)
                               ↓
                     GraphView re-renders
 ```
@@ -69,26 +74,24 @@ User edits → TextEditor → useFile.setContents()
 
 ### Traverse function
 
-Recursively walks JSON structure and builds graph nodes:
+Parses JSON to a tree and builds graph nodes:
 
 ```typescript
-function traverse(
-  json: any,
-  parent: string | null,
-  key: string | number,
-  nodes: NodeData[],
-  edges: EdgeData[]
-): void
+export const parser = (json: string): Graph => {
+  const jsonTree = parseTree(json);
+  // traverse(node, parentId?)
+};
 ```
 
 **Logic**:
-1. Create node for current value
-2. Determine node type (object, array, primitive)
-3. If parent exists, create edge from parent to current node
-4. Recursively process children (object properties or array elements)
-5. Calculate node size based on content
+
+1. Parse string with `jsonc-parser` to a syntax tree
+2. Traverse nodes and build `NodeData` rows
+3. Create edges between parent and child nodes
+4. Calculate node size via `calculateNodeSize`
 
 **Node types**:
+
 - `object` - JSON objects
 - `array` - JSON arrays
 - `string`, `number`, `boolean`, `null` - Primitives
@@ -102,28 +105,22 @@ function traverse(
 Converts any supported format to JSON:
 
 ```typescript
-export async function contentToJson(
-  contents: string,
-  format: FileFormat
-): Promise<any>
+export async function contentToJson(contents: string, format: FileFormat): Promise<any>;
 ```
 
 **Supported formats**:
-- JSON → `JSON.parse()`
-- YAML → `yaml.load()`
-- CSV → `Papa.parse()` → array of objects
-- XML → `xml2js.parseString()` → object
-- TOML → `toml.parse()`
+
+- JSON → `jsonc-parser` (with fallback to `JSON.parse`)
+- YAML → `js-yaml`
+- CSV → `json-2-csv`
+- XML → `fast-xml-parser`
 
 ### jsonToContent function
 
 Converts JSON to any format:
 
 ```typescript
-export function jsonToContent(
-  json: any,
-  format: FileFormat
-): string
+export function jsonToContent(json: any, format: FileFormat): string;
 ```
 
 ## Type generation
@@ -139,6 +136,7 @@ Uses `json-to-ts`, `json-to-kotlin`, `json-to-rust` libraries.
 **File**: `src/lib/utils/json2go.js`
 
 Custom implementation:
+
 1. Parse JSON structure
 2. Identify types for each field
 3. Generate Go struct definitions
@@ -152,12 +150,14 @@ Custom implementation:
 **File**: `src/features/editor/views/GraphView/index.tsx`
 
 **Responsibilities**:
+
 - Render Reaflow canvas
 - Handle zoom/pan controls
 - Manage node selection
 - Provide context menu (OptionsMenu)
 
 **Key props to Reaflow**:
+
 - `nodes`: Array of node data
 - `edges`: Array of edge data
 - `node`: Custom node component
@@ -167,6 +167,7 @@ Custom implementation:
 ### Custom nodes
 
 **Files**:
+
 - `src/features/editor/views/GraphView/CustomNode/ObjectNode.tsx`
 - `src/features/editor/views/GraphView/CustomNode/TextNode.tsx`
 
@@ -183,11 +184,10 @@ Simple edge rendering with label support.
 
 ## Performance optimizations
 
-1. **Debouncing**: Text editor changes debounced 600ms before parsing
+1. **Debouncing**: Text editor changes debounced 400ms before parsing
 2. **Memoization**: Nodes use `React.memo()` with custom equality
-3. **Lazy loading**: Reference docs loaded on demand
-4. **Session storage**: Persist user data across page reloads
-5. **Code splitting**: Next.js automatic code splitting per route
+3. **Session storage**: Persist user data across page reloads
+4. **Code splitting**: Next.js automatic code splitting per route
 
 ## Editor integration
 
@@ -196,12 +196,14 @@ Simple edge rendering with label support.
 **File**: `src/features/editor/TextEditor.tsx`
 
 **Configuration**:
+
 - Language: Auto-detected from file format
 - Theme: Custom theme matching app design
 - Options: Line numbers, minimap, word wrap
 - Validation: JSON/YAML syntax validation
 
 **Event handling**:
+
 - `onChange`: Update `useFile.contents`
 - `onMount`: Set up editor instance
 - Format on paste: Auto-format pasted content
@@ -211,24 +213,16 @@ Simple edge rendering with label support.
 **File**: `src/features/modals/ModalController.tsx`
 
 **Pattern**:
+
 ```typescript
-const modal = useModal(state => state.modal);
-
-// Open modal
-useModal.setState({ modal: "import" });
-
-// Close modal
-useModal.setState({ modal: null });
+const opened = useModal(state => state[modalKey]);
+useModal.getState().setVisible(modalKey, true);
 ```
 
 **Available modals**:
-- ImportModal - Import from URL/file
-- DownloadModal - Export as PNG/JPEG/SVG
-- TypeModal - Generate types
-- SchemaModal - JSON Schema operations
-- JQModal - jq queries
-- JPathModal - JSONPath queries
-- NodeModal - Node details
+
+- Driven by `src/features/modals/` exports and `modalTypes.ts`
+- `ModalController` maps all registered modal components
 
 ## Routing
 
@@ -238,8 +232,8 @@ Next.js file-based routing:
 - `/editor` - Main editor
 - `/widget` - Embeddable widget
 - `/docs` - Documentation
-- `/converter/[format1]-to-[format2]` - Format converters (12 routes)
-- `/type/[format]-to-[language]` - Type generators (16 routes)
+- `/converter/[format]-to-[format]` - Format converters
+- `/type/[format]-to-[language]` - Type generators
 - `/tools/json-schema` - JSON Schema tools
 - `/legal/privacy` - Privacy policy
 - `/legal/terms` - Terms of service
@@ -251,6 +245,7 @@ Next.js file-based routing:
 **Output**: `.next/` directory with optimized production build
 
 **Environment variables**:
-- `NEXT_PUBLIC_NODE_LIMIT` - Max nodes in graph (default: 1000)
+
+- `NEXT_PUBLIC_NODE_LIMIT` - Max nodes in graph (required in env)
 
 **Deployment**: Static export compatible, can deploy to Vercel, Netlify, or any static host.
