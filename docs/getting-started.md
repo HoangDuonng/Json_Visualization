@@ -4,7 +4,7 @@ Welcome to JSON Visualization! This guide will help you get started with visuali
 
 ## What is JSON Visualization?
 
-JSON Visualization is a free, open-source web application that transforms JSON, YAML, CSV, XML, and TOML data into interactive graphs and trees. It runs entirely in your browser - no data is sent to any server.
+JSON Visualization is a free, open-source web application that transforms JSON, YAML, CSV, and XML data into interactive graphs, trees, and a drawing canvas. It runs entirely in your browser - no data is sent to any server.
 
 ## Quick Start
 
@@ -63,8 +63,9 @@ Toggle between visualization modes:
 
 - **Graph View**: Interactive node-edge diagram (default)
 - **Tree View**: Hierarchical tree structure
+- **JsonDraw View**: Freeform drawing canvas built from your JSON graph
 
-Click **View** → **Tree View** or **Graph View** to switch.
+Click **View** → **Tree View**, **Graph View**, or **JsonDraw** to switch.
 
 ## Your First Visualization
 

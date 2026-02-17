@@ -11,11 +11,13 @@ Known limitations and constraints of JSON Visualization.
 **Reason:** Performance and browser memory
 
 **What happens:**
+
 - Warning shown when limit exceeded
 - Graph may not render completely
 - Performance degrades
 
 **Solutions:**
+
 - Collapse nested structures
 - Filter data before visualizing
 - Increase limit in `.env` file:
@@ -31,11 +33,13 @@ Known limitations and constraints of JSON Visualization.
 **Maximum:** ~10MB (browser-dependent)
 
 **What happens:**
+
 - Slow parsing
 - Browser may freeze
 - Out of memory errors
 
 **Solutions:**
+
 - Split large files
 - Use smaller samples
 - Process server-side first
@@ -46,12 +50,14 @@ Known limitations and constraints of JSON Visualization.
 **Typical limit:** 2-4GB per tab
 
 **Factors:**
+
 - Browser type and version
 - Available system RAM
 - Other open tabs
 - Operating system
 
 **Solutions:**
+
 - Close other tabs
 - Use dedicated browser window
 - Restart browser
@@ -62,6 +68,7 @@ Known limitations and constraints of JSON Visualization.
 ### JSON
 
 **No comments:**
+
 ```json
 {
   // This comment is not valid
@@ -70,21 +77,24 @@ Known limitations and constraints of JSON Visualization.
 ```
 
 **No trailing commas:**
+
 ```json
 {
   "name": "Alice",
-  "age": 30,  // ❌ Trailing comma
+  "age": 30 // ❌ Trailing comma
 }
 ```
 
 **No undefined:**
+
 ```json
 {
-  "value": undefined  // ❌ Use null instead
+  "value": undefined // ❌ Use null instead
 }
 ```
 
 **No functions:**
+
 ```json
 {
   "calculate": function() {}  // ❌ Not supported
@@ -94,6 +104,7 @@ Known limitations and constraints of JSON Visualization.
 ### YAML
 
 **Indentation-sensitive:**
+
 ```yaml
 user:
   name: Alice
@@ -101,12 +112,14 @@ user:
 ```
 
 **No tabs:**
+
 ```yaml
 user:
 	name: Alice  # ❌ Tab character
 ```
 
 **Anchors not preserved:**
+
 ```yaml
 defaults: &defaults
   timeout: 30
@@ -117,24 +130,28 @@ defaults: &defaults
 ### CSV
 
 **No nested structures:**
+
 ```csv
 name,address
 Alice,{"city": "NYC"}  # ❌ Nested object
 ```
 
 **Flattened with dot notation:**
+
 ```csv
 user.name,user.age
 Alice,30
 ```
 
 **No data types:**
+
 ```csv
 name,age,active
 Alice,30,true  # All treated as strings
 ```
 
 **No arrays:**
+
 ```csv
 name,tags
 Alice,"admin,user"  # Comma-separated string
@@ -143,6 +160,7 @@ Alice,"admin,user"  # Comma-separated string
 ### XML
 
 **Verbose:**
+
 ```xml
 <person>
   <name>Alice</name>
@@ -151,11 +169,13 @@ Alice,"admin,user"  # Comma-separated string
 ```
 
 vs JSON:
+
 ```json
-{"name": "Alice", "age": 30}
+{ "name": "Alice", "age": 30 }
 ```
 
 **Attribute handling:**
+
 ```xml
 <person id="1">
   <name>Alice</name>
@@ -163,10 +183,11 @@ vs JSON:
 ```
 
 Converts to:
+
 ```json
 {
   "person": {
-    "@id": "1",  // Attribute prefixed
+    "@id": "1", // Attribute prefixed
     "name": "Alice"
   }
 }
@@ -179,16 +200,19 @@ Converts to:
 **Maximum nodes:** 1000 (configurable)
 
 **Performance:**
+
 - Slow with > 500 nodes
 - Laggy interactions
 - High memory usage
 
 **Layout:**
+
 - May not be optimal for all structures
 - Overlapping nodes possible
 - Manual adjustment needed
 
 **Solutions:**
+
 - Use Tree View
 - Collapse nodes
 - Filter data
@@ -197,26 +221,47 @@ Converts to:
 ### Tree View
 
 **Deep nesting:**
+
 - Difficult to navigate
 - Lots of scrolling
 - Hard to see overview
 
 **Large arrays:**
+
 - Many items to expand
 - Slow rendering
 - Memory intensive
 
 **Solutions:**
+
 - Collapse deep levels
 - Use search
 - Filter data
 - Use Graph View for overview
+
+### JsonDraw View
+
+**Session storage:**
+
+- Drawings are stored in browser localStorage
+- Clearing browser storage removes drawings
+
+**Sync behavior:**
+
+- Once you start drawing, JSON edits do not overwrite the canvas
+- Use **Clear Drawing** to reload a fresh visualization from JSON
+
+**Large graphs:**
+
+- Very large graphs may be slower to draw and render
+- Consider Tree or Graph view for fast exploration
 
 ## Conversion Limitations
 
 ### Type Information Loss
 
 **CSV conversions:**
+
 ```json
 // Before (JSON)
 {"age": 30, "active": true}
@@ -228,6 +273,7 @@ Converts to:
 ### Structure Changes
 
 **Nested to CSV:**
+
 ```json
 // Before
 {"user": {"name": "Alice", "age": 30}}
@@ -240,6 +286,7 @@ Alice,30
 ### Array Handling
 
 **Arrays in CSV:**
+
 ```json
 // Before
 {"tags": ["admin", "user"]}
@@ -252,14 +299,16 @@ tags
 ### Metadata Loss
 
 **YAML to JSON:**
+
 ```yaml
 # Comment lost
-name: Alice  # This comment too
+name: Alice # This comment too
 ```
 
 Converts to:
+
 ```json
-{"name": "Alice"}  // No comments
+{ "name": "Alice" } // No comments
 ```
 
 ## Type Generation Limitations
@@ -267,50 +316,57 @@ Converts to:
 ### Type Inference
 
 **Based on sample data only:**
+
 ```json
 [
-  {"age": 30},
-  {"age": "thirty"}  // Different type
+  { "age": 30 },
+  { "age": "thirty" } // Different type
 ]
 ```
 
 Generated type may not capture all variations.
 
 **Empty arrays:**
+
 ```json
-{"items": []}  // Type unknown
+{ "items": [] } // Type unknown
 ```
 
 Generates:
+
 ```typescript
 items: any[]  // Generic type
 ```
 
 **Null values:**
+
 ```json
-{"value": null}  // Type ambiguous
+{ "value": null } // Type ambiguous
 ```
 
 May generate:
+
 ```typescript
-value: any  // Or null
+value: any; // Or null
 ```
 
 ### Optional Fields
 
 **Detection:**
+
 ```json
 [
-  {"name": "Alice", "age": 30},
-  {"name": "Bob"}  // age missing
+  { "name": "Alice", "age": 30 },
+  { "name": "Bob" } // age missing
 ]
 ```
 
 Generates:
+
 ```typescript
 interface User {
   name: string;
-  age?: number;  // Optional
+  age?: number; // Optional
 }
 ```
 
@@ -321,22 +377,26 @@ May need manual adjustment if field should be required.
 ### jq
 
 **Browser implementation:**
+
 - Not full jq feature set
 - Some advanced features missing
 - Performance slower than CLI
 
 **Memory:**
+
 - Large result sets may fail
 - Browser memory limits apply
 
 ### JSONPath
 
 **Limited transformations:**
+
 - Cannot transform structure
 - Only filter and select
 - Use jq for transformations
 
 **No aggregations:**
+
 - Cannot sum, average, etc.
 - Use jq instead
 
@@ -345,11 +405,13 @@ May need manual adjustment if field should be required.
 ### Image Size
 
 **Maximum resolution:**
+
 - Browser-dependent
 - Typically 8192x8192px
 - Larger may fail
 
 **File size:**
+
 - PNG: Can be large (> 10MB)
 - JPEG: Smaller but lossy
 - SVG: Smallest but limited support
@@ -357,11 +419,13 @@ May need manual adjustment if field should be required.
 ### Quality
 
 **Rasterization:**
+
 - PNG/JPEG are pixel-based
 - Quality loss when scaled
 - Use SVG for scalability
 
 **Text rendering:**
+
 - May differ from screen
 - Font embedding issues
 - Use web-safe fonts
@@ -371,12 +435,14 @@ May need manual adjustment if field should be required.
 ### Supported Browsers
 
 **Fully supported:**
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
 - Edge 90+
 
 **Limited support:**
+
 - Older browsers
 - Mobile browsers (some features)
 - Internet Explorer (not supported)
@@ -384,17 +450,20 @@ May need manual adjustment if field should be required.
 ### Required Features
 
 **JavaScript:**
+
 - ES6+ features
 - Async/await
 - Modules
 
 **APIs:**
+
 - Canvas API
 - File API
 - Clipboard API
 - Local Storage
 
 **Missing features:**
+
 - Older browsers may not work
 - Polyfills not included
 - Upgrade browser recommended
@@ -404,17 +473,20 @@ May need manual adjustment if field should be required.
 ### Large Datasets
 
 **Symptoms:**
+
 - Slow rendering
 - Laggy interactions
 - High CPU usage
 - Browser freezing
 
 **Thresholds:**
+
 - > 500 nodes: Noticeable slowdown
 - > 1000 nodes: Significant lag
 - > 2000 nodes: May crash
 
 **Solutions:**
+
 - Reduce data size
 - Use pagination
 - Server-side processing
@@ -423,11 +495,13 @@ May need manual adjustment if field should be required.
 ### Complex Structures
 
 **Deep nesting:**
+
 - Slow traversal
 - High memory usage
 - Stack overflow possible
 
 **Circular references:**
+
 - Not supported
 - Will cause errors
 - Must be removed
@@ -435,6 +509,7 @@ May need manual adjustment if field should be required.
 ### Animations
 
 **Performance impact:**
+
 - Smooth on small graphs
 - Laggy on large graphs
 - Disable for better performance
@@ -444,11 +519,13 @@ May need manual adjustment if field should be required.
 ### Client-Side Only
 
 **No server validation:**
+
 - All processing in browser
 - No server-side checks
 - Trust user input
 
 **XSS risks:**
+
 - Sanitize user input
 - Don't execute code from data
 - Be cautious with external data
@@ -456,11 +533,13 @@ May need manual adjustment if field should be required.
 ### Data Privacy
 
 **Local processing:**
+
 - Data never sent to server
 - Safe for sensitive data
 - But stored in browser cache
 
 **Browser storage:**
+
 - SessionStorage used
 - Cleared on tab close
 - Not encrypted
@@ -496,12 +575,14 @@ May need manual adjustment if field should be required.
 ### For Large Files
 
 1. **Split data:**
+
    ```bash
    # Split JSON array
    jq -c '.[]' large.json > items.jsonl
    ```
 
 2. **Sample data:**
+
    ```bash
    # Take first 100 items
    jq '.[:100]' large.json > sample.json
@@ -516,6 +597,7 @@ May need manual adjustment if field should be required.
 ### For Complex Structures
 
 1. **Flatten:**
+
    ```bash
    # Flatten nested structure
    jq 'flatten' nested.json
@@ -530,13 +612,10 @@ May need manual adjustment if field should be required.
 ### For Type Generation
 
 1. **Combine samples:**
+
    ```json
    // Include all variations
-   [
-     {"name": "Alice", "age": 30},
-     {"name": "Bob", "age": null},
-     {"name": "Charlie"}
-   ]
+   [{ "name": "Alice", "age": 30 }, { "name": "Bob", "age": null }, { "name": "Charlie" }]
    ```
 
 2. **Manual adjustment:**
@@ -544,7 +623,7 @@ May need manual adjustment if field should be required.
    // Review and adjust generated types
    interface User {
      name: string;
-     age: number | null;  // Adjust as needed
+     age: number | null; // Adjust as needed
    }
    ```
 

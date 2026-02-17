@@ -5,11 +5,33 @@ Step-by-step guide to customizing your graph visualization.
 ## Quick Customization
 
 Common customizations:
+
 - Theme (light/dark)
 - Layout algorithm
 - Node spacing
 - Colors
 - Font size
+
+## Switch to JsonDraw View
+
+Use JsonDraw for freeform drawing and annotations.
+
+1. Click **View** → **JsonDraw**
+2. The JSON graph is placed on a canvas
+3. Use drawing tools to annotate or rearrange
+
+**Note:** Graph-specific layout and spacing settings do not apply in JsonDraw.
+
+## Manage a JsonDraw Session
+
+**Auto-save:**
+
+- Your drawing is saved in the browser automatically.
+
+**Reload from JSON:**
+
+- Use **Clear Drawing** in the JsonDraw canvas menu
+- This clears the drawing and rehydrates from the latest JSON
 
 ## Change Theme
 
@@ -20,6 +42,7 @@ Common customizations:
 3. Select **Light**
 
 **Best for:**
+
 - Bright environments
 - Printing
 - Documentation
@@ -30,6 +53,7 @@ Common customizations:
 2. Select **Dark**
 
 **Best for:**
+
 - Low light environments
 - Reduced eye strain
 - Modern aesthetic
@@ -39,16 +63,19 @@ Common customizations:
 ### Layout Algorithms
 
 **Hierarchical (default):**
+
 - Top-to-bottom tree
 - Clear parent-child relationships
 - Best for most data
 
 **Force-directed:**
+
 - Physics-based organic layout
 - Shows relationships naturally
 - Best for network data
 
 **Radial:**
+
 - Circular layout from center
 - Emphasizes central node
 - Best for hub-and-spoke data
@@ -96,6 +123,7 @@ For compact view:
 ### Color Schemes
 
 **Preset schemes:**
+
 - Default (blue/green)
 - Monochrome (grays)
 - Vibrant (bright colors)
@@ -103,6 +131,7 @@ For compact view:
 - High contrast (accessibility)
 
 **Apply scheme:**
+
 1. Click **View** → **Color Scheme**
 2. Select preset
 3. Or customize individual colors
@@ -125,6 +154,7 @@ For more content:
 2. Or use `Ctrl/Cmd + -`
 
 **Sizes:**
+
 - Small: 10px
 - Medium: 12px (default)
 - Large: 14px
@@ -143,6 +173,7 @@ For more content:
 3. Click **Apply**
 
 **Use cases:**
+
 - Left to Right: Wide data
 - Top to Bottom: Deep nesting
 - Bottom to Top: Reverse hierarchy
@@ -156,6 +187,7 @@ For more content:
 2. Toggle on/off
 
 **Options:**
+
 - All labels
 - Node labels only
 - Edge labels only
@@ -404,7 +436,7 @@ Before exporting:
    ```css
    .node {
      border-radius: 8px;
-     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
    }
    ```
 3. Click **Apply**
@@ -417,24 +449,28 @@ Before exporting:
 ## Tips
 
 **For large graphs:**
+
 - Use compact mode
 - Collapse deep nesting
 - Reduce animation
 - Limit visible nodes
 
 **For presentations:**
+
 - High contrast colors
 - Large font size
 - Clean layout
 - Match slide theme
 
 **For documentation:**
+
 - Clear labels
 - Logical layout
 - Appropriate zoom
 - Professional colors
 
 **For accessibility:**
+
 - High contrast mode
 - Keyboard navigation
 - Screen reader support
@@ -442,15 +478,15 @@ Before exporting:
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + Shift + T` | Toggle theme |
-| `Ctrl/Cmd + +` | Zoom in |
-| `Ctrl/Cmd + -` | Zoom out |
-| `Ctrl/Cmd + 0` | Fit to screen |
-| `Ctrl/Cmd + R` | Reset view |
-| `Ctrl/Cmd + Shift + C` | Collapse all |
-| `Ctrl/Cmd + Shift + E` | Expand all |
+| Shortcut               | Action        |
+| ---------------------- | ------------- |
+| `Ctrl/Cmd + Shift + T` | Toggle theme  |
+| `Ctrl/Cmd + +`         | Zoom in       |
+| `Ctrl/Cmd + -`         | Zoom out      |
+| `Ctrl/Cmd + 0`         | Fit to screen |
+| `Ctrl/Cmd + R`         | Reset view    |
+| `Ctrl/Cmd + Shift + C` | Collapse all  |
+| `Ctrl/Cmd + Shift + E` | Expand all    |
 
 ## Next Steps
 
