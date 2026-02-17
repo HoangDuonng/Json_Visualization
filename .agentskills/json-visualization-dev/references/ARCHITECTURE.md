@@ -65,7 +65,7 @@ User edits → TextEditor → useFile.setContents()
                               ↓
                     useGraph.setGraph(json)
                               ↓
-                    GraphView re-renders
+                    GraphView or JsonDrawView re-renders
 ```
 
 ## Graph parsing algorithm
@@ -181,6 +181,20 @@ Both use `React.memo()` with custom `propsAreEqual` for performance.
 **File**: `src/features/editor/views/GraphView/CustomEdge/index.tsx`
 
 Simple edge rendering with label support.
+
+### JsonDrawView
+
+**Files**:
+
+- `src/features/editor/views/JsonDrawView/index.tsx`
+- `src/features/editor/views/JsonDrawView/jsonToJsonDraw.ts`
+
+**Responsibilities**:
+
+- Convert graph nodes/edges into JsonDraw elements
+- Render JsonDraw canvas for freeform drawing
+- Auto-save drawing session to `localStorage`
+- Load saved session before rehydrating from JSON
 
 ## Performance optimizations
 

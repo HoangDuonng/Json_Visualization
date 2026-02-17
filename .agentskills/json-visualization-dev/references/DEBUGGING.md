@@ -74,7 +74,7 @@ Debug steps:
 ```ts
 import useModal from "src/store/useModal";
 
-console.log(useModal.getState().modal);
+console.log(useModal.getState());
 ```
 
 ### Export fails
@@ -94,6 +94,24 @@ Fixes:
 
 - Reduce node count before export
 - Validate view mode and selection
+
+### JsonDraw canvas does not render
+
+Symptoms:
+
+- Blank canvas in JsonDraw view
+- Console error about Canvas API
+
+What to check:
+
+- JsonDraw is dynamically imported in `JsonDrawView`
+- Ensure code only runs on client (no SSR)
+- Confirm `window.JSONDRAW_ASSET_PATH` is set to `/jsondraw-fonts/`
+
+Fixes:
+
+- Avoid importing JsonDraw at module scope
+- Verify fonts are available in public assets
 
 ## Store inspection
 

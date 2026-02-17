@@ -19,6 +19,7 @@ import { EditorButton } from "src/components/EditorButton";
 ```
 
 **Features**:
+
 - Gradient border animation
 - Hover effects
 - Purple theme
@@ -36,6 +37,7 @@ import { GithubButton } from "src/components/GithubButton";
 ```
 
 **Features**:
+
 - Fetches star count from GitHub API
 - Gradient border animation
 - Links to GitHub repo
@@ -55,6 +57,7 @@ import { ExploreButton } from "src/components/ExploreButton";
 ```
 
 **Features**:
+
 - Neumorphic shadow effect
 - Smooth hover transition
 
@@ -73,6 +76,7 @@ import { AnimatedLinkButton } from "src/components/AnimatedLinkButton";
 ```
 
 **Features**:
+
 - Animated underline on hover
 - Supports Next.js Link
 
@@ -89,6 +93,7 @@ import { ArrowButton } from "src/components/ArrowButton";
 ```
 
 **Features**:
+
 - Yellow → neon green on hover
 - Circular shape
 - Arrow icon
@@ -108,6 +113,7 @@ import { GenerateButton } from "src/components/GenerateButton";
 ```
 
 **Features**:
+
 - Sparkle particle animation
 - Warm yellow color
 - Hover effects
@@ -127,6 +133,7 @@ import { Cursor } from "src/components/Cursor";
 ```
 
 **Features**:
+
 - WebGL fluid simulation
 - Follows mouse movement
 - Color splat effects
@@ -147,6 +154,7 @@ import { DotGrid } from "src/components/DotGrid";
 ```
 
 **Features**:
+
 - Canvas-based rendering
 - Animated dots
 - Responsive to container size
@@ -164,6 +172,7 @@ import { RippleGrid } from "src/components/RippleGrid";
 ```
 
 **Features**:
+
 - Wave propagation effect
 - Interactive on hover
 - Canvas-based
@@ -183,6 +192,7 @@ import { GlassSurface } from "src/components/GlassSurface";
 ```
 
 **Features**:
+
 - Frosted glass effect
 - Backdrop blur
 - Semi-transparent background
@@ -204,6 +214,7 @@ import { Tooltip } from "src/components/Tooltip";
 ```
 
 **Props**:
+
 - `label`: Tooltip text
 - `children`: Element to attach tooltip to
 - All Mantine Tooltip props
@@ -221,6 +232,7 @@ import JsonCrackLogo from "src/layout/JsonCrackLogo";
 ```
 
 **Features**:
+
 - SVG-based
 - Animated on hover
 
@@ -241,6 +253,7 @@ import PageLayout from "src/layout/PageLayout";
 ```
 
 **Includes**:
+
 - Navbar with navigation
 - Footer with links
 - Responsive layout
@@ -252,6 +265,7 @@ import PageLayout from "src/layout/PageLayout";
 Top navigation bar.
 
 **Features**:
+
 - Logo
 - Navigation links
 - Theme toggle
@@ -264,6 +278,7 @@ Top navigation bar.
 Footer with links and info.
 
 **Features**:
+
 - Social links
 - Navigation links
 - Copyright info
@@ -327,6 +342,7 @@ import TextEditor from "src/features/editor/TextEditor";
 ```
 
 **Features**:
+
 - Syntax highlighting
 - Auto-completion
 - Format validation
@@ -351,6 +367,7 @@ import LiveEditor from "src/features/editor/LiveEditor";
 Editor toolbar with menus.
 
 **Sub-components**:
+
 - `FileMenu` - File operations
 - `ViewMenu` - View options
 - `ToolsMenu` - Tools and utilities
@@ -364,6 +381,7 @@ Editor toolbar with menus.
 Status bar at bottom of editor.
 
 **Shows**:
+
 - Node count
 - File format
 - Error messages
@@ -381,6 +399,7 @@ import GraphView from "src/features/editor/views/GraphView";
 ```
 
 **Features**:
+
 - Reaflow canvas
 - Custom nodes/edges
 - Zoom controls
@@ -397,6 +416,27 @@ import TreeView from "src/features/editor/views/TreeView";
 
 <TreeView />
 ```
+
+### JsonDrawView
+
+**Files**:
+
+- `src/features/editor/views/JsonDrawView/index.tsx`
+- `src/features/editor/views/JsonDrawView/jsonToJsonDraw.ts`
+
+JsonDraw-based whiteboard view for drawing on top of JSON-derived nodes.
+
+```typescript
+import { JsonDrawView } from "src/features/editor/views/JsonDrawView";
+
+<JsonDrawView />
+```
+
+**Features**:
+
+- Converts graph nodes/edges to JsonDraw elements
+- Auto-saves drawing state to `localStorage`
+- Restores saved drawing session on load
 
 ## Styled component patterns
 
@@ -419,9 +459,7 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
-  background: ${props => 
-    props.variant === "primary" ? "#f7c948" : "#37ff8b"
-  };
+  background: ${props => (props.variant === "primary" ? "#f7c948" : "#37ff8b")};
 `;
 ```
 

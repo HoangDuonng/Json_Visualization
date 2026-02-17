@@ -63,10 +63,8 @@ Checklist:
 Basic pattern:
 
 ```tsx
-const modal = useModal(state => state.modal);
-{
-  modal === "import" && <ImportModal onClose={closeModal} />;
-}
+const opened = useModal(state => state[modalKey]);
+<ModalComponent opened={opened} onClose={() => setVisible(modalKey, false)} />;
 ```
 
 ## Modify graph rendering
@@ -79,6 +77,18 @@ Checklist:
 2. Update edges in `CustomEdge/index.tsx`.
 3. Adjust parsing in `lib/jsonParser.ts` if node data needs changes.
 4. Keep `propsAreEqual` logic in nodes to avoid unnecessary re-renders.
+
+## Update JsonDraw view
+
+JsonDraw view renders graph data on a drawable canvas.
+
+Checklist:
+
+1. Update conversion in `src/features/editor/views/JsonDrawView/jsonToJsonDraw.ts`.
+2. Render/view logic lives in `src/features/editor/views/JsonDrawView/index.tsx`.
+3. View selection uses `ViewMode.JsonDraw` in `src/enums/viewMode.enum.ts`.
+4. Ensure `LiveEditor` and `Toolbar/ViewMenu` include the view option.
+5. Keep autosave key `jsondraw-autosave` stable for restore behavior.
 
 ## Add a new reusable component
 

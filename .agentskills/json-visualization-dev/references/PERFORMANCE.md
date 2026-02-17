@@ -49,6 +49,7 @@ Avoid selecting whole store objects in React components.
 - Prefer incremental updates over full graph rebuilds when possible.
 - Avoid heavy computations in render paths.
 - Use `useMemo` for derived values that are expensive.
+- JsonDraw view should only rehydrate from JSON when the user has not started drawing.
 
 ## Profiling
 

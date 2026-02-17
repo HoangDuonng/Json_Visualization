@@ -35,9 +35,9 @@ export default useStore;
 
 ```typescript
 interface FileStates {
-  contents: string;              // Raw file content
-  format: FileFormat;            // Current format (JSON/YAML/CSV/XML/TOML)
-  error: string | null;          // Parse error message
+  contents: string; // Raw file content
+  format: FileFormat; // Current format (JSON/YAML/CSV/XML/TOML)
+  error: string | null; // Parse error message
 }
 ```
 
@@ -48,8 +48,8 @@ interface JsonActions {
   getContents: () => string;
   setContents: (contents: string) => void;
   setFormat: (format: FileFormat) => void;
-  checkFormat: () => void;       // Auto-detect format
-  clear: () => void;             // Reset to initial state
+  checkFormat: () => void; // Auto-detect format
+  clear: () => void; // Reset to initial state
   setError: (error: string | null) => void;
 }
 ```
@@ -63,11 +63,11 @@ function MyComponent() {
   const contents = useFile(state => state.contents);
   const setContents = useFile(state => state.setContents);
   const format = useFile(state => state.format);
-  
+
   const handleChange = (value: string) => {
     setContents(value);
   };
-  
+
   return <textarea value={contents} onChange={e => handleChange(e.target.value)} />;
 }
 ```
@@ -89,7 +89,7 @@ function MyComponent() {
 
 ```typescript
 interface JsonState {
-  json: any;                     // Parsed JSON object
+  json: any; // Parsed JSON object
 }
 ```
 
@@ -111,7 +111,7 @@ import useJson from "src/store/useJson";
 function MyComponent() {
   const json = useJson(state => state.json);
   const setJson = useJson(state => state.setJson);
-  
+
   // Parse and store
   const parsed = JSON.parse(contents);
   setJson(parsed);
@@ -128,11 +128,11 @@ function MyComponent() {
 
 ```typescript
 interface GraphState {
-  nodes: NodeData[];             // Graph nodes
-  edges: EdgeData[];             // Graph edges
-  collapsedNodes: Set<string>;   // IDs of collapsed nodes
-  collapsedEdges: string[];      // IDs of edges from collapsed nodes
-  selectedNode: string | null;   // Currently selected node ID
+  nodes: NodeData[]; // Graph nodes
+  edges: EdgeData[]; // Graph edges
+  collapsedNodes: Set<string>; // IDs of collapsed nodes
+  collapsedEdges: string[]; // IDs of edges from collapsed nodes
+  selectedNode: string | null; // Currently selected node ID
 }
 ```
 
@@ -157,13 +157,13 @@ function GraphView() {
   const nodes = useGraph(state => state.nodes);
   const edges = useGraph(state => state.edges);
   const setGraph = useGraph(state => state.setGraph);
-  
+
   // Update graph
   React.useEffect(() => {
     const { nodes, edges } = parseJson(json);
     setGraph(nodes, edges);
   }, [json]);
-  
+
   return <Canvas nodes={nodes} edges={edges} />;
 }
 ```
@@ -184,9 +184,9 @@ function GraphView() {
 
 ```typescript
 interface ConfigState {
-  viewMode: ViewMode;            // "graph" | "tree"
+  viewMode: ViewMode; // "graph" | "tree"
   theme: "light" | "dark";
-  layout: LayoutType;            // Graph layout algorithm
+  layout: LayoutType; // Graph layout algorithm
   zoomLevel: number;
 }
 ```
@@ -210,7 +210,7 @@ import useConfig from "src/store/useConfig";
 function ViewToggle() {
   const viewMode = useConfig(state => state.viewMode);
   const setViewMode = useConfig(state => state.setViewMode);
-  
+
   return (
     <button onClick={() => setViewMode(viewMode === "graph" ? "tree" : "graph")}>
       Switch to {viewMode === "graph" ? "Tree" : "Graph"} View
@@ -229,8 +229,8 @@ function ViewToggle() {
 
 ```typescript
 interface ModalState {
-  modal: ModalType | null;       // Currently open modal
-  data: any;                     // Modal-specific data
+  modal: ModalType | null; // Currently open modal
+  data: any; // Modal-specific data
 }
 ```
 
@@ -250,7 +250,7 @@ import useModal from "src/store/useModal";
 
 function Toolbar() {
   const openModal = useModal(state => state.openModal);
-  
+
   return (
     <button onClick={() => openModal("import")}>
       Import
@@ -261,7 +261,7 @@ function Toolbar() {
 function ModalController() {
   const modal = useModal(state => state.modal);
   const closeModal = useModal(state => state.closeModal);
-  
+
   return (
     <>
       {modal === "import" && <ImportModal onClose={closeModal} />}
@@ -275,15 +275,17 @@ function ModalController() {
 ### Modal types
 
 ```typescript
-type ModalType = 
-  | "import"
-  | "download"
-  | "type"
-  | "schema"
-  | "jq"
-  | "jpath"
-  | "node";
+type ModalType = "import" | "download" | "type" | "schema" | "jq" | "jpath" | "node";
 ```
+
+## View mode state
+
+Editor view mode is stored in session storage (not Zustand):
+
+- **Key**: `viewMode`
+- **Values**: `graph`, `tree`, `jsondraw`
+- **Source**: `src/enums/viewMode.enum.ts`
+- **Usage**: `src/features/editor/LiveEditor.tsx` and `src/features/editor/Toolbar/ViewMenu.tsx`
 
 ## State patterns
 
@@ -308,9 +310,9 @@ const contents = useFile(state => state.contents);
 const format = useFile(state => state.format);
 
 // ❌ Bad - single selector for multiple values (re-renders more often)
-const { contents, format } = useFile(state => ({ 
-  contents: state.contents, 
-  format: state.format 
+const { contents, format } = useFile(state => ({
+  contents: state.contents,
+  format: state.format
 }));
 ```
 
@@ -341,7 +343,7 @@ const nodeCount = nodes.length;
 // In store definition
 const useFile = create<FileStates & JsonActions>()((set, get) => ({
   contents: "",
-  
+
   loadFromUrl: async (url: string) => {
     try {
       const response = await fetch(url);
@@ -407,7 +409,7 @@ function Editor() {
   const contents = useFile(state => state.contents);
   const format = useFile(state => state.format);
   const setJson = useJson(state => state.setJson);
-  
+
   React.useEffect(() => {
     const parse = async () => {
       try {
@@ -417,11 +419,15 @@ function Editor() {
         console.error("Parse error:", error);
       }
     };
-    
+
     parse();
   }, [contents, format]);
 }
 ```
+
+### JsonDraw persistence
+
+JsonDraw view auto-saves to `localStorage` under `jsondraw-autosave` and restores on load.
 
 ## Performance tips
 
@@ -439,7 +445,7 @@ import { useDebouncedValue } from "@mantine/hooks";
 function MyComponent() {
   const contents = useFile(state => state.contents);
   const [debouncedContents] = useDebouncedValue(contents, 600);
-  
+
   React.useEffect(() => {
     // Only runs 600ms after user stops typing
     parseContents(debouncedContents);
@@ -461,9 +467,9 @@ beforeEach(() => {
 
 test("setContents updates contents", () => {
   const { setContents, getContents } = useFile.getState();
-  
+
   setContents("test");
-  
+
   expect(getContents()).toBe("test");
 });
 ```
