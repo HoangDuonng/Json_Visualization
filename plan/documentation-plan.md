@@ -7,6 +7,7 @@
 ## Overview
 
 Create structured documentation for JSON Visualization covering:
+
 1. User documentation (end users)
 2. Developer documentation (contributors)
 3. Technical documentation (maintainers)
@@ -15,6 +16,7 @@ Create structured documentation for JSON Visualization covering:
 ## Documentation Structure
 
 Following [Diátaxis framework](https://diataxis.fr/):
+
 - **Tutorials**: Learning-oriented (getting started)
 - **How-to guides**: Goal-oriented (specific tasks)
 - **Explanation**: Understanding-oriented (concepts)
@@ -25,6 +27,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 **Location**: `/docs/`
 
 ### 1.1 Getting Started (Tutorial)
+
 - [x] `docs/getting-started.md` ✅ COMPLETED
   - Installation (none needed - web app)
   - First visualization
@@ -32,6 +35,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Saving/loading data
 
 ### 1.2 Features (Explanation)
+
 - [x] `docs/features/visualization.md` ✅ COMPLETED - Graph and tree views
 - [x] `docs/features/conversion.md` ✅ COMPLETED - Format conversion
 - [x] `docs/features/validation.md` ✅ COMPLETED - Data validation
@@ -41,6 +45,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 - [x] `docs/features/export.md` ✅ COMPLETED - Image export
 
 ### 1.3 How-to Guides (How-to)
+
 - [x] `docs/how-to/convert-formats.md` ✅ COMPLETED - Step-by-step conversions
 - [x] `docs/how-to/generate-types.md` ✅ COMPLETED - Generate TypeScript/Go/Rust/Kotlin
 - [x] `docs/how-to/validate-data.md` ✅ COMPLETED - Validate JSON/YAML/CSV
@@ -49,17 +54,20 @@ Following [Diátaxis framework](https://diataxis.fr/):
 - [x] `docs/how-to/customize-view.md` ✅ COMPLETED - Customize graph appearance
 
 ### 1.4 Reference
+
 - [x] `docs/reference/keyboard-shortcuts.md` ✅ COMPLETED - All shortcuts
 - [x] `docs/reference/supported-formats.md` ✅ COMPLETED - Format specifications
 - [x] `docs/reference/limitations.md` ✅ COMPLETED - Known limitations
 
 ### 1.5 Support
+
 - [x] `docs/faq.md` ✅ COMPLETED - Frequently asked questions
 - [x] `docs/troubleshooting.md` ✅ COMPLETED - Common issues and solutions
 
 ## Phase 1: User Documentation - ✅ COMPLETED
 
 **Summary:**
+
 - 1 Getting Started guide
 - 7 Feature explanations
 - 6 How-to guides
@@ -73,6 +81,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 **Location**: `/docs/development/`
 
 ### 2.1 Contributing (Tutorial)
+
 - [x] `CONTRIBUTING.md` ✅ COMPLETED (root)
   - Code of conduct
   - How to contribute
@@ -80,6 +89,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Pull request process
 
 ### 2.2 Development Setup (Tutorial)
+
 - [x] `docs/development/setup.md` ✅ COMPLETED
   - Prerequisites (Node.js, pnpm)
   - Installation steps
@@ -87,6 +97,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Environment variables
 
 ### 2.3 Architecture (Explanation)
+
 - [x] `docs/development/architecture.md` ✅ COMPLETED
   - System overview
   - Component hierarchy
@@ -95,6 +106,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - (References existing `.agentskills/json-visualization-dev/references/ARCHITECTURE.md`)
 
 ### 2.4 Component Guide (Reference)
+
 - [x] `docs/development/components.md` ✅ COMPLETED
   - Component catalog
   - Usage examples
@@ -102,6 +114,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - (References existing `.agentskills/json-visualization-dev/references/COMPONENTS.md`)
 
 ### 2.5 State Management (Explanation)
+
 - [x] `docs/development/state-management.md` ✅ COMPLETED
   - Zustand stores
   - State patterns
@@ -109,6 +122,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - (References existing `.agentskills/json-visualization-dev/references/STATE.md`)
 
 ### 2.6 Code Style (Reference)
+
 - [x] `docs/development/code-style.md` ✅ COMPLETED
   - TypeScript conventions
   - React patterns
@@ -117,6 +131,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - (References existing `AGENTS.md`)
 
 ### 2.7 Testing (How-to)
+
 - [x] `docs/development/testing.md` ✅ COMPLETED
   - Testing strategy (when tests are added)
   - Writing tests
@@ -124,6 +139,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - **Note**: Currently no test suite
 
 ### 2.8 Deployment (How-to)
+
 - [x] `docs/development/deployment.md` ✅ COMPLETED
   - Build process
   - Environment configuration
@@ -133,6 +149,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 ## Phase 2: Developer Documentation - ✅ COMPLETED
 
 **Summary:**
+
 - 1 Contributing guide
 - 1 Development setup
 - 3 Reference docs (linking to Agent Skills)
@@ -147,6 +164,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 **Location**: `/docs/technical/`
 
 ### 3.1 Graph Parsing (Explanation)
+
 - [x] `docs/technical/graph-parsing.md` ✅ COMPLETED
   - JSON traversal algorithm
   - Node generation
@@ -154,6 +172,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Performance considerations
 
 ### 3.2 Format Conversion (Explanation)
+
 - [x] `docs/technical/format-conversion.md` ✅ COMPLETED
   - Conversion algorithms
   - Library usage
@@ -161,6 +180,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Error handling
 
 ### 3.3 Type Generation (Explanation)
+
 - [x] `docs/technical/type-generation.md` ✅ COMPLETED
   - TypeScript generation
   - Go struct generation
@@ -168,6 +188,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Schema inference
 
 ### 3.4 Performance (Reference)
+
 - [x] `docs/technical/performance.md` ✅ COMPLETED
   - Optimization strategies
   - Debouncing
@@ -176,6 +197,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Node limits
 
 ### 3.5 Security (Reference)
+
 - [x] `docs/technical/security.md` ✅ COMPLETED
   - Client-side processing
   - Data privacy
@@ -185,6 +207,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 ## Phase 3: Technical Documentation - ✅ COMPLETED
 
 **Summary:**
+
 - 5 Technical deep-dive documents
 
 **Total:** 5 technical documentation files (~18KB)
@@ -194,7 +217,8 @@ Following [Diátaxis framework](https://diataxis.fr/):
 **Location**: `.agentskills/json-visualization-dev/references/`
 
 ### 4.1 Workflows (How-to)
-- [ ] `.agentskills/json-visualization-dev/references/WORKFLOWS.md`
+
+- [x] `.agentskills/json-visualization-dev/references/WORKFLOWS.md`
   - Adding a new converter
   - Adding a new type generator
   - Adding a new modal
@@ -202,7 +226,8 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Adding a new component
 
 ### 4.2 Debugging (How-to)
-- [ ] `.agentskills/json-visualization-dev/references/DEBUGGING.md`
+
+- [x] `.agentskills/json-visualization-dev/references/DEBUGGING.md`
   - Common errors
   - Debugging tools
   - Browser DevTools tips
@@ -210,50 +235,63 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Performance profiling
 
 ### 4.3 Performance (Reference)
-- [ ] `.agentskills/json-visualization-dev/references/PERFORMANCE.md`
+
+- [x] `.agentskills/json-visualization-dev/references/PERFORMANCE.md`
   - Performance patterns
   - Optimization techniques
   - Profiling methods
   - Benchmarking
 
 ### 4.4 Testing (How-to)
-- [ ] `.agentskills/json-visualization-dev/references/TESTING.md`
-  - Testing strategy (future)
-  - Test patterns
-  - Mocking stores
-  - Component testing
+
+- [x] `.agentskills/json-visualization-dev/references/TESTING.md`
+
+## Phase 4: Enhanced Agent Skills - ✅ COMPLETED
+
+- Testing strategy (future)
+- Test patterns
+- Mocking stores
+- Component testing
 
 ## Phase 5: GitHub Templates
 
 **Location**: `.github/`
 
 ### 5.1 Issue Templates
-- [ ] `.github/ISSUE_TEMPLATE/bug_report.md`
-- [ ] `.github/ISSUE_TEMPLATE/feature_request.md`
-- [ ] `.github/ISSUE_TEMPLATE/documentation.md`
+
+- [x] `.github/ISSUE_TEMPLATE/bug_report.yml`
+- [x] `.github/ISSUE_TEMPLATE/feature_request.yml`
+- [x] `.github/ISSUE_TEMPLATE/documentation.yml`
 
 ### 5.2 Pull Request Template
-- [ ] `.github/PULL_REQUEST_TEMPLATE.md`
+
+- [x] `.github/PULL_REQUEST_TEMPLATE.md`
 
 ### 5.3 GitHub Actions (if needed)
-- [ ] `.github/workflows/lint.yml`
-- [ ] `.github/workflows/build.yml`
+
+- [x] `.github/workflows/pull-request.yml` (lint + build)
+- [x] `.github/workflows/deploy.yml`
+
+## Phase 5: GitHub Templates - ✅ COMPLETED
 
 ## Documentation Standards
 
 ### Writing Style
+
 - **Clear**: Plain language, avoid jargon
 - **Concise**: Only necessary information
 - **Structured**: Headings, TOC, formatting
 - **Consistent**: Same style across all docs
 
 ### Format
+
 - Markdown for all documentation
 - Code blocks with language tags
 - Screenshots/diagrams where helpful
 - Links to related docs
 
 ### Maintenance
+
 - Update docs with code changes
 - Version documentation if needed
 - Keep examples up-to-date
@@ -272,22 +310,27 @@ Following [Diátaxis framework](https://diataxis.fr/):
 ## Timeline
 
 **Phase 1**: User Documentation (Priority: High)
+
 - Estimated: 2-3 days
 - Focus: Getting started, features, how-to guides
 
 **Phase 2**: Developer Documentation (Priority: High)
+
 - Estimated: 2-3 days
 - Focus: Contributing, setup, architecture
 
 **Phase 3**: Technical Documentation (Priority: Medium)
+
 - Estimated: 2-3 days
 - Focus: Deep dives, performance, security
 
 **Phase 4**: Enhanced Agent Skills (Priority: Medium)
+
 - Estimated: 1-2 days
 - Focus: Workflows, debugging, testing
 
 **Phase 5**: GitHub Templates (Priority: Low)
+
 - Estimated: 1 day
 - Focus: Issue/PR templates, workflows
 
