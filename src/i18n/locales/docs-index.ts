@@ -92,13 +92,21 @@ export const docsIndexTranslations = {
     en: "Transform JSON, YAML, CSV, XML into interactive graphs or tree views",
     vi: "Chuyển đổi JSON, YAML, CSV, XML thành đồ thị tương tác hoặc chế độ xem cây",
   },
+  jsonDrawTitle: {
+    en: "JsonDraw",
+    vi: "JsonDraw",
+  },
+  jsonDrawDesc: {
+    en: "Draw and annotate your JSON on a freeform canvas",
+    vi: "Vẽ và chú thích JSON trên canvas tự do",
+  },
   formatConversionTitle: {
     en: "Format Conversion",
     vi: "Chuyển Đổi Định Dạng",
   },
   formatConversionDesc: {
-    en: "Convert between JSON, YAML, CSV, XML, and TOML formats seamlessly",
-    vi: "Chuyển đổi liền mạch giữa các định dạng JSON, YAML, CSV, XML và TOML",
+    en: "Convert between JSON, YAML, CSV, and XML formats seamlessly",
+    vi: "Chuyển đổi liền mạch giữa các định dạng JSON, YAML, CSV và XML",
   },
   formatValidateTitle: {
     en: "Format & Validate",

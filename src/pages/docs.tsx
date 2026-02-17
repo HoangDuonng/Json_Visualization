@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { FaBolt, FaToolbox } from "react-icons/fa";
-import { IoImages, IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { IoBrushOutline, IoImages, IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-icons/md";
 import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
@@ -70,6 +70,13 @@ const Docs = () => {
       icon: <FaBolt size={24} />,
       color: "#fab005",
       link: getLocalizedLink("/docs/visualization"),
+    },
+    {
+      title: t("index.jsonDrawTitle"),
+      description: t("index.jsonDrawDesc"),
+      icon: <IoBrushOutline size={24} />,
+      color: "#ff922b",
+      link: getLocalizedLink("/docs/jsondraw"),
     },
     {
       title: t("index.formatConversionTitle"),
@@ -239,7 +246,6 @@ const Docs = () => {
                 <Text>• YAML</Text>
                 <Text>• CSV</Text>
                 <Text>• XML</Text>
-                <Text>• TOML</Text>
               </SimpleGrid>
               <Text size="sm" c="dimmed" mt="md">
                 {t("index.supportedFormatsNote")}

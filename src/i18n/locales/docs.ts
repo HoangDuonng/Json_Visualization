@@ -6,6 +6,7 @@ import { formatValidateTranslations } from "./docs/format-validate";
 import { jqQueryTranslations } from "./docs/jq-query";
 import { jsonPathTranslations } from "./docs/json-path";
 import { jsonSchemaTranslations } from "./docs/json-schema";
+import { jsonDrawTranslations } from "./docs/jsondraw";
 import { typeGenerationTranslations } from "./docs/type-generation";
 import { visualizationTranslations } from "./docs/visualization";
 
@@ -63,6 +64,9 @@ export const docsTranslations = {
 
   // ==================== VISUALIZATION ====================
   visualization: visualizationTranslations,
+
+  // ==================== JSONDRAW ====================
+  jsonDraw: jsonDrawTranslations,
 
   // ==================== FORMAT CONVERSION ====================
   formatConversion: formatConversionTranslations,

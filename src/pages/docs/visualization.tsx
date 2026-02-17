@@ -128,14 +128,6 @@ const VisualizationDocs = () => {
                     {t("visualization.formatXmlDesc")}
                   </Text>
                 </div>
-                <div>
-                  <Text fw={600} mb="xs">
-                    TOML
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    {t("visualization.formatTomlDesc")}
-                  </Text>
-                </div>
               </SimpleGrid>
             </StyledContentBody>
           </Paper>
