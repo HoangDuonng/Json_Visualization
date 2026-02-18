@@ -46,16 +46,7 @@ const StyledChatContainer = styled.div`
   box-shadow:
     0 0 80px rgba(139, 92, 246, 0.25),
     0 20px 60px rgba(0, 0, 0, 0.35);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-
-  &:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow:
-      0 0 90px rgba(139, 92, 246, 0.3),
-      0 24px 70px rgba(0, 0, 0, 0.4);
-  }
+  transition: box-shadow 0.35s ease;
 
   &::before {
     content: "";
@@ -244,6 +235,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const viewportRef = React.useRef<HTMLDivElement>(null);
 
   const placeholders = [
     "How do I convert JSON to CSV?",
@@ -254,7 +246,14 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
   ];
 
   React.useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!viewportRef.current) return;
+    requestAnimationFrame(() => {
+      if (!viewportRef.current) return;
+      viewportRef.current.scrollTo({
+        top: viewportRef.current.scrollHeight,
+        behavior: "auto",
+      });
+    });
   }, [messages]);
 
   const handleSend = async () => {
@@ -381,7 +380,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
       }}
     >
       <StyledChatContainer>
-        <ScrollArea style={{ flex: 1 }} mb="md">
+        <ScrollArea viewportRef={viewportRef} style={{ flex: 1 }} mb="md">
           <StyledMessageList>
             {messages.map(msg => (
               <StyledMessageRow key={msg.id} isUser={msg.isUser}>
