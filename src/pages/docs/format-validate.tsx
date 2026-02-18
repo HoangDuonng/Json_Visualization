@@ -138,7 +138,7 @@ const FormatValidateDocs = () => {
                 </Text>
                 <Text>
                   {t("formatValidate.autoFormatStep1")}{" "}
-                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>
+                  <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>
                 </Text>
                 <Text>{t("formatValidate.autoFormatStep2")}</Text>
                 <Text>{t("formatValidate.autoFormatStep3")}</Text>
@@ -409,7 +409,7 @@ Jane,25,Boston`}
                 <Text fw={600}>{t("formatValidate.tip5")}</Text>
                 <Text>
                   {t("formatValidate.tip5Desc")}{" "}
-                  <StyledLink href="/docs/json-schema">JSON Schema</StyledLink>{" "}
+                  <StyledLink href={getLocalizedLink("/docs/json-schema")}>JSON Schema</StyledLink>{" "}
                   {t("formatValidate.tip5Desc2")}
                 </Text>
               </div>
@@ -437,8 +437,11 @@ Jane,25,Boston`}
             <StyledContentBody>
               <Text>
                 {t("common.needHelpText")}{" "}
-                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
-                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                <StyledLink href={getLocalizedLink("/docs")}>
+                  {t("common.documentation")}
+                </StyledLink>{" "}
+                {t("common.orTry")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>{" "}
                 {t("common.directly")}.
               </Text>
             </StyledContentBody>

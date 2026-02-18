@@ -158,7 +158,7 @@ const FormatConversionDocs = () => {
                 </Text>
                 <Text>
                   1. {t("formatConversion.method1Step1")}{" "}
-                  <StyledLink href="/editor">Editor</StyledLink>
+                  <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>
                 </Text>
                 <Text>2. {t("formatConversion.method1Step2")}</Text>
                 <Text>3. {t("formatConversion.method1Step3")}</Text>
@@ -455,7 +455,9 @@ database:
             <StyledContentBody>
               <Text>
                 {t("common.needHelpText")}{" "}
-                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
+                <StyledLink href={getLocalizedLink("/docs")}>
+                  {t("common.documentation")}
+                </StyledLink>{" "}
                 {t("common.orTry")}{" "}
                 <StyledLink href="/converter/json-to-yaml">
                   {t("formatConversion.converterTools")}

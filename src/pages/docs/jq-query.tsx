@@ -107,7 +107,7 @@ const JQQueryDocs = () => {
                 </Text>
                 <Text>
                   {t("jqQuery.step1Desc")}{" "}
-                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>.
+                  <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>.
                 </Text>
               </div>
               <div>
@@ -497,8 +497,11 @@ const JQQueryDocs = () => {
             <StyledContentBody>
               <Text>
                 {t("common.needHelpText")}{" "}
-                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
-                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                <StyledLink href={getLocalizedLink("/docs")}>
+                  {t("common.documentation")}
+                </StyledLink>{" "}
+                {t("common.orTry")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>{" "}
                 {t("common.directly")}.
               </Text>
             </StyledContentBody>

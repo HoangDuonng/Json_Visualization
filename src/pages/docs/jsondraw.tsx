@@ -145,8 +145,10 @@ const JsonDrawDocs = () => {
             </Title>
             <Text>
               {t("common.needHelpText")}{" "}
-              <StyledLink href="/docs">{t("common.documentation")}</StyledLink> {t("common.orTry")}{" "}
-              <StyledLink href="/editor">{t("common.editor")}</StyledLink> {t("common.directly")}.
+              <StyledLink href={getLocalizedLink("/docs")}>{t("common.documentation")}</StyledLink>{" "}
+              {t("common.orTry")}{" "}
+              <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>{" "}
+              {t("common.directly")}.
             </Text>
           </Paper>
         </Stack>

@@ -105,7 +105,7 @@ const JsonSchemaDocs = () => {
                 </Text>
                 <Text>
                   {t("jsonSchema.step1Desc")}{" "}
-                  <StyledLink href="/editor">{t("common.editor")}</StyledLink>.
+                  <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>.
                 </Text>
               </div>
               <div>
@@ -800,8 +800,11 @@ const JsonSchemaDocs = () => {
             <StyledContentBody>
               <Text>
                 {t("common.needHelpText")}{" "}
-                <StyledLink href="/docs">{t("common.documentation")}</StyledLink>{" "}
-                {t("common.orTry")} <StyledLink href="/editor">{t("common.editor")}</StyledLink>{" "}
+                <StyledLink href={getLocalizedLink("/docs")}>
+                  {t("common.documentation")}
+                </StyledLink>{" "}
+                {t("common.orTry")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>{t("common.editor")}</StyledLink>{" "}
                 {t("common.directly")}.
               </Text>
             </StyledContentBody>

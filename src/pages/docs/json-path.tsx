@@ -119,7 +119,10 @@ const JsonPathDocs = () => {
                 </Text>
                 <Text>
                   {t("jsonPath.howToUse.step1.description")}{" "}
-                  <StyledLink href="/editor">JSON Visualization Editor</StyledLink>.
+                  <StyledLink href={getLocalizedLink("/editor")}>
+                    JSON Visualization Editor
+                  </StyledLink>
+                  .
                 </Text>
               </div>
               <div>
@@ -613,8 +616,9 @@ const JsonPathDocs = () => {
             <StyledContentBody>
               <Text>
                 {t("jsonPath.needHelp.description1")}{" "}
-                <StyledLink href="/docs">Documentation</StyledLink>{" "}
-                {t("jsonPath.needHelp.description2")} <StyledLink href="/editor">Editor</StyledLink>{" "}
+                <StyledLink href={getLocalizedLink("/docs")}>Documentation</StyledLink>{" "}
+                {t("jsonPath.needHelp.description2")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>{" "}
                 {t("jsonPath.needHelp.description3")}
               </Text>
             </StyledContentBody>
