@@ -52,7 +52,7 @@ const JsonSchemaDocs = () => {
           ...SEO,
           title: `${t("jsonSchema.title")} Documentation - JSON Visualization`,
           description: t("jsonSchema.subtitle"),
-          canonical: "https://jsonviz.online/docs/json-schema",
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/json-schema`,
         })}
       </Head>
       <Container size="lg" py={60}>

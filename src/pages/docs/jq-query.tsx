@@ -58,7 +58,7 @@ const JQQueryDocs = () => {
           ...SEO,
           title: `${t("jqQuery.title")} Documentation - JSON Visualization`,
           description: t("jqQuery.subtitle"),
-          canonical: "https://jsonviz.online/docs/jq-query",
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/jq-query`,
         })}
       </Head>
       <Container size="lg" py={60}>

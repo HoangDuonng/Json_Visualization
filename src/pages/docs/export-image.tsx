@@ -2,9 +2,11 @@ import React from "react";
 import Head from "next/head";
 import { Container, Stack, Title, Text, Paper, Alert } from "@mantine/core";
 import styled from "styled-components";
+import { generateNextSeo } from "next-seo/pages";
 import { MdInfoOutline } from "react-icons/md";
 import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
+import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
@@ -28,11 +30,12 @@ const ExportImageDocs = () => {
   return (
     <Layout>
       <Head>
-        <title>Export Image - JSON Visualization Documentation</title>
-        <meta
-          name="description"
-          content="Learn how to export your JSON visualizations as PNG, JPEG, or SVG images"
-        />
+        {generateNextSeo({
+          ...SEO,
+          title: `${t("exportImage.title")} Documentation - JSON Visualization`,
+          description: t("exportImage.subtitle"),
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/export-image`,
+        })}
       </Head>
       <Container size="md" py="xl">
         <Stack gap="xl">

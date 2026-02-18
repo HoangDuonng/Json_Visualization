@@ -60,10 +60,9 @@ const FormatConversionDocs = () => {
       <Head>
         {generateNextSeo({
           ...SEO,
-          title: "Format Conversion Documentation - JSON Visualization",
-          description:
-            "Learn how to convert between JSON, YAML, CSV, XML, and TOML formats seamlessly in JSON Visualization.",
-          canonical: "https://jsonviz.online/docs/format-conversion",
+          title: `${t("formatConversion.title")} Documentation - JSON Visualization`,
+          description: t("formatConversion.subtitle"),
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/format-conversion`,
         })}
       </Head>
       <Container size="lg" py={60}>

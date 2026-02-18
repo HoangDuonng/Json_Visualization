@@ -2,9 +2,11 @@ import React from "react";
 import Head from "next/head";
 import { Container, Stack, Title, Text, Paper, Alert } from "@mantine/core";
 import styled from "styled-components";
+import { generateNextSeo } from "next-seo/pages";
 import { MdInfoOutline } from "react-icons/md";
 import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
+import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
 
@@ -28,11 +30,12 @@ const JsonDrawDocs = () => {
   return (
     <Layout>
       <Head>
-        <title>JsonDraw - JSON Visualization Documentation</title>
-        <meta
-          name="description"
-          content="Learn how to use JsonDraw to annotate and present your JSON data"
-        />
+        {generateNextSeo({
+          ...SEO,
+          title: `${t("jsonDraw.title")} Documentation - JSON Visualization`,
+          description: t("jsonDraw.subtitle"),
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/jsondraw`,
+        })}
       </Head>
       <Container size="md" py="xl">
         <Stack gap="xl">

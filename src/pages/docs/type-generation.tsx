@@ -52,7 +52,7 @@ const TypeGenerationDocs = () => {
           ...SEO,
           title: `${t("typeGeneration.title")} Documentation - JSON Visualization`,
           description: t("typeGeneration.subtitle"),
-          canonical: "https://jsonviz.online/docs/type-generation",
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/type-generation`,
         })}
       </Head>
       <Container size="lg" py={60}>

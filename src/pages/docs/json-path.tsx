@@ -67,7 +67,7 @@ const JsonPathDocs = () => {
           ...SEO,
           title: `${t("jsonPath.title")} Documentation - JSON Visualization`,
           description: t("jsonPath.subtitle"),
-          canonical: "https://jsonviz.online/docs/json-path",
+          canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/json-path`,
         })}
       </Head>
       <Container size="lg" py={60}>
