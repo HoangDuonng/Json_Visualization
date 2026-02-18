@@ -83,6 +83,8 @@
     "react-syntax-highlighter": "^16.1.0",
     "react-zoomable-ui": "^0.11.0",
     "reaflow": "5.4.1",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
     "roughjs": "^4.6.6",
     "sass": "^1.97.3",
     "shiki": "^3.22.0",

@@ -5,6 +5,8 @@ import { IoSend, IoStopCircleOutline } from "react-icons/io5";
 import { MdPerson } from "react-icons/md";
 import { VscSparkle } from "react-icons/vsc";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { Loader } from "../Loader";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
@@ -189,6 +191,26 @@ const StyledMessageBubble = styled.div<{ isUser?: boolean }>`
     padding-left: 12px;
     margin: 8px 0;
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    border: 1px solid #e8e4db;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: rgba(247, 243, 230, 0.8);
+    font-weight: 600;
   }
 `;
 
@@ -395,7 +417,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
                       {msg.text}
                     </Text>
                   ) : msg.text ? (
-                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                      {msg.text}
+                    </ReactMarkdown>
                   ) : (
                     <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
                       <div
