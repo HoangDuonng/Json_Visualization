@@ -6,6 +6,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
 import { DocsNavigation } from "../../components/DocsNavigation";
+import { DocsToc } from "../../components/DocsToc";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -51,6 +52,16 @@ const JQQueryDocs = () => {
     return locale === "vi" ? `${path}?lang=vi` : path;
   };
 
+  const tocItems = [
+    { id: "what-is", label: t("jqQuery.whatIsTitle") },
+    { id: "how-to-use", label: t("jqQuery.howToUseTitle") },
+    { id: "basic-syntax", label: t("jqQuery.basicSyntaxTitle") },
+    { id: "examples", label: t("jqQuery.examplesTitle") },
+    { id: "common-ops", label: t("jqQuery.commonOpsTitle") },
+    { id: "tips", label: t("jqQuery.tipsTitle") },
+    { id: "limitations", label: t("jqQuery.limitationsTitle") },
+  ];
+
   return (
     <Layout>
       <Head>
@@ -86,8 +97,10 @@ const JQQueryDocs = () => {
             {t("jqQuery.alert")}
           </Alert>
 
+          <DocsToc title={t("common.onThisPage")} items={tocItems} />
+
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="what-is" mb="md" order={2} c="dark">
               {t("jqQuery.whatIsTitle")}
             </Title>
             <StyledContentBody>
@@ -97,7 +110,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="how-to-use" mb="md" order={2} c="dark">
               {t("jqQuery.howToUseTitle")}
             </Title>
             <StyledContentBody>
@@ -132,7 +145,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="basic-syntax" mb="md" order={2} c="dark">
               {t("jqQuery.basicSyntaxTitle")}
             </Title>
             <StyledContentBody>
@@ -186,7 +199,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="examples" mb="md" order={2} c="dark">
               {t("jqQuery.examplesTitle")}
             </Title>
             <StyledContentBody>
@@ -369,7 +382,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="common-ops" mb="md" order={2} c="dark">
               {t("jqQuery.commonOpsTitle")}
             </Title>
             <StyledContentBody>
@@ -433,7 +446,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="tips" mb="md" order={2} c="dark">
               {t("jqQuery.tipsTitle")}
             </Title>
             <StyledContentBody>
@@ -457,7 +470,7 @@ const JQQueryDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="limitations" mb="md" order={2} c="dark">
               {t("jqQuery.limitationsTitle")}
             </Title>
             <StyledContentBody>

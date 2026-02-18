@@ -6,6 +6,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
 import { DocsNavigation } from "../../components/DocsNavigation";
+import { DocsToc } from "../../components/DocsToc";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -45,6 +46,18 @@ const JsonSchemaDocs = () => {
     return locale === "vi" ? `${path}?lang=vi` : path;
   };
 
+  const tocItems = [
+    { id: "what-is", label: t("jsonSchema.whatIsTitle") },
+    { id: "how-to-use", label: t("jsonSchema.howToUseTitle") },
+    { id: "basic-schema", label: t("jsonSchema.basicSchemaTitle") },
+    { id: "common-keywords", label: t("jsonSchema.commonKeywordsTitle") },
+    { id: "practical-examples", label: t("jsonSchema.practicalExamplesTitle") },
+    { id: "definitions", label: t("jsonSchema.definitionsTitle") },
+    { id: "data-types", label: t("jsonSchema.dataTypesTitle") },
+    { id: "string-formats", label: t("jsonSchema.stringFormatsTitle") },
+    { id: "tips", label: t("jsonSchema.tipsTitle") },
+  ];
+
   return (
     <Layout>
       <Head>
@@ -80,8 +93,10 @@ const JsonSchemaDocs = () => {
             {t("jsonSchema.alert")}
           </Alert>
 
+          <DocsToc title={t("common.onThisPage")} items={tocItems} />
+
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="what-is" mb="md" order={2} c="dark">
               {t("jsonSchema.whatIsTitle")}
             </Title>
             <StyledContentBody>
@@ -95,7 +110,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="how-to-use" mb="md" order={2} c="dark">
               {t("jsonSchema.howToUseTitle")}
             </Title>
             <StyledContentBody>
@@ -136,7 +151,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="basic-schema" mb="md" order={2} c="dark">
               {t("jsonSchema.basicSchemaTitle")}
             </Title>
             <StyledContentBody>
@@ -169,7 +184,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="common-keywords" mb="md" order={2} c="dark">
               {t("jsonSchema.commonKeywordsTitle")}
             </Title>
             <StyledContentBody>
@@ -277,7 +292,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="practical-examples" mb="md" order={2} c="dark">
               {t("jsonSchema.practicalExamplesTitle")}
             </Title>
             <StyledContentBody>
@@ -551,8 +566,8 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
-              Using Definitions and References
+            <Title id="definitions" mb="md" order={2} c="dark">
+              {t("jsonSchema.definitionsTitle")}
             </Title>
             <StyledContentBody>
               <Text>
@@ -594,7 +609,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="data-types" mb="md" order={2} c="dark">
               {t("jsonSchema.dataTypesTitle")}
             </Title>
             <StyledContentBody>
@@ -678,7 +693,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="string-formats" mb="md" order={2} c="dark">
               {t("jsonSchema.stringFormatsTitle")}
             </Title>
             <StyledContentBody>
@@ -745,7 +760,7 @@ const JsonSchemaDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="tips" mb="md" order={2} c="dark">
               {t("jsonSchema.tipsTitle")}
             </Title>
             <StyledContentBody>

@@ -69,6 +69,10 @@ export const docsTranslations = {
       en: "Next",
       vi: "Tiếp",
     },
+    onThisPage: {
+      en: "On This Page",
+      vi: "Mục Lục",
+    },
   },
 
   // ==================== DOCS INDEX ====================

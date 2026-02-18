@@ -6,6 +6,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
 import { DocsNavigation } from "../../components/DocsNavigation";
+import { DocsToc } from "../../components/DocsToc";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -60,6 +61,16 @@ const JsonPathDocs = () => {
     return locale === "vi" ? `${path}?lang=vi` : path;
   };
 
+  const tocItems = [
+    { id: "what-is", label: t("jsonPath.whatIsJsonPath.title") },
+    { id: "how-to-use", label: t("jsonPath.howToUse.title") },
+    { id: "basic-syntax", label: t("jsonPath.basicSyntax.title") },
+    { id: "practical-examples", label: t("jsonPath.practicalExamples.title") },
+    { id: "filter-expressions", label: t("jsonPath.filterExpressions.title") },
+    { id: "tips", label: t("jsonPath.tipsBestPractices.title") },
+    { id: "common-use-cases", label: t("jsonPath.commonUseCases.title") },
+  ];
+
   return (
     <Layout>
       <Head>
@@ -95,8 +106,10 @@ const JsonPathDocs = () => {
             {t("jsonPath.alert")}
           </Alert>
 
+          <DocsToc title={t("common.onThisPage")} items={tocItems} />
+
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="what-is" mb="md" order={2} c="dark">
               {t("jsonPath.whatIsJsonPath.title")}
             </Title>
             <StyledContentBody>
@@ -109,7 +122,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="how-to-use" mb="md" order={2} c="dark">
               {t("jsonPath.howToUse.title")}
             </Title>
             <StyledContentBody>
@@ -147,7 +160,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="basic-syntax" mb="md" order={2} c="dark">
               {t("jsonPath.basicSyntax.title")}
             </Title>
             <StyledContentBody>
@@ -219,7 +232,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="practical-examples" mb="md" order={2} c="dark">
               {t("jsonPath.practicalExamples.title")}
             </Title>
             <StyledContentBody>
@@ -383,7 +396,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="filter-expressions" mb="md" order={2} c="dark">
               {t("jsonPath.filterExpressions.title")}
             </Title>
             <StyledContentBody>
@@ -498,7 +511,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="tips" mb="md" order={2} c="dark">
               {t("jsonPath.tipsBestPractices.title")}
             </Title>
             <StyledContentBody>
@@ -543,7 +556,7 @@ const JsonPathDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="common-use-cases" mb="md" order={2} c="dark">
               {t("jsonPath.commonUseCases.title")}
             </Title>
             <StyledContentBody>

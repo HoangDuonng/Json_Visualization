@@ -6,6 +6,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { VscInfo, VscError, VscPass } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
 import { DocsNavigation } from "../../components/DocsNavigation";
+import { DocsToc } from "../../components/DocsToc";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
@@ -34,6 +35,15 @@ const FormatValidateDocs = () => {
   const getLocalizedLink = (path: string) => {
     return locale === "vi" ? `${path}?lang=vi` : path;
   };
+
+  const tocItems = [
+    { id: "what-is", label: t("formatValidate.whatIsTitle") },
+    { id: "supported-formats", label: t("formatValidate.supportedFormatsTitle") },
+    { id: "how-to-use", label: t("formatValidate.howToUseTitle") },
+    { id: "common-errors", label: t("formatValidate.commonErrorsTitle") },
+    { id: "formatting-options", label: t("formatValidate.formattingOptionsTitle") },
+    { id: "tips", label: t("formatValidate.tipsTitle") },
+  ];
 
   return (
     <Layout>
@@ -70,8 +80,10 @@ const FormatValidateDocs = () => {
             {t("formatValidate.alert")}
           </Alert>
 
+          <DocsToc title={t("common.onThisPage")} items={tocItems} />
+
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="what-is" mb="md" order={2} c="dark">
               {t("formatValidate.whatIsTitle")}
             </Title>
             <StyledContentBody>
@@ -92,7 +104,7 @@ const FormatValidateDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="supported-formats" mb="md" order={2} c="dark">
               {t("formatValidate.supportedFormatsTitle")}
             </Title>
             <StyledContentBody>
@@ -128,7 +140,7 @@ const FormatValidateDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="how-to-use" mb="md" order={2} c="dark">
               {t("formatValidate.howToUseTitle")}
             </Title>
             <StyledContentBody>
@@ -171,7 +183,7 @@ const FormatValidateDocs = () => {
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="common-errors" mb="md" order={2} c="dark">
               {t("formatValidate.commonErrorsTitle")}
             </Title>
             <StyledContentBody>
@@ -354,7 +366,7 @@ Jane,25,Boston`}
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="formatting-options" mb="md" order={2} c="dark">
               {t("formatValidate.formattingOptionsTitle")}
             </Title>
             <StyledContentBody>
@@ -385,7 +397,7 @@ Jane,25,Boston`}
           </Paper>
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-            <Title mb="md" order={2} c="dark">
+            <Title id="tips" mb="md" order={2} c="dark">
               {t("formatValidate.tipsTitle")}
             </Title>
             <StyledContentBody>

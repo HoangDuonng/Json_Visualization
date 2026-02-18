@@ -1,0 +1,1 @@
+export { DocsToc } from "./DocsToc";
