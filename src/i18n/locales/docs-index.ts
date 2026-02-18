@@ -59,6 +59,26 @@ export const docsIndexTranslations = {
     en: "Download your visualization as an image or export your transformed data.",
     vi: "Tải xuống trực quan hóa dưới dạng hình ảnh hoặc xuất dữ liệu đã chuyển đổi.",
   },
+  sampleDataTitle: {
+    en: "Sample Data",
+    vi: "Dữ Liệu Mẫu",
+  },
+  sampleDataDesc: {
+    en: "Copy a sample and paste it into the editor to explore views and tools quickly.",
+    vi: "Sao chép dữ liệu mẫu và dán vào editor để khám phá nhanh các chế độ xem và công cụ.",
+  },
+  sampleJsonLabel: {
+    en: "Sample JSON",
+    vi: "JSON Mẫu",
+  },
+  sampleCsvLabel: {
+    en: "Sample CSV",
+    vi: "CSV Mẫu",
+  },
+  sampleDataHint: {
+    en: "Paste the sample into the",
+    vi: "Dán dữ liệu mẫu vào",
+  },
   supportedFormatsTitle: {
     en: "Supported Formats",
     vi: "Định Dạng Được Hỗ Trợ",

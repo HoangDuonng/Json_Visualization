@@ -20,6 +20,7 @@ import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-
 import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
 import { ChatBot } from "../components/ChatBot";
+import { CodeBlock } from "../components/CodeBlock";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
 import { useTranslation } from "../i18n";
@@ -152,6 +153,31 @@ const Docs = () => {
     },
   ];
 
+  const sampleJson = `{
+  "customer": {
+    "id": 1024,
+    "name": "Jane Doe",
+    "email": "jane@example.com"
+  },
+  "orders": [
+    {
+      "id": "A-1001",
+      "total": 129.5,
+      "status": "paid"
+    },
+    {
+      "id": "A-1002",
+      "total": 89.0,
+      "status": "pending"
+    }
+  ]
+}`;
+
+  const sampleCsv = `id,product,price
+101,Notebook,12.5
+102,Pen,3.2
+103,Backpack,39.9`;
+
   return (
     <Layout>
       <Head>
@@ -189,7 +215,8 @@ const Docs = () => {
             <StyledContentBody>
               <Text size="lg">{t("index.welcomeDesc1")}</Text>
               <Text>
-                {t("index.welcomeDesc2")} <StyledLink href="/editor">Editor</StyledLink>.
+                {t("index.welcomeDesc2")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>.
               </Text>
             </StyledContentBody>
           </Paper>
@@ -233,7 +260,8 @@ const Docs = () => {
                   {t("index.quickStartStep1Title")}
                 </Text>
                 <Text>
-                  {t("index.quickStartStep1Desc1")} <StyledLink href="/editor">Editor</StyledLink>{" "}
+                  {t("index.quickStartStep1Desc1")}{" "}
+                  <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>{" "}
                   {t("index.quickStartStep1Desc2")}
                 </Text>
               </div>
@@ -255,6 +283,33 @@ const Docs = () => {
                 </Text>
                 <Text>{t("index.quickStartStep4Desc")}</Text>
               </div>
+            </StyledContentBody>
+          </Paper>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              {t("index.sampleDataTitle")}
+            </Title>
+            <StyledContentBody>
+              <Text>{t("index.sampleDataDesc")}</Text>
+              <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+                <div>
+                  <Text fw={600} mb="xs">
+                    {t("index.sampleJsonLabel")}
+                  </Text>
+                  <CodeBlock code={sampleJson} />
+                </div>
+                <div>
+                  <Text fw={600} mb="xs">
+                    {t("index.sampleCsvLabel")}
+                  </Text>
+                  <CodeBlock code={sampleCsv} />
+                </div>
+              </SimpleGrid>
+              <Text size="sm" c="dimmed">
+                {t("index.sampleDataHint")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>.
+              </Text>
             </StyledContentBody>
           </Paper>
 
@@ -283,10 +338,12 @@ const Docs = () => {
             <StyledContentBody>
               <Text>{t("index.helpDesc")}</Text>
               <Text>
-                • {t("index.helpItem1")} <StyledLink href="/docs/jsondraw">JsonDraw</StyledLink>.
+                • {t("index.helpItem1")}{" "}
+                <StyledLink href={getLocalizedLink("/docs/jsondraw")}>JsonDraw</StyledLink>.
               </Text>
               <Text>
-                • {t("index.helpItem2")} <StyledLink href="/editor">Editor</StyledLink>.
+                • {t("index.helpItem2")}{" "}
+                <StyledLink href={getLocalizedLink("/editor")}>Editor</StyledLink>.
               </Text>
               <Text>• {t("index.helpItem3")}</Text>
             </StyledContentBody>
