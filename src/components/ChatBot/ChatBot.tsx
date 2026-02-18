@@ -2,6 +2,8 @@ import React from "react";
 import { Modal, Stack, Text, ScrollArea } from "@mantine/core";
 import styled from "styled-components";
 import { IoSend, IoStopCircleOutline } from "react-icons/io5";
+import { MdPerson } from "react-icons/md";
+import { VscSparkle } from "react-icons/vsc";
 import ReactMarkdown from "react-markdown";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { Loader } from "../Loader";
@@ -10,16 +12,51 @@ import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input"
 const StyledChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 560px;
+  background: #ffffff;
+  border: 1px solid #e8e4db;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(17, 17, 17, 0.08);
+`;
+
+const StyledMessageList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 2px 12px;
+`;
+
+const StyledMessageRow = styled.div<{ isUser?: boolean }>`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: ${props => (props.isUser ? "flex-end" : "flex-start")};
+`;
+
+const StyledAvatar = styled.div<{ isUser?: boolean }>`
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: ${props => (props.isUser ? "#f7c948" : "#f7c948")};
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
 `;
 
 const StyledMessageBubble = styled.div<{ isUser?: boolean }>`
   max-width: 80%;
-  align-self: ${props => (props.isUser ? "flex-end" : "flex-start")};
-  background: ${props => (props.isUser ? "#37ff8b" : "#f7f3e6")};
+  background: ${props => (props.isUser ? "#f7f3e6" : "#ffffff")};
   color: #1a1a1a;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #e8e4db;
+  box-shadow: ${props => (props.isUser ? "none" : "0 6px 16px rgba(17, 17, 17, 0.06)")};
 
   p {
     margin: 0 0 8px 0;
@@ -31,25 +68,34 @@ const StyledMessageBubble = styled.div<{ isUser?: boolean }>`
   }
 
   code {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.08);
     padding: 2px 6px;
-    border-radius: 4px;
-    font-family: ${MONO_FONT_FAMILY};
+    border-radius: 6px;
+    font-family: ${MONO_FONT_FAMILY} !important;
     font-size: 0.9em;
   }
 
+  code * {
+    font-family: ${MONO_FONT_FAMILY} !important;
+  }
+
   pre {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.08);
     padding: 12px;
-    border-radius: 6px;
+    border-radius: 10px;
     overflow-x: auto;
     margin: 8px 0;
+    font-family: ${MONO_FONT_FAMILY} !important;
 
     code {
       background: none;
       padding: 0;
-      font-family: ${MONO_FONT_FAMILY};
+      font-family: ${MONO_FONT_FAMILY} !important;
     }
+  }
+
+  pre * {
+    font-family: ${MONO_FONT_FAMILY} !important;
   }
 
   ul,
@@ -80,6 +126,23 @@ const StyledMessageBubble = styled.div<{ isUser?: boolean }>`
 
 const StyledLoadingDots = styled.span`
   margin-left: 2px;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const StyledTitle = styled(Text)`
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111111;
+`;
+
+const StyledSubtitle = styled(Text)`
+  font-size: 0.8rem;
+  color: #6b7280;
 `;
 
 interface Message {
@@ -224,32 +287,66 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Chat Assistant" size="lg">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size="lg"
+      radius="md"
+      title={
+        <StyledHeader>
+          <StyledTitle>JsonViz Assistant</StyledTitle>
+          <StyledSubtitle>Ask about formatting, queries, conversions, or exports.</StyledSubtitle>
+        </StyledHeader>
+      }
+      styles={{
+        header: { paddingBottom: 12, borderBottom: "1px solid #e8e4db" },
+        body: { paddingTop: 16 },
+      }}
+    >
       <StyledChatContainer>
         <ScrollArea style={{ flex: 1 }} mb="md">
-          <Stack gap="sm">
+          <StyledMessageList>
             {messages.map(msg => (
-              <StyledMessageBubble key={msg.id} isUser={msg.isUser}>
-                {msg.isUser ? (
-                  <Text size="sm">{msg.text}</Text>
-                ) : msg.text ? (
-                  <ReactMarkdown>{msg.text}</ReactMarkdown>
-                ) : (
-                  <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
-                    <div
-                      style={{ width: "16px", height: "16px", flexShrink: 0, alignSelf: "center" }}
-                    >
-                      <Loader />
-                    </div>
-                    <Text size="sm" c="dimmed" style={{ lineHeight: 1 }}>
-                      Thinking<StyledLoadingDots>...</StyledLoadingDots>
-                    </Text>
-                  </div>
+              <StyledMessageRow key={msg.id} isUser={msg.isUser}>
+                {!msg.isUser && (
+                  <StyledAvatar>
+                    <VscSparkle size={16} />
+                  </StyledAvatar>
                 )}
-              </StyledMessageBubble>
+                <StyledMessageBubble isUser={msg.isUser}>
+                  {msg.isUser ? (
+                    <Text size="sm" c="dark">
+                      {msg.text}
+                    </Text>
+                  ) : msg.text ? (
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  ) : (
+                    <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+                      <div
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          flexShrink: 0,
+                          alignSelf: "center",
+                        }}
+                      >
+                        <Loader />
+                      </div>
+                      <Text size="sm" c="dimmed" style={{ lineHeight: 1 }}>
+                        Thinking<StyledLoadingDots>...</StyledLoadingDots>
+                      </Text>
+                    </div>
+                  )}
+                </StyledMessageBubble>
+                {msg.isUser && (
+                  <StyledAvatar isUser>
+                    <MdPerson size={16} />
+                  </StyledAvatar>
+                )}
+              </StyledMessageRow>
             ))}
             <div ref={messagesEndRef} />
-          </Stack>
+          </StyledMessageList>
         </ScrollArea>
 
         <PlaceholdersAndVanishInput

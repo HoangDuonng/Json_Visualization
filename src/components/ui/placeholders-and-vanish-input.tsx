@@ -8,18 +8,19 @@ const StyledInputWrapper = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
-  padding: 12px 50px 12px 16px;
-  border: 1px solid #e8e4db;
-  border-radius: 8px;
+  padding: 12px 56px 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
   font-size: 14px;
-  background: #fefcf7;
+  background: #ffffff;
   color: #1a1a1a;
   transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.06);
 
   &:focus {
     outline: none;
-    border-color: #37ff8b;
-    box-shadow: 0 0 0 3px rgba(55, 255, 139, 0.1);
+    border-color: #111111;
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
   }
 
   &::placeholder {
@@ -32,21 +33,21 @@ const StyledSendButton = styled.button`
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: #37ff8b;
+  background: #111111;
   border: none;
-  border-radius: 6px;
-  width: 36px;
-  height: 36px;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #1a1a1a;
+  color: #ffffff;
 
   &:hover:not(:disabled) {
-    background: #2ee67c;
-    transform: translateY(-50%) scale(1.05);
+    background: #1f2937;
+    transform: translateY(-50%) scale(1.03);
   }
 
   &:disabled {
