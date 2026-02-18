@@ -71,6 +71,70 @@ export const docsIndexTranslations = {
     en: "All formats can be visualized, validated, and converted to other formats.",
     vi: "Tất cả định dạng có thể được trực quan hóa, xác thực và chuyển đổi sang định dạng khác.",
   },
+  helpTitle: {
+    en: "Help & Shortcuts",
+    vi: "Trợ Giúp & Phím Tắt",
+  },
+  helpDesc: {
+    en: "Get assistance fast with docs links, shortcuts, and in-editor help.",
+    vi: "Nhận hỗ trợ nhanh với link tài liệu, phím tắt và trợ giúp trong trình soạn thảo.",
+  },
+  helpItem1: {
+    en: "Need shortcuts? Open",
+    vi: "Cần phím tắt? Mở",
+  },
+  helpItem2: {
+    en: "Try tools hands-on in the",
+    vi: "Thử trực tiếp các công cụ trong",
+  },
+  helpItem3: {
+    en: "Use the chat assistant on this page for quick guidance.",
+    vi: "Dùng trợ lý chat ngay trên trang này để được hướng dẫn nhanh.",
+  },
+  faqTitle: {
+    en: "FAQ & Troubleshooting",
+    vi: "Hỏi Đáp & Xử Lý Lỗi",
+  },
+  faq1Question: {
+    en: "Why is my JSON invalid?",
+    vi: "Vì sao JSON của tôi không hợp lệ?",
+  },
+  faq1Answer: {
+    en: "Check for trailing commas, missing quotes, or unescaped characters. Use Format & Validate to pinpoint errors.",
+    vi: "Kiểm tra dấu phẩy cuối, thiếu dấu ngoặc kép hoặc ký tự chưa escape. Dùng Định Dạng & Xác Thực để tìm lỗi.",
+  },
+  faq2Question: {
+    en: "The graph is too dense or slow. What should I do?",
+    vi: "Đồ thị quá dày hoặc chậm. Nên làm gì?",
+  },
+  faq2Answer: {
+    en: "Try Tree View, collapse large branches, or trim the dataset before visualizing.",
+    vi: "Hãy thử Tree View, thu gọn nhánh lớn hoặc rút gọn dữ liệu trước khi trực quan hóa.",
+  },
+  faq3Question: {
+    en: "CSV or XML doesn't look right after import.",
+    vi: "CSV hoặc XML hiển thị không đúng sau khi nhập.",
+  },
+  faq3Answer: {
+    en: "Ensure CSV has a header row and consistent columns. For XML, verify proper nesting and closing tags.",
+    vi: "Đảm bảo CSV có dòng tiêu đề và cột nhất quán. Với XML, kiểm tra cấu trúc lồng nhau và thẻ đóng.",
+  },
+  faq4Question: {
+    en: "How do I export a sharper image?",
+    vi: "Làm sao để xuất ảnh nét hơn?",
+  },
+  faq4Answer: {
+    en: "Zoom to fit before exporting. Use PNG for clarity or SVG for scalable output.",
+    vi: "Hãy zoom vừa khung trước khi xuất. Dùng PNG để rõ nét hoặc SVG để phóng to không vỡ.",
+  },
+  faq5Question: {
+    en: "Is my data private?",
+    vi: "Dữ liệu của tôi có riêng tư không?",
+  },
+  faq5Answer: {
+    en: "Yes. All processing stays in your browser and nothing is uploaded.",
+    vi: "Có. Tất cả xử lý diễn ra trong trình duyệt và không có dữ liệu nào được tải lên.",
+  },
   privacyTitle: {
     en: "Privacy & Security",
     vi: "Quyền Riêng Tư & Bảo Mật",

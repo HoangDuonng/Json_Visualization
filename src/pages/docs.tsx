@@ -129,6 +129,29 @@ const Docs = () => {
     },
   ];
 
+  const faqs = [
+    {
+      question: t("index.faq1Question"),
+      answer: t("index.faq1Answer"),
+    },
+    {
+      question: t("index.faq2Question"),
+      answer: t("index.faq2Answer"),
+    },
+    {
+      question: t("index.faq3Question"),
+      answer: t("index.faq3Answer"),
+    },
+    {
+      question: t("index.faq4Question"),
+      answer: t("index.faq4Answer"),
+    },
+    {
+      question: t("index.faq5Question"),
+      answer: t("index.faq5Answer"),
+    },
+  ];
+
   return (
     <Layout>
       <Head>
@@ -250,6 +273,38 @@ const Docs = () => {
               <Text size="sm" c="dimmed" mt="md">
                 {t("index.supportedFormatsNote")}
               </Text>
+            </StyledContentBody>
+          </Paper>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              {t("index.helpTitle")}
+            </Title>
+            <StyledContentBody>
+              <Text>{t("index.helpDesc")}</Text>
+              <Text>
+                • {t("index.helpItem1")} <StyledLink href="/docs/jsondraw">JsonDraw</StyledLink>.
+              </Text>
+              <Text>
+                • {t("index.helpItem2")} <StyledLink href="/editor">Editor</StyledLink>.
+              </Text>
+              <Text>• {t("index.helpItem3")}</Text>
+            </StyledContentBody>
+          </Paper>
+
+          <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+            <Title mb="md" order={3} c="dark">
+              {t("index.faqTitle")}
+            </Title>
+            <StyledContentBody>
+              {faqs.map(faq => (
+                <div key={faq.question}>
+                  <Text fw={600} mb="xs">
+                    {faq.question}
+                  </Text>
+                  <Text>{faq.answer}</Text>
+                </div>
+              ))}
             </StyledContentBody>
           </Paper>
 
