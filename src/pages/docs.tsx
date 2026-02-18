@@ -1,25 +1,16 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import {
-  Container,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-  ThemeIcon,
-  SimpleGrid,
-  ActionIcon,
-} from "@mantine/core";
+import { Container, Group, Paper, Stack, Text, Title, ThemeIcon, SimpleGrid } from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { FaBolt, FaToolbox } from "react-icons/fa";
-import { IoBrushOutline, IoImages, IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { IoBrushOutline, IoImages } from "react-icons/io5";
 import { MdOutlineFormatIndentIncrease, MdOutlineGeneratingTokens } from "react-icons/md";
 import { TbTransformFilled } from "react-icons/tb";
 import { VscJson } from "react-icons/vsc";
 import { ChatBot } from "../components/ChatBot";
+import { ChatButton } from "../components/ChatButton";
 import { CodeBlock } from "../components/CodeBlock";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
@@ -195,15 +186,7 @@ const Docs = () => {
               {t("index.title")}
             </Title>
             <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-              <ActionIcon
-                size="lg"
-                variant="light"
-                color="green"
-                onClick={() => setChatOpened(true)}
-                title="Chat Assistant"
-              >
-                <IoChatbubbleEllipsesOutline size={20} />
-              </ActionIcon>
+              <ChatButton onClick={() => setChatOpened(true)} />
               <LanguageSwitcher />
             </div>
           </div>
