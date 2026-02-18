@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Stack, Text, ScrollArea } from "@mantine/core";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { IoSend, IoStopCircleOutline } from "react-icons/io5";
 import { MdPerson } from "react-icons/md";
 import { VscSparkle } from "react-icons/vsc";
@@ -9,15 +9,92 @@ import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { Loader } from "../Loader";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 
+const spinGlow = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const pulseGlow = keyframes`
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 0.85;
+  }
+`;
+
 const StyledChatContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 560px;
-  background: #ffffff;
-  border: 1px solid #e8e4db;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px;
-  box-shadow: 0 10px 30px rgba(17, 17, 17, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.98) 0%,
+    rgba(14, 11, 32, 0.98) 50%,
+    rgba(2, 6, 23, 0.98) 100%
+  );
+  overflow: hidden;
+  box-shadow:
+    0 0 80px rgba(139, 92, 246, 0.25),
+    0 20px 60px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+      0 0 90px rgba(139, 92, 246, 0.3),
+      0 24px 70px rgba(0, 0, 0, 0.4);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 18px;
+    background: conic-gradient(from 0deg, #7c3aed, #ec4899, #06b6d4, #7c3aed);
+    opacity: 0.7;
+    animation: ${spinGlow} 10s linear infinite;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 14px;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+      linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.9) 0%,
+        rgba(30, 27, 75, 0.9) 60%,
+        rgba(2, 6, 23, 0.95) 100%
+      );
+    pointer-events: none;
+    animation: ${pulseGlow} 6s ease-in-out infinite;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const StyledMessageList = styled.div`
