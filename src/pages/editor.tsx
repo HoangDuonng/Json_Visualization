@@ -87,6 +87,9 @@ const EditorPage = () => {
 
   useEffect(() => {
     setColorScheme(darkmodeEnabled ? "dark" : "light");
+    return () => {
+      setColorScheme("light");
+    };
   }, [darkmodeEnabled, setColorScheme]);
 
   return (
