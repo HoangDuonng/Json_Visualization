@@ -33,20 +33,20 @@ const StyledSendButton = styled.button`
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: #111111;
+  background: #f7c948;
   border: none;
-  border-radius: 999px;
-  width: 34px;
-  height: 34px;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #ffffff;
+  color: #1a1a1a;
 
   &:hover:not(:disabled) {
-    background: #1f2937;
+    background: #f3b400;
     transform: translateY(-50%) scale(1.03);
   }
 
