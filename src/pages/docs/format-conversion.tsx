@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
+import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -48,7 +49,11 @@ const StyledInlineCode = styled.code`
 `;
 
 const FormatConversionDocs = () => {
-  const { t } = useTranslation("docs");
+  const { t, locale } = useTranslation("docs");
+
+  const getLocalizedLink = (path: string) => {
+    return locale === "vi" ? `${path}?lang=vi` : path;
+  };
 
   return (
     <Layout>
@@ -429,6 +434,20 @@ database:
               </div>
             </StyledContentBody>
           </Paper>
+
+          <DocsNavigation
+            title={t("common.relatedReading")}
+            previous={{
+              label: t("common.previous"),
+              title: t("jsonDraw.title"),
+              href: getLocalizedLink("/docs/jsondraw"),
+            }}
+            next={{
+              label: t("common.next"),
+              title: t("formatValidate.title"),
+              href: getLocalizedLink("/docs/format-validate"),
+            }}
+          />
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">

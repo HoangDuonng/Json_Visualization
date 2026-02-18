@@ -57,6 +57,18 @@ export const docsTranslations = {
       en: "Supported Formats",
       vi: "Định Dạng Được Hỗ Trợ",
     },
+    relatedReading: {
+      en: "Related Reading",
+      vi: "Đọc Tiếp",
+    },
+    previous: {
+      en: "Previous",
+      vi: "Trước",
+    },
+    next: {
+      en: "Next",
+      vi: "Tiếp",
+    },
   },
 
   // ==================== DOCS INDEX ====================

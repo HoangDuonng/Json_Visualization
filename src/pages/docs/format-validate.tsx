@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo, VscError, VscPass } from "react-icons/vsc";
 import { CodeBlock } from "../../components/CodeBlock";
+import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
@@ -28,7 +29,11 @@ const StyledLink = styled.a`
 `;
 
 const FormatValidateDocs = () => {
-  const { t } = useTranslation("docs");
+  const { t, locale } = useTranslation("docs");
+
+  const getLocalizedLink = (path: string) => {
+    return locale === "vi" ? `${path}?lang=vi` : path;
+  };
 
   return (
     <Layout>
@@ -410,6 +415,20 @@ Jane,25,Boston`}
               </div>
             </StyledContentBody>
           </Paper>
+
+          <DocsNavigation
+            title={t("common.relatedReading")}
+            previous={{
+              label: t("common.previous"),
+              title: t("formatConversion.title"),
+              href: getLocalizedLink("/docs/format-conversion"),
+            }}
+            next={{
+              label: t("common.next"),
+              title: t("typeGeneration.title"),
+              href: getLocalizedLink("/docs/type-generation"),
+            }}
+          />
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">

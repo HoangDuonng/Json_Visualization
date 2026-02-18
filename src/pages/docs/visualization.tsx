@@ -4,6 +4,7 @@ import { Container, Paper, Stack, Text, Title, Alert, SimpleGrid } from "@mantin
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
+import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
@@ -38,6 +39,10 @@ const StyledInlineCode = styled.code`
 
 const VisualizationDocs = () => {
   const { t, locale } = useTranslation("docs");
+
+  const getLocalizedLink = (path: string) => {
+    return locale === "vi" ? `${path}?lang=vi` : path;
+  };
 
   return (
     <Layout>
@@ -205,6 +210,15 @@ const VisualizationDocs = () => {
               </div>
             </StyledContentBody>
           </Paper>
+
+          <DocsNavigation
+            title={t("common.relatedReading")}
+            next={{
+              label: t("common.next"),
+              title: t("jsonDraw.title"),
+              href: getLocalizedLink("/docs/jsondraw"),
+            }}
+          />
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">

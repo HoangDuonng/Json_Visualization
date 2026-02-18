@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Container, Stack, Title, Text, Paper, Alert } from "@mantine/core";
 import styled from "styled-components";
 import { MdInfoOutline } from "react-icons/md";
+import { DocsNavigation } from "../../components/DocsNavigation";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
@@ -18,7 +19,11 @@ const StyledLink = styled.a`
 `;
 
 const JsonDrawDocs = () => {
-  const { t } = useTranslation("docs");
+  const { t, locale } = useTranslation("docs");
+
+  const getLocalizedLink = (path: string) => {
+    return locale === "vi" ? `${path}?lang=vi` : path;
+  };
 
   return (
     <Layout>
@@ -116,6 +121,20 @@ const JsonDrawDocs = () => {
               </div>
             </Stack>
           </Paper>
+
+          <DocsNavigation
+            title={t("common.relatedReading")}
+            previous={{
+              label: t("common.previous"),
+              title: t("visualization.title"),
+              href: getLocalizedLink("/docs/visualization"),
+            }}
+            next={{
+              label: t("common.next"),
+              title: t("formatConversion.title"),
+              href: getLocalizedLink("/docs/format-conversion"),
+            }}
+          />
 
           <Paper bg="white" c="black" p="xl" radius="md" withBorder>
             <Title mb="md" order={3} c="dark">
