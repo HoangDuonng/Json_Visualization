@@ -7,6 +7,7 @@ const GlobalStyle = createGlobalStyle`
     background: #ffffff;
     overscroll-behavior: none;
     -webkit-font-smoothing: subpixel-antialiased !important;
+    font-family: "Playfair Display", serif;
   }
 
   *,

@@ -2,7 +2,7 @@ import React from "react";
 import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
-import { SEO } from "../constants/seo";
+import { SEO, SITE_URL } from "../constants/seo";
 import { FAQ } from "../layout/Landing/FAQ";
 import { Features } from "../layout/Landing/Features";
 import { HeroPreview } from "../layout/Landing/HeroPreview";
@@ -15,7 +15,7 @@ import Layout from "../layout/PageLayout";
 export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout stars={props.stars}>
-      <Head>{generateNextSeo({ ...SEO, canonical: "https://nguuyen.io.vn" })}</Head>
+      <Head>{generateNextSeo({ ...SEO, canonical: SITE_URL })}</Head>
       <HeroSection stars={props.stars} />
       <HeroPreview />
       <Section1 />

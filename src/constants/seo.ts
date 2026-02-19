@@ -1,5 +1,7 @@
 import type { DefaultSeoProps } from "next-seo/pages";
 
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jsonviz.online";
+
 export const SEO: DefaultSeoProps = {
   title: "JSON Visualization | Online JSON Viewer - Transform your data into interactive graphs",
   description:
@@ -7,6 +9,7 @@ export const SEO: DefaultSeoProps = {
   themeColor: "#36393E",
   openGraph: {
     type: "website",
+    url: SITE_URL,
     images: [
       {
         url: "https://jsonviz.online/jsonvisualization.png",

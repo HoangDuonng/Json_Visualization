@@ -33,8 +33,7 @@ const theme = createTheme({
   fontSmoothing: false,
   respectReducedMotion: true,
   cursorType: "pointer",
-  fontFamily:
-    'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+  fontFamily: '"Playfair Display", serif',
   defaultGradient: {
     from: "#388cdb",
     to: "#0f037f",
