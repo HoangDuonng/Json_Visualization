@@ -6,7 +6,7 @@ import { getShortcutFromShortcutName } from "../../actions/shortcuts";
 import { probablySupportsClipboardBlob } from "../../clipboard";
 import { languages, setLanguage, t, useI18n } from "../../i18n";
 import { getShortcutKey } from "../../shortcut";
-import { ExternalLinkIcon, GithubIcon, youtubeIcon } from "../icons";
+import { ExternalLinkIcon, GithubIcon } from "../icons";
 import { Dialog } from "./Dialog";
 import "./HelpDialog.scss";
 
@@ -32,21 +32,12 @@ const Header = () => (
     </a>
     <a
       className="HelpDialog__btn"
-      href="https://github.com/jsondraw/jsondraw/issues"
+      href="https://github.com/HoangDuonng/Json_Visualization/issues"
       target="_blank"
       rel="noopener noreferrer"
     >
       <div className="HelpDialog__link-icon">{GithubIcon}</div>
       {t("helpDialog.github")}
-    </a>
-    <a
-      className="HelpDialog__btn"
-      href="https://youtube.com/@jsondraw"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <div className="HelpDialog__link-icon">{youtubeIcon}</div>
-      YouTube
     </a>
   </div>
 );

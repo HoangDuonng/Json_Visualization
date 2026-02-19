@@ -688,7 +688,7 @@
     }
   },
   "commandPalette": {
-    "title": "Command palette",
+    "title": "Bảng lệnh",
     "shortcuts": {
       "select": "Chọn",
       "confirm": "Xác nhận",
@@ -700,7 +700,7 @@
       "noMatch": "Không có lệnh phù hợp..."
     },
     "itemNotAvailable": "Lệnh không khả dụng...",
-    "shortcutHint": "Dùng {{shortcut}} để mở Command palette"
+    "shortcutHint": "Dùng {{shortcut}} để mở Bảng lệnh"
   },
   "keys": {
     "ctrl": "Ctrl",
