@@ -6,7 +6,7 @@ This document provides guidelines for AI coding agents working in the JSON Visua
 
 ## Project Overview
 
-JSON Visualization is a Next.js application for visualizing and manipulating JSON data. It uses React 19, TypeScript, Zustand for state management, styled-components for styling, and Mantine v8 for UI components.
+JSON Visualization is a Next.js 16 application for visualizing and manipulating JSON data. It uses React 19, TypeScript, Zustand for state management, styled-components for styling, and Mantine v8 for UI components.
 
 ## Build & Development Commands
 
@@ -39,7 +39,7 @@ pnpm analyze          # Analyze bundle size
 
 ### TypeScript
 
-- **Strict mode enabled**: All TypeScript strict checks are enforced
+- **Strict mode enabled**: TypeScript strict mode is on, but `noImplicitAny` is disabled in `tsconfig.json`
 - **Type imports**: Always use `import type` for type-only imports (enforced by ESLint)
 
   ```typescript
@@ -49,7 +49,7 @@ pnpm analyze          # Analyze bundle size
   import { MenuItemProps } from "@mantine/core";
   ```
 
-- **No implicit any**: Avoid `any` types when possible (though `@typescript-eslint/no-explicit-any` is off)
+- **No implicit any**: `noImplicitAny` is off, but avoid `any` types when possible (and `@typescript-eslint/no-explicit-any` is off)
 - **Type definitions**: Define interfaces for component props, store states, and function parameters
 
 ### Import Order
@@ -92,7 +92,7 @@ import { isIframe } from "../lib/utils/helpers";
 
 - **Components**: PascalCase (`Navbar`, `JSONCrackLogo`)
 - **Files**:
-  - ComponentsalCase (`Navbar.tsx`, `HeroSection.tsx`)
+  - ComponentCase (`Navbar.tsx`, `HeroSection.tsx`)
   - Utilities: camelCase (`helpers.ts`, `search.ts`)
   - Hooks: camelCase with `use` prefix (`useFocusNode.ts`, `useFile.ts`)
   - Stores: camelCase with `use` prefix (`useConfig.ts`, `useModal.ts`)
@@ -128,8 +128,11 @@ import { isIframe } from "../lib/utils/helpers";
 
 ### Font Usage
 
-- **Global font**: Playfair Display (serif) - Applied via `next/font/google` in `_app.tsx`
+- **Global font**: Playfair Display (serif) - Loaded in `src/pages/_document.tsx` and applied via `src/constants/globalStyle.ts` and Mantine theme in `src/pages/_app.tsx`
 - **Code/Monospace font**: Use `MONO_FONT_FAMILY` constant from `src/constants/globalStyle.ts`
+- **Editor font**: JetBrains Mono via `next/font/google` in `src/pages/editor.tsx`
+- **Jsondraw fonts**: Managed internally under `src/jsondraw/packages/jsondraw/fonts/`; do not override
+
   ```typescript
   import { MONO_FONT_FAMILY } from "src/constants/globalStyle";
 
@@ -141,6 +144,7 @@ import { isIframe } from "../lib/utils/helpers";
     }
   `;
   ```
+
 - **Rule**: All code-related content (code blocks, inline code, examples, syntax) MUST use `MONO_FONT_FAMILY`
 - **Important**: Always add `!important` to override global font styles and apply to all children elements with `* { font-family: ... !important; }`
 
@@ -187,12 +191,13 @@ src/
 ├── constants/       # Application constants
 ├── data/            # Static data files
 ├── assets/          # Images and static assets
-└── enums/           # Enumerations
+├── enums/           # Enumerations
+└── jsondraw/        # Embedded jsondraw packages
 ```
 
 ### Component Organization
 
-All reusable components follow this structure:
+Most reusable components follow this structure (UI primitives may be single-file):
 
 ```
 src/components/
@@ -207,8 +212,8 @@ src/components/
 
 ### Typography
 
-- **Global font**: Playfair Display (serif) - Applied via `next/font/google` in `_app.tsx`
-- **Code/Editor font**: JetBrains Mono (monospace) - Applied to editor pages and code blocks
+- **Global font**: Playfair Display (serif) - Loaded in `_document.tsx`, applied via GlobalStyle and Mantine theme
+- **Code/Editor font**: JetBrains Mono (monospace) - Applied to editor pages; code blocks use `MONO_FONT_FAMILY`
 
 ### Color Palette
 
