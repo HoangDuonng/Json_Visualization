@@ -31,6 +31,7 @@ import type {
   AppClassProperties,
 } from "../../types";
 import { useEditorInterface, useStylesPanelMode } from "../App";
+import { CommandPalette } from "../CommandPalette/CommandPalette";
 import { OverwriteConfirmDialog } from "../OverwriteConfirm/OverwriteConfirm";
 import { isSidebarDockedAtom } from "../Sidebar/Sidebar";
 import { Stats } from "../Stats";
@@ -536,6 +537,7 @@ const LayerUI = ({
           }}
         />
       )}
+      <CommandPalette />
       <ActiveConfirmDialog />
       {appState.openDialog?.name === "elementLinkSelector" && (
         <ElementLinkDialog
