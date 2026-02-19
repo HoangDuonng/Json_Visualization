@@ -2,6 +2,49 @@
 
 .jsondraw {
   .HelpDialog {
+    .Dialog__title .Dialog__titleContent {
+      display: block;
+      width: 100%;
+    }
+
+    &__title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    &__language {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary-color);
+      margin: 0;
+    }
+
+    &__language-label {
+      white-space: nowrap;
+    }
+
+    &__language-select {
+      appearance: none;
+      background-color: var(--color-surface-mid);
+      border: 1px solid var(--dialog-border-color);
+      border-radius: var(--border-radius-md);
+      color: var(--text-primary-color);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      cursor: pointer;
+      font-family: inherit;
+
+      @at-root .jsondraw.theme--dark#{&} {
+        background-color: var(--color-surface-high);
+      }
+    }
+
     .Modal__content {
       max-width: 960px;
     }

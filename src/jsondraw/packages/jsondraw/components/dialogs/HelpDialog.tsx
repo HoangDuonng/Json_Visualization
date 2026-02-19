@@ -4,7 +4,7 @@ import { isDarwin, isFirefox, isWindows } from "@jsondraw/common";
 import { KEYS } from "@jsondraw/common";
 import { getShortcutFromShortcutName } from "../../actions/shortcuts";
 import { probablySupportsClipboardBlob } from "../../clipboard";
-import { t } from "../../i18n";
+import { languages, setLanguage, t, useI18n } from "../../i18n";
 import { getShortcutKey } from "../../shortcut";
 import { ExternalLinkIcon, GithubIcon, youtubeIcon } from "../icons";
 import { Dialog } from "./Dialog";
@@ -116,15 +116,47 @@ const ShortcutKey = (props: { children: React.ReactNode }) => (
 );
 
 export const HelpDialog = ({ onClose }: { onClose?: () => void }) => {
+  const { langCode } = useI18n();
   const handleClose = React.useCallback(() => {
     if (onClose) {
       onClose();
     }
   }, [onClose]);
 
+  const handleLanguageChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextLang = languages.find(lang => lang.code === event.target.value);
+
+    if (!nextLang || nextLang.code === langCode) {
+      return;
+    }
+
+    await setLanguage(nextLang);
+  };
+
+  const title = (
+    <div className="HelpDialog__title-row">
+      <span>{t("helpDialog.title")}</span>
+      <label className="HelpDialog__language">
+        <span className="HelpDialog__language-label">{t("labels.language")}</span>
+        <select
+          className="HelpDialog__language-select"
+          value={langCode}
+          onChange={handleLanguageChange}
+          aria-label={t("labels.language")}
+        >
+          {languages.map(language => (
+            <option key={language.code} value={language.code}>
+              {language.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+
   return (
     <>
-      <Dialog onCloseRequest={handleClose} title={t("helpDialog.title")} className={"HelpDialog"}>
+      <Dialog onCloseRequest={handleClose} title={title} className={"HelpDialog"}>
         <Header />
         <Section title={t("helpDialog.shortcuts")}>
           <ShortcutIsland className="HelpDialog__island--tools" caption={t("helpDialog.tools")}>

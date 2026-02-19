@@ -1,12 +1,10 @@
-import { isDevEnv } from "@jsondraw/common";
-
 import type { NestedKeyOf } from "@jsondraw/common/utility-types";
-
 import { useAtomValue, editorJotaiStore, atom } from "./editor-jotai";
 import fallbackLangData from "./locales/en.json";
 import percentages from "./locales/percentages.json";
 
 const COMPLETION_THRESHOLD = 85;
+const EXTRA_LANGUAGE_CODES = new Set(["vi-VN"]);
 
 export interface Language {
   code: string;
@@ -66,25 +64,12 @@ export const languages: Language[] = [
     { code: "vi-VN", label: "Tiếng Việt" },
     { code: "mr-IN", label: "मराठी" },
   ]
-    .filter(
-      (lang) =>
-        (percentages as Record<string, number>)[lang.code] >=
-        COMPLETION_THRESHOLD,
-    )
+    .filter(lang => {
+      const completion = (percentages as Record<string, number>)[lang.code] ?? 0;
+      return completion >= COMPLETION_THRESHOLD || EXTRA_LANGUAGE_CODES.has(lang.code);
+    })
     .sort((left, right) => (left.label > right.label ? 1 : -1)),
 ];
-
-const TEST_LANG_CODE = "__test__";
-if (isDevEnv()) {
-  languages.unshift(
-    { code: TEST_LANG_CODE, label: "test language" },
-    {
-      code: `${TEST_LANG_CODE}.rtl`,
-      label: "\u{202a}test language (rtl)\u{202c}",
-      rtl: true,
-    },
-  );
-}
 
 let currentLang: Language = defaultLang;
 let currentLangData = {};
@@ -94,15 +79,11 @@ export const setLanguage = async (lang: Language) => {
   document.documentElement.dir = currentLang.rtl ? "rtl" : "ltr";
   document.documentElement.lang = currentLang.code;
 
-  if (lang.code.startsWith(TEST_LANG_CODE)) {
-    currentLangData = {};
-  } else {
-    try {
-      currentLangData = await import(`./locales/${currentLang.code}.json`);
-    } catch (error: any) {
-      console.error(`Failed to load language ${lang.code}:`, error.message);
-      currentLangData = fallbackLangData;
-    }
+  try {
+    currentLangData = await import(`./locales/${currentLang.code}.json`);
+  } catch (error: any) {
+    console.error(`Failed to load language ${lang.code}:`, error.message);
+    currentLangData = fallbackLangData;
   }
 
   editorJotaiStore.set(editorLangCodeAtom, lang.code);
@@ -127,15 +108,8 @@ const findPartsForData = (data: any, parts: string[]) => {
 export const t = (
   path: NestedKeyOf<typeof fallbackLangData>,
   replacement?: { [key: string]: string | number } | null,
-  fallback?: string,
+  fallback?: string
 ) => {
-  if (currentLang.code.startsWith(TEST_LANG_CODE)) {
-    const name = replacement
-      ? `${path}(${JSON.stringify(replacement).slice(1, -1)})`
-      : path;
-    return `\u{202a}[[${name}]]\u{202c}`;
-  }
-
   const parts = path.split(".");
   let translation =
     findPartsForData(currentLangData, parts) ||
