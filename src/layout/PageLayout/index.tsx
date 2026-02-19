@@ -24,6 +24,11 @@ const ContentWrapper = styled.div`
   flex: 1;
   position: relative;
   z-index: 1;
+  padding-bottom: 80px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 56px;
+  }
 `;
 
 const PageLayout = ({ children, stars = 0 }: React.PropsWithChildren<{ stars?: number }>) => {

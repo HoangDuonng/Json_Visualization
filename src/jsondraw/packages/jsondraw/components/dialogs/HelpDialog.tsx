@@ -12,27 +12,17 @@ import "./HelpDialog.scss";
 
 const Header = () => (
   <div className="HelpDialog__header">
-    <a
-      className="HelpDialog__btn"
-      href="https://docs.jsonviz.online"
-      target="_blank"
-      rel="noopener"
-    >
+    <a className="HelpDialog__btn" href="/coming-soon" target="_blank" rel="noopener">
       <div className="HelpDialog__link-icon">{ExternalLinkIcon}</div>
       {t("helpDialog.documentation")}
     </a>
-    <a
-      className="HelpDialog__btn"
-      href="https://plus.jsonviz.online/blog"
-      target="_blank"
-      rel="noopener"
-    >
+    <a className="HelpDialog__btn" href="/coming-soon" target="_blank" rel="noopener">
       <div className="HelpDialog__link-icon">{ExternalLinkIcon}</div>
       {t("helpDialog.blog")}
     </a>
     <a
       className="HelpDialog__btn"
-      href="https://github.com/HoangDuonng/Json_Visualization/issues"
+      href="https://github.com/HoangDuonng/Json_Visualization/issues/new/choose"
       target="_blank"
       rel="noopener noreferrer"
     >

@@ -1,14 +1,8 @@
 import React from "react";
-import { Oxygen } from "next/font/google";
 import Link from "next/link";
 import { Stack, Flex } from "@mantine/core";
 import styled from "styled-components";
 import { ExploreButton } from "../../components/ExploreButton";
-
-const oxygen = Oxygen({
-  subsets: ["latin-ext"],
-  weight: ["700"],
-});
 
 const StyledHeroSection = styled.main`
   position: relative;
@@ -45,7 +39,6 @@ const StyledHeroTitle = styled.h1`
   width: fit-content;
   line-height: 1.15;
   max-width: 30rem;
-  font-family: ${oxygen.style.fontFamily};
 
   @media only screen and (min-width: 576px) {
     font-size: 3.4rem;
