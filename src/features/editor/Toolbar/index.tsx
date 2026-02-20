@@ -5,7 +5,7 @@ import { Flex, Group } from "@mantine/core";
 import { useSessionStorage } from "@mantine/hooks";
 import styled from "styled-components";
 import toast from "react-hot-toast";
-import { AiOutlineFullscreen, AiOutlineLayout } from "react-icons/ai";
+import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineLayout } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa6";
 import { ViewMode } from "../../../enums/viewMode.enum";
 import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
@@ -48,10 +48,21 @@ function fullscreenBrowser() {
 export const Toolbar = () => {
   const router = useRouter();
   const isDrawView = router.pathname === "/draw";
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
   const [, setViewMode] = useSessionStorage({
     key: "viewMode",
     defaultValue: ViewMode.Graph,
   });
+
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    handleFullscreenChange();
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   const handleEditorClick = () => {
     setViewMode(ViewMode.Graph);
@@ -94,8 +105,11 @@ export const Toolbar = () => {
             <FaGithub size="20" />
           </StyledToolElement>
         </Link>
-        <StyledToolElement title="Fullscreen" onClick={fullscreenBrowser}>
-          <AiOutlineFullscreen size="20" />
+        <StyledToolElement
+          title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          onClick={fullscreenBrowser}
+        >
+          {isFullscreen ? <AiOutlineFullscreenExit size="20" /> : <AiOutlineFullscreen size="20" />}
         </StyledToolElement>
       </Group>
     </StyledTools>
