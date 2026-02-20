@@ -1,5 +1,5 @@
 import { ref, set, get } from "firebase/database";
-import { db } from "../../../../lib/db";
+import { getDb } from "../../../../lib/db";
 
 /**
  * Convert Uint8Array to base64 string (without spread operator for TS compat)
@@ -116,7 +116,7 @@ export const exportToBackend = async (
   const base64Data = uint8ToBase64(encrypted);
 
   // Store in database
-  const dbRef = ref(db, `shared/${id}`);
+  const dbRef = ref(getDb(), `shared/${id}`);
   await set(dbRef, {
     data: base64Data,
     createdAt: Date.now(),
@@ -134,7 +134,7 @@ export const importFromBackend = async (
   encryptionKey: string
 ): Promise<Uint8Array | null> => {
   try {
-    const dbRef = ref(db, `shared/${id}`);
+    const dbRef = ref(getDb(), `shared/${id}`);
     const snapshot = await get(dbRef);
 
     if (!snapshot.exists()) {
