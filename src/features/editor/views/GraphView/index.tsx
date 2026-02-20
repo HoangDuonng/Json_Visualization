@@ -140,11 +140,13 @@ const GraphCanvas = ({ isWidget }: GraphProps) => {
 export const GraphView = ({ isWidget = false }: GraphProps) => {
   const setViewPort = useGraph(state => state.setViewPort);
   const viewPort = useGraph(state => state.viewPort);
+  const centerView = useGraph(state => state.centerView);
   const aboveSupportedLimit = useGraph(state => state.aboveSupportedLimit);
   const loading = useGraph(state => state.loading);
   const gesturesEnabled = useConfig(state => state.gesturesEnabled);
   const rulersEnabled = useConfig(state => state.rulersEnabled);
   const [debouncedLoading] = useDebouncedValue(loading, 300);
+  const didInitialCenter = React.useRef(false);
 
   const callback = React.useCallback(() => {
     const canvas = document.querySelector(".jsoncrack-canvas") as HTMLDivElement | null;
@@ -166,6 +168,16 @@ export const GraphView = ({ isWidget = false }: GraphProps) => {
   const debouncedOnZoomChangeHandler = debounce(() => {
     setViewPort(viewPort!);
   }, 300);
+
+  React.useEffect(() => {
+    if (didInitialCenter.current || loading || !viewPort) return;
+    didInitialCenter.current = true;
+    const timer = window.setTimeout(() => {
+      centerView();
+    }, 200);
+
+    return () => window.clearTimeout(timer);
+  }, [centerView, loading, viewPort]);
 
   return (
     <Box pos="relative" h="100%" w="100%">

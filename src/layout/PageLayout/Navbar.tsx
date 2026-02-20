@@ -1,9 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { Button } from "@mantine/core";
 import styled from "styled-components";
-import { EditorButton } from "../../components/EditorButton";
 import { GlassSurface } from "../../components/GlassSurface";
 import { JSONCrackLogo } from "../JsonCrackLogo";
 
@@ -49,7 +47,6 @@ const Right = styled.div`
   white-space: nowrap;
   position: relative;
   z-index: 1;
-  padding-top: 10px;
 
   button {
     color: #1a1a1a !important;
@@ -79,8 +76,6 @@ const StyledButton = styled(Button)<any>`
 `;
 
 export const Navbar = () => {
-  const router = useRouter();
-
   return (
     <StyledNavbarWrapper className="navbar">
       <GlassSurface
@@ -130,7 +125,28 @@ export const Navbar = () => {
             </StyledButton>
           </Center>
           <Right>
-            <EditorButton onClick={() => router.push("/editor")} />
+            <StyledButton
+              component={Link}
+              prefetch={false}
+              href="/editor"
+              variant="subtle"
+              color="black"
+              size="md"
+              radius="md"
+            >
+              Editor
+            </StyledButton>
+            <StyledButton
+              component={Link}
+              prefetch={false}
+              href="/draw"
+              variant="subtle"
+              color="black"
+              size="md"
+              radius="md"
+            >
+              Draw
+            </StyledButton>
           </Right>
         </StyledNavbar>
       </GlassSurface>

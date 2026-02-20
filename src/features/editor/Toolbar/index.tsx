@@ -1,10 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Flex, Group } from "@mantine/core";
+import { useSessionStorage } from "@mantine/hooks";
 import styled from "styled-components";
 import toast from "react-hot-toast";
 import { AiOutlineFullscreen, AiOutlineLayout } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa6";
+import { ViewMode } from "../../../enums/viewMode.enum";
 import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
 import useGraph from "../views/GraphView/stores/useGraph";
 import { FileMenu } from "./FileMenu";
@@ -43,6 +46,23 @@ function fullscreenBrowser() {
 }
 
 export const Toolbar = () => {
+  const router = useRouter();
+  const isDrawView = router.pathname === "/draw";
+  const [, setViewMode] = useSessionStorage({
+    key: "viewMode",
+    defaultValue: ViewMode.Graph,
+  });
+
+  const handleEditorClick = () => {
+    setViewMode(ViewMode.Graph);
+    router.push("/editor");
+  };
+
+  const handleDrawClick = () => {
+    setViewMode(ViewMode.JsonDraw);
+    router.push("/draw");
+  };
+
   return (
     <StyledTools>
       <Group gap="xs" justify="left" w="100%" style={{ flexWrap: "nowrap" }}>
@@ -54,6 +74,12 @@ export const Toolbar = () => {
         <FileMenu />
         <ViewMenu />
         <ToolsMenu />
+        <StyledToolElement title="Editor" $highlight={!isDrawView} onClick={handleEditorClick}>
+          Editor
+        </StyledToolElement>
+        <StyledToolElement title="Draw" $highlight={isDrawView} onClick={handleDrawClick}>
+          Draw
+        </StyledToolElement>
         <StyledToolElement
           title="Toggle Editor"
           onClick={() => useGraph.getState().toggleFullscreen(!useGraph.getState().fullscreen)}

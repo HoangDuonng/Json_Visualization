@@ -430,12 +430,29 @@ const StyledEditorButton = styled.div`
 
 interface EditorButtonProps {
   onClick: () => void;
+  label?: string;
+  ariaLabel?: string;
 }
 
-export const EditorButton: React.FC<EditorButtonProps> = ({ onClick }) => {
+const renderLabel = (label: string) =>
+  label.split("").map((char, index) => (
+    <span
+      key={`${label}-${index}`}
+      data-label={char}
+      style={{ "--i": index + 1 } as React.CSSProperties}
+    >
+      {char}
+    </span>
+  ));
+
+export const EditorButton: React.FC<EditorButtonProps> = ({
+  onClick,
+  label = "Editor",
+  ariaLabel,
+}) => {
   return (
     <StyledEditorButton>
-      <button className="button" type="button" onClick={onClick}>
+      <button className="button" type="button" onClick={onClick} aria-label={ariaLabel ?? label}>
         <div className="bg" />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -531,49 +548,11 @@ export const EditorButton: React.FC<EditorButtonProps> = ({ onClick }) => {
           </svg>
           <div className="outline" />
           <div className="content">
-            <span className="char state-1">
-              <span data-label="E" style={{ "--i": 1 } as React.CSSProperties}>
-                E
-              </span>
-              <span data-label="d" style={{ "--i": 2 } as React.CSSProperties}>
-                d
-              </span>
-              <span data-label="i" style={{ "--i": 3 } as React.CSSProperties}>
-                i
-              </span>
-              <span data-label="t" style={{ "--i": 4 } as React.CSSProperties}>
-                t
-              </span>
-              <span data-label="o" style={{ "--i": 5 } as React.CSSProperties}>
-                o
-              </span>
-              <span data-label="r" style={{ "--i": 6 } as React.CSSProperties}>
-                r
-              </span>
-            </span>
+            <span className="char state-1">{renderLabel(label)}</span>
             <div className="icon">
               <div />
             </div>
-            <span className="char state-2">
-              <span data-label="E" style={{ "--i": 1 } as React.CSSProperties}>
-                E
-              </span>
-              <span data-label="d" style={{ "--i": 2 } as React.CSSProperties}>
-                d
-              </span>
-              <span data-label="i" style={{ "--i": 3 } as React.CSSProperties}>
-                i
-              </span>
-              <span data-label="t" style={{ "--i": 4 } as React.CSSProperties}>
-                t
-              </span>
-              <span data-label="o" style={{ "--i": 5 } as React.CSSProperties}>
-                o
-              </span>
-              <span data-label="r" style={{ "--i": 6 } as React.CSSProperties}>
-                r
-              </span>
-            </span>
+            <span className="char state-2">{renderLabel(label)}</span>
           </div>
         </div>
       </button>

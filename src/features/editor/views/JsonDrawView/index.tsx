@@ -6,10 +6,12 @@ import useConfig from "../../../../store/useConfig";
 import useGraph from "../GraphView/stores/useGraph";
 import { jsonToJsonDrawElements } from "./jsonToJsonDraw";
 
-const StyledJsonDrawWrapper = styled.div`
+const StyledJsonDrawWrapper = styled.div<{ $ready: boolean }>`
   width: 100%;
   height: 100%;
   position: relative;
+  opacity: ${({ $ready }) => ($ready ? 1 : 0)};
+  transition: opacity 0.2s ease;
 
   .jsondraw-wrapper {
     width: 100%;
@@ -25,6 +27,7 @@ export const JsonDrawView = () => {
   const [JsonDrawModule, setJsonDrawModule] = React.useState<{
     JsonDraw: React.ComponentType<any>;
   } | null>(null);
+  const [drawReady, setDrawReady] = React.useState(false);
 
   const jsonDrawAPIRef = React.useRef<any>(null);
   const hasInitialized = React.useRef(false);
@@ -55,6 +58,16 @@ export const JsonDrawView = () => {
   React.useEffect(() => {
     import("../../../../jsondraw").then(mod => {
       setJsonDrawModule({ JsonDraw: mod.JsonDraw });
+      setDrawReady(false);
+    });
+  }, []);
+
+  const scrollToContent = React.useCallback((api: any, delay = 120) => {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
+        setDrawReady(true);
+      }, delay);
     });
   }, []);
 
@@ -66,14 +79,8 @@ export const JsonDrawView = () => {
 
     const elements = jsonToJsonDrawElements(nodes, edges);
     api.updateScene({ elements });
-
-    // Scroll to content after a frame
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
-      }, 50);
-    });
-  }, [nodes, edges]);
+    scrollToContent(api, 80);
+  }, [nodes, edges, scrollToContent]);
 
   const handleJsonDrawAPI = React.useCallback(
     (api: any) => {
@@ -85,11 +92,10 @@ export const JsonDrawView = () => {
         try {
           const { elements, appState } = JSON.parse(saved);
           hasUserDrawing.current = true;
+          setDrawReady(false);
           requestAnimationFrame(() => {
             api.updateScene({ elements, appState });
-            setTimeout(() => {
-              api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
-            }, 100);
+            scrollToContent(api, 120);
           });
           return;
         } catch (error) {
@@ -101,16 +107,15 @@ export const JsonDrawView = () => {
       if (nodes.length > 0 && !hasInitialized.current) {
         hasInitialized.current = true;
         const elements = jsonToJsonDrawElements(nodes, edges);
+        setDrawReady(false);
 
         requestAnimationFrame(() => {
           api.updateScene({ elements });
-          setTimeout(() => {
-            api.scrollToContent(undefined, { fitToViewport: true, viewportZoomFactor: 0.8 });
-          }, 300);
+          scrollToContent(api, 200);
         });
       }
     },
-    [nodes, edges]
+    [nodes, edges, scrollToContent]
   );
 
   const handleClearDrawing = React.useCallback(() => {
@@ -122,17 +127,12 @@ export const JsonDrawView = () => {
 
     const elements = jsonToJsonDrawElements(nodes, edges);
     jsonDrawAPIRef.current.updateScene({ elements });
-
-    setTimeout(() => {
-      jsonDrawAPIRef.current.scrollToContent(undefined, {
-        fitToViewport: true,
-        viewportZoomFactor: 0.8,
-      });
-    }, 100);
+    setDrawReady(false);
+    scrollToContent(jsonDrawAPIRef.current, 120);
 
     setShowClearModal(false);
     toast.success("Drawing cleared! Loaded JSON visualization.");
-  }, [nodes, edges]);
+  }, [nodes, edges, scrollToContent]);
 
   if (!JsonDrawModule) {
     return (
@@ -146,6 +146,7 @@ export const JsonDrawView = () => {
 
   return (
     <Box pos="relative" h="100%" w="100%">
+      <LoadingOverlay visible={!drawReady} />
       <Modal
         opened={showClearModal}
         onClose={() => setShowClearModal(false)}
@@ -172,7 +173,7 @@ export const JsonDrawView = () => {
         </Stack>
       </Modal>
 
-      <StyledJsonDrawWrapper>
+      <StyledJsonDrawWrapper $ready={drawReady}>
         <div className="jsondraw-wrapper">
           <JsonDraw
             jsondrawAPI={handleJsonDrawAPI}
