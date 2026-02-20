@@ -22,11 +22,10 @@
 # debug
 npm-debug.log*
 
-# local env files
+# local env files (only .env.example is tracked)
+.env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
 # vercel
 .vercel
@@ -39,7 +38,3 @@ next-env.d.ts
 **/public/workbox-*.js
 **/public/sw.js
 **/public/fallback-*.js
-
-# ENV
-.env
-.env.development

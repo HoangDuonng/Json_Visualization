@@ -14,8 +14,14 @@ import { toast } from "react-hot-toast";
 import { FiCopy, FiCheck, FiLock, FiX } from "react-icons/fi";
 import useConfig from "../../../../store/useConfig";
 import useGraph from "../GraphView/stores/useGraph";
+import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
 import { jsonToJsonDrawElements } from "./jsonToJsonDraw";
-import { encodeDataToUrlHash, decodeDataFromUrlHash } from "./shareLinkUtils";
+import {
+  createShareLink,
+  loadFromShareLink,
+  isBackendShareLink,
+  decodeDataFromUrlHash,
+} from "./shareLinkUtils";
 
 const StyledJsonDrawWrapper = styled.div<{ $ready: boolean }>`
   width: 100%;
@@ -44,20 +50,21 @@ export const JsonDrawView = () => {
   const hasInitialized = React.useRef(false);
   const hasUserDrawing = React.useRef(false);
   const [showClearModal, setShowClearModal] = React.useState(false);
-  const [hasImage, setHasImage] = React.useState(false);
 
   // Share Modal states
   const [showShareModal, setShowShareModal] = React.useState(false);
   const [shareUrl, setShareUrl] = React.useState("");
   const [justCopied, setJustCopied] = React.useState(false);
+  const [isSharing, setIsSharing] = React.useState(false);
   const copyTimerRef = React.useRef<number | null>(null);
+
+  // Load from link dialog states
+  const [showLoadFromLinkDialog, setShowLoadFromLinkDialog] = React.useState(false);
+  const pendingShareDataRef = React.useRef<{ elements: any[]; appState: any } | null>(null);
 
   // Auto-save to localStorage
   const handleChange = React.useCallback((elements: any, appState: any, files: any) => {
     hasUserDrawing.current = true;
-
-    const imgExists = elements.some((el: any) => el.type === "image" && !el.isDeleted);
-    setHasImage(prev => (prev !== imgExists ? imgExists : prev));
 
     try {
       localStorage.setItem(
@@ -72,7 +79,7 @@ export const JsonDrawView = () => {
   // Set font asset path before loading JsonDraw
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      window.JSONDRAW_ASSET_PATH = "/jsondraw-fonts/"; // Keep asset path for now as fonts are there
+      window.JSONDRAW_ASSET_PATH = "/jsondraw-fonts/";
     }
   }, []);
 
@@ -93,6 +100,60 @@ export const JsonDrawView = () => {
     });
   }, []);
 
+  // Apply shared data to the scene (called after user confirms or if canvas is empty)
+  const applySharedData = React.useCallback(
+    (data: { elements: any[]; appState: any }) => {
+      const api = jsonDrawAPIRef.current;
+      if (!api) return;
+
+      hasUserDrawing.current = true;
+      hasInitialized.current = true;
+      setDrawReady(false);
+
+      requestAnimationFrame(() => {
+        api.updateScene({ elements: data.elements, appState: data.appState });
+        scrollToContent(api, 120);
+      });
+
+      // Clean up the URL hash without reloading
+      window.history.replaceState({}, "", window.location.pathname);
+    },
+    [scrollToContent]
+  );
+
+  // Handle replace action from LoadFromLinkDialog
+  const handleReplaceContent = React.useCallback(() => {
+    const data = pendingShareDataRef.current;
+    if (!data) return;
+
+    applySharedData(data);
+    pendingShareDataRef.current = null;
+    setShowLoadFromLinkDialog(false);
+    toast.success("Drawing loaded from shared link!");
+  }, [applySharedData]);
+
+  // Handle save to disk
+  const handleSaveToDisk = React.useCallback(() => {
+    const api = jsonDrawAPIRef.current;
+    if (!api) return;
+
+    try {
+      const elements = api.getSceneElementsIncludingDeleted();
+      const appState = api.getAppState();
+      const data = JSON.stringify({ elements, appState }, null, 2);
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `jsondraw-backup-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Drawing saved to disk!");
+    } catch (error) {
+      toast.error("Failed to save drawing.");
+    }
+  }, []);
+
   // Update scene elements when nodes/edges change AFTER API is ready
   // BUT only if user hasn't drawn anything yet
   React.useEffect(() => {
@@ -108,21 +169,73 @@ export const JsonDrawView = () => {
     (api: any) => {
       jsonDrawAPIRef.current = api;
 
-      // Check URL for share link first
-      if (typeof window !== "undefined" && window.location.hash.startsWith("#data=")) {
-        const decoded = decodeDataFromUrlHash(window.location.hash);
-        if (decoded && decoded.elements) {
-          hasUserDrawing.current = true;
-          hasInitialized.current = true;
-          setDrawReady(false);
-          requestAnimationFrame(() => {
-            api.updateScene({ elements: decoded.elements, appState: decoded.appState });
-            scrollToContent(api, 120);
+      if (typeof window === "undefined") return;
+
+      const hash = window.location.hash;
+
+      // ── Backend share link: #json=<id>,<key> ────────────
+      if (isBackendShareLink(hash)) {
+        setDrawReady(false);
+        loadFromShareLink(hash)
+          .then(data => {
+            if (!data || !data.elements) {
+              toast.error("Could not load shared drawing. The link may be invalid or expired.");
+              // Fall through to normal init
+              initFromLocalOrJson(api);
+              return;
+            }
+
+            // Check if there's existing content
+            const saved = localStorage.getItem("jsondraw-autosave");
+            const hasExistingContent = saved && JSON.parse(saved).elements?.length > 0;
+
+            if (hasExistingContent) {
+              // Show confirmation dialog
+              pendingShareDataRef.current = data;
+              setShowLoadFromLinkDialog(true);
+              // Still show current drawing while dialog is open
+              initFromLocalOrJson(api);
+            } else {
+              // No existing content → load directly
+              applySharedData(data);
+            }
+          })
+          .catch(err => {
+            console.error("Failed to load share link:", err);
+            toast.error("Failed to load shared drawing.");
+            initFromLocalOrJson(api);
           });
+        return;
+      }
+
+      // ── Legacy share link: #data=... (backward compatibility) ────────
+      if (hash.startsWith("#data=")) {
+        const decoded = decodeDataFromUrlHash(hash);
+        if (decoded && decoded.elements) {
+          // Check if there's existing content
+          const saved = localStorage.getItem("jsondraw-autosave");
+          const hasExistingContent = saved && JSON.parse(saved).elements?.length > 0;
+
+          if (hasExistingContent) {
+            pendingShareDataRef.current = decoded;
+            setShowLoadFromLinkDialog(true);
+            initFromLocalOrJson(api);
+          } else {
+            applySharedData(decoded);
+          }
           return;
         }
       }
 
+      // ── Normal initialization ────────────
+      initFromLocalOrJson(api);
+    },
+    [nodes, edges, scrollToContent, applySharedData]
+  );
+
+  // Helper: Initialize from localStorage or JSON data
+  const initFromLocalOrJson = React.useCallback(
+    (api: any) => {
       // Try to restore from localStorage first
       const saved = localStorage.getItem("jsondraw-autosave");
       if (saved) {
@@ -182,25 +295,23 @@ export const JsonDrawView = () => {
       .catch(() => toast.error("Failed to copy link."));
   }, [shareUrl]);
 
-  const handleShareClick = React.useCallback(() => {
+  const handleShareClick = React.useCallback(async () => {
     const api = jsonDrawAPIRef.current;
     if (!api) return;
 
-    const elements = api.getSceneElementsIncludingDeleted();
-    const appState = api.getAppState();
+    setIsSharing(true);
+    try {
+      const elements = api.getSceneElementsIncludingDeleted();
+      const appState = api.getAppState();
 
-    // Create compressed URL hash
-    const hash = encodeDataToUrlHash(elements, appState);
-    const url = `${window.location.origin}${window.location.pathname}${hash}`;
-
-    setShareUrl(url);
-    setShowShareModal(true);
-
-    // Warn if length is over 8000
-    if (url.length > 8000) {
-      toast.error("Shareable link is too large! Trình duyệt có thể sẽ không mở được đầy đủ.", {
-        duration: 5000,
-      });
+      const url = await createShareLink(elements, appState);
+      setShareUrl(url);
+      setShowShareModal(true);
+    } catch (error: any) {
+      console.error("Share failed:", error);
+      toast.error("Failed to create share link. Please try again.");
+    } finally {
+      setIsSharing(false);
     }
   }, []);
 
@@ -217,6 +328,8 @@ export const JsonDrawView = () => {
   return (
     <Box pos="relative" h="100%" w="100%">
       <LoadingOverlay visible={!drawReady} />
+
+      {/* Clear Drawing Modal */}
       <Modal
         opened={showClearModal}
         onClose={() => setShowClearModal(false)}
@@ -243,6 +356,7 @@ export const JsonDrawView = () => {
         </Stack>
       </Modal>
 
+      {/* Share Link Modal */}
       <Modal
         opened={showShareModal}
         onClose={() => setShowShareModal(false)}
@@ -314,11 +428,25 @@ export const JsonDrawView = () => {
               c="dimmed"
               style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
-              <FiLock size={16} /> Dữ liệu được nén và bảo mật trong URL
+              <FiLock size={16} /> Dữ liệu được mã hóa đầu-cuối. Chỉ người có link mới xem được.
             </Text>
           </Box>
         </Stack>
       </Modal>
+
+      {/* Load from Link Confirmation Dialog */}
+      <LoadFromLinkDialog
+        opened={showLoadFromLinkDialog}
+        darkMode={darkmodeEnabled}
+        onReplace={handleReplaceContent}
+        onClose={() => {
+          setShowLoadFromLinkDialog(false);
+          pendingShareDataRef.current = null;
+          // Clean URL
+          window.history.replaceState({}, "", window.location.pathname);
+        }}
+        onSaveToDisk={handleSaveToDisk}
+      />
 
       <StyledJsonDrawWrapper $ready={drawReady}>
         <div className="jsondraw-wrapper">
@@ -351,13 +479,9 @@ export const JsonDrawView = () => {
                 <Button
                   size="sm"
                   color="violet"
-                  disabled={hasImage}
+                  loading={isSharing}
                   onClick={handleShareClick}
-                  title={
-                    hasImage
-                      ? "Can't share locally when an image is present due to URL size limits."
-                      : "Tạo link chia sẻ miễn phí qua URL"
-                  }
+                  title="Tạo link chia sẻ miễn phí (mã hóa đầu-cuối)"
                 >
                   Share View
                 </Button>
