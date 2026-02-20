@@ -25,10 +25,12 @@ export const encodeDataToUrlHash = (elements: any[], appState: any): string => {
   }
 
   // Base64 encode
-  const base64 = typeof window !== "undefined" ? window.btoa(binaryString) : "";
+  let base64 = typeof window !== "undefined" ? window.btoa(binaryString) : "";
 
-  // Make base64 url-safe if needed, but since it's in the hash, standard btoa is mostly fine.
-  return `#data=${encodeURIComponent(base64)}`;
+  // Make base64 url-safe by replacing + with -, / with _, and removing trailing =
+  base64 = base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  return `#data=${base64}`;
 };
 
 /**
@@ -36,7 +38,22 @@ export const encodeDataToUrlHash = (elements: any[], appState: any): string => {
  */
 export const decodeDataFromUrlHash = (hash: string) => {
   try {
-    const base64 = decodeURIComponent(hash.replace("#data=", ""));
+    let base64 = hash.replace("#data=", "");
+
+    // Backward compatibility: try to decode legacy encodeURIComponent strings
+    try {
+      base64 = decodeURIComponent(base64);
+    } catch (e) {
+      // Ignore
+    }
+
+    // Convert from url-safe base64 to standard base64
+    base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+    // Restore padding if necessary
+    while (base64.length % 4) {
+      base64 += "=";
+    }
+
     const binaryString = window.atob(base64);
 
     const bytes = new Uint8Array(binaryString.length);
