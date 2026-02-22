@@ -13,6 +13,10 @@ import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { FiCopy, FiCheck, FiLock, FiX } from "react-icons/fi";
 import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
+import {
+  restoreAppState,
+  restoreElements,
+} from "../../../../jsondraw/packages/jsondraw/data/restore";
 import useConfig from "../../../../store/useConfig";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
@@ -113,8 +117,14 @@ export const JsonDrawView = () => {
       hasInitialized.current = true;
       setDrawReady(false);
 
+      const restoredElements = restoreElements(data.elements, null);
+      const restoredAppState = {
+        ...restoreAppState(data.appState, api.getAppState()),
+        isLoading: false,
+      };
+
       requestAnimationFrame(() => {
-        api.updateScene({ elements: data.elements, appState: data.appState });
+        api.updateScene({ elements: restoredElements, appState: restoredAppState });
         scrollToContent(api, 120);
       });
 
@@ -160,10 +170,15 @@ export const JsonDrawView = () => {
       if (saved) {
         try {
           const { elements, appState } = JSON.parse(saved);
+          const restoredElements = restoreElements(elements, null);
+          const restoredAppState = {
+            ...restoreAppState(appState, api.getAppState()),
+            isLoading: false,
+          };
           hasUserDrawing.current = true;
           setDrawReady(false);
           requestAnimationFrame(() => {
-            api.updateScene({ elements, appState });
+            api.updateScene({ elements: restoredElements, appState: restoredAppState });
             scrollToContent(api, 120);
           });
           return;
@@ -175,11 +190,11 @@ export const JsonDrawView = () => {
       // Set initial elements from JSON only if no saved drawing
       if (nodes.length > 0 && !hasInitialized.current) {
         hasInitialized.current = true;
-        const elements = jsonToJsonDrawElements(nodes, edges);
+        const elements = restoreElements(jsonToJsonDrawElements(nodes, edges) as any, null);
         setDrawReady(false);
 
         requestAnimationFrame(() => {
-          api.updateScene({ elements });
+          api.updateScene({ elements, appState: { isLoading: false } });
           scrollToContent(api, 200);
         });
       }
