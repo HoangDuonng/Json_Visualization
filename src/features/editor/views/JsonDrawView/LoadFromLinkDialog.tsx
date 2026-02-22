@@ -6,7 +6,7 @@ import { FiAlertTriangle, FiDownload } from "react-icons/fi";
 const WarningBanner = styled.div<{ $dark: boolean }>`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   padding: 1.75rem 2rem;
   border-radius: 0.5rem;
@@ -16,6 +16,7 @@ const WarningBanner = styled.div<{ $dark: boolean }>`
   @media (max-width: 600px) {
     flex-direction: column;
     text-align: center;
+    align-items: center;
   }
 `;
 
@@ -56,6 +57,22 @@ const ActionCard = styled.div<{ $dark: boolean }>`
     font-size: 0.875rem;
     color: ${({ $dark }) => ($dark ? "#a3a3a3" : "#6b7280")};
     line-height: 1.5;
+  }
+`;
+
+const WarningText = styled.div<{ $dark: boolean }>`
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: ${({ $dark }) => ($dark ? "#fca5a5" : "#991b1b")};
+
+  strong {
+    color: ${({ $dark }) => ($dark ? "#f87171" : "#dc2626")};
+  }
+
+  @media (max-width: 600px) {
+    text-align: center;
   }
 `;
 
@@ -112,16 +129,10 @@ export const LoadFromLinkDialog: React.FC<LoadFromLinkDialogProps> = ({
           <IconWrapper $dark={darkMode}>
             <FiAlertTriangle />
           </IconWrapper>
-          <div>
-            Loading external drawing will{" "}
-            <strong style={{ color: darkMode ? "#f87171" : "#dc2626" }}>
-              replace your existing content
-            </strong>
-            .
-            <br />
-            You can back up your drawing first by using one of the options below.
-          </div>
-          <div style={{ flexGrow: 1 }} />
+          <WarningText $dark={darkMode}>
+            Loading external drawing will <strong>replace your existing content</strong>. You can
+            back up your drawing first by using one of the options below.
+          </WarningText>
           <Button color="red" size="md" onClick={onReplace} style={{ flexShrink: 0 }}>
             Replace my content
           </Button>

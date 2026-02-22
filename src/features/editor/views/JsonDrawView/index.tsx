@@ -12,6 +12,7 @@ import {
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { FiCopy, FiCheck, FiLock, FiX } from "react-icons/fi";
+import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
 import useConfig from "../../../../store/useConfig";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
@@ -61,6 +62,8 @@ export const JsonDrawView = () => {
   // Load from link dialog states
   const [showLoadFromLinkDialog, setShowLoadFromLinkDialog] = React.useState(false);
   const pendingShareDataRef = React.useRef<{ elements: any[]; appState: any } | null>(null);
+  const isHandlingShareRef = React.useRef(false);
+  const lastHandledHashRef = React.useRef<string | null>(null);
 
   // Auto-save to localStorage
   const handleChange = React.useCallback((elements: any, appState: any, files: any) => {
@@ -133,105 +136,21 @@ export const JsonDrawView = () => {
   }, [applySharedData]);
 
   // Handle save to disk
-  const handleSaveToDisk = React.useCallback(() => {
+  const handleSaveToDisk = React.useCallback(async () => {
     const api = jsonDrawAPIRef.current;
     if (!api) return;
 
     try {
       const elements = api.getSceneElementsIncludingDeleted();
       const appState = api.getAppState();
-      const data = JSON.stringify({ elements, appState }, null, 2);
-      const blob = new Blob([data], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `jsondraw-backup-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      const files = api.getFiles();
+      const name = api.getName?.() || appState.name;
+      await saveAsJSON(elements, appState, files, name);
       toast.success("Drawing saved to disk!");
     } catch (error) {
       toast.error("Failed to save drawing.");
     }
   }, []);
-
-  // Update scene elements when nodes/edges change AFTER API is ready
-  // BUT only if user hasn't drawn anything yet
-  React.useEffect(() => {
-    const api = jsonDrawAPIRef.current;
-    if (!api || nodes.length === 0 || hasUserDrawing.current) return;
-
-    const elements = jsonToJsonDrawElements(nodes, edges);
-    api.updateScene({ elements });
-    scrollToContent(api, 80);
-  }, [nodes, edges, scrollToContent]);
-
-  const handleJsonDrawAPI = React.useCallback(
-    (api: any) => {
-      jsonDrawAPIRef.current = api;
-
-      if (typeof window === "undefined") return;
-
-      const hash = window.location.hash;
-
-      // ── Backend share link: #json=<id>,<key> ────────────
-      if (isBackendShareLink(hash)) {
-        setDrawReady(false);
-        loadFromShareLink(hash)
-          .then(data => {
-            if (!data || !data.elements) {
-              toast.error("Could not load shared drawing. The link may be invalid or expired.");
-              // Fall through to normal init
-              initFromLocalOrJson(api);
-              return;
-            }
-
-            // Check if there's existing content
-            const saved = localStorage.getItem("jsondraw-autosave");
-            const hasExistingContent = saved && JSON.parse(saved).elements?.length > 0;
-
-            if (hasExistingContent) {
-              // Show confirmation dialog
-              pendingShareDataRef.current = data;
-              setShowLoadFromLinkDialog(true);
-              // Still show current drawing while dialog is open
-              initFromLocalOrJson(api);
-            } else {
-              // No existing content → load directly
-              applySharedData(data);
-            }
-          })
-          .catch(err => {
-            console.error("Failed to load share link:", err);
-            toast.error("Failed to load shared drawing.");
-            initFromLocalOrJson(api);
-          });
-        return;
-      }
-
-      // ── Legacy share link: #data=... (backward compatibility) ────────
-      if (hash.startsWith("#data=")) {
-        const decoded = decodeDataFromUrlHash(hash);
-        if (decoded && decoded.elements) {
-          // Check if there's existing content
-          const saved = localStorage.getItem("jsondraw-autosave");
-          const hasExistingContent = saved && JSON.parse(saved).elements?.length > 0;
-
-          if (hasExistingContent) {
-            pendingShareDataRef.current = decoded;
-            setShowLoadFromLinkDialog(true);
-            initFromLocalOrJson(api);
-          } else {
-            applySharedData(decoded);
-          }
-          return;
-        }
-      }
-
-      // ── Normal initialization ────────────
-      initFromLocalOrJson(api);
-    },
-    [nodes, edges, scrollToContent, applySharedData]
-  );
 
   // Helper: Initialize from localStorage or JSON data
   const initFromLocalOrJson = React.useCallback(
@@ -267,6 +186,126 @@ export const JsonDrawView = () => {
     },
     [nodes, edges, scrollToContent]
   );
+
+  const hasExistingContent = React.useCallback(() => {
+    const saved = localStorage.getItem("jsondraw-autosave");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed.elements) && parsed.elements.length > 0) {
+          return true;
+        }
+      } catch (error) {
+        console.warn("Failed to parse autosave data:", error);
+        return true;
+      }
+    }
+
+    const api = jsonDrawAPIRef.current;
+    if (!api) return false;
+    const elements = api.getSceneElementsIncludingDeleted();
+    return Array.isArray(elements) && elements.length > 0;
+  }, []);
+
+  const handleShareLinkFromHash = React.useCallback(
+    async (hash: string) => {
+      if (typeof window === "undefined") return false;
+      if (!hash) return false;
+      if (!isBackendShareLink(hash) && !hash.startsWith("#data=")) return false;
+
+      const api = jsonDrawAPIRef.current;
+      if (!api) return false;
+
+      if (hash === lastHandledHashRef.current || isHandlingShareRef.current) return true;
+
+      lastHandledHashRef.current = hash;
+      isHandlingShareRef.current = true;
+      setDrawReady(false);
+
+      try {
+        if (isBackendShareLink(hash)) {
+          const data = await loadFromShareLink(hash);
+          if (!data || !data.elements) {
+            toast.error("Could not load shared drawing. The link may be invalid or expired.");
+            initFromLocalOrJson(api);
+            return true;
+          }
+
+          if (hasExistingContent()) {
+            pendingShareDataRef.current = data;
+            setShowLoadFromLinkDialog(true);
+            initFromLocalOrJson(api);
+          } else {
+            applySharedData(data);
+          }
+          return true;
+        }
+
+        const decoded = decodeDataFromUrlHash(hash);
+        if (decoded && decoded.elements) {
+          if (hasExistingContent()) {
+            pendingShareDataRef.current = decoded;
+            setShowLoadFromLinkDialog(true);
+            initFromLocalOrJson(api);
+          } else {
+            applySharedData(decoded);
+          }
+          return true;
+        }
+
+        initFromLocalOrJson(api);
+        return true;
+      } catch (error) {
+        console.error("Failed to load share link:", error);
+        toast.error("Failed to load shared drawing.");
+        initFromLocalOrJson(api);
+        return true;
+      } finally {
+        isHandlingShareRef.current = false;
+      }
+    },
+    [applySharedData, hasExistingContent, initFromLocalOrJson]
+  );
+
+  // Update scene elements when nodes/edges change AFTER API is ready
+  // BUT only if user hasn't drawn anything yet
+  React.useEffect(() => {
+    const api = jsonDrawAPIRef.current;
+    if (!api || nodes.length === 0 || hasUserDrawing.current) return;
+
+    const elements = jsonToJsonDrawElements(nodes, edges);
+    api.updateScene({ elements });
+    scrollToContent(api, 80);
+  }, [nodes, edges, scrollToContent]);
+
+  const handleJsonDrawAPI = React.useCallback(
+    (api: any) => {
+      jsonDrawAPIRef.current = api;
+
+      if (typeof window === "undefined") return;
+
+      const hash = window.location.hash;
+
+      handleShareLinkFromHash(hash).then(handled => {
+        if (!handled) {
+          initFromLocalOrJson(api);
+        }
+      });
+    },
+    [handleShareLinkFromHash, initFromLocalOrJson]
+  );
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      handleShareLinkFromHash(hash);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [handleShareLinkFromHash]);
 
   const handleClearDrawing = React.useCallback(() => {
     if (!jsonDrawAPIRef.current) return;
@@ -428,7 +467,7 @@ export const JsonDrawView = () => {
               c="dimmed"
               style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
-              <FiLock size={16} /> Dữ liệu được mã hóa đầu-cuối. Chỉ người có link mới xem được.
+              <FiLock size={16} /> Data is end-to-end encrypted. Only people with the link can view.
             </Text>
           </Box>
         </Stack>

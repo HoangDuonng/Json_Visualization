@@ -12,7 +12,7 @@
     "url": "https://github.com/HoangDuonng/Json_Visualization/issues"
   },
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "next dev --webpack -p 3979",
     "build": "next build --webpack",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
