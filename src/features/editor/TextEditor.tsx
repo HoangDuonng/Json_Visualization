@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { LoadingOverlay } from "@mantine/core";
 import styled from "styled-components";
 import Editor, { type EditorProps, loader, type OnMount, useMonaco } from "@monaco-editor/react";
+import HamsterLoader from "../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
 import useConfig from "../../store/useConfig";
 import useFile from "../../store/useFile";
 
@@ -84,7 +84,11 @@ const TextEditor = () => {
           onMount={handleMount}
           onValidate={errors => setError(errors[0]?.message || "")}
           onChange={contents => setContents({ contents, skipUpdate: true })}
-          loading={<LoadingOverlay visible />}
+          loading={
+            <LoadingFallback>
+              <HamsterLoader />
+            </LoadingFallback>
+          }
         />
       </StyledWrapper>
     </StyledEditorWrapper>
@@ -105,4 +109,11 @@ const StyledWrapper = styled.div`
   height: 100%;
   grid-template-columns: 100%;
   grid-template-rows: minmax(0, 1fr);
+`;
+
+const LoadingFallback = styled.div`
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
 `;

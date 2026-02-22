@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, LoadingOverlay, useComputedColorScheme } from "@mantine/core";
+import { Box, useComputedColorScheme } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import styled from "styled-components";
 import debounce from "lodash.debounce";
@@ -7,6 +7,7 @@ import { Space } from "react-zoomable-ui";
 import { Canvas } from "reaflow";
 import type { ElkRoot } from "reaflow";
 import { useLongPress } from "use-long-press";
+import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
 import useConfig from "../../../../store/useConfig";
 import { CustomEdge } from "./CustomEdge";
 import { CustomNode } from "./CustomNode";
@@ -182,7 +183,11 @@ export const GraphView = ({ isWidget = false }: GraphProps) => {
   return (
     <Box pos="relative" h="100%" w="100%">
       {aboveSupportedLimit && <NotSupported />}
-      <LoadingOverlay visible={debouncedLoading} />
+      {debouncedLoading && (
+        <Box pos="absolute" inset={0} style={{ display: "grid", placeItems: "center" }}>
+          <HamsterLoader />
+        </Box>
+      )}
       {!isWidget && <OptionsMenu />}
       {!isWidget && <SecureInfo />}
       <ZoomControl />

@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
+import React from "react";
 import { THEME } from "@jsondraw/common";
 import type { Theme } from "@jsondraw/element/types";
 import clsx from "clsx";
 import { t } from "../../i18n";
-import Spinner from "./Spinner";
+import HamsterLoader from "./HamsterLoader";
 
 export const LoadingMessage: React.FC<{ delay?: number; theme?: Theme }> = ({ delay, theme }) => {
-  const [isWaiting, setIsWaiting] = useState(!!delay);
+  const [isWaiting, setIsWaiting] = React.useState(!!delay);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!delay) {
       return;
     }
@@ -29,7 +30,7 @@ export const LoadingMessage: React.FC<{ delay?: number; theme?: Theme }> = ({ de
       })}
     >
       <div>
-        <Spinner />
+        <HamsterLoader />
       </div>
       <div className="LoadingMessage-text">{t("labels.loadingScene")}</div>
     </div>

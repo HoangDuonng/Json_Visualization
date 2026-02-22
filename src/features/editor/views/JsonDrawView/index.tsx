@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Box,
-  LoadingOverlay,
-  Modal,
-  Text,
-  Stack,
-  Button,
-  TextInput,
-  ActionIcon,
-} from "@mantine/core";
+import { Box, Modal, Text, Stack, Button, TextInput, ActionIcon } from "@mantine/core";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { FiCopy, FiCheck, FiLock, FiX } from "react-icons/fi";
+import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
 import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
 import {
   restoreAppState,
@@ -372,7 +364,9 @@ export const JsonDrawView = () => {
   if (!JsonDrawModule) {
     return (
       <Box pos="relative" h="100%" w="100%">
-        <LoadingOverlay visible />
+        <Box pos="absolute" inset={0} style={{ display: "grid", placeItems: "center" }}>
+          <HamsterLoader />
+        </Box>
       </Box>
     );
   }
@@ -381,7 +375,11 @@ export const JsonDrawView = () => {
 
   return (
     <Box pos="relative" h="100%" w="100%">
-      <LoadingOverlay visible={!drawReady} />
+      {!drawReady && (
+        <Box pos="absolute" inset={0} style={{ display: "grid", placeItems: "center" }}>
+          <HamsterLoader />
+        </Box>
+      )}
 
       {/* Clear Drawing Modal */}
       <Modal
