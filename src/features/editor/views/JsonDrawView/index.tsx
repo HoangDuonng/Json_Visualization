@@ -78,7 +78,7 @@ export const JsonDrawView = () => {
   // Set font asset path before loading JsonDraw
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      window.JSONDRAW_ASSET_PATH = "/jsondraw-fonts/";
+      window.JSONDRAW_ASSET_PATH = "/";
     }
   }, []);
 
