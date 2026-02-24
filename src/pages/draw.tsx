@@ -78,97 +78,6 @@ const LiveEditor = dynamic(() => import("../features/editor/LiveEditor"), {
   ssr: false,
 });
 
-const CollabWidget = () => {
-  const { isCollaborating, roomId, startCollaboration, stopCollaboration, collaborators } =
-    useCollab();
-  const [inputRoom, setInputRoom] = useState("test-room-1");
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 20,
-        right: 20,
-        zIndex: 9999,
-        background: "#fff",
-        padding: "10px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-        border: "1px solid #ddd",
-        color: "#333",
-      }}
-    >
-      <h4 style={{ margin: "0 0 10px 0", fontSize: "14px" }}>Collab Test</h4>
-      {isCollaborating ? (
-        <div>
-          <p style={{ margin: "0 0 10px 0", fontSize: "12px" }}>
-            Room: {roomId} (Users: {collaborators.length})
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "5px",
-              marginBottom: "10px",
-              flexWrap: "wrap",
-              maxWidth: "200px",
-            }}
-          >
-            {collaborators.map(c => (
-              <span
-                key={c.id}
-                style={{
-                  padding: "2px 6px",
-                  background: c.color || "#eee",
-                  borderRadius: "10px",
-                  fontSize: "10px",
-                  color: "#333",
-                  whiteSpace: "nowrap",
-                }}
-                title={c.username}
-              >
-                {c.username || "Anonymous"}
-              </span>
-            ))}
-          </div>
-          <button
-            onClick={stopCollaboration}
-            style={{
-              padding: "5px 10px",
-              border: "1px solid #ccc",
-              background: "#f5f5f5",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Leave Room
-          </button>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <input
-            value={inputRoom}
-            onChange={e => setInputRoom(e.target.value)}
-            style={{ padding: "5px", border: "1px solid #ccc", borderRadius: "4px" }}
-            placeholder="Room ID"
-          />
-          <button
-            onClick={() => startCollaboration(inputRoom)}
-            style={{
-              padding: "5px 10px",
-              border: "1px solid #ccc",
-              background: "#f5f5f5",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Join Room
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const DrawPage = () => {
   const { query, isReady } = useRouter();
   const { setColorScheme } = useMantineColorScheme();
@@ -210,7 +119,6 @@ const DrawPage = () => {
         <CollabProvider>
           <ExternalMode />
           <ModalController />
-          <CollabWidget />
           <StyledEditorWrapper>
             <StyledPageWrapper>
               <Toolbar />

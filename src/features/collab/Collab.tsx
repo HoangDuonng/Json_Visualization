@@ -16,9 +16,11 @@ interface CollabContextType {
   socket: Socket | null;
   roomId: string | null;
   isCollaborating: boolean;
-  startCollaboration: (roomId: string) => void;
+  startCollaboration: (roomId: string, password?: string) => void;
   stopCollaboration: () => void;
   collaborators: CollaboratorUser[];
+  passwordRequiredRoom: string | null;
+  setPasswordRequiredRoom: (roomId: string | null) => void;
 }
 
 const CollabContext = createContext<CollabContextType | null>(null);
@@ -36,6 +38,7 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isCollaborating, setIsCollaborating] = useState(false);
   const [collaborators, setCollaborators] = useState<CollaboratorUser[]>([]);
+  const [passwordRequiredRoom, setPasswordRequiredRoom] = useState<string | null>(null);
 
   const { json, setJson } = useJson();
 
@@ -50,7 +53,7 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const socketRef = React.useRef<Socket | null>(null);
 
   // Start collaboration session
-  const startCollaboration = (newRoomId: string) => {
+  const startCollaboration = (newRoomId: string, password?: string) => {
     if (socket) return;
 
     setIsCollaborating(true);
@@ -70,7 +73,26 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Initial connection
     newSocket.on("connect", () => {
       console.log("Connected to collab server:", newSocket.id);
-      newSocket.emit("join-room", newRoomId);
+      newSocket.emit("join-room", newRoomId, password);
+    });
+
+    newSocket.on("collab-error", (msg: string) => {
+      newSocket.disconnect();
+      setSocket(null);
+      socketRef.current = null;
+      setIsCollaborating(false);
+      setRoomId(null);
+      setCollaborators([]);
+
+      if (msg === "Invalid room password") {
+        setPasswordRequiredRoom(newRoomId);
+      } else {
+        alert(msg);
+      }
+    });
+
+    newSocket.on("join-success", () => {
+      console.log("Joined room successfully");
     });
 
     // Room info updates (now receives objects with names/colors)
@@ -172,6 +194,8 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         startCollaboration,
         stopCollaboration,
         collaborators,
+        passwordRequiredRoom,
+        setPasswordRequiredRoom,
       }}
     >
       {children}

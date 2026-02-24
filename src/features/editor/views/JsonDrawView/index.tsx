@@ -1,8 +1,30 @@
 import React from "react";
-import { Box, Modal, Text, Stack, Button, TextInput, ActionIcon } from "@mantine/core";
+import {
+  Box,
+  Modal,
+  Text,
+  Stack,
+  Button,
+  TextInput,
+  ActionIcon,
+  Menu,
+  PasswordInput,
+  Group,
+  Badge,
+} from "@mantine/core";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
-import { FiCopy, FiCheck, FiLock, FiX } from "react-icons/fi";
+import {
+  FiCopy,
+  FiCheck,
+  FiLock,
+  FiX,
+  FiShare2,
+  FiUsers,
+  FiLogOut,
+  FiPlay,
+  FiKey,
+} from "react-icons/fi";
 import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
 import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
 import {
@@ -10,6 +32,7 @@ import {
   restoreElements,
 } from "../../../../jsondraw/packages/jsondraw/data/restore";
 import useConfig from "../../../../store/useConfig";
+import { useCollab } from "../../../collab/Collab";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
@@ -56,6 +79,20 @@ export const JsonDrawView = () => {
   const [isSharing, setIsSharing] = React.useState(false);
   const copyTimerRef = React.useRef<number | null>(null);
 
+  // Collab States
+  const {
+    isCollaborating,
+    roomId: activeRoomId,
+    startCollaboration,
+    stopCollaboration,
+    collaborators,
+    passwordRequiredRoom,
+    setPasswordRequiredRoom,
+  } = useCollab();
+  const [showCollabModal, setShowCollabModal] = React.useState(false);
+  const [collabPasswordInput, setCollabPasswordInput] = React.useState("");
+  const [joinPasswordInput, setJoinPasswordInput] = React.useState("");
+
   // Load from link dialog states
   const [showLoadFromLinkDialog, setShowLoadFromLinkDialog] = React.useState(false);
   const pendingShareDataRef = React.useRef<{ elements: any[]; appState: any } | null>(null);
@@ -98,6 +135,15 @@ export const JsonDrawView = () => {
       setJsonDrawModule({ JsonDraw: mod.JsonDraw });
       setDrawReady(false);
     });
+
+    // Auto-join collab room if URL has it
+    if (typeof window !== "undefined") {
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const rId = hashParams.get("collabRoomId");
+      if (rId && !activeRoomId) {
+        startCollaboration(rId);
+      }
+    }
   }, []);
 
   const scrollToContent = React.useCallback((api: any, delay = 120) => {
@@ -371,6 +417,42 @@ export const JsonDrawView = () => {
     }
   }, []);
 
+  const handleStartLiveCollab = React.useCallback(() => {
+    if (!activeRoomId) {
+      // Create new session if none is active
+      const genId = Math.random().toString(36).substring(2, 10);
+      startCollaboration(genId, collabPasswordInput);
+    }
+  }, [activeRoomId, collabPasswordInput, startCollaboration]);
+
+  const handleJoinWithPassword = React.useCallback(() => {
+    if (passwordRequiredRoom) {
+      startCollaboration(passwordRequiredRoom, joinPasswordInput);
+      setPasswordRequiredRoom(null);
+      setJoinPasswordInput("");
+    }
+  }, [passwordRequiredRoom, joinPasswordInput, startCollaboration, setPasswordRequiredRoom]);
+
+  const handleCancelJoin = React.useCallback(() => {
+    setPasswordRequiredRoom(null);
+    setJoinPasswordInput("");
+    if (typeof window !== "undefined") {
+      window.location.hash = "";
+    }
+  }, [setPasswordRequiredRoom]);
+
+  const getCollabShareUrl = () => {
+    if (typeof window !== "undefined" && activeRoomId) {
+      const url = new URL(window.location.href);
+      url.search = ""; // clear query params
+      const hashParams = new URLSearchParams();
+      hashParams.set("collabRoomId", activeRoomId);
+      url.hash = hashParams.toString();
+      return url.toString();
+    }
+    return "";
+  };
+
   if (!JsonDrawModule) {
     return (
       <Box pos="relative" h="100%" w="100%">
@@ -496,6 +578,181 @@ export const JsonDrawView = () => {
         </Stack>
       </Modal>
 
+      {/* Password Required Modal */}
+      <Modal
+        opened={!!passwordRequiredRoom}
+        onClose={handleCancelJoin}
+        title={
+          <Text fw={700} size="xl" style={{ fontFamily: "Assistant, sans-serif" }}>
+            Room Password Required
+          </Text>
+        }
+        centered
+        size="md"
+        radius="lg"
+        padding="xl"
+        styles={{
+          content: {
+            backgroundColor: darkmodeEnabled ? "#121212" : "#ffffff",
+          },
+        }}
+      >
+        <Stack gap="md">
+          <Text size="sm" c="dimmed">
+            This live collaboration room is protected by a password. Please enter the password to
+            join.
+          </Text>
+
+          <PasswordInput
+            label="Password"
+            placeholder="Enter room password"
+            value={joinPasswordInput}
+            onChange={e => setJoinPasswordInput(e.currentTarget.value)}
+            leftSection={<FiKey size={14} />}
+            styles={{
+              input: {
+                backgroundColor: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f3f4f6",
+                border: "none",
+              },
+            }}
+            data-autofocus
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                handleJoinWithPassword();
+              }
+            }}
+          />
+
+          <Box style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: 10 }}>
+            <Button variant="default" onClick={handleCancelJoin}>
+              Cancel
+            </Button>
+            <Button color="blue" onClick={handleJoinWithPassword}>
+              Join Room
+            </Button>
+          </Box>
+        </Stack>
+      </Modal>
+
+      {/* Live Collab Modal */}
+      <Modal
+        opened={showCollabModal}
+        onClose={() => setShowCollabModal(false)}
+        title={
+          <Text fw={700} size="xl" style={{ fontFamily: "Assistant, sans-serif" }}>
+            Live Collaboration
+          </Text>
+        }
+        centered
+        size="md"
+        radius="lg"
+        padding="xl"
+        styles={{
+          content: {
+            backgroundColor: darkmodeEnabled ? "#121212" : "#ffffff",
+          },
+        }}
+      >
+        <Stack gap="md">
+          {isCollaborating && activeRoomId ? (
+            <>
+              <Text size="sm" c="dimmed">
+                You are live. Anyone with this link can join and draw in real-time.
+              </Text>
+
+              <Group
+                gap="apart"
+                style={{
+                  background: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f8f9fa",
+                  padding: "10px",
+                  borderRadius: "8px",
+                }}
+              >
+                <Box>
+                  <Text size="sm" fw={600}>
+                    Room ID: {activeRoomId}
+                  </Text>
+                  <Badge color="green" variant="light" size="sm">
+                    Online ({collaborators.length} users)
+                  </Badge>
+                </Box>
+                <Button
+                  color="red"
+                  variant="subtle"
+                  size="xs"
+                  leftSection={<FiLogOut />}
+                  onClick={stopCollaboration}
+                >
+                  Stop Session
+                </Button>
+              </Group>
+
+              <Box style={{ display: "flex", gap: "12px", alignItems: "flex-end", marginTop: 10 }}>
+                <TextInput
+                  label="Collab Link"
+                  readOnly
+                  value={getCollabShareUrl()}
+                  style={{ flex: 1 }}
+                  styles={{
+                    input: {
+                      backgroundColor: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f3f4f6",
+                      border: "none",
+                    },
+                  }}
+                  onClick={e => (e.target as HTMLInputElement).select()}
+                />
+                <Button
+                  leftSection={justCopied ? <FiCheck size={18} /> : <FiCopy size={18} />}
+                  color={justCopied ? "teal" : "blue"}
+                  onClick={() => {
+                    navigator.clipboard.writeText(getCollabShareUrl());
+                    setJustCopied(true);
+                    if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+                    copyTimerRef.current = window.setTimeout(
+                      () => setJustCopied(false),
+                      3000
+                    ) as any;
+                  }}
+                >
+                  Copy
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Text size="sm" c="dimmed">
+                Create a real-time multiplayer room to draw with others. You can optionally set a
+                password.
+              </Text>
+
+              <PasswordInput
+                label="Room Password (Optional)"
+                placeholder="Leave blank for public room"
+                value={collabPasswordInput}
+                onChange={e => setCollabPasswordInput(e.currentTarget.value)}
+                leftSection={<FiKey size={14} />}
+                styles={{
+                  input: {
+                    backgroundColor: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f3f4f6",
+                    border: "none",
+                  },
+                }}
+              />
+
+              <Button
+                size="md"
+                color="blue"
+                leftSection={<FiPlay size={16} />}
+                onClick={handleStartLiveCollab}
+                style={{ marginTop: 10 }}
+              >
+                Start Session
+              </Button>
+            </>
+          )}
+        </Stack>
+      </Modal>
+
       {/* Load from Link Confirmation Dialog */}
       <LoadFromLinkDialog
         opened={showLoadFromLinkDialog}
@@ -546,15 +803,37 @@ export const JsonDrawView = () => {
             }}
             renderTopRightUI={(isMobile: boolean) => (
               <Box px="md">
-                <Button
-                  size="sm"
-                  color="violet"
-                  loading={isSharing}
-                  onClick={handleShareClick}
-                  title="Tạo link chia sẻ miễn phí (mã hóa đầu-cuối)"
-                >
-                  Share View
-                </Button>
+                <Menu shadow="md" width={200} position="bottom-end">
+                  <Menu.Target>
+                    <Button
+                      size="sm"
+                      color={isCollaborating ? "green" : "violet"}
+                      loading={isSharing}
+                      leftSection={isCollaborating ? <FiUsers size={16} /> : <FiShare2 size={16} />}
+                      title="Share canvas"
+                    >
+                      {isCollaborating ? "Live" : "Share"}
+                    </Button>
+                  </Menu.Target>
+
+                  <Menu.Dropdown>
+                    <Menu.Label>Export Options</Menu.Label>
+                    <Menu.Item leftSection={<FiCopy size={14} />} onClick={handleShareClick}>
+                      Share Link (Snapshot)
+                    </Menu.Item>
+
+                    <Menu.Divider />
+
+                    <Menu.Label>Realtime</Menu.Label>
+                    <Menu.Item
+                      color={isCollaborating ? "green" : "blue"}
+                      leftSection={isCollaborating ? <FiUsers size={14} /> : <FiPlay size={14} />}
+                      onClick={() => setShowCollabModal(true)}
+                    >
+                      {isCollaborating ? "Manage Collab Session" : "Start Live Collab"}
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
               </Box>
             )}
           />
