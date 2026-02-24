@@ -10,6 +10,7 @@ import {
   restoreElements,
 } from "../../../../jsondraw/packages/jsondraw/data/restore";
 import useConfig from "../../../../store/useConfig";
+import { useDrawingSync } from "../../../collab/useDrawingSync";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
 import { jsonToJsonDrawElements } from "./jsonToJsonDraw";
@@ -61,19 +62,28 @@ export const JsonDrawView = () => {
   const isHandlingShareRef = React.useRef(false);
   const lastHandledHashRef = React.useRef<string | null>(null);
 
-  // Auto-save to localStorage
-  const handleChange = React.useCallback((elements: any, appState: any, files: any) => {
-    hasUserDrawing.current = true;
+  // Bind drawing collab sync via Socket.IO
+  const { broadcastDrawingChanges, broadcastPointer } = useDrawingSync(jsonDrawAPIRef);
 
-    try {
-      localStorage.setItem(
-        "jsondraw-autosave",
-        JSON.stringify({ elements, appState: { theme: appState.theme, zoom: appState.zoom } })
-      );
-    } catch (error) {
-      console.warn("Failed to save to localStorage:", error);
-    }
-  }, []);
+  // Auto-save to localStorage and emit drawing updates
+  const handleChange = React.useCallback(
+    (elements: any, appState: any) => {
+      hasUserDrawing.current = true;
+
+      // Emit changes across WS
+      broadcastDrawingChanges(elements);
+
+      try {
+        localStorage.setItem(
+          "jsondraw-autosave",
+          JSON.stringify({ elements, appState: { theme: appState.theme, zoom: appState.zoom } })
+        );
+      } catch (error) {
+        console.warn("Failed to save to localStorage:", error);
+      }
+    },
+    [broadcastDrawingChanges]
+  );
 
   // Set font asset path before loading JsonDraw
   React.useEffect(() => {
@@ -505,6 +515,14 @@ export const JsonDrawView = () => {
           <JsonDraw
             jsondrawAPI={handleJsonDrawAPI}
             onChange={handleChange}
+            onPointerUpdate={(payload: {
+              pointer: { x: number; y: number; tool: string };
+              button: string;
+            }) => {
+              if (payload.pointer) {
+                broadcastPointer(payload);
+              }
+            }}
             viewModeEnabled={false}
             zenModeEnabled={false}
             gridModeEnabled={false}

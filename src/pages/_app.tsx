@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import GlobalStyle from "../constants/globalStyle";
 import { SEO } from "../constants/seo";
 import { lightTheme } from "../constants/theme";
+import { CollabProvider } from "../features/collab/Collab";
 import { smartColorSchemeManager } from "../lib/utils/mantineColorScheme";
 
 async function loadShiki() {
@@ -111,7 +112,9 @@ function JsonCrack({ Component, pageProps }: AppProps) {
             />
             <GlobalStyle />
             {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && <GoogleAnalytics trackPageViews />}
-            <Component {...pageProps} />
+            <CollabProvider>
+              <Component {...pageProps} />
+            </CollabProvider>
           </ThemeProvider>
         </CodeHighlightAdapterProvider>
       </MantineProvider>
