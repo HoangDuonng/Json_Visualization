@@ -1,16 +1,17 @@
-export enum FileFormat {
-  "JSON" = "json",
-  "YAML" = "yaml",
-  "XML" = "xml",
-  "CSV" = "csv",
-}
+export const MAX_COLLABORATORS_PER_ROOM = 7;
 
-export const formats = [
-  { value: FileFormat.JSON, label: "JSON" },
-  { value: FileFormat.YAML, label: "YAML" },
-  { value: FileFormat.XML, label: "XML" },
-  { value: FileFormat.CSV, label: "CSV" },
-];
+export const JSONDRAW_NODE_PADDING = 16;
+export const JSONDRAW_ROW_HEIGHT = 24;
+export const JSONDRAW_FONT_SIZE = 16;
+export const JSONDRAW_HORIZONTAL_GAP = 200;
+export const JSONDRAW_VERTICAL_GAP = 40;
+
+export enum FileFormat {
+  JSON = "json",
+  YAML = "yaml",
+  XML = "xml",
+  CSV = "csv",
+}
 
 export enum TypeLanguage {
   TypeScript = "typescript",
@@ -20,6 +21,19 @@ export enum TypeLanguage {
   Kotlin = "kotlin",
   Rust = "rust",
 }
+
+export enum ViewMode {
+  Graph = "graph",
+  Tree = "tree",
+  JsonDraw = "jsondraw",
+}
+
+export const formats = [
+  { value: FileFormat.JSON, label: "JSON" },
+  { value: FileFormat.YAML, label: "YAML" },
+  { value: FileFormat.XML, label: "XML" },
+  { value: FileFormat.CSV, label: "CSV" },
+];
 
 export const typeOptions = [
   {

@@ -1,5 +1,5 @@
 import type { ParseError } from "jsonc-parser";
-import { FileFormat } from "../../enums/file.enum";
+import { FileFormat } from "../../constants/enumData";
 
 export const contentToJson = (value: string, format = FileFormat.JSON): Promise<object> => {
   return new Promise(async (resolve, reject) => {

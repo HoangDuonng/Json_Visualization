@@ -6,7 +6,7 @@ import { BiSolidDockLeft } from "react-icons/bi";
 import { IoMdCheckmark } from "react-icons/io";
 import { MdArrowUpward } from "react-icons/md";
 import { VscCheck, VscError, VscRunAll, VscSync, VscSyncIgnored } from "react-icons/vsc";
-import { formats } from "../../enums/file.enum";
+import { formats } from "../../constants/enumData";
 import useConfig from "../../store/useConfig";
 import useFile from "../../store/useFile";
 import useGraph from "./views/GraphView/stores/useGraph";

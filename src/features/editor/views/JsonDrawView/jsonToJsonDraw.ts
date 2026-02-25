@@ -5,6 +5,13 @@
  * element format so JSON data can be visualized on the JsonDraw whiteboard.
  */
 import { FONT_FAMILY } from "@jsondraw/common";
+import {
+  JSONDRAW_FONT_SIZE,
+  JSONDRAW_HORIZONTAL_GAP,
+  JSONDRAW_NODE_PADDING,
+  JSONDRAW_ROW_HEIGHT,
+  JSONDRAW_VERTICAL_GAP,
+} from "../../../../constants/enumData";
 import type { NodeData, EdgeData } from "../../../../types/graph";
 
 // JsonDraw element types (simplified)
@@ -109,12 +116,6 @@ type JsonDrawElement = JsonDrawRectangleElement | JsonDrawTextElement | JsonDraw
 const randomSeed = () => Math.floor(Math.random() * 2000000000);
 const randomNonce = () => Math.floor(Math.random() * 2000000000);
 
-const NODE_PADDING = 16;
-const ROW_HEIGHT = 24;
-const FONT_SIZE = 16;
-const HORIZONTAL_GAP = 200;
-const VERTICAL_GAP = 40;
-
 /**
  * Format node text content for display inside JsonDraw rectangle
  */
@@ -204,11 +205,11 @@ const layoutNodes = (
       if (!node) continue;
 
       positions.set(nodeId, { x: currentX, y: currentY });
-      currentY += node.height + VERTICAL_GAP;
+      currentY += node.height + JSONDRAW_VERTICAL_GAP;
       maxWidth = Math.max(maxWidth, node.width);
     }
 
-    currentX += maxWidth + HORIZONTAL_GAP;
+    currentX += maxWidth + JSONDRAW_HORIZONTAL_GAP;
   }
 
   return positions;
@@ -237,9 +238,9 @@ export const jsonToJsonDrawElements = (nodes: NodeData[], edges: EdgeData[]): Js
 
     rectIds.set(node.id, rectId);
 
-    const width = Math.max(node.width + NODE_PADDING * 2, 120);
+    const width = Math.max(node.width + JSONDRAW_NODE_PADDING * 2, 120);
     const textRows = node.text?.length ?? 1;
-    const height = Math.max(textRows * ROW_HEIGHT + NODE_PADDING * 2, 50);
+    const height = Math.max(textRows * JSONDRAW_ROW_HEIGHT + JSONDRAW_NODE_PADDING * 2, 50);
 
     // Collect arrow bindings for this rectangle
     const boundElements: { id: string; type: "text" | "arrow" }[] = [{ id: textId, type: "text" }];
@@ -284,10 +285,10 @@ export const jsonToJsonDrawElements = (nodes: NodeData[], edges: EdgeData[]): Js
     const textEl: JsonDrawTextElement = {
       id: textId,
       type: "text",
-      x: pos.x + NODE_PADDING,
-      y: pos.y + NODE_PADDING,
-      width: width - NODE_PADDING * 2,
-      height: height - NODE_PADDING * 2,
+      x: pos.x + JSONDRAW_NODE_PADDING,
+      y: pos.y + JSONDRAW_NODE_PADDING,
+      width: width - JSONDRAW_NODE_PADDING * 2,
+      height: height - JSONDRAW_NODE_PADDING * 2,
       angle: 0,
       strokeColor: "#1e1e1e",
       backgroundColor: "transparent",
@@ -308,7 +309,7 @@ export const jsonToJsonDrawElements = (nodes: NodeData[], edges: EdgeData[]): Js
       locked: false,
       frameId: null,
       text,
-      fontSize: FONT_SIZE,
+      fontSize: JSONDRAW_FONT_SIZE,
       fontFamily: FONT_FAMILY.Excalifont,
       textAlign: "left",
       verticalAlign: "top",
@@ -334,9 +335,15 @@ export const jsonToJsonDrawElements = (nodes: NodeData[], edges: EdgeData[]): Js
     const toNode = nodes.find(n => n.id === edge.to);
     if (!fromNode || !toNode) continue;
 
-    const fromWidth = Math.max(fromNode.width + NODE_PADDING * 2, 120);
-    const fromHeight = Math.max((fromNode.text?.length ?? 1) * ROW_HEIGHT + NODE_PADDING * 2, 50);
-    const toHeight = Math.max((toNode.text?.length ?? 1) * ROW_HEIGHT + NODE_PADDING * 2, 50);
+    const fromWidth = Math.max(fromNode.width + JSONDRAW_NODE_PADDING * 2, 120);
+    const fromHeight = Math.max(
+      (fromNode.text?.length ?? 1) * JSONDRAW_ROW_HEIGHT + JSONDRAW_NODE_PADDING * 2,
+      50
+    );
+    const toHeight = Math.max(
+      (toNode.text?.length ?? 1) * JSONDRAW_ROW_HEIGHT + JSONDRAW_NODE_PADDING * 2,
+      50
+    );
 
     // Arrow starts from right edge of source, ends at left edge of target
     const startX = fromPos.x + fromWidth;

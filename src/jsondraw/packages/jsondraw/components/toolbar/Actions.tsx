@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CLASSES, KEYS, capitalizeString, isTransparent } from "@jsondraw/common";
+import { CLASSES, capitalizeString, isTransparent } from "@jsondraw/common";
 import {
   shouldAllowVerticalAlign,
   suppportsHorizontalAlign,
@@ -986,7 +986,7 @@ export const ShapesSwitcher = ({
           return null;
         }
 
-        const label = t(`toolBar.${value}`);
+        const label = t(`toolBar.${value}` as Parameters<typeof t>[0]);
         const letter = key && capitalizeString(typeof key === "string" ? key : key[0]);
         const shortcut = letter ? `${letter} ${t("helpDialog.or")} ${numericKey}` : `${numericKey}`;
         // when in compact styles panel mode (tablet)
@@ -1095,6 +1095,8 @@ export const ShapesSwitcher = ({
           onSelect={() => setIsExtraToolsMenuOpen(false)}
           className="App-toolbar__extra-tools-dropdown"
         >
+          {/* // yêu cầu: 4 option đầu trong dropdown extra tools */}
+          {/*
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "frame" })}
             icon={frameToolIcon}
@@ -1131,6 +1133,7 @@ export const ShapesSwitcher = ({
               {t("toolBar.lasso")}
             </DropdownMenu.Item>
           )}
+          */}
           <div style={{ margin: "6px 0", fontSize: 14, fontWeight: 600 }}>Generate</div>
           {app.props.aiEnabled !== false && <TTDDialogTriggerTunnel.Out />}
           <DropdownMenu.Item

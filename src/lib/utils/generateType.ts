@@ -1,4 +1,4 @@
-import { type FileFormat, TypeLanguage } from "../../enums/file.enum";
+import { type FileFormat, TypeLanguage } from "../../constants/enumData";
 import { contentToJson } from "./jsonAdapter";
 
 export const generateType = async (input: string, format: FileFormat, output: TypeLanguage) => {

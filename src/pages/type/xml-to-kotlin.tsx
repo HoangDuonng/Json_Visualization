@@ -1,5 +1,5 @@
 import React from "react";
-import { FileFormat, TypeLanguage } from "../../enums/file.enum";
+import { FileFormat, TypeLanguage } from "../../constants/enumData";
 import { TypegenWrapper } from "../../layout/TypeLayout/TypegenWrapper";
 
 const TypePage = () => {

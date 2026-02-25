@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Flex, SimpleGrid, Stack } from "@mantine/core";
 import { AnimatedLinkButton } from "../../components/AnimatedLinkButton";
-import { formats, TypeLanguage, typeOptions } from "../../enums/file.enum";
+import { formats, TypeLanguage, typeOptions } from "../../constants/enumData";
 
 type MappedCombinations = {
   [language: string]: string[];

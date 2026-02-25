@@ -1,7 +1,9 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
+import type { Socket } from "socket.io-client";
 import * as Y from "yjs";
+import { MAX_COLLABORATORS_PER_ROOM } from "../../constants/enumData";
 import useJson from "../../store/useJson";
 
 const WS_SERVER_URL = process.env.NEXT_PUBLIC_WS_SERVER_URL || "ws://localhost:3002";
@@ -10,15 +12,38 @@ export interface CollaboratorUser {
   id: string;
   username?: string;
   color?: string;
+  isOwner?: boolean;
+}
+
+interface StartCollaborationOptions {
+  asOwner?: boolean;
+}
+
+interface RoomUserChangePayload {
+  clients?: CollaboratorUser[];
+  ownerId?: string;
+}
+
+interface JoinSuccessPayload {
+  isOwner?: boolean;
+  userId?: string;
 }
 
 interface CollabContextType {
   socket: Socket | null;
   roomId: string | null;
   isCollaborating: boolean;
-  startCollaboration: (roomId: string, password?: string) => void;
+  startCollaboration: (
+    roomId: string,
+    password?: string,
+    options?: StartCollaborationOptions
+  ) => void;
   stopCollaboration: () => void;
   collaborators: CollaboratorUser[];
+  currentUserId: string | null;
+  isRoomOwner: boolean;
+  maxCollaborators: number;
+  kickCollaborator: (collaboratorId: string) => void;
   passwordRequiredRoom: string | null;
   setPasswordRequiredRoom: (roomId: string | null) => void;
 }
@@ -38,6 +63,8 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isCollaborating, setIsCollaborating] = useState(false);
   const [collaborators, setCollaborators] = useState<CollaboratorUser[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [passwordRequiredRoom, setPasswordRequiredRoom] = useState<string | null>(null);
 
   const { json, setJson } = useJson();
@@ -51,13 +78,34 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // We need a ref to keep track of the socket for the yDoc observer
   const socketRef = React.useRef<Socket | null>(null);
+  const currentUserIdRef = React.useRef<string | null>(null);
+  const isRoomOwnerRef = React.useRef(false);
+
+  const resetConnectionState = () => {
+    setSocket(null);
+    socketRef.current = null;
+    setIsCollaborating(false);
+    setRoomId(null);
+    setCollaborators([]);
+    setCurrentUserId(null);
+    currentUserIdRef.current = null;
+    setIsRoomOwner(false);
+    isRoomOwnerRef.current = false;
+  };
 
   // Start collaboration session
-  const startCollaboration = (newRoomId: string, password?: string) => {
-    if (socket) return;
+  const startCollaboration = (
+    newRoomId: string,
+    password?: string,
+    options?: StartCollaborationOptions
+  ) => {
+    if (socketRef.current) return;
 
     setIsCollaborating(true);
     setRoomId(newRoomId);
+    const ownerByClientIntent = Boolean(options?.asOwner);
+    setIsRoomOwner(ownerByClientIntent);
+    isRoomOwnerRef.current = ownerByClientIntent;
 
     const newDoc = new Y.Doc();
     const newText = newDoc.getText("json-content");
@@ -73,16 +121,15 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Initial connection
     newSocket.on("connect", () => {
       console.log("Connected to collab server:", newSocket.id);
+      const ownId = newSocket.id ?? null;
+      setCurrentUserId(ownId);
+      currentUserIdRef.current = ownId;
       newSocket.emit("join-room", newRoomId, password);
     });
 
     newSocket.on("collab-error", (msg: string) => {
       newSocket.disconnect();
-      setSocket(null);
-      socketRef.current = null;
-      setIsCollaborating(false);
-      setRoomId(null);
-      setCollaborators([]);
+      resetConnectionState();
 
       if (msg === "Invalid room password") {
         setPasswordRequiredRoom(newRoomId);
@@ -91,13 +138,54 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
     });
 
-    newSocket.on("join-success", () => {
+    newSocket.on("join-success", (payload?: JoinSuccessPayload) => {
+      if (payload?.userId) {
+        setCurrentUserId(payload.userId);
+        currentUserIdRef.current = payload.userId;
+      }
+      if (typeof payload?.isOwner === "boolean") {
+        setIsRoomOwner(payload.isOwner);
+        isRoomOwnerRef.current = payload.isOwner;
+      }
+
       console.log("Joined room successfully");
     });
 
-    // Room info updates (now receives objects with names/colors)
-    newSocket.on("room-user-change", (clients: CollaboratorUser[]) => {
+    // Room info updates (receives list or room metadata object)
+    newSocket.on("room-user-change", (payload: CollaboratorUser[] | RoomUserChangePayload) => {
+      const clients = Array.isArray(payload) ? payload : payload.clients || [];
+      const ownerId = Array.isArray(payload) ? undefined : payload.ownerId;
+
+      if (ownerId && currentUserIdRef.current) {
+        const ownerState = ownerId === currentUserIdRef.current;
+        setIsRoomOwner(ownerState);
+        isRoomOwnerRef.current = ownerState;
+      }
+
+      if (!isRoomOwnerRef.current && clients.length > MAX_COLLABORATORS_PER_ROOM) {
+        newSocket.disconnect();
+        resetConnectionState();
+        alert(`Room is full. Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`);
+        return;
+      }
+
       setCollaborators(clients);
+    });
+
+    newSocket.on("room-full", () => {
+      newSocket.disconnect();
+      resetConnectionState();
+      alert(`Room is full. Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`);
+    });
+
+    newSocket.on("kicked-from-room", (msg?: string) => {
+      newSocket.disconnect();
+      resetConnectionState();
+      alert(msg || "You were removed from this room by the room owner.");
+    });
+
+    newSocket.on("disconnect", () => {
+      resetConnectionState();
     });
 
     // Listen for incoming Yjs updates from the socket server
@@ -121,15 +209,23 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     });
   };
 
-  const stopCollaboration = () => {
-    if (socket) {
-      socket.disconnect();
-      setSocket(null);
-      socketRef.current = null;
+  const kickCollaborator = (collaboratorId: string) => {
+    if (!socketRef.current || !roomId || !isRoomOwnerRef.current) {
+      return;
     }
-    setIsCollaborating(false);
-    setRoomId(null);
-    setCollaborators([]);
+
+    if (collaboratorId === currentUserIdRef.current) {
+      return;
+    }
+
+    socketRef.current.emit("kick-user", roomId, collaboratorId);
+  };
+
+  const stopCollaboration = () => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+    resetConnectionState();
 
     // Clear document state locally so old room data won't conflict
     const freshDoc = new Y.Doc();
@@ -194,6 +290,10 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         startCollaboration,
         stopCollaboration,
         collaborators,
+        currentUserId,
+        isRoomOwner,
+        maxCollaborators: MAX_COLLABORATORS_PER_ROOM,
+        kickCollaborator,
         passwordRequiredRoom,
         setPasswordRequiredRoom,
       }}

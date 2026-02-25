@@ -2,7 +2,7 @@ import { Menu, Flex, SegmentedControl } from "@mantine/core";
 import { useSessionStorage } from "@mantine/hooks";
 import { event as gaEvent } from "nextjs-google-analytics";
 import { CgChevronDown } from "react-icons/cg";
-import { ViewMode } from "../../../enums/viewMode.enum";
+import { ViewMode } from "../../../constants/enumData";
 import { StyledToolElement } from "./styles";
 
 export const ViewMenu = () => {

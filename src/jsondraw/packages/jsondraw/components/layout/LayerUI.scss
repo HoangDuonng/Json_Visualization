@@ -178,16 +178,6 @@
     display: none !important;
   }
 
-  /* Ẩn nút Công cụ khác (⊞) ở cuối cùng bên phải thanh toolbar theo yêu cầu của user */
-  .App-toolbar__extra-tools-trigger {
-    display: none !important;
-  }
-
-  /* Ẩn đường phân cách kế bên nút Công cụ khác */
-  .App-toolbar__divider {
-    display: none !important;
-  }
-
   /* Ẩn nút Ổ khoá (Lock) ở ngoài cùng bên trái thanh toolbar theo yêu cầu của user */
   .ToolIcon__lock {
     display: none !important;

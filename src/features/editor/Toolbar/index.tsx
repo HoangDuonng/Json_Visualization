@@ -7,7 +7,7 @@ import styled from "styled-components";
 import toast from "react-hot-toast";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineLayout } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa6";
-import { ViewMode } from "../../../enums/viewMode.enum";
+import { ViewMode } from "../../../constants/enumData";
 import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
 import useGraph from "../views/GraphView/stores/useGraph";
 import { FileMenu } from "./FileMenu";

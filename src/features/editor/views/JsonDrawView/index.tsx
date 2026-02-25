@@ -24,6 +24,7 @@ import {
   FiLogOut,
   FiPlay,
   FiKey,
+  FiUserX,
 } from "react-icons/fi";
 import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
 import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
@@ -86,6 +87,10 @@ export const JsonDrawView = () => {
     startCollaboration,
     stopCollaboration,
     collaborators,
+    currentUserId,
+    isRoomOwner,
+    maxCollaborators,
+    kickCollaborator,
     passwordRequiredRoom,
     setPasswordRequiredRoom,
   } = useCollab();
@@ -141,7 +146,7 @@ export const JsonDrawView = () => {
       const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
       const rId = hashParams.get("collabRoomId");
       if (rId && !activeRoomId) {
-        startCollaboration(rId);
+        startCollaboration(rId, undefined, { asOwner: false });
       }
     }
   }, []);
@@ -421,13 +426,13 @@ export const JsonDrawView = () => {
     if (!activeRoomId) {
       // Create new session if none is active
       const genId = Math.random().toString(36).substring(2, 10);
-      startCollaboration(genId, collabPasswordInput);
+      startCollaboration(genId, collabPasswordInput, { asOwner: true });
     }
   }, [activeRoomId, collabPasswordInput, startCollaboration]);
 
   const handleJoinWithPassword = React.useCallback(() => {
     if (passwordRequiredRoom) {
-      startCollaboration(passwordRequiredRoom, joinPasswordInput);
+      startCollaboration(passwordRequiredRoom, joinPasswordInput, { asOwner: false });
       setPasswordRequiredRoom(null);
       setJoinPasswordInput("");
     }
@@ -673,7 +678,7 @@ export const JsonDrawView = () => {
                     Room ID: {activeRoomId}
                   </Text>
                   <Badge color="green" variant="light" size="sm">
-                    Online ({collaborators.length} users)
+                    Online ({collaborators.length}/{maxCollaborators} users)
                   </Badge>
                 </Box>
                 <Button
@@ -716,6 +721,45 @@ export const JsonDrawView = () => {
                 >
                   Copy
                 </Button>
+              </Box>
+
+              <Box
+                style={{
+                  marginTop: 12,
+                  borderRadius: 8,
+                  padding: 10,
+                  background: darkmodeEnabled ? "rgba(255,255,255,0.04)" : "#f8f9fa",
+                }}
+              >
+                <Text size="xs" c="dimmed" mb={8}>
+                  Participants
+                </Text>
+                <Stack gap={6}>
+                  {collaborators.map(user => {
+                    const isMe = user.id === currentUserId;
+
+                    return (
+                      <Group key={user.id} justify="space-between" wrap="nowrap">
+                        <Text size="sm" fw={500} truncate>
+                          {user.username || user.id}
+                          {isMe ? " (You)" : ""}
+                          {user.isOwner ? " (Owner)" : ""}
+                        </Text>
+
+                        {isRoomOwner && !isMe ? (
+                          <ActionIcon
+                            color="red"
+                            variant="light"
+                            aria-label="Kick user"
+                            onClick={() => kickCollaborator(user.id)}
+                          >
+                            <FiUserX size={14} />
+                          </ActionIcon>
+                        ) : null}
+                      </Group>
+                    );
+                  })}
+                </Stack>
               </Box>
             </>
           ) : (

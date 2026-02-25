@@ -1,5 +1,5 @@
 import React from "react";
-import { FileFormat } from "../../enums/file.enum";
+import { FileFormat } from "../../constants/enumData";
 import { ToolPage } from "../../layout/ConverterLayout/ToolPage";
 
 const Page = () => {

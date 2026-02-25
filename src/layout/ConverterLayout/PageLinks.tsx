@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Flex, SimpleGrid, Stack } from "@mantine/core";
 import { AnimatedLinkButton } from "../../components/AnimatedLinkButton";
-import { formats } from "../../enums/file.enum";
+import { formats } from "../../constants/enumData";
 
 const languages = formats.map(format => format.label);
 

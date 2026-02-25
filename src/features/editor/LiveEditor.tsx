@@ -1,9 +1,9 @@
 import React from "react";
 import { useSessionStorage } from "@mantine/hooks";
 import styled from "styled-components";
-import { ViewMode } from "../../enums/viewMode.enum";
-import { JsonDrawView } from "./views/JsonDrawView";
+import { ViewMode } from "../../constants/enumData";
 import { GraphView } from "./views/GraphView";
+import { JsonDrawView } from "./views/JsonDrawView";
 import { TreeView } from "./views/TreeView";
 
 const StyledLiveEditor = styled.div`
