@@ -100,7 +100,11 @@ export const JsonDrawView = () => {
 
   // Load from link dialog states
   const [showLoadFromLinkDialog, setShowLoadFromLinkDialog] = React.useState(false);
-  const pendingShareDataRef = React.useRef<{ elements: any[]; appState: any } | null>(null);
+  const pendingShareDataRef = React.useRef<{
+    elements: any[];
+    appState: any;
+    files?: Record<string, any>;
+  } | null>(null);
   const isHandlingShareRef = React.useRef(false);
   const lastHandledHashRef = React.useRef<string | null>(null);
 
@@ -109,16 +113,21 @@ export const JsonDrawView = () => {
 
   // Auto-save to localStorage and emit drawing updates
   const handleChange = React.useCallback(
-    (elements: any, appState: any) => {
+    (elements: any, appState: any, files?: Record<string, any>) => {
       hasUserDrawing.current = true;
 
       // Emit changes across WS
       broadcastDrawingChanges(elements);
 
       try {
+        const sceneFiles = files ?? jsonDrawAPIRef.current?.getFiles?.() ?? null;
         localStorage.setItem(
           "jsondraw-autosave",
-          JSON.stringify({ elements, appState: { theme: appState.theme, zoom: appState.zoom } })
+          JSON.stringify({
+            elements,
+            files: sceneFiles,
+            appState: { theme: appState.theme, zoom: appState.zoom },
+          })
         );
       } catch (error) {
         console.warn("Failed to save to localStorage:", error);
@@ -162,7 +171,7 @@ export const JsonDrawView = () => {
 
   // Apply shared data to the scene (called after user confirms or if canvas is empty)
   const applySharedData = React.useCallback(
-    (data: { elements: any[]; appState: any }) => {
+    (data: { elements: any[]; appState: any; files?: Record<string, any> }) => {
       const api = jsonDrawAPIRef.current;
       if (!api) return;
 
@@ -177,7 +186,13 @@ export const JsonDrawView = () => {
       };
 
       requestAnimationFrame(() => {
-        api.updateScene({ elements: restoredElements, appState: restoredAppState });
+        if (data.files && Object.keys(data.files).length > 0) {
+          api.addFiles(data.files);
+        }
+        api.updateScene({
+          elements: restoredElements,
+          appState: restoredAppState,
+        });
         scrollToContent(api, 120);
       });
 
@@ -222,7 +237,7 @@ export const JsonDrawView = () => {
       const saved = localStorage.getItem("jsondraw-autosave");
       if (saved) {
         try {
-          const { elements, appState } = JSON.parse(saved);
+          const { elements, appState, files } = JSON.parse(saved);
           const restoredElements = restoreElements(elements, null);
           const restoredAppState = {
             ...restoreAppState(appState, api.getAppState()),
@@ -231,7 +246,13 @@ export const JsonDrawView = () => {
           hasUserDrawing.current = true;
           setDrawReady(false);
           requestAnimationFrame(() => {
-            api.updateScene({ elements: restoredElements, appState: restoredAppState });
+            if (files && Object.keys(files).length > 0) {
+              api.addFiles(files);
+            }
+            api.updateScene({
+              elements: restoredElements,
+              appState: restoredAppState,
+            });
             scrollToContent(api, 120);
           });
           return;
@@ -410,8 +431,9 @@ export const JsonDrawView = () => {
     try {
       const elements = api.getSceneElementsIncludingDeleted();
       const appState = api.getAppState();
+      const files = api.getFiles();
 
-      const url = await createShareLink(elements, appState);
+      const url = await createShareLink(elements, appState, files);
       setShareUrl(url);
       setShowShareModal(true);
     } catch (error: any) {
