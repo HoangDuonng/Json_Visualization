@@ -1,15 +1,56 @@
 import pako from "pako";
 import { exportToBackend, importFromBackend } from "./shareBackend";
 
+interface ShareSceneData {
+  elements: any[];
+  appState: any;
+  files?: Record<string, any>;
+}
+
+const pickUsedFiles = (elements: any[], files?: Record<string, any>) => {
+  if (!files) {
+    return undefined;
+  }
+
+  const fileIds = new Set<string>();
+  for (const el of elements) {
+    if (el && typeof el === "object" && "fileId" in el && el.fileId) {
+      fileIds.add(el.fileId);
+    }
+  }
+
+  if (fileIds.size === 0) {
+    return undefined;
+  }
+
+  const usedFiles: Record<string, any> = {};
+  for (const fileId of fileIds) {
+    if (files[fileId]) {
+      usedFiles[fileId] = files[fileId];
+    }
+  }
+
+  return Object.keys(usedFiles).length ? usedFiles : undefined;
+};
+
 // ─── Backend-based share link ────────────────────────────────────────
 
 /**
  * Create a shareable link by uploading encrypted data to the backend.
  * Returns a short URL like: https://jsonviz.online/draw#json=<id>,<key>
  */
-export const createShareLink = async (elements: any[], appState: any): Promise<string> => {
+export const createShareLink = async (
+  elements: any[],
+  appState: any,
+  files?: Record<string, any>
+): Promise<string> => {
+  const nonDeletedElements = elements
+    .filter(el => !el.isDeleted)
+    .map(el => ({ ...el, isDeleted: undefined }));
+
   const data = {
-    elements: elements.filter(el => !el.isDeleted).map(el => ({ ...el, isDeleted: undefined })),
+    elements: nonDeletedElements,
+    files: pickUsedFiles(nonDeletedElements, files),
     appState: {
       viewBackgroundColor: appState.viewBackgroundColor,
       theme: appState.theme,
@@ -30,9 +71,7 @@ export const createShareLink = async (elements: any[], appState: any): Promise<s
  * Load scene data from a share link.
  * Hash format: #json=<id>,<key>
  */
-export const loadFromShareLink = async (
-  hash: string
-): Promise<{ elements: any[]; appState: any } | null> => {
+export const loadFromShareLink = async (hash: string): Promise<ShareSceneData | null> => {
   const match = hash.match(/^#json=([a-zA-Z0-9_-]+),([a-zA-Z0-9_-]+)$/);
   if (!match) return null;
 
@@ -71,7 +110,7 @@ export const decodeDataFromUrlHash = (hash: string) => {
     // Backward compatibility: try to decode legacy encodeURIComponent strings
     try {
       base64 = decodeURIComponent(base64);
-    } catch (e) {
+    } catch {
       // Ignore
     }
 
