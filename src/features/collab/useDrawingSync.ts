@@ -20,9 +20,19 @@ interface JsonDrawAPI {
 }
 
 export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null>) => {
-  const { socket, isCollaborating, roomId, collaborators } = useCollab();
+  const { socket, isCollaborating, roomId, collaborators, isRoomOwner } = useCollab();
   const lastBroadcastedVersion = useRef<number>(-1);
   const remoteCollaboratorsRef = useRef<Map<string, any>>(new Map());
+  const hasReceivedInitialSync = useRef<boolean>(false);
+
+  // When room changes or collaboration stops, reset sync flag
+  useEffect(() => {
+    if (isCollaborating) {
+      hasReceivedInitialSync.current = isRoomOwner;
+    } else {
+      hasReceivedInitialSync.current = false;
+    }
+  }, [isCollaborating, isRoomOwner]);
 
   // Convert `collaborators` state into Excalidraw Map
   useEffect(() => {
@@ -65,18 +75,25 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
       const localElements = api.getSceneElementsIncludingDeleted();
       const appState = api.getAppState();
 
-      // Ensure remote elements are restored correctly (e.g. adding missing fields)
-      const restoredRemoteElements = restoreElements(remoteElements, localElements);
+      let finalElements: any[] = [];
 
-      // Reconcile conflicts using Excalidraw's built-in CRDT-like algorithm
-      const reconciledElements = reconcileElements(localElements, restoredRemoteElements, appState);
+      // If we are a joining member and this is the first sync from the owner,
+      // completely overwrite the local default generated elements with the owner's true state
+      if (!isRoomOwner && !hasReceivedInitialSync.current) {
+        finalElements = restoreElements(remoteElements, null);
+        hasReceivedInitialSync.current = true;
+      } else {
+        // Normal reconcile
+        const restoredRemoteElements = restoreElements(remoteElements, localElements);
+        finalElements = reconcileElements(localElements, restoredRemoteElements, appState);
+      }
 
       // Avoid self-broadcasting the scene we just received
-      lastBroadcastedVersion.current = getSceneVersion(reconciledElements);
+      lastBroadcastedVersion.current = getSceneVersion(finalElements);
 
       // Update the canvas with the merged elements
       api.updateScene({
-        elements: reconciledElements,
+        elements: finalElements,
         commitToHistory: false, // Optionally avoid flooding the undo history with remote changes
       });
     };
@@ -123,6 +140,9 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
   const broadcastDrawingChanges = (elements: any[]) => {
     if (!socket || !isCollaborating || !roomId) return;
 
+    // Non-owners wait until they've received the initial sync to avoid dirtying the owner's board
+    if (!isRoomOwner && !hasReceivedInitialSync.current) return;
+
     // Only broadcast if the scene has actually changed
     const currentVersion = getSceneVersion(elements);
     if (currentVersion > lastBroadcastedVersion.current) {
@@ -143,6 +163,8 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
     if (!socket || !isCollaborating) return;
 
     const handleNewUser = () => {
+      if (!isRoomOwner) return; // Only owner sends the full document state!
+
       const api = apiRef.current;
       if (!api) return;
 
@@ -157,7 +179,7 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
     return () => {
       socket.off("new-user", handleNewUser);
     };
-  }, [socket, isCollaborating, roomId, apiRef]);
+  }, [socket, isCollaborating, roomId, apiRef, isRoomOwner]);
 
   return { broadcastDrawingChanges, broadcastPointer };
 };

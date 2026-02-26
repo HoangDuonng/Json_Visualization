@@ -260,7 +260,8 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     // Handle new users joining to send them the current state
     newSocket.on("new-user", () => {
-      // It's okay to send the full state for synchronization of newly joined users
+      if (!isRoomOwnerRef.current) return; // Only owner sends the full document state!
+
       const stateUpdate = Y.encodeStateAsUpdate(newDoc);
       newSocket.emit("server-broadcast", newRoomId, stateUpdate);
     });
