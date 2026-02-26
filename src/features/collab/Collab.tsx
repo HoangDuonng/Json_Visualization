@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { Modal } from "antd";
 import { io } from "socket.io-client";
 import type { Socket } from "socket.io-client";
 import * as Y from "yjs";
@@ -156,7 +157,11 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       } else {
         newSocket.disconnect();
         resetConnectionState();
-        alert(msg);
+        Modal.error({
+          title: "Connection Error",
+          content: msg,
+          centered: true,
+        });
       }
     });
 
@@ -174,7 +179,11 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setWaitingForApproval(false);
       newSocket.disconnect();
       resetConnectionState();
-      alert("The room owner rejected your request to join.");
+      Modal.info({
+        title: "Join Rejected",
+        content: "The room owner rejected your request to join.",
+        centered: true,
+      });
     });
 
     newSocket.on("join-request", (payload: JoinRequest) => {
@@ -208,7 +217,11 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       if (!isRoomOwnerRef.current && clients.length > MAX_COLLABORATORS_PER_ROOM) {
         newSocket.disconnect();
         resetConnectionState();
-        alert(`Room is full. Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`);
+        Modal.warning({
+          title: "Room is full",
+          content: `Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`,
+          centered: true,
+        });
         return;
       }
 
@@ -218,13 +231,21 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     newSocket.on("room-full", () => {
       newSocket.disconnect();
       resetConnectionState();
-      alert(`Room is full. Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`);
+      Modal.warning({
+        title: "Room is full",
+        content: `Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`,
+        centered: true,
+      });
     });
 
     newSocket.on("kicked-from-room", (msg?: string) => {
       newSocket.disconnect();
       resetConnectionState();
-      alert(msg || "You were removed from this room by the room owner.");
+      Modal.warning({
+        title: "Kicked from room",
+        content: msg || "You were removed from this room by the room owner.",
+        centered: true,
+      });
     });
 
     newSocket.on("disconnect", () => {
