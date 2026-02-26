@@ -93,6 +93,11 @@ export const JsonDrawView = () => {
     kickCollaborator,
     passwordRequiredRoom,
     setPasswordRequiredRoom,
+    waitingForApproval,
+    pendingRequests,
+    approveJoin,
+    rejectJoin,
+    submitRoomPassword,
   } = useCollab();
   const [showCollabModal, setShowCollabModal] = React.useState(false);
   const [collabPasswordInput, setCollabPasswordInput] = React.useState("");
@@ -396,6 +401,15 @@ export const JsonDrawView = () => {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, [handleShareLinkFromHash]);
 
+  const prevPendingRequestsLength = React.useRef(pendingRequests?.length || 0);
+  React.useEffect(() => {
+    if (pendingRequests && pendingRequests.length > prevPendingRequestsLength.current) {
+      const latestReq = pendingRequests[pendingRequests.length - 1];
+      toast(`${latestReq.username} wants to join the room!`, { icon: "👋" });
+    }
+    prevPendingRequestsLength.current = pendingRequests?.length || 0;
+  }, [pendingRequests]);
+
   const handleClearDrawing = React.useCallback(() => {
     if (!jsonDrawAPIRef.current) return;
 
@@ -454,11 +468,11 @@ export const JsonDrawView = () => {
 
   const handleJoinWithPassword = React.useCallback(() => {
     if (passwordRequiredRoom) {
-      startCollaboration(passwordRequiredRoom, joinPasswordInput, { asOwner: false });
+      submitRoomPassword(joinPasswordInput);
       setPasswordRequiredRoom(null);
       setJoinPasswordInput("");
     }
-  }, [passwordRequiredRoom, joinPasswordInput, startCollaboration, setPasswordRequiredRoom]);
+  }, [passwordRequiredRoom, joinPasswordInput, submitRoomPassword, setPasswordRequiredRoom]);
 
   const handleCancelJoin = React.useCallback(() => {
     setPasswordRequiredRoom(null);
@@ -605,6 +619,32 @@ export const JsonDrawView = () => {
         </Stack>
       </Modal>
 
+      {/* Waiting for Approval Modal */}
+      <Modal
+        opened={waitingForApproval}
+        onClose={() => {}}
+        withCloseButton={false}
+        centered
+        size="sm"
+        radius="lg"
+        padding="xl"
+        styles={{
+          content: {
+            backgroundColor: darkmodeEnabled ? "#121212" : "#ffffff",
+          },
+        }}
+      >
+        <Stack gap="md" align="center">
+          <Text fw={700} size="lg" style={{ fontFamily: "Assistant, sans-serif" }}>
+            Waiting for Approval
+          </Text>
+          <HamsterLoader />
+          <Text size="sm" c="dimmed" ta="center">
+            Please wait while the room owner approves your request to join...
+          </Text>
+        </Stack>
+      </Modal>
+
       {/* Password Required Modal */}
       <Modal
         opened={!!passwordRequiredRoom}
@@ -744,6 +784,55 @@ export const JsonDrawView = () => {
                   Copy
                 </Button>
               </Box>
+
+              {pendingRequests && pendingRequests.length > 0 && (
+                <Box
+                  style={{
+                    marginTop: 12,
+                    borderRadius: 8,
+                    padding: 10,
+                    background: darkmodeEnabled ? "rgba(255,165,0,0.1)" : "#fff5e6",
+                    border: `1px solid ${darkmodeEnabled ? "rgba(255,165,0,0.3)" : "#ffe0b2"}`,
+                  }}
+                >
+                  <Text size="xs" c="orange" fw={600} mb={8}>
+                    Pending Requests ({pendingRequests.length})
+                  </Text>
+                  <Stack gap={6}>
+                    {pendingRequests.map(req => (
+                      <Group key={req.userId} justify="space-between" wrap="nowrap">
+                        <Group gap={8}>
+                          <Box
+                            w={10}
+                            h={10}
+                            style={{ borderRadius: "50%", background: req.color || "#ccc" }}
+                          />
+                          <Text size="sm" fw={500} truncate>
+                            {req.username}
+                          </Text>
+                        </Group>
+                        <Group gap={4}>
+                          <Button
+                            size="compact-xs"
+                            color="teal"
+                            onClick={() => approveJoin(req.userId)}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            size="compact-xs"
+                            color="red"
+                            variant="subtle"
+                            onClick={() => rejectJoin(req.userId)}
+                          >
+                            Reject
+                          </Button>
+                        </Group>
+                      </Group>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
 
               <Box
                 style={{

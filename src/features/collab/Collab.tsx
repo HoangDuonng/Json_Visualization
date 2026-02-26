@@ -29,6 +29,12 @@ interface JoinSuccessPayload {
   userId?: string;
 }
 
+export interface JoinRequest {
+  userId: string;
+  username: string;
+  color?: string;
+}
+
 interface CollabContextType {
   socket: Socket | null;
   roomId: string | null;
@@ -46,6 +52,12 @@ interface CollabContextType {
   kickCollaborator: (collaboratorId: string) => void;
   passwordRequiredRoom: string | null;
   setPasswordRequiredRoom: (roomId: string | null) => void;
+
+  waitingForApproval: boolean;
+  pendingRequests: JoinRequest[];
+  approveJoin: (userId: string) => void;
+  rejectJoin: (userId: string) => void;
+  submitRoomPassword: (password: string) => void;
 }
 
 const CollabContext = createContext<CollabContextType | null>(null);
@@ -66,6 +78,9 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
   const [passwordRequiredRoom, setPasswordRequiredRoom] = useState<string | null>(null);
+
+  const [waitingForApproval, setWaitingForApproval] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState<JoinRequest[]>([]);
 
   const { json, setJson } = useJson();
 
@@ -91,6 +106,8 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     currentUserIdRef.current = null;
     setIsRoomOwner(false);
     isRoomOwnerRef.current = false;
+    setWaitingForApproval(false);
+    setPendingRequests([]);
   };
 
   // Start collaboration session
@@ -124,18 +141,44 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const ownId = newSocket.id ?? null;
       setCurrentUserId(ownId);
       currentUserIdRef.current = ownId;
-      newSocket.emit("join-room", newRoomId, password);
+
+      if (ownerByClientIntent) {
+        newSocket.emit("join-room", newRoomId, password);
+      } else {
+        newSocket.emit("request-join", newRoomId);
+      }
     });
 
     newSocket.on("collab-error", (msg: string) => {
-      newSocket.disconnect();
-      resetConnectionState();
-
       if (msg === "Invalid room password") {
         setPasswordRequiredRoom(newRoomId);
+        // Do not disconnect so user can submit password and stay in the same socket session
       } else {
+        newSocket.disconnect();
+        resetConnectionState();
         alert(msg);
       }
+    });
+
+    newSocket.on("waiting-for-approval", () => {
+      setWaitingForApproval(true);
+    });
+
+    newSocket.on("join-approved", () => {
+      setWaitingForApproval(false);
+      // Now actually join the room; if password required, backend will send 'collab-error' 'Invalid room password'
+      newSocket.emit("join-room", newRoomId, password);
+    });
+
+    newSocket.on("join-rejected", () => {
+      setWaitingForApproval(false);
+      newSocket.disconnect();
+      resetConnectionState();
+      alert("The room owner rejected your request to join.");
+    });
+
+    newSocket.on("join-request", (payload: JoinRequest) => {
+      setPendingRequests(prev => [...prev, payload]);
     });
 
     newSocket.on("join-success", (payload?: JoinSuccessPayload) => {
@@ -221,6 +264,26 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     socketRef.current.emit("kick-user", roomId, collaboratorId);
   };
 
+  const approveJoin = (userId: string) => {
+    if (socketRef.current && roomId && isRoomOwnerRef.current) {
+      socketRef.current.emit("approve-join", roomId, userId);
+      setPendingRequests(prev => prev.filter(req => req.userId !== userId));
+    }
+  };
+
+  const rejectJoin = (userId: string) => {
+    if (socketRef.current && roomId && isRoomOwnerRef.current) {
+      socketRef.current.emit("reject-join", roomId, userId);
+      setPendingRequests(prev => prev.filter(req => req.userId !== userId));
+    }
+  };
+
+  const submitRoomPassword = (password: string) => {
+    if (socketRef.current && roomId) {
+      socketRef.current.emit("join-room", roomId, password);
+    }
+  };
+
   const stopCollaboration = () => {
     if (socketRef.current) {
       socketRef.current.disconnect();
@@ -296,6 +359,11 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         kickCollaborator,
         passwordRequiredRoom,
         setPasswordRequiredRoom,
+        waitingForApproval,
+        pendingRequests,
+        approveJoin,
+        rejectJoin,
+        submitRoomPassword,
       }}
     >
       {children}
