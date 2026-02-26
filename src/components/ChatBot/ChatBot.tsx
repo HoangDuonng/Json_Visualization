@@ -224,6 +224,19 @@ const StyledHeader = styled.div`
   gap: 2px;
 `;
 
+const StyledHeaderTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const StyledHeaderBottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+`;
+
 const StyledTitle = styled(Text)`
   font-size: 1rem;
   font-weight: 600;
@@ -233,6 +246,19 @@ const StyledTitle = styled(Text)`
 const StyledSubtitle = styled(Text)`
   font-size: 0.8rem;
   color: #6b7280;
+`;
+
+const StyledCreditLink = styled.a`
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #6b7280;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: #111111;
+    text-decoration: underline;
+  }
 `;
 
 interface Message {
@@ -392,8 +418,19 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
       radius="md"
       title={
         <StyledHeader>
-          <StyledTitle>JsonViz Assistant</StyledTitle>
-          <StyledSubtitle>Ask about formatting, queries, conversions, or exports.</StyledSubtitle>
+          <StyledHeaderTop>
+            <StyledTitle>JsonViz Assistant</StyledTitle>
+          </StyledHeaderTop>
+          <StyledHeaderBottom>
+            <StyledSubtitle>Ask about formatting, queries, conversions, or exports.</StyledSubtitle>
+            <StyledCreditLink
+              href="https://github.com/ThinhPhoenix"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              made by thinhphoenix
+            </StyledCreditLink>
+          </StyledHeaderBottom>
         </StyledHeader>
       }
       styles={{
