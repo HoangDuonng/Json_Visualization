@@ -21,16 +21,16 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "@jsondraw/common": ["./src/jsondraw/packages/common"],
-      "@jsondraw/common/*": ["./src/jsondraw/packages/common/*"],
-      "@jsondraw/math": ["./src/jsondraw/packages/math"],
-      "@jsondraw/math/*": ["./src/jsondraw/packages/math/*"],
-      "@jsondraw/element": ["./src/jsondraw/packages/element"],
-      "@jsondraw/element/*": ["./src/jsondraw/packages/element/*"],
-      "@jsondraw/jsondraw": ["./src/jsondraw/packages/jsondraw"],
-      "@jsondraw/jsondraw/*": ["./src/jsondraw/packages/jsondraw/*"],
-      "@jsondraw/utils": ["./src/jsondraw/packages/utils"],
-      "@jsondraw/utils/*": ["./src/jsondraw/packages/utils/*"]
+      "@jsondraw/common": ["./src/jsondraw/common"],
+      "@jsondraw/common/*": ["./src/jsondraw/common/*"],
+      "@jsondraw/math": ["./src/jsondraw/math"],
+      "@jsondraw/math/*": ["./src/jsondraw/math/*"],
+      "@jsondraw/element": ["./src/jsondraw/element"],
+      "@jsondraw/element/*": ["./src/jsondraw/element/*"],
+      "@jsondraw/jsondraw": ["./src/jsondraw/engine"],
+      "@jsondraw/jsondraw/*": ["./src/jsondraw/engine/*"],
+      "@jsondraw/utils": ["./src/jsondraw/utils"],
+      "@jsondraw/utils/*": ["./src/jsondraw/utils/*"]
     },
     "typeRoots": [
       "types"

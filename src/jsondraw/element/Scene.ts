@@ -1,5 +1,3 @@
-import throttle from "lodash.throttle";
-
 import {
   randomInteger,
   arrayToMap,
@@ -8,20 +6,13 @@ import {
   isTestEnv,
   toArray,
 } from "@jsondraw/common";
+import type { Assert, Mutable, SameType } from "@jsondraw/common/utility-types";
 import { isNonDeletedElement } from "@jsondraw/element";
 import { isFrameLikeElement } from "@jsondraw/element";
 import { getElementsInGroup } from "@jsondraw/element";
-
-import {
-  syncInvalidIndices,
-  syncMovedIndices,
-  validateFractionalIndices,
-} from "@jsondraw/element";
-
+import { syncInvalidIndices, syncMovedIndices, validateFractionalIndices } from "@jsondraw/element";
 import { getSelectedElements } from "@jsondraw/element";
-
 import { mutateElement, type ElementUpdate } from "@jsondraw/element";
-
 import type {
   JsonDrawElement,
   NonDeletedJsonDrawElement,
@@ -33,32 +24,21 @@ import type {
   OrderedJsonDrawElement,
   Ordered,
 } from "@jsondraw/element/types";
-
-import type {
-  Assert,
-  Mutable,
-  SameType,
-} from "@jsondraw/common/utility-types";
-
-import type { AppState } from "../../jsondraw/types";
+import type { AppState } from "@jsondraw/jsondraw/types";
+import throttle from "lodash.throttle";
 
 type SceneStateCallback = () => void;
 type SceneStateCallbackRemover = () => void;
 
 type SelectionHash = string & { __brand: "selectionHash" };
 
-const getNonDeletedElements = <T extends JsonDrawElement>(
-  allElements: readonly T[],
-) => {
+const getNonDeletedElements = <T extends JsonDrawElement>(allElements: readonly T[]) => {
   const elementsMap = new Map() as NonDeletedSceneElementsMap;
   const elements: T[] = [];
   for (const element of allElements) {
     if (!element.isDeleted) {
       elements.push(element as NonDeleted<T>);
-      elementsMap.set(
-        element.id,
-        element as Ordered<NonDeletedJsonDrawElement>,
-      );
+      elementsMap.set(element.id, element as Ordered<NonDeletedJsonDrawElement>);
     }
   }
   return { elementsMap, elements };
@@ -75,11 +55,11 @@ const validateIndicesThrottled = throttle(
     }
   },
   1000 * 60,
-  { leading: true, trailing: false },
+  { leading: true, trailing: false }
 );
 
 const hashSelectionOpts = (
-  opts: Parameters<InstanceType<typeof Scene>["getSelectedElements"]>[0],
+  opts: Parameters<InstanceType<typeof Scene>["getSelectedElements"]>[0]
 ) => {
   const keys = ["includeBoundTextElement", "includeElementsInFrames"] as const;
 
@@ -88,10 +68,7 @@ const hashSelectionOpts = (
   // just to ensure we're hashing all expected keys
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type _ = Assert<
-    SameType<
-      Required<HashableKeys>,
-      Pick<Required<HashableKeys>, typeof keys[number]>
-    >
+    SameType<Required<HashableKeys>, Pick<Required<HashableKeys>, (typeof keys)[number]>>
   >;
 
   let hash = "";
@@ -112,15 +89,11 @@ export class Scene {
 
   private callbacks: Set<SceneStateCallback> = new Set();
 
-  private nonDeletedElements: readonly Ordered<NonDeletedJsonDrawElement>[] =
-    [];
-  private nonDeletedElementsMap = toBrandedType<NonDeletedSceneElementsMap>(
-    new Map(),
-  );
+  private nonDeletedElements: readonly Ordered<NonDeletedJsonDrawElement>[] = [];
+  private nonDeletedElementsMap = toBrandedType<NonDeletedSceneElementsMap>(new Map());
   // ideally all elements within the scene should be wrapped around with `Ordered` type, but right now there is no real benefit doing so
   private elements: readonly OrderedJsonDrawElement[] = [];
-  private nonDeletedFramesLikes: readonly NonDeleted<JsonDrawFrameLikeElement>[] =
-    [];
+  private nonDeletedFramesLikes: readonly NonDeleted<JsonDrawFrameLikeElement>[] = [];
   private frames: readonly JsonDrawFrameLikeElement[] = [];
   private elementsMap = toBrandedType<SceneElementsMap>(new Map());
   private selectedElementsCache: {
@@ -168,7 +141,7 @@ export class Scene {
     elements: ElementsMapOrArray | null = null,
     options?: {
       skipValidation?: true;
-    },
+    }
   ) {
     if (elements) {
       this.replaceAllElements(elements, options);
@@ -208,7 +181,7 @@ export class Scene {
     const selectedElements = getSelectedElements(
       elements,
       { selectedElementIds: opts.selectedElementIds },
-      opts,
+      opts
     );
 
     // cache only if we're not using custom elements
@@ -229,9 +202,7 @@ export class Scene {
     return (this.elementsMap.get(id) as T | undefined) || null;
   }
 
-  getNonDeletedElement(
-    id: JsonDrawElement["id"],
-  ): NonDeleted<JsonDrawElement> | null {
+  getNonDeletedElement(id: JsonDrawElement["id"]): NonDeleted<JsonDrawElement> | null {
     const element = this.getElement(id);
     if (element && isNonDeletedElement(element)) {
       return element;
@@ -251,11 +222,9 @@ export class Scene {
    *
    * @returns whether a change was made
    */
-  mapElements(
-    iteratee: (element: JsonDrawElement) => JsonDrawElement,
-  ): boolean {
+  mapElements(iteratee: (element: JsonDrawElement) => JsonDrawElement): boolean {
     let didChange = false;
-    const newElements = this.elements.map((element) => {
+    const newElements = this.elements.map(element => {
       const nextElement = iteratee(element);
       if (nextElement !== element) {
         didChange = true;
@@ -272,7 +241,7 @@ export class Scene {
     nextElements: ElementsMapOrArray,
     options?: {
       skipValidation?: true;
-    },
+    }
   ) {
     // we do trust the insertion order on the map, though maybe we shouldn't and should prefer order defined by fractional indices
     const _nextElements = toArray(nextElements);
@@ -284,7 +253,7 @@ export class Scene {
 
     this.elements = syncInvalidIndices(_nextElements);
     this.elementsMap.clear();
-    this.elements.forEach((element) => {
+    this.elements.forEach(element => {
       if (isFrameLikeElement(element)) {
         nextFrameLikes.push(element);
       }
@@ -340,16 +309,10 @@ export class Scene {
 
   insertElementAtIndex(element: JsonDrawElement, index: number) {
     if (!Number.isFinite(index) || index < 0) {
-      throw new Error(
-        "insertElementAtIndex can only be called with index >= 0",
-      );
+      throw new Error("insertElementAtIndex can only be called with index >= 0");
     }
 
-    const nextElements = [
-      ...this.elements.slice(0, index),
-      element,
-      ...this.elements.slice(index),
-    ];
+    const nextElements = [...this.elements.slice(0, index), element, ...this.elements.slice(index)];
 
     syncMovedIndices(nextElements, arrayToMap([element]));
 
@@ -362,9 +325,7 @@ export class Scene {
     }
 
     if (!Number.isFinite(index) || index < 0) {
-      throw new Error(
-        "insertElementAtIndex can only be called with index >= 0",
-      );
+      throw new Error("insertElementAtIndex can only be called with index >= 0");
     }
 
     const nextElements = [
@@ -379,9 +340,7 @@ export class Scene {
   }
 
   insertElement = (element: JsonDrawElement) => {
-    const index = element.frameId
-      ? this.getElementIndex(element.frameId)
-      : this.elements.length;
+    const index = element.frameId ? this.getElementIndex(element.frameId) : this.elements.length;
 
     this.insertElementAtIndex(element, index);
   };
@@ -399,7 +358,7 @@ export class Scene {
   };
 
   getElementIndex(elementId: string) {
-    return this.elements.findIndex((element) => element.id === elementId);
+    return this.elements.findIndex(element => element.id === elementId);
   }
 
   getContainerElement = (
@@ -407,7 +366,7 @@ export class Scene {
       | (JsonDrawElement & {
           containerId: JsonDrawElement["id"] | null;
         })
-      | null,
+      | null
   ) => {
     if (!element) {
       return null;
@@ -441,17 +400,12 @@ export class Scene {
     } = {
       informMutation: true,
       isDragging: false,
-    },
+    }
   ) {
     const elementsMap = this.getNonDeletedElementsMap();
 
     const { version: prevVersion } = element;
-    const { version: nextVersion } = mutateElement(
-      element,
-      elementsMap,
-      updates,
-      options,
-    );
+    const { version: nextVersion } = mutateElement(element, elementsMap, updates, options);
 
     if (
       // skip if the element is not in the scene (i.e. selection)

@@ -41,11 +41,11 @@ const config = {
     // JsonDraw internal package aliases (local source)
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@jsondraw/common": path.resolve(__dirname, "src/jsondraw/packages/common"),
-      "@jsondraw/math": path.resolve(__dirname, "src/jsondraw/packages/math"),
-      "@jsondraw/element": path.resolve(__dirname, "src/jsondraw/packages/element"),
-      "@jsondraw/jsondraw": path.resolve(__dirname, "src/jsondraw/packages/jsondraw"),
-      "@jsondraw/utils": path.resolve(__dirname, "src/jsondraw/packages/utils"),
+      "@jsondraw/common": path.resolve(__dirname, "src/jsondraw/common"),
+      "@jsondraw/math": path.resolve(__dirname, "src/jsondraw/math"),
+      "@jsondraw/element": path.resolve(__dirname, "src/jsondraw/element"),
+      "@jsondraw/jsondraw": path.resolve(__dirname, "src/jsondraw/engine"),
+      "@jsondraw/utils": path.resolve(__dirname, "src/jsondraw/utils"),
     };
 
     // Shim import.meta.env for JsonDraw source (Vite → Next.js)

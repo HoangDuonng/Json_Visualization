@@ -1,10 +1,6 @@
 import { useEffect, useRef } from "react";
-// Import reconcile utilities from the local JsonDraw package
-import {
-  getSceneVersion,
-  reconcileElements,
-  restoreElements,
-} from "../../jsondraw/packages/jsondraw";
+// Import reconcile utilities from the JsonDraw drawing engine
+import { getSceneVersion, reconcileElements, restoreElements } from "../../jsondraw";
 import { useCollab } from "./Collab";
 
 // Define the shape of our JsonDraw API reference

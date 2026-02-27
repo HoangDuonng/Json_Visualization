@@ -7,7 +7,7 @@ import { Space } from "react-zoomable-ui";
 import { Canvas } from "reaflow";
 import type { ElkRoot } from "reaflow";
 import { useLongPress } from "use-long-press";
-import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
+import { HamsterLoader } from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
 import { CustomEdge } from "./CustomEdge";
 import { CustomNode } from "./CustomNode";

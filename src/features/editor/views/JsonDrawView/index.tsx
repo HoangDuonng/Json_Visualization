@@ -26,12 +26,7 @@ import {
   FiKey,
   FiUserX,
 } from "react-icons/fi";
-import HamsterLoader from "../../../../jsondraw/packages/jsondraw/components/ui/HamsterLoader";
-import { saveAsJSON } from "../../../../jsondraw/packages/jsondraw/data";
-import {
-  restoreAppState,
-  restoreElements,
-} from "../../../../jsondraw/packages/jsondraw/data/restore";
+import { HamsterLoader, saveAsJSON, restoreAppState, restoreElements } from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
 import { useCollab } from "../../../collab/Collab";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
