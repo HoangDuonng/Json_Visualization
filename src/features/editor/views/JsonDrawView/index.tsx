@@ -500,6 +500,13 @@ export const JsonDrawView = () => {
     }
   }, [setPasswordRequiredRoom]);
 
+  const handleCancelWait = React.useCallback(() => {
+    stopCollaboration();
+    if (typeof window !== "undefined") {
+      window.location.hash = "";
+    }
+  }, [stopCollaboration]);
+
   const getCollabShareUrl = () => {
     if (typeof window !== "undefined" && activeRoomId) {
       const url = new URL(window.location.href);
@@ -640,7 +647,7 @@ export const JsonDrawView = () => {
       {/* Waiting for Approval Modal */}
       <Modal
         opened={waitingForApproval}
-        onClose={() => {}}
+        onClose={handleCancelWait}
         withCloseButton={false}
         centered
         size="sm"
@@ -660,62 +667,9 @@ export const JsonDrawView = () => {
           <Text size="sm" c="dimmed" ta="center">
             Please wait while the room owner approves your request to join...
           </Text>
-        </Stack>
-      </Modal>
-
-      {/* Password Required Modal */}
-      <Modal
-        opened={!!passwordRequiredRoom}
-        onClose={handleCancelJoin}
-        title={
-          <Text fw={700} size="xl" style={{ fontFamily: "Assistant, sans-serif" }}>
-            Room Password Required
-          </Text>
-        }
-        centered
-        size="md"
-        radius="lg"
-        padding="xl"
-        styles={{
-          content: {
-            backgroundColor: darkmodeEnabled ? "#121212" : "#ffffff",
-          },
-        }}
-      >
-        <Stack gap="md">
-          <Text size="sm" c="dimmed">
-            This live collaboration room is protected by a password. Please enter the password to
-            join.
-          </Text>
-
-          <PasswordInput
-            label="Password"
-            placeholder="Enter room password"
-            value={joinPasswordInput}
-            onChange={e => setJoinPasswordInput(e.currentTarget.value)}
-            leftSection={<FiKey size={14} />}
-            styles={{
-              input: {
-                backgroundColor: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f3f4f6",
-                border: "none",
-              },
-            }}
-            data-autofocus
-            onKeyDown={e => {
-              if (e.key === "Enter") {
-                handleJoinWithPassword();
-              }
-            }}
-          />
-
-          <Box style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: 10 }}>
-            <Button variant="default" onClick={handleCancelJoin}>
-              Cancel
-            </Button>
-            <Button color="blue" onClick={handleJoinWithPassword}>
-              Join Room
-            </Button>
-          </Box>
+          <Button variant="default" onClick={handleCancelWait} fullWidth mt="sm">
+            Cancel
+          </Button>
         </Stack>
       </Modal>
 
@@ -783,7 +737,7 @@ export const JsonDrawView = () => {
         message={
           <>
             Joining this room will <strong>permanently replace your existing content</strong> with
-            the room's content. You can back up your drawing first by using the option below.
+            the room&apos;s content. You can back up your drawing first by using the option below.
           </>
         }
         onReplace={() => {
