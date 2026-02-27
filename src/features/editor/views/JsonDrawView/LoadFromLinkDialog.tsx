@@ -82,6 +82,8 @@ interface LoadFromLinkDialogProps {
   onReplace: () => void;
   onClose: () => void;
   onSaveToDisk: () => void;
+  title?: React.ReactNode;
+  message?: React.ReactNode;
 }
 
 export const LoadFromLinkDialog: React.FC<LoadFromLinkDialogProps> = ({
@@ -90,6 +92,8 @@ export const LoadFromLinkDialog: React.FC<LoadFromLinkDialogProps> = ({
   onReplace,
   onClose,
   onSaveToDisk,
+  title,
+  message,
 }) => {
   return (
     <Modal
@@ -121,7 +125,7 @@ export const LoadFromLinkDialog: React.FC<LoadFromLinkDialogProps> = ({
             color: darkMode ? "#e5e5e5" : "#111827",
           }}
         >
-          Load from link
+          {title || "Load from link"}
         </Text>
 
         {/* Warning Banner + Replace Button */}
@@ -130,8 +134,12 @@ export const LoadFromLinkDialog: React.FC<LoadFromLinkDialogProps> = ({
             <FiAlertTriangle />
           </IconWrapper>
           <WarningText $dark={darkMode}>
-            Loading external drawing will <strong>replace your existing content</strong>. You can
-            back up your drawing first by using one of the options below.
+            {message || (
+              <>
+                Loading external drawing will <strong>replace your existing content</strong>. You
+                can back up your drawing first by using one of the options below.
+              </>
+            )}
           </WarningText>
           <Button color="red" size="md" onClick={onReplace} style={{ flexShrink: 0 }}>
             Replace my content

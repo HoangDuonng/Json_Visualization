@@ -102,6 +102,7 @@ export const JsonDrawView = () => {
   const [showCollabModal, setShowCollabModal] = React.useState(false);
   const [collabPasswordInput, setCollabPasswordInput] = React.useState("");
   const [joinPasswordInput, setJoinPasswordInput] = React.useState("");
+  const [pendingCollabRoomId, setPendingCollabRoomId] = React.useState<string | null>(null);
 
   // Load from link dialog states
   const [showLoadFromLinkDialog, setShowLoadFromLinkDialog] = React.useState(false);
@@ -160,7 +161,24 @@ export const JsonDrawView = () => {
       const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
       const rId = hashParams.get("collabRoomId");
       if (rId && !activeRoomId) {
-        startCollaboration(rId, undefined, { asOwner: false });
+        let hasContent = false;
+        const saved = localStorage.getItem("jsondraw-autosave");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed.elements) && parsed.elements.length > 0) {
+              hasContent = true;
+            }
+          } catch (e) {
+            hasContent = true;
+          }
+        }
+
+        if (hasContent) {
+          setPendingCollabRoomId(rId);
+        } else {
+          startCollaboration(rId, undefined, { asOwner: false });
+        }
       }
     }
   }, []);
@@ -700,6 +718,83 @@ export const JsonDrawView = () => {
           </Box>
         </Stack>
       </Modal>
+
+      {/* Password Required Modal */}
+      <Modal
+        opened={!!passwordRequiredRoom}
+        onClose={handleCancelJoin}
+        title={
+          <Text fw={700} size="xl" style={{ fontFamily: "Assistant, sans-serif" }}>
+            Room Password Required
+          </Text>
+        }
+        centered
+        size="md"
+        radius="lg"
+        padding="xl"
+        styles={{
+          content: {
+            backgroundColor: darkmodeEnabled ? "#121212" : "#ffffff",
+          },
+        }}
+      >
+        <Stack gap="md">
+          <Text size="sm" c="dimmed">
+            This live collaboration room is protected by a password. Please enter the password to
+            join.
+          </Text>
+
+          <PasswordInput
+            label="Password"
+            placeholder="Enter room password"
+            value={joinPasswordInput}
+            onChange={e => setJoinPasswordInput(e.currentTarget.value)}
+            leftSection={<FiKey size={14} />}
+            styles={{
+              input: {
+                backgroundColor: darkmodeEnabled ? "rgba(255,255,255,0.05)" : "#f3f4f6",
+                border: "none",
+              },
+            }}
+            data-autofocus
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                handleJoinWithPassword();
+              }
+            }}
+          />
+
+          <Box style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: 10 }}>
+            <Button variant="default" onClick={handleCancelJoin}>
+              Cancel
+            </Button>
+            <Button color="blue" onClick={handleJoinWithPassword}>
+              Join Room
+            </Button>
+          </Box>
+        </Stack>
+      </Modal>
+
+      {/* Collab Overwrite Warning Modal */}
+      <LoadFromLinkDialog
+        opened={!!pendingCollabRoomId}
+        darkMode={darkmodeEnabled}
+        title="Join Collaborative Room"
+        message={
+          <>
+            Joining this room will <strong>permanently replace your existing content</strong> with
+            the room's content. You can back up your drawing first by using the option below.
+          </>
+        }
+        onReplace={() => {
+          if (pendingCollabRoomId) {
+            startCollaboration(pendingCollabRoomId, undefined, { asOwner: false });
+            setPendingCollabRoomId(null);
+          }
+        }}
+        onClose={() => setPendingCollabRoomId(null)}
+        onSaveToDisk={handleSaveToDisk}
+      />
 
       {/* Live Collab Modal */}
       <Modal
