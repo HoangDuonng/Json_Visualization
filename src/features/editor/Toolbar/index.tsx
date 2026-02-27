@@ -10,7 +10,6 @@ import { FaGithub } from "react-icons/fa6";
 import { ViewMode } from "../../../constants/enumData";
 import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
 import useGraph from "../views/GraphView/stores/useGraph";
-import { FileMenu } from "./FileMenu";
 import { ThemeToggle } from "./ThemeToggle";
 import { ToolsMenu } from "./ToolsMenu";
 import { ViewMenu } from "./ViewMenu";
@@ -82,7 +81,6 @@ export const Toolbar = () => {
             <JSONCrackLogo fontSize="14px" hideLogo />
           </Flex>
         </StyledToolElement>
-        <FileMenu />
         <ViewMenu />
         <ToolsMenu />
         <StyledToolElement title="Editor" $highlight={!isDrawView} onClick={handleEditorClick}>

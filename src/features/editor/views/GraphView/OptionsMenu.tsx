@@ -4,9 +4,10 @@ import { useHotkeys } from "@mantine/hooks";
 import styled from "styled-components";
 import { event as gaEvent } from "nextjs-google-analytics";
 import { BsCheck2 } from "react-icons/bs";
-import { LuChevronRight, LuImageDown, LuMenu } from "react-icons/lu";
+import { LuChevronRight, LuImageDown, LuMenu, LuUpload, LuDownload } from "react-icons/lu";
 import { TiFlowMerge } from "react-icons/ti";
 import useConfig from "../../../../store/useConfig";
+import useFile from "../../../../store/useFile";
 import { useModal } from "../../../../store/useModal";
 import type { LayoutDirection } from "../../../../types/graph";
 import useGraph from "./stores/useGraph";
@@ -39,7 +40,20 @@ export const OptionsMenu = () => {
   const setDirection = useGraph(state => state.setDirection);
   const direction = useGraph(state => state.direction);
   const setVisible = useModal(state => state.setVisible);
+  const getContents = useFile(state => state.getContents);
+  const getFormat = useFile(state => state.getFormat);
   const [coreKey, setCoreKey] = React.useState("CTRL");
+
+  const handleSave = () => {
+    const a = document.createElement("a");
+    const file = new Blob([getContents()], { type: "text/plain" });
+
+    a.href = window.URL.createObjectURL(file);
+    a.download = `json-visualization.${getFormat()}`;
+    a.click();
+
+    gaEvent("save_file", { label: getFormat() });
+  };
 
   const toggleDirection = () => {
     const nextDirection = getNextDirection(direction || "RIGHT");
@@ -84,6 +98,16 @@ export const OptionsMenu = () => {
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
+          <Menu.Item
+            fz={12}
+            leftSection={<LuUpload color="gray" />}
+            onClick={() => setVisible("ImportModal", true)}
+          >
+            Import data
+          </Menu.Item>
+          <Menu.Item fz={12} leftSection={<LuDownload color="gray" />} onClick={handleSave}>
+            Export JSON
+          </Menu.Item>
           <Menu.Item
             leftSection={<LuImageDown color="gray" />}
             onClick={() => setVisible("DownloadModal", true)}
