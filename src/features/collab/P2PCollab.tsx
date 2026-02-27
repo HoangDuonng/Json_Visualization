@@ -9,14 +9,14 @@ import { selfId } from "trystero";
 import { MAX_COLLABORATORS_PER_ROOM } from "../../constants/enumData";
 import useJson from "../../store/useJson";
 import { COLLAB_ANIMALS, COLLAB_COLORS } from "./collabConstants";
-import { TRYSTERO_APP_ID, TRYSTERO_RELAY_URLS } from "./collabMode";
+import { P2P_APP_ID, P2P_RELAY_URLS } from "./collabMode";
 import type { CollaboratorUser, JoinRequest } from "./Collab";
 
 interface StartCollaborationOptions {
   asOwner?: boolean;
 }
 
-interface TrysteroCollabContextType {
+interface P2PCollabContextType {
   socket: Socket | null;
   roomId: string | null;
   isCollaborating: boolean;
@@ -40,19 +40,17 @@ interface TrysteroCollabContextType {
   rejectJoin: (userId: string) => void;
   submitRoomPassword: (password: string) => void;
 
-  // Internal Trystero room instance for advanced consumers (drawing sync, etc.)
-  _trysteroRoom: any | null;
+  // Internal P2P room instance for advanced consumers (drawing sync, etc.)
+  _p2pRoom: any | null;
   canSync: boolean;
 }
 
-const TrysteroCollabContext = createContext<TrysteroCollabContextType | null>(null);
+const P2PCollabContext = createContext<P2PCollabContextType | null>(null);
 
 const pickRandom = (items: string[]): string =>
   items[Math.floor(Math.random() * items.length)] || items[0];
 
-export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const P2PCollabProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isCollaborating, setIsCollaborating] = useState(false);
   const [collaborators, setCollaborators] = useState<CollaboratorUser[]>([]);
@@ -64,7 +62,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   const [pendingRequests, setPendingRequests] = useState<JoinRequest[]>([]);
   const [isApproved, setIsApproved] = useState(false);
 
-  const [trysteroRoom, setTrysteroRoom] = useState<any | null>(null);
+  const [p2pRoom, setP2pRoom] = useState<any | null>(null);
 
   const { json, setJson } = useJson();
 
@@ -94,7 +92,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
     setPasswordRequiredRoom(null);
     setWaitingForApproval(false);
     setPendingRequests([]);
-    setTrysteroRoom(null);
+    setP2pRoom(null);
     collaboratorsRef.current = new Map();
   };
 
@@ -117,7 +115,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
     password?: string,
     options?: StartCollaborationOptions
   ) => {
-    if (trysteroRoom) return;
+    if (p2pRoom) return;
 
     setIsCollaborating(true);
     setRoomId(newRoomId);
@@ -141,15 +139,15 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
     setDocState({ doc: newDoc, text: newText });
 
     const config: any = {
-      appId: TRYSTERO_APP_ID,
+      appId: P2P_APP_ID,
     };
 
-    if (TRYSTERO_RELAY_URLS.length > 0) {
-      config.relayUrls = TRYSTERO_RELAY_URLS;
+    if (P2P_RELAY_URLS.length > 0) {
+      config.relayUrls = P2P_RELAY_URLS;
     }
 
     const room = joinRoom(config, newRoomId);
-    setTrysteroRoom(room);
+    setP2pRoom(room);
 
     ensureSelfCollaborator(ownerByClientIntent);
 
@@ -348,8 +346,8 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   const stopCollaboration = () => {
-    if (trysteroRoom) {
-      trysteroRoom.leave();
+    if (p2pRoom) {
+      p2pRoom.leave();
     }
 
     resetConnectionState();
@@ -359,7 +357,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   const kickCollaborator = (collaboratorId: string) => {
-    if (!trysteroRoom || !roomId || !isRoomOwnerRef.current) {
+    if (!p2pRoom || !roomId || !isRoomOwnerRef.current) {
       return;
     }
 
@@ -367,7 +365,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
       return;
     }
 
-    const [sendKick] = trysteroRoom.makeAction("kick");
+    const [sendKick] = p2pRoom.makeAction("kick");
     void sendKick(
       { reason: "You were removed from this room by the room owner." },
       collaboratorId
@@ -378,11 +376,11 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   const approveJoin = (userId: string) => {
-    if (!trysteroRoom || !roomId || !isRoomOwnerRef.current) {
+    if (!p2pRoom || !roomId || !isRoomOwnerRef.current) {
       return;
     }
 
-    const [sendJoinResponse] = trysteroRoom.makeAction("jrsp");
+    const [sendJoinResponse] = p2pRoom.makeAction("jrsp");
     void sendJoinResponse(
       {
         approved: true,
@@ -395,11 +393,11 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   const rejectJoin = (userId: string) => {
-    if (!trysteroRoom || !roomId || !isRoomOwnerRef.current) {
+    if (!p2pRoom || !roomId || !isRoomOwnerRef.current) {
       return;
     }
 
-    const [sendJoinResponse] = trysteroRoom.makeAction("jrsp");
+    const [sendJoinResponse] = p2pRoom.makeAction("jrsp");
     void sendJoinResponse(
       {
         approved: false,
@@ -413,11 +411,11 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   const submitRoomPassword = (password: string) => {
-    if (!trysteroRoom || !roomId) {
+    if (!p2pRoom || !roomId) {
       return;
     }
 
-    const [sendPasswordCheck] = trysteroRoom.makeAction("pwchk");
+    const [sendPasswordCheck] = p2pRoom.makeAction("pwchk");
     const targetPeer = ownerPeerIdRef.current || null;
     void sendPasswordCheck({ password }, targetPeer);
   };
@@ -470,9 +468,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
     }
   }, [json, isCollaborating, yDoc, yText]);
 
-  // For Trystero mode, derive pending join requests from collaborators list on owner side.
-  // This ensures the UI always has a "Pending Requests" entry for each non-owner peer,
-  // even if a specific join-request action was missed.
+  // Derive pending join requests from collaborators list on owner side (safety net).
   useEffect(() => {
     if (!isRoomOwnerRef.current) return;
 
@@ -501,7 +497,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   }, [collaborators]);
 
   return React.createElement(
-    TrysteroCollabContext.Provider,
+    P2PCollabContext.Provider,
     {
       value: {
         socket: null,
@@ -521,7 +517,7 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
         approveJoin,
         rejectJoin,
         submitRoomPassword,
-        _trysteroRoom: trysteroRoom,
+        _p2pRoom: p2pRoom,
         canSync: isRoomOwner || isApproved,
       },
     },
@@ -529,10 +525,10 @@ export const TrysteroCollabProvider: React.FC<{ children: React.ReactNode }> = (
   );
 };
 
-export const useTrysteroCollab = () => {
-  const context = useContext(TrysteroCollabContext);
+export const useP2PCollab = () => {
+  const context = useContext(P2PCollabContext);
   if (!context) {
-    throw new Error("useTrysteroCollab must be used within a TrysteroCollabProvider");
+    throw new Error("useP2PCollab must be used within a P2PCollabProvider");
   }
   return context;
 };

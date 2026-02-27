@@ -7,7 +7,7 @@ import {
   CollabProvider as SocketCollabProvider,
   useCollab as useSocketCollab,
 } from "./Collab";
-import { TrysteroCollabProvider, useTrysteroCollab } from "./TrysteroCollab";
+import { P2PCollabProvider, useP2PCollab } from "./P2PCollab";
 
 export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const type = getCollabType();
@@ -16,7 +16,7 @@ export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return <SocketCollabProvider>{children}</SocketCollabProvider>;
   }
 
-  return <TrysteroCollabProvider>{children}</TrysteroCollabProvider>;
+  return <P2PCollabProvider>{children}</P2PCollabProvider>;
 };
 
 export const useCollab = () => {
@@ -26,6 +26,6 @@ export const useCollab = () => {
     return useSocketCollab();
   }
 
-  return useTrysteroCollab();
+  return useP2PCollab();
 };
 

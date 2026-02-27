@@ -30,7 +30,7 @@ export enum ViewMode {
 
 export enum CollabType {
   Socket = "socket",
-  Trystero = "trystero",
+  P2P = "p2p",
 }
 
 export const formats = [

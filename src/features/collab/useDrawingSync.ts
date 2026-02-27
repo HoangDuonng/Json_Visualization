@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import { CollabType } from "../../constants/enumData";
 // Import reconcile utilities from the JsonDraw drawing engine
 import { getSceneVersion, reconcileElements, restoreElements } from "../../jsondraw";
 import { useCollab } from "./CollabRoot";
 import { getCollabType } from "./collabMode";
+import { CollabType } from "../../constants/enumData";
 
 // Define the shape of our JsonDraw API reference
 interface JsonDrawAPI {
@@ -20,7 +20,7 @@ interface JsonDrawAPI {
 export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null>) => {
   const collab = useCollab() as any;
   const { socket, isCollaborating, roomId, collaborators, isRoomOwner } = collab;
-  const trysteroRoom = collab._trysteroRoom as any | null;
+  const p2pRoom = collab._p2pRoom as any | null;
   const canSync: boolean = typeof collab.canSync === "boolean" ? collab.canSync : true;
   const collabType = getCollabType();
 
@@ -46,7 +46,7 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
     const newMap = new Map();
     collaborators.forEach((user: any) => {
       if (socket && user.id === socket.id) return;
-      if (!socket && collabType === CollabType.Trystero && user.id === collab.currentUserId) {
+      if (!socket && collabType === CollabType.P2P && user.id === collab.currentUserId) {
         return;
       }
 
@@ -116,8 +116,8 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
       };
     }
 
-    if (collabType === CollabType.Trystero && trysteroRoom) {
-      const [sendDraw, getDraw] = trysteroRoom.makeAction("draw");
+    if (collabType === CollabType.P2P && p2pRoom) {
+      const [sendDraw, getDraw] = p2pRoom.makeAction("draw");
 
       const handleDraw = (remoteElements: any[]) => {
         const api = apiRef.current;
@@ -153,7 +153,7 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
         sendDrawRef.current = null;
       };
     }
-  }, [socket, isCollaborating, apiRef, isRoomOwner, collabType, trysteroRoom, roomId, canSync]);
+  }, [socket, isCollaborating, apiRef, isRoomOwner, collabType, p2pRoom, roomId, canSync]);
 
   // 2. Listen for remote pointers
   useEffect(() => {
@@ -192,8 +192,8 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
       };
     }
 
-    if (collabType === CollabType.Trystero && trysteroRoom) {
-      const [sendPointer, getPointer] = trysteroRoom.makeAction("pointer");
+    if (collabType === CollabType.P2P && p2pRoom) {
+      const [sendPointer, getPointer] = p2pRoom.makeAction("pointer");
 
       const handlePointer = (payload: any, peerId: string) => {
         const api = apiRef.current;
@@ -222,7 +222,7 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
         sendPointerRef.current = null;
       };
     }
-  }, [socket, isCollaborating, apiRef, collabType, trysteroRoom, roomId, canSync]);
+  }, [socket, isCollaborating, apiRef, collabType, p2pRoom, roomId, canSync]);
 
   // 3. Broadcast local drawing changes
   const broadcastDrawingChanges = (elements: any[]) => {
@@ -271,7 +271,7 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
       };
     }
 
-    if (collabType === CollabType.Trystero && trysteroRoom) {
+    if (collabType === CollabType.P2P && p2pRoom) {
       const handlePeerJoin = (peerId: string) => {
         const api = apiRef.current;
         if (!api) return;
@@ -279,17 +279,17 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
         const elements = api.getSceneElementsIncludingDeleted();
         if (elements.length === 0) return;
 
-        const [sendDraw] = trysteroRoom.makeAction("draw");
+        const [sendDraw] = p2pRoom.makeAction("draw");
         void sendDraw(elements, peerId);
       };
 
-      trysteroRoom.onPeerJoin(handlePeerJoin);
+      p2pRoom.onPeerJoin(handlePeerJoin);
 
       return () => {
-        trysteroRoom.onPeerJoin(() => {});
+        p2pRoom.onPeerJoin(() => {});
       };
     }
-  }, [socket, isCollaborating, roomId, apiRef, isRoomOwner, collabType, trysteroRoom, canSync]);
+  }, [socket, isCollaborating, roomId, apiRef, isRoomOwner, collabType, p2pRoom, canSync]);
 
   return { broadcastDrawingChanges, broadcastPointer };
 };
