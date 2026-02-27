@@ -172,11 +172,46 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
         if (user) {
           user.pointer = pointerData.pointer;
           user.button = pointerData.button;
+          user.viewport = pointerData.viewport || user.viewport;
 
           const newMap = new Map(collabsMap);
           remoteCollaboratorsRef.current = newMap;
 
           api.updateScene({ collaborators: newMap });
+
+          // If we are following this user and they sent a viewport,
+          // snap our camera to their scroll/zoom (canvas background),
+          // ignoring their pointer position.
+          try {
+            const appState =
+              typeof api.getAppState === "function" ? api.getAppState() : null;
+            const targetSocketId = appState?.userToFollow?.socketId as
+              | string
+              | undefined;
+
+            if (targetSocketId && targetSocketId === peerId && pointerData.viewport) {
+              const viewport = pointerData.viewport as {
+                scrollX: number;
+                scrollY: number;
+                zoom: number;
+              };
+
+              const nextZoomValue =
+                appState?.zoom && typeof appState.zoom.value === "number"
+                  ? { ...appState.zoom, value: viewport.zoom }
+                  : { value: viewport.zoom };
+
+              api.updateScene({
+                appState: {
+                  scrollX: viewport.scrollX,
+                  scrollY: viewport.scrollY,
+                  zoom: nextZoomValue,
+                },
+              });
+            }
+          } catch {
+            // best-effort only
+          }
         }
       };
 
@@ -205,11 +240,45 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
         if (user) {
           user.pointer = payload.pointer;
           user.button = payload.button;
+          user.viewport = payload.viewport || user.viewport;
 
           const newMap = new Map(collabsMap);
           remoteCollaboratorsRef.current = newMap;
 
           api.updateScene({ collaborators: newMap });
+
+          // Same logic for P2P: if we are following this peer and
+          // they included a viewport, sync our canvas background.
+          try {
+            const appState =
+              typeof api.getAppState === "function" ? api.getAppState() : null;
+            const targetSocketId = appState?.userToFollow?.socketId as
+              | string
+              | undefined;
+
+            if (targetSocketId && targetSocketId === peerId && payload.viewport) {
+              const viewport = payload.viewport as {
+                scrollX: number;
+                scrollY: number;
+                zoom: number;
+              };
+
+              const nextZoomValue =
+                appState?.zoom && typeof appState.zoom.value === "number"
+                  ? { ...appState.zoom, value: viewport.zoom }
+                  : { value: viewport.zoom };
+
+              api.updateScene({
+                appState: {
+                  scrollX: viewport.scrollX,
+                  scrollY: viewport.scrollY,
+                  zoom: nextZoomValue,
+                },
+              });
+            }
+          } catch {
+            // best-effort only
+          }
         }
       };
 
@@ -244,6 +313,59 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
     if (!isCollaborating) return;
     if (sendPointerRef.current) {
       sendPointerRef.current(pointerPayload);
+    }
+  };
+
+  // 6. Center viewport on the currently followed user immediately (best-effort).
+  const centerOnFollowedUser = () => {
+    const api = apiRef.current;
+    if (!api) return;
+
+    try {
+      const appState = typeof api.getAppState === "function" ? api.getAppState() : null;
+      const targetSocketId = appState?.userToFollow?.socketId as string | undefined;
+      if (!targetSocketId) return;
+
+      const collabsMap = remoteCollaboratorsRef.current;
+      const user = collabsMap.get(targetSocketId) as any;
+      const viewport = user?.viewport as
+        | { scrollX: number; scrollY: number; zoom: number }
+        | undefined;
+
+      if (viewport) {
+        const nextZoomValue =
+          appState?.zoom && typeof appState.zoom.value === "number"
+            ? { ...appState.zoom, value: viewport.zoom }
+            : { value: viewport.zoom };
+
+        api.updateScene({
+          appState: {
+            scrollX: viewport.scrollX,
+            scrollY: viewport.scrollY,
+            zoom: nextZoomValue,
+          },
+        });
+        return;
+      }
+
+      const pointer = user?.pointer;
+      if (!pointer) return;
+
+      const viewportWidth = appState.width || 0;
+      const viewportHeight = appState.height || 0;
+      const { x, y } = pointer;
+
+      const nextScrollX = x - viewportWidth / 2;
+      const nextScrollY = y - viewportHeight / 2;
+
+      api.updateScene({
+        appState: {
+          scrollX: nextScrollX,
+          scrollY: nextScrollY,
+        },
+      });
+    } catch {
+      // best-effort only
     }
   };
 
@@ -291,5 +413,5 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
     }
   }, [socket, isCollaborating, roomId, apiRef, isRoomOwner, collabType, p2pRoom, canSync]);
 
-  return { broadcastDrawingChanges, broadcastPointer };
+  return { broadcastDrawingChanges, broadcastPointer, centerOnFollowedUser };
 };

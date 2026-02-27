@@ -25,6 +25,7 @@ import {
   FiPlay,
   FiKey,
   FiUserX,
+  FiEye,
 } from "react-icons/fi";
 import { HamsterLoader, saveAsJSON, restoreAppState, restoreElements } from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
@@ -75,6 +76,8 @@ export const JsonDrawView = () => {
   const [isSharing, setIsSharing] = React.useState(false);
   const copyTimerRef = React.useRef<number | null>(null);
 
+  const [followedUserId, setFollowedUserId] = React.useState<string | null>(null);
+
   // Collab States
   const {
     isCollaborating,
@@ -109,8 +112,13 @@ export const JsonDrawView = () => {
   const isHandlingShareRef = React.useRef(false);
   const lastHandledHashRef = React.useRef<string | null>(null);
 
-  // Bind drawing collab sync via Socket.IO
-  const { broadcastDrawingChanges, broadcastPointer } = useDrawingSync(jsonDrawAPIRef);
+  // Bind drawing collab sync via Socket.IO / P2P
+  const { broadcastDrawingChanges, broadcastPointer, centerOnFollowedUser } =
+    useDrawingSync(jsonDrawAPIRef);
+
+  // Keep track of the last local pointer so we can keep sending
+  // up-to-date viewport information even when the pointer is idle.
+  const lastPointerRef = React.useRef<{ x: number; y: number; tool: string } | null>(null);
 
   // Auto-save to localStorage and emit drawing updates
   const handleChange = React.useCallback(
@@ -391,6 +399,23 @@ export const JsonDrawView = () => {
 
       if (typeof window === "undefined") return;
 
+      // Sync local follow state with JsonDraw's follow mode
+      if (api.onUserFollow) {
+        api.onUserFollow((payload: any) => {
+          if (!payload || !payload.userToFollow) {
+            setFollowedUserId(null);
+            return;
+          }
+          if (payload.action === "FOLLOW") {
+            setFollowedUserId(payload.userToFollow.socketId || null);
+          } else if (payload.action === "UNFOLLOW") {
+            setFollowedUserId(prev =>
+              prev === payload.userToFollow.socketId ? null : prev
+            );
+          }
+        });
+      }
+
       const hash = window.location.hash;
 
       handleShareLinkFromHash(hash).then(handled => {
@@ -470,6 +495,72 @@ export const JsonDrawView = () => {
       setIsSharing(false);
     }
   }, []);
+
+  // Periodically broadcast the current viewport so that when someone clicks
+  // "Follow", they can snap to the latest camera (scroll + zoom) of the user
+  // being followed, even if that user only zoomed/panned without moving
+  // their pointer recently.
+  React.useEffect(() => {
+    if (!isCollaborating) return;
+
+    const intervalId = window.setInterval(() => {
+      const api = jsonDrawAPIRef.current;
+      if (!api || typeof api.getAppState !== "function") return;
+
+      const state = api.getAppState();
+      const zoomValue =
+        state.zoom && typeof state.zoom.value === "number" ? state.zoom.value : 1;
+
+      const viewport = {
+        scrollX: state.scrollX || 0,
+        scrollY: state.scrollY || 0,
+        zoom: zoomValue,
+      };
+
+      const pointer = lastPointerRef.current;
+
+      broadcastPointer({
+        pointer: pointer || null,
+        button: "none",
+        viewport,
+      });
+    }, 600);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [isCollaborating, broadcastPointer]);
+
+  const handleToggleFollowUser = React.useCallback(
+    (userId: string, username?: string | null) => {
+      const api = jsonDrawAPIRef.current;
+      if (!api || typeof api.getAppState !== "function") return;
+
+      const appState = api.getAppState();
+      const currentSocketId = appState?.userToFollow?.socketId as string | undefined;
+
+      if (currentSocketId && currentSocketId === userId) {
+        api.updateScene({
+          appState: {
+            userToFollow: null,
+          },
+        });
+        setFollowedUserId(null);
+      } else {
+        api.updateScene({
+          appState: {
+            userToFollow: {
+              socketId: userId,
+              username: username || "",
+            },
+          },
+        });
+        setFollowedUserId(userId);
+        centerOnFollowedUser();
+      }
+    },
+    [centerOnFollowedUser]
+  );
 
   const handleStartLiveCollab = React.useCallback(() => {
     if (!activeRoomId) {
@@ -901,16 +992,35 @@ export const JsonDrawView = () => {
                           {user.isOwner ? " (Owner)" : ""}
                         </Text>
 
-                        {isRoomOwner && !isMe ? (
-                          <ActionIcon
-                            color="red"
-                            variant="light"
-                            aria-label="Kick user"
-                            onClick={() => kickCollaborator(user.id)}
-                          >
-                            <FiUserX size={14} />
-                          </ActionIcon>
-                        ) : null}
+                        <Group gap={4}>
+                          {!isMe && (
+                            <ActionIcon
+                              color={followedUserId === user.id ? "blue" : "gray"}
+                              variant={followedUserId === user.id ? "filled" : "light"}
+                              aria-label={
+                                followedUserId === user.id
+                                  ? "Stop following user"
+                                  : "Follow user"
+                              }
+                              onClick={() =>
+                                handleToggleFollowUser(user.id, user.username)
+                              }
+                            >
+                              <FiEye size={14} />
+                            </ActionIcon>
+                          )}
+
+                          {isRoomOwner && !isMe ? (
+                            <ActionIcon
+                              color="red"
+                              variant="light"
+                              aria-label="Kick user"
+                              onClick={() => kickCollaborator(user.id)}
+                            >
+                              <FiUserX size={14} />
+                            </ActionIcon>
+                          ) : null}
+                        </Group>
                       </Group>
                     );
                   })}
@@ -976,7 +1086,28 @@ export const JsonDrawView = () => {
               button: string;
             }) => {
               if (payload.pointer) {
-                broadcastPointer(payload);
+                lastPointerRef.current = payload.pointer;
+
+                const api = jsonDrawAPIRef.current;
+                let viewport: { scrollX: number; scrollY: number; zoom: number } | null = null;
+
+                if (api && typeof api.getAppState === "function") {
+                  const state = api.getAppState();
+                  const zoomValue =
+                    state.zoom && typeof state.zoom.value === "number"
+                      ? state.zoom.value
+                      : 1;
+                  viewport = {
+                    scrollX: state.scrollX || 0,
+                    scrollY: state.scrollY || 0,
+                    zoom: zoomValue,
+                  };
+                }
+
+                broadcastPointer({
+                  ...payload,
+                  viewport,
+                });
               }
             }}
             viewModeEnabled={false}
