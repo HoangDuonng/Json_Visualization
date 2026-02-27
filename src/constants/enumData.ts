@@ -28,6 +28,11 @@ export enum ViewMode {
   JsonDraw = "jsondraw",
 }
 
+export enum CollabType {
+  Socket = "socket",
+  Trystero = "trystero",
+}
+
 export const formats = [
   { value: FileFormat.JSON, label: "JSON" },
   { value: FileFormat.YAML, label: "YAML" },

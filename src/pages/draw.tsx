@@ -14,7 +14,7 @@ import { generateNextSeo } from "next-seo/pages";
 import { ViewMode } from "../constants/enumData";
 import { SEO } from "../constants/seo";
 import { darkTheme, lightTheme } from "../constants/theme";
-import { CollabProvider, useCollab } from "../features/collab/Collab";
+import { CollabProvider, useCollab } from "../features/collab/CollabRoot";
 import { BottomBar } from "../features/editor/BottomBar";
 import { FullscreenDropzone } from "../features/editor/FullscreenDropzone";
 import { Toolbar } from "../features/editor/Toolbar";

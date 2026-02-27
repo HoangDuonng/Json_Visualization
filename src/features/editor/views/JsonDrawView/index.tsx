@@ -28,7 +28,7 @@ import {
 } from "react-icons/fi";
 import { HamsterLoader, saveAsJSON, restoreAppState, restoreElements } from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
-import { useCollab } from "../../../collab/Collab";
+import { useCollab } from "../../../collab/CollabRoot";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";

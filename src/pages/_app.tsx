@@ -14,7 +14,7 @@ import { Toaster } from "react-hot-toast";
 import GlobalStyle from "../constants/globalStyle";
 import { SEO } from "../constants/seo";
 import { lightTheme } from "../constants/theme";
-import { CollabProvider } from "../features/collab/Collab";
+import { CollabProvider } from "../features/collab/CollabRoot";
 import { smartColorSchemeManager } from "../lib/utils/mantineColorScheme";
 
 async function loadShiki() {

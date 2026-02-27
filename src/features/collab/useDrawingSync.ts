@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
+import { CollabType } from "../../constants/enumData";
 // Import reconcile utilities from the JsonDraw drawing engine
 import { getSceneVersion, reconcileElements, restoreElements } from "../../jsondraw";
-import { useCollab } from "./Collab";
+import { useCollab } from "./CollabRoot";
+import { getCollabType } from "./collabMode";
 
 // Define the shape of our JsonDraw API reference
 interface JsonDrawAPI {
@@ -16,27 +18,37 @@ interface JsonDrawAPI {
 }
 
 export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null>) => {
-  const { socket, isCollaborating, roomId, collaborators, isRoomOwner } = useCollab();
+  const collab = useCollab() as any;
+  const { socket, isCollaborating, roomId, collaborators, isRoomOwner } = collab;
+  const trysteroRoom = collab._trysteroRoom as any | null;
+  const canSync: boolean = typeof collab.canSync === "boolean" ? collab.canSync : true;
+  const collabType = getCollabType();
+
   const lastBroadcastedVersion = useRef<number>(-1);
   const remoteCollaboratorsRef = useRef<Map<string, any>>(new Map());
   const hasReceivedInitialSync = useRef<boolean>(false);
 
+  const sendDrawRef = useRef<((elements: any[]) => void) | null>(null);
+  const sendPointerRef = useRef<((payload: any) => void) | null>(null);
+
   // When room changes or collaboration stops, reset sync flag
   useEffect(() => {
-    if (isCollaborating) {
+    if (isCollaborating && canSync) {
       hasReceivedInitialSync.current = isRoomOwner;
     } else {
       hasReceivedInitialSync.current = false;
+      lastBroadcastedVersion.current = -1;
     }
-  }, [isCollaborating, isRoomOwner]);
+  }, [isCollaborating, isRoomOwner, canSync]);
 
   // Convert `collaborators` state into Excalidraw Map
   useEffect(() => {
     const newMap = new Map();
-    // Pre-populate with existings users
-    collaborators.forEach(user => {
-      // Don't render ourselves
+    collaborators.forEach((user: any) => {
       if (socket && user.id === socket.id) return;
+      if (!socket && collabType === CollabType.Trystero && user.id === collab.currentUserId) {
+        return;
+      }
 
       const existing = remoteCollaboratorsRef.current.get(user.id);
 
@@ -55,127 +67,229 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
 
     remoteCollaboratorsRef.current = newMap;
 
-    if (apiRef.current && isCollaborating) {
+    if (apiRef.current && isCollaborating && canSync) {
       apiRef.current.updateScene({ collaborators: newMap });
     }
-  }, [collaborators, apiRef, isCollaborating, socket]);
+  }, [collaborators, apiRef, isCollaborating, socket, collabType, collab, canSync]);
 
   // 1. Listen for incoming remote drawing updates
   useEffect(() => {
-    if (!socket || !isCollaborating) return;
+    if (!isCollaborating || !canSync) return;
 
-    const handleClientDraw = (remoteElements: any[]) => {
-      const api = apiRef.current;
-      if (!api) return;
+    if (collabType === CollabType.Socket) {
+      if (!socket) return;
 
-      const localElements = api.getSceneElementsIncludingDeleted();
-      const appState = api.getAppState();
+      const handleClientDraw = (remoteElements: any[]) => {
+        const api = apiRef.current;
+        if (!api) return;
 
-      let finalElements: any[] = [];
+        const localElements = api.getSceneElementsIncludingDeleted();
+        const appState = api.getAppState();
 
-      // If we are a joining member and this is the first sync from the owner,
-      // completely overwrite the local default generated elements with the owner's true state
-      if (!isRoomOwner && !hasReceivedInitialSync.current) {
-        finalElements = restoreElements(remoteElements, null);
-        hasReceivedInitialSync.current = true;
-      } else {
-        // Normal reconcile
-        const restoredRemoteElements = restoreElements(remoteElements, localElements);
-        finalElements = reconcileElements(localElements, restoredRemoteElements, appState);
-      }
+        let finalElements: any[] = [];
 
-      // Avoid self-broadcasting the scene we just received
-      lastBroadcastedVersion.current = getSceneVersion(finalElements);
+        if (!isRoomOwner && !hasReceivedInitialSync.current) {
+          finalElements = restoreElements(remoteElements, null);
+          hasReceivedInitialSync.current = true;
+        } else {
+          const restoredRemoteElements = restoreElements(remoteElements, localElements);
+          finalElements = reconcileElements(localElements, restoredRemoteElements, appState);
+        }
 
-      // Update the canvas with the merged elements
-      api.updateScene({
-        elements: finalElements,
-        commitToHistory: false, // Optionally avoid flooding the undo history with remote changes
-      });
-    };
+        lastBroadcastedVersion.current = getSceneVersion(finalElements);
 
-    socket.on("client-draw", handleClientDraw);
+        api.updateScene({
+          elements: finalElements,
+          commitToHistory: false,
+        });
+      };
 
-    return () => {
-      socket.off("client-draw", handleClientDraw);
-    };
-  }, [socket, isCollaborating, apiRef]);
+      socket.on("client-draw", handleClientDraw);
+      sendDrawRef.current = (elements: any[]) => {
+        if (!roomId) return;
+        socket.emit("server-draw", roomId, elements);
+      };
+
+      return () => {
+        socket.off("client-draw", handleClientDraw);
+        sendDrawRef.current = null;
+      };
+    }
+
+    if (collabType === CollabType.Trystero && trysteroRoom) {
+      const [sendDraw, getDraw] = trysteroRoom.makeAction("draw");
+
+      const handleDraw = (remoteElements: any[]) => {
+        const api = apiRef.current;
+        if (!api) return;
+
+        const localElements = api.getSceneElementsIncludingDeleted();
+        const appState = api.getAppState();
+
+        let finalElements: any[] = [];
+
+        if (!isRoomOwner && !hasReceivedInitialSync.current) {
+          finalElements = restoreElements(remoteElements, null);
+          hasReceivedInitialSync.current = true;
+        } else {
+          const restoredRemoteElements = restoreElements(remoteElements, localElements);
+          finalElements = reconcileElements(localElements, restoredRemoteElements, appState);
+        }
+
+        lastBroadcastedVersion.current = getSceneVersion(finalElements);
+
+        api.updateScene({
+          elements: finalElements,
+          commitToHistory: false,
+        });
+      };
+
+      getDraw(handleDraw);
+      sendDrawRef.current = (elements: any[]) => {
+        void sendDraw(elements);
+      };
+
+      return () => {
+        sendDrawRef.current = null;
+      };
+    }
+  }, [socket, isCollaborating, apiRef, isRoomOwner, collabType, trysteroRoom, roomId, canSync]);
 
   // 2. Listen for remote pointers
   useEffect(() => {
-    if (!socket || !isCollaborating) return;
+    if (!isCollaborating || !canSync) return;
 
-    const handleClientPointer = (peerId: string, pointerData: any) => {
-      const api = apiRef.current;
-      if (!api) return;
+    if (collabType === CollabType.Socket) {
+      if (!socket) return;
 
-      const collabsMap = remoteCollaboratorsRef.current;
-      const user = collabsMap.get(peerId);
+      const handleClientPointer = (peerId: string, pointerData: any) => {
+        const api = apiRef.current;
+        if (!api) return;
 
-      if (user) {
-        user.pointer = pointerData.pointer;
-        user.button = pointerData.button;
+        const collabsMap = remoteCollaboratorsRef.current;
+        const user = collabsMap.get(peerId);
 
-        // Excalidraw's update scene requires a new Map instance to trigger render of new cursors
-        const newMap = new Map(collabsMap);
-        remoteCollaboratorsRef.current = newMap;
+        if (user) {
+          user.pointer = pointerData.pointer;
+          user.button = pointerData.button;
 
-        // Explicitly update only collaborators to avoid flickering canvas states
-        api.updateScene({ collaborators: newMap });
-      }
-    };
+          const newMap = new Map(collabsMap);
+          remoteCollaboratorsRef.current = newMap;
 
-    socket.on("client-pointer", handleClientPointer);
+          api.updateScene({ collaborators: newMap });
+        }
+      };
 
-    return () => {
-      socket.off("client-pointer", handleClientPointer);
-    };
-  }, [socket, isCollaborating, apiRef]);
+      socket.on("client-pointer", handleClientPointer);
+      sendPointerRef.current = (pointerPayload: any) => {
+        if (!roomId) return;
+        socket.emit("server-pointer", roomId, pointerPayload);
+      };
+
+      return () => {
+        socket.off("client-pointer", handleClientPointer);
+        sendPointerRef.current = null;
+      };
+    }
+
+    if (collabType === CollabType.Trystero && trysteroRoom) {
+      const [sendPointer, getPointer] = trysteroRoom.makeAction("pointer");
+
+      const handlePointer = (payload: any, peerId: string) => {
+        const api = apiRef.current;
+        if (!api) return;
+
+        const collabsMap = remoteCollaboratorsRef.current;
+        const user = collabsMap.get(peerId);
+
+        if (user) {
+          user.pointer = payload.pointer;
+          user.button = payload.button;
+
+          const newMap = new Map(collabsMap);
+          remoteCollaboratorsRef.current = newMap;
+
+          api.updateScene({ collaborators: newMap });
+        }
+      };
+
+      getPointer(handlePointer);
+      sendPointerRef.current = (pointerPayload: any) => {
+        void sendPointer(pointerPayload);
+      };
+
+      return () => {
+        sendPointerRef.current = null;
+      };
+    }
+  }, [socket, isCollaborating, apiRef, collabType, trysteroRoom, roomId, canSync]);
 
   // 3. Broadcast local drawing changes
   const broadcastDrawingChanges = (elements: any[]) => {
-    if (!socket || !isCollaborating || !roomId) return;
+    if (!isCollaborating || !canSync) return;
 
-    // Non-owners wait until they've received the initial sync to avoid dirtying the owner's board
     if (!isRoomOwner && !hasReceivedInitialSync.current) return;
 
-    // Only broadcast if the scene has actually changed
     const currentVersion = getSceneVersion(elements);
     if (currentVersion > lastBroadcastedVersion.current) {
-      // Excalidraw syncable elements check could be added here to filter out non-syncable ones
-      socket.emit("server-draw", roomId, elements);
+      if (sendDrawRef.current) {
+        sendDrawRef.current(elements);
+      }
       lastBroadcastedVersion.current = currentVersion;
     }
   };
 
   // 4. Broadcast local pointer position
   const broadcastPointer = (pointerPayload: any) => {
-    if (!socket || !isCollaborating || !roomId) return;
-    socket.emit("server-pointer", roomId, pointerPayload);
+    if (!isCollaborating) return;
+    if (sendPointerRef.current) {
+      sendPointerRef.current(pointerPayload);
+    }
   };
 
   // 5. Handle new users requesting the latest drawing (sync init)
   useEffect(() => {
-    if (!socket || !isCollaborating) return;
+    if (!isCollaborating || !isRoomOwner || !canSync) return;
 
-    const handleNewUser = () => {
-      if (!isRoomOwner) return; // Only owner sends the full document state!
+    if (collabType === CollabType.Socket) {
+      if (!socket) return;
 
-      const api = apiRef.current;
-      if (!api) return;
+      const handleNewUser = () => {
+        const api = apiRef.current;
+        if (!api) return;
 
-      const elements = api.getSceneElementsIncludingDeleted();
-      if (elements.length > 0) {
-        socket.emit("server-draw", roomId, elements);
-      }
-    };
+        const elements = api.getSceneElementsIncludingDeleted();
+        if (elements.length > 0 && sendDrawRef.current) {
+          sendDrawRef.current(elements);
+        }
+      };
 
-    socket.on("new-user", handleNewUser);
+      socket.on("new-user", handleNewUser);
 
-    return () => {
-      socket.off("new-user", handleNewUser);
-    };
-  }, [socket, isCollaborating, roomId, apiRef, isRoomOwner]);
+      return () => {
+        socket.off("new-user", handleNewUser);
+      };
+    }
+
+    if (collabType === CollabType.Trystero && trysteroRoom) {
+      const handlePeerJoin = (peerId: string) => {
+        const api = apiRef.current;
+        if (!api) return;
+
+        const elements = api.getSceneElementsIncludingDeleted();
+        if (elements.length === 0) return;
+
+        const [sendDraw] = trysteroRoom.makeAction("draw");
+        void sendDraw(elements, peerId);
+      };
+
+      trysteroRoom.onPeerJoin(handlePeerJoin);
+
+      return () => {
+        trysteroRoom.onPeerJoin(() => {});
+      };
+    }
+  }, [socket, isCollaborating, roomId, apiRef, isRoomOwner, collabType, trysteroRoom, canSync]);
 
   return { broadcastDrawingChanges, broadcastPointer };
 };

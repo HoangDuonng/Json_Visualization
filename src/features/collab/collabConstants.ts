@@ -1,0 +1,42 @@
+export const COLLAB_ANIMALS = [
+  "Penguin",
+  "Panda",
+  "Koala",
+  "Lion",
+  "Tiger",
+  "Elephant",
+  "Giraffe",
+  "Dolphin",
+  "Fox",
+  "Rabbit",
+  "Bear",
+  "Wolf",
+  "Leopard",
+  "Kangaroo",
+  "Zebra",
+  "Owl",
+  "Rhino",
+  "Hippo",
+  "Monkey",
+  "Eagle",
+];
+
+// Matches server-side palette for consistent UX
+export const COLLAB_COLORS = [
+  "#FFB6C1",
+  "#FFD700",
+  "#98FB98",
+  "#87CEFA",
+  "#FFA07A",
+  "#DDA0DD",
+  "#F08080",
+  "#E0FFFF",
+  "#FFFACD",
+  "#E6E6FA",
+  "#c1ffb6",
+  "#ffd780",
+  "#b6c1ff",
+  "#ffb6e6",
+  "#b6ffff",
+];
+
