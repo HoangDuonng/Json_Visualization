@@ -424,11 +424,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ opened, onClose }) => {
           <StyledHeaderBottom>
             <StyledSubtitle>Ask about formatting, queries, conversions, or exports.</StyledSubtitle>
             <StyledCreditLink
-              href="https://github.com/ThinhPhoenix"
+              href="https://llm.chila.io.vn/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              made by thinhphoenix
+              API powered by Chila.io.vn
             </StyledCreditLink>
           </StyledHeaderBottom>
         </StyledHeader>

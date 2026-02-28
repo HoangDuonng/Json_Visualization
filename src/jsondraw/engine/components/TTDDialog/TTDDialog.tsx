@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
-
 import { useUIAppState } from "../../context/ui-appState";
 import { t } from "../../i18n";
 import { useApp } from "../App";
 import { Dialog } from "../dialogs/Dialog";
 import { withInternalFallback } from "../hoc/withInternalFallback";
-
 import MermaidToJsonDraw from "./MermaidToJsonDraw";
-import TextToDiagram from "./TextToDiagram";
-import TTDDialogTabs from "./TTDDialogTabs";
-import { TTDDialogTabTriggers } from "./TTDDialogTabTriggers";
-import { TTDDialogTabTrigger } from "./TTDDialogTabTrigger";
-import { TTDDialogTab } from "./TTDDialogTab";
-
 import "./TTDDialog.scss";
-
+import { TTDDialogTab } from "./TTDDialogTab";
+import { TTDDialogTabTrigger } from "./TTDDialogTabTrigger";
+import { TTDDialogTabTriggers } from "./TTDDialogTabTriggers";
+import TTDDialogTabs from "./TTDDialogTabs";
 import { TTDWelcomeMessage } from "./TTDWelcomeMessage";
-
-import type {
-  MermaidToJsonDrawLibProps,
-  TTDPersistenceAdapter,
-  TTTDDialog,
-} from "./types";
+import TextToDiagram from "./TextToDiagram";
+import type { MermaidToJsonDrawLibProps, TTDPersistenceAdapter, TTTDDialog } from "./types";
 
 export const TTDDialog = (
   props:
@@ -31,7 +22,7 @@ export const TTDDialog = (
         renderWarning?: TTTDDialog.renderWarning;
         persistenceAdapter: TTDPersistenceAdapter;
       }
-    | { __fallback: true },
+    | { __fallback: true }
 ) => {
   const appState = useUIAppState();
 
@@ -56,9 +47,7 @@ const TTDDialogBase = withInternalFallback(
     tab: "text-to-diagram" | "mermaid";
   } & (
     | {
-        onTextSubmit(
-          props: TTTDDialog.OnTextSubmitProps,
-        ): Promise<TTTDDialog.OnTextSubmitRetValue>;
+        onTextSubmit(props: TTTDDialog.OnTextSubmitProps): Promise<TTTDDialog.OnTextSubmitRetValue>;
         renderWelcomeScreen?: TTTDDialog.renderWelcomeScreen;
         renderWarning?: TTTDDialog.renderWarning;
         persistenceAdapter: TTDPersistenceAdapter;
@@ -67,16 +56,15 @@ const TTDDialogBase = withInternalFallback(
   )) => {
     const app = useApp();
 
-    const [mermaidToJsonDrawLib, setMermaidToJsonDrawLib] =
-      useState<MermaidToJsonDrawLibProps>({
-        loaded: false,
-        api: import("@excalidraw/mermaid-to-excalidraw"),
-      });
+    const [mermaidToJsonDrawLib, setMermaidToJsonDrawLib] = useState<MermaidToJsonDrawLibProps>({
+      loaded: false,
+      api: import("@excalidraw/mermaid-to-excalidraw"),
+    });
 
     useEffect(() => {
       const fn = async () => {
         await mermaidToJsonDrawLib.api;
-        setMermaidToJsonDrawLib((prev) => ({ ...prev, loaded: true }));
+        setMermaidToJsonDrawLib(prev => ({ ...prev, loaded: true }));
       };
       fn();
     }, [mermaidToJsonDrawLib.api]);
@@ -100,14 +88,10 @@ const TTDDialogBase = withInternalFallback(
               <TTDDialogTabTrigger tab="text-to-diagram">
                 <div className="ttd-dialog-tab-trigger__content">
                   {t("labels.textToDiagram")}
-                  <div className="ttd-dialog-tab-trigger__badge">
-                    {t("chat.aiBeta")}
-                  </div>
+                  <div className="ttd-dialog-tab-trigger__badge">{t("chat.aiBeta")}</div>
                 </div>
               </TTDDialogTabTrigger>
-              <TTDDialogTabTrigger tab="mermaid">
-                {t("mermaid.label")}
-              </TTDDialogTabTrigger>
+              <TTDDialogTabTrigger tab="mermaid">{t("mermaid.label")}</TTDDialogTabTrigger>
             </TTDDialogTabTriggers>
           )}
 
@@ -128,8 +112,15 @@ const TTDDialogBase = withInternalFallback(
               isActive={tab === "mermaid"}
             />
           </TTDDialogTab>
+          <div className="ttd-dialog-warning">
+            AI may be inaccurate. Please review the generated diagram carefully before inserting it
+            into your canvas.{" "}
+            <a href="https://llm.chila.io.vn/" target="_blank" rel="noopener noreferrer">
+              API powered by Chila.io.vn
+            </a>
+          </div>
         </TTDDialogTabs>
       </Dialog>
     );
-  },
+  }
 );

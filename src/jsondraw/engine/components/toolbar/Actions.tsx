@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CLASSES, capitalizeString, isTransparent } from "@jsondraw/common";
+import { CLASSES, KEYS, capitalizeString, isTransparent } from "@jsondraw/common";
 import {
   shouldAllowVerticalAlign,
   suppportsHorizontalAlign,
@@ -1096,7 +1096,6 @@ export const ShapesSwitcher = ({
           className="App-toolbar__extra-tools-dropdown"
         >
           {/* // yêu cầu: 4 option đầu trong dropdown extra tools */}
-          {/*
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "frame" })}
             icon={frameToolIcon}
@@ -1106,6 +1105,7 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.frame")}
           </DropdownMenu.Item>
+          {/* 
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "embeddable" })}
             icon={EmbedIcon}
@@ -1114,6 +1114,7 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.embeddable")}
           </DropdownMenu.Item>
+          */}
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "laser" })}
             icon={laserPointerToolIcon}
@@ -1123,6 +1124,7 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.laser")}
           </DropdownMenu.Item>
+          {/* 
           {isFullStylesPanel && (
             <DropdownMenu.Item
               onSelect={() => app.setActiveTool({ type: "lasso" })}

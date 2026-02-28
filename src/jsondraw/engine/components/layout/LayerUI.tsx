@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  CLASSES,
-  DEFAULT_SIDEBAR,
-  TOOL_TYPE,
-  arrayToMap,
-  capitalizeString,
-  isShallowEqual,
-} from "@jsondraw/common";
+import { CLASSES, DEFAULT_SIDEBAR, TOOL_TYPE, arrayToMap, capitalizeString, isShallowEqual } from "@jsondraw/common";
 import { mutateElement } from "@jsondraw/element";
 import { showSelectedShapeActions } from "@jsondraw/element";
 import { ShapeCache } from "@jsondraw/element";
@@ -22,20 +15,13 @@ import { useAtom, useAtomValue } from "../../editor-jotai";
 import { t } from "../../i18n";
 import type { Language } from "../../i18n";
 import { calculateScrollCenter } from "../../scene";
-import type {
-  AppProps,
-  AppState,
-  JsonDrawProps,
-  BinaryFiles,
-  UIAppState,
-  AppClassProperties,
-} from "../../types";
+import type { AppProps, AppState, JsonDrawProps, BinaryFiles, UIAppState, AppClassProperties } from "../../types";
 import { useEditorInterface, useStylesPanelMode } from "../App";
 import { CommandPalette } from "../CommandPalette/CommandPalette";
 import { OverwriteConfirmDialog } from "../OverwriteConfirm/OverwriteConfirm";
 import { isSidebarDockedAtom } from "../Sidebar/Sidebar";
 import { Stats } from "../Stats";
-import { TTDDialog } from "../TTDDialog/TTDDialog";
+import { TTDFeature } from "../TTDDialog/TTDFeature";
 import { EyeDropper, activeEyeDropperAtom } from "../canvases/EyeDropper";
 import { ActiveConfirmDialog } from "../dialogs/ActiveConfirmDialog";
 import ElementLinkDialog from "../dialogs/ElementLinkDialog";
@@ -480,7 +466,7 @@ const LayerUI = ({
         tab={DEFAULT_SIDEBAR.defaultTab}
       />
       <DefaultOverwriteConfirmDialog />
-      {appState.openDialog?.name === "ttd" && <TTDDialog __fallback />}
+      <TTDFeature />
       {/* ------------------------------------------------------------------ */}
 
       {appState.isLoading && <LoadingMessage delay={250} />}
