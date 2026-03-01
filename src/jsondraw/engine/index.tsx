@@ -29,6 +29,7 @@ const JsonDrawBase = (props: JsonDrawProps) => {
     langCode = defaultLang.code,
     viewModeEnabled,
     zenModeEnabled,
+    onZenModeChange,
     gridModeEnabled,
     libraryReturnUrl,
     theme,
@@ -119,6 +120,7 @@ const JsonDrawBase = (props: JsonDrawProps) => {
           langCode={langCode}
           viewModeEnabled={viewModeEnabled}
           zenModeEnabled={zenModeEnabled}
+          onZenModeChange={onZenModeChange}
           gridModeEnabled={gridModeEnabled}
           libraryReturnUrl={libraryReturnUrl}
           theme={theme}

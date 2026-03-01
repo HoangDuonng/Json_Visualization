@@ -1111,7 +1111,6 @@ export const JsonDrawView = () => {
               }
             }}
             viewModeEnabled={false}
-            zenModeEnabled={false}
             gridModeEnabled={false}
             theme={darkmodeEnabled ? "dark" : "light"}
             UIOptions={{

@@ -593,6 +593,7 @@ export interface JsonDrawProps {
   langCode?: Language["code"];
   viewModeEnabled?: boolean;
   zenModeEnabled?: boolean;
+  onZenModeChange?: (enabled: boolean) => void;
   gridModeEnabled?: boolean;
   objectsSnapModeEnabled?: boolean;
   libraryReturnUrl?: string;

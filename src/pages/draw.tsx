@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";

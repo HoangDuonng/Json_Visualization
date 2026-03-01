@@ -2954,6 +2954,10 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({ zenModeEnabled: !!this.props.zenModeEnabled });
     }
 
+    if (prevState.zenModeEnabled !== this.state.zenModeEnabled) {
+      this.props.onZenModeChange?.(this.state.zenModeEnabled);
+    }
+
     if (prevProps.theme !== this.props.theme && this.props.theme) {
       this.setState({ theme: this.props.theme });
     }
