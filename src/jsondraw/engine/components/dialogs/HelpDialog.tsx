@@ -125,11 +125,14 @@ export const HelpDialog = ({ onClose }: { onClose?: () => void }) => {
           onChange={handleLanguageChange}
           aria-label={t("labels.language")}
         >
-          {languages.map(language => (
-            <option key={language.code} value={language.code}>
-              {language.label}
-            </option>
-          ))}
+          {/* Only show English and Vietnamese */}
+          {languages
+            .filter(lang => lang.code === "en" || lang.code === "vi-VN")
+            .map(language => (
+              <option key={language.code} value={language.code}>
+                {language.label}
+              </option>
+            ))}
         </select>
       </label>
     </div>
