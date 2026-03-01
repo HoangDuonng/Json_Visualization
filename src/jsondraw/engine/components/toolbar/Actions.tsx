@@ -1212,10 +1212,18 @@ export const ExitZenModeButton = ({
   </button>
 );
 
-export const ExitViewModeButton = ({ actionManager }: { actionManager: ActionManager }) => (
+export const ExitViewModeButton = ({
+  actionManager,
+  title = t("buttons.exitViewMode"),
+}: {
+  actionManager: ActionManager;
+  title?: string;
+}) => (
   <button
     type="button"
     className="disable-view-mode"
+    title={title}
+    aria-label={title}
     onClick={() => actionManager.executeAction(actionToggleViewMode)}
   >
     {pencilIcon}

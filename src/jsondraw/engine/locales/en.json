@@ -231,6 +231,7 @@
     "zenMode": "Zen mode",
     "objectsSnapMode": "Snap to objects",
     "exitZenMode": "Exit zen mode",
+    "exitViewMode": "Exit view mode",
     "cancel": "Cancel",
     "saveLibNames": "Save name(s) and exit",
     "clear": "Clear",

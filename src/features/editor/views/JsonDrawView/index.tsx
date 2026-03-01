@@ -1110,8 +1110,6 @@ export const JsonDrawView = () => {
                 });
               }
             }}
-            viewModeEnabled={false}
-            gridModeEnabled={false}
             theme={darkmodeEnabled ? "dark" : "light"}
             UIOptions={{
               canvasActions: {

@@ -4,6 +4,7 @@ import {
   CURSOR_TYPE,
   isShallowEqual,
   sceneCoordsToViewportCoords,
+  TOOL_TYPE,
   type EditorInterface,
 } from "@jsondraw/common";
 import { AnimationController } from "@jsondraw/jsondraw/renderer/animation";
@@ -202,7 +203,9 @@ const InteractiveCanvas = (props: InteractiveCanvasProps) => {
       style={{
         width: props.appState.width,
         height: props.appState.height,
-        cursor: props.appState.viewModeEnabled
+        cursor:
+        props.appState.viewModeEnabled &&
+        props.appState.activeTool?.type !== TOOL_TYPE.laser
           ? CURSOR_TYPE.GRAB
           : CURSOR_TYPE.AUTO,
       }}
@@ -233,6 +236,7 @@ const getRelevantAppStateProps = (
   width: appState.width,
   height: appState.height,
   viewModeEnabled: appState.viewModeEnabled,
+  activeTool: appState.activeTool,
   openDialog: appState.openDialog,
   editingGroupId: appState.editingGroupId,
   selectedElementIds: appState.selectedElementIds,

@@ -4591,7 +4591,12 @@ class App extends React.Component<AppProps, AppState> {
 
   private onKeyUp = withBatchedUpdates((event: KeyboardEvent) => {
     if (event.key === KEYS.SPACE) {
-      if (this.state.viewModeEnabled || this.state.openDialog?.name === "elementLinkSelector") {
+      if (this.state.openDialog?.name === "elementLinkSelector") {
+        setCursor(this.interactiveCanvas, CURSOR_TYPE.GRAB);
+      } else if (
+        this.state.viewModeEnabled &&
+        this.state.activeTool.type !== TOOL_TYPE.laser
+      ) {
         setCursor(this.interactiveCanvas, CURSOR_TYPE.GRAB);
       } else if (isSelectionLikeTool(this.state.activeTool.type)) {
         resetCursor(this.interactiveCanvas);
@@ -6184,7 +6189,10 @@ class App extends React.Component<AppProps, AppState> {
           this.interactiveCanvas,
           isTextElement(hitElement) ? CURSOR_TYPE.TEXT : CURSOR_TYPE.CROSSHAIR
         );
-      } else if (this.state.viewModeEnabled) {
+      } else if (
+        this.state.viewModeEnabled &&
+        (this.state.activeTool.type as string) !== "laser"
+      ) {
         setCursor(this.interactiveCanvas, CURSOR_TYPE.GRAB);
       } else if (this.state.openDialog?.name === "elementLinkSelector") {
         setCursor(this.interactiveCanvas, CURSOR_TYPE.AUTO);
@@ -6886,7 +6894,8 @@ class App extends React.Component<AppProps, AppState> {
         (event.button === POINTER_BUTTON.WHEEL ||
           (event.button === POINTER_BUTTON.MAIN && isHoldingSpace) ||
           isHandToolActive(this.state) ||
-          this.state.viewModeEnabled)
+          (this.state.viewModeEnabled &&
+            this.state.activeTool.type !== TOOL_TYPE.laser))
       )
     ) {
       return false;
@@ -6957,7 +6966,10 @@ class App extends React.Component<AppProps, AppState> {
         lastPointerUp = null;
         isPanning = false;
         if (!isHoldingSpace) {
-          if (this.state.viewModeEnabled) {
+          if (
+            this.state.viewModeEnabled &&
+            this.state.activeTool.type !== TOOL_TYPE.laser
+          ) {
             setCursor(this.interactiveCanvas, CURSOR_TYPE.GRAB);
           } else {
             setCursorForShape(this.interactiveCanvas, this.state);

@@ -1,9 +1,15 @@
 import clsx from "clsx";
 
+import { TOOL_TYPE } from "@jsondraw/common";
 import { actionShortcuts } from "../../actions";
+import { isHandToolActive } from "../../appState";
 import { useTunnels } from "../../context/tunnels";
-import { ExitZenModeButton, UndoRedoActions, ZoomActions } from "../toolbar/Actions";
+import { t } from "../../i18n";
+import type { AppClassProperties } from "../../types";
+import { ExitZenModeButton, ExitViewModeButton, UndoRedoActions, ZoomActions } from "../toolbar/Actions";
+import { HandButton } from "../toolbar/HandButton";
 import { HelpButton } from "../toolbar/HelpButton";
+import { LaserPointerButton } from "../toolbar/LaserPointerButton";
 import { Section } from "../layout/Section";
 import Stack from "../layout/Stack";
 
@@ -15,11 +21,13 @@ const Footer = ({
   actionManager,
   showExitZenModeBtn,
   renderWelcomeScreen,
+  app,
 }: {
   appState: UIAppState;
   actionManager: ActionManager;
   showExitZenModeBtn: boolean;
   renderWelcomeScreen: boolean;
+  app?: AppClassProperties;
 }) => {
   const { FooterCenterTunnel, WelcomeScreenHelpHintTunnel } = useTunnels();
 
@@ -61,6 +69,22 @@ const Footer = ({
       >
         <div style={{ position: "relative" }}>
           {renderWelcomeScreen && <WelcomeScreenHelpHintTunnel.Out />}
+          {appState.viewModeEnabled && app && (
+            <Stack.Col gap={8} className="view-mode-footer-actions">
+              <HandButton
+                title={t("toolBar.hand")}
+                checked={isHandToolActive(appState)}
+                onChange={() => app.setActiveTool({ type: TOOL_TYPE.hand })}
+                isMobile
+              />
+              <LaserPointerButton
+                title={t("toolBar.laser")}
+                checked={appState.activeTool.type === TOOL_TYPE.laser}
+                onChange={() => app.setActiveTool({ type: TOOL_TYPE.laser })}
+              />
+              <ExitViewModeButton actionManager={actionManager} />
+            </Stack.Col>
+          )}
           <HelpButton
             onClick={() => actionManager.executeAction(actionShortcuts)}
           />
