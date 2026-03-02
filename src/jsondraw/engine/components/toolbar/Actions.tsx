@@ -966,10 +966,7 @@ export const ShapesSwitcher = ({
 
   const frameToolSelected = activeTool.type === "frame";
   const laserToolSelected = activeTool.type === "laser";
-  const lassoToolSelected =
-    isFullStylesPanel &&
-    activeTool.type === "lasso" &&
-    app.state.preferredSelectionTool.type !== "lasso";
+  const lassoToolSelected = activeTool.type === "lasso";
 
   const embeddableToolSelected = activeTool.type === "embeddable";
 
@@ -1036,14 +1033,6 @@ export const ShapesSwitcher = ({
               if (!app.state.penDetected && pointerType === "pen") {
                 app.togglePenMode(true);
               }
-
-              if (value === "selection") {
-                if (app.state.activeTool.type === "selection") {
-                  app.setActiveTool({ type: "lasso" });
-                } else {
-                  app.setActiveTool({ type: "selection" });
-                }
-              }
             }}
             onChange={({ pointerType }) => {
               if (app.state.activeTool.type !== value) {
@@ -1086,9 +1075,7 @@ export const ShapesSwitcher = ({
               ? EmbedIcon
               : laserToolSelected && !app.props.isCollaborating
                 ? laserPointerToolIcon
-                : lassoToolSelected
-                  ? LassoIcon
-                  : extraToolsIcon}
+                : extraToolsIcon}
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           onClickOutside={() => setIsExtraToolsMenuOpen(false)}
@@ -1105,7 +1092,6 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.frame")}
           </DropdownMenu.Item>
-          {/* 
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "embeddable" })}
             icon={EmbedIcon}
@@ -1114,7 +1100,6 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.embeddable")}
           </DropdownMenu.Item>
-          */}
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "laser" })}
             icon={laserPointerToolIcon}
@@ -1124,7 +1109,6 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.laser")}
           </DropdownMenu.Item>
-          {/* 
           {isFullStylesPanel && (
             <DropdownMenu.Item
               onSelect={() => app.setActiveTool({ type: "lasso" })}
@@ -1135,7 +1119,6 @@ export const ShapesSwitcher = ({
               {t("toolBar.lasso")}
             </DropdownMenu.Item>
           )}
-          */}
           <div style={{ margin: "6px 0", fontSize: 14, fontWeight: 600 }}>Generate</div>
           {app.props.aiEnabled !== false && <TTDDialogTriggerTunnel.Out />}
           <DropdownMenu.Item
