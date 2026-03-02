@@ -360,6 +360,31 @@ $fullScreenModalBreakpoint: 600px;
     }
   }
 
+  .ttd-dialog-output-scroll-back-to-content {
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 0.75rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--dialog-border-color);
+    background: var(--color-surface-primary);
+    color: var(--color-on-surface);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
+
+    &:hover {
+      background: var(--color-surface-high);
+    }
+  }
+
   .ttd-dialog-output-canvas-content {
     display: flex;
     width: 100%;

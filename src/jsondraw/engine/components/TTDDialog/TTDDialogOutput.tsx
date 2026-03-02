@@ -28,6 +28,7 @@ export const TTDDialogOutput = ({
   const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
   const lastPointerRef = useRef({ x: 0, y: 0 });
+  const [viewportSize, setViewportSize] = useState({ w: 0, h: 0 });
 
   const zoomTowardPoint = useCallback(
     (newZoom: number, centerX: number, centerY: number) => {
@@ -42,6 +43,17 @@ export const TTDDialogOutput = ({
     },
     []
   );
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => {
+      setViewportSize({ w: el.offsetWidth, h: el.offsetHeight });
+    });
+    ro.observe(el);
+    setViewportSize({ w: el.offsetWidth, h: el.offsetHeight });
+    return () => ro.disconnect();
+  }, [loaded, error]);
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -102,6 +114,19 @@ export const TTDDialogOutput = ({
   };
 
   const showZoom = loaded && !error;
+  // Content rect (scaled, centered): center (w/2 + pan.x, h/2 + pan.y), size (w*zoom, h*zoom). Show button only when it does not intersect viewport (0,0,w,h).
+  const { w, h } = viewportSize;
+  const contentLeft = w / 2 + pan.x - (w * zoom) / 2;
+  const contentRight = w / 2 + pan.x + (w * zoom) / 2;
+  const contentTop = h / 2 + pan.y - (h * zoom) / 2;
+  const contentBottom = h / 2 + pan.y + (h * zoom) / 2;
+  const scrolledOutside =
+    w > 0 &&
+    h > 0 &&
+    (contentRight < 0 ||
+      contentLeft > w ||
+      contentBottom < 0 ||
+      contentTop > h);
 
   return (
     <div className={`ttd-dialog-output-wrapper ${error ? "ttd-dialog-output-wrapper--error" : ""}`}>
@@ -172,6 +197,18 @@ export const TTDDialogOutput = ({
                 {zoomIn}
               </button>
             </div>
+          )}
+          {showZoom && scrolledOutside && (
+            <button
+              type="button"
+              className="ttd-dialog-output-scroll-back-to-content"
+              onClick={e => {
+                e.stopPropagation();
+                resetPreviewZoom();
+              }}
+            >
+              {t("buttons.scrollBackToContent")}
+            </button>
           )}
         </div>
       ) : (
