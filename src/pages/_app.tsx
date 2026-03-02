@@ -12,7 +12,7 @@ import { generateDefaultSeo } from "next-seo/pages";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 import { Toaster } from "react-hot-toast";
 import GlobalStyle from "../constants/globalStyle";
-import { SEO } from "../constants/seo";
+import { SEO, SITE_URL } from "../constants/seo";
 import { lightTheme } from "../constants/theme";
 import { CollabProvider } from "../features/collab/CollabRoot";
 import { smartColorSchemeManager } from "../lib/utils/mantineColorScheme";
@@ -77,9 +77,23 @@ function JsonCrack({ Component, pageProps }: AppProps) {
     dynamicPaths: ["/editor"], // Only editor paths use dynamic theme
   });
 
+  const webSiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "JSON Visualization",
+    url: SITE_URL,
+    description: SEO.description,
+  };
+
   return (
     <>
-      <Head>{generateDefaultSeo(SEO)}</Head>
+      <Head>
+        {generateDefaultSeo(SEO)}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+        />
+      </Head>
       <SoftwareApplicationJsonLd
         name="JSON Visualization"
         type="SoftwareApplication"

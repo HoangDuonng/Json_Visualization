@@ -14,7 +14,7 @@ const Terms = () => {
           ...SEO,
           title: "Terms of Service - JSON Visualization",
           description: "JSON Visualization Terms of Service",
-          canonical: "https://nguuyen.io.vn",
+          canonical: "https://jsonviz.online/legal/terms",
         })}
       </Head>
       <Container my={50} size="md" pb="lg">
