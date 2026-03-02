@@ -1,5 +1,6 @@
+# Standard directives only. If Lighthouse reports "Unknown directive" on Content-Signal,
+# that line is injected by Cloudflare (Content Signals). Disable it in Cloudflare Dashboard:
+# Bot Management / Scrape Shield → Managed robots.txt or Content Signals.
 User-agent: *
-
 Allow: /
-
-Sitemap: https://jsonvisualization.nguuyen.io.vn/sitemap.xml
+Sitemap: https://jsonviz.online/sitemap.xml
