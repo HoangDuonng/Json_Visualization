@@ -40,7 +40,16 @@ class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
             rel="stylesheet"
+            media="print"
+            // @ts-expect-error non-render-blocking font: apply when loaded
+            onLoad="this.media='all'"
           />
+          <noscript>
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+            />
+          </noscript>
         </Head>
         <body>
           <Main />

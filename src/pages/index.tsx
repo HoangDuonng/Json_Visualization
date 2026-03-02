@@ -15,7 +15,10 @@ import Layout from "../layout/PageLayout";
 export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout stars={props.stars}>
-      <Head>{generateNextSeo({ ...SEO, canonical: SITE_URL })}</Head>
+      <Head>
+        {generateNextSeo({ ...SEO, canonical: SITE_URL })}
+        <link rel="preload" href="/assets/editor.webp" as="image" />
+      </Head>
       <HeroSection stars={props.stars} />
       <HeroPreview />
       <Section1 />

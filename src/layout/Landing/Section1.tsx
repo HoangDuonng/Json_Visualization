@@ -90,7 +90,7 @@ export const Section1 = () => {
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step1-visual.png" pos="relative" w="100%" alt="upload" />
+            <Image src="/assets/step1-visual.png" pos="relative" w="100%" alt="upload" loading="lazy" />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Upload your data
@@ -110,7 +110,7 @@ export const Section1 = () => {
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step2-visual.png" pos="relative" w="100%" alt="visualize" />
+            <Image src="/assets/step2-visual.png" pos="relative" w="100%" alt="visualize" loading="lazy" />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Visualize your JSON
@@ -131,7 +131,7 @@ export const Section1 = () => {
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step3-visual.png" pos="relative" w="100%" alt="export image" />
+            <Image src="/assets/step3-visual.png" pos="relative" w="100%" alt="export image" loading="lazy" />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Export to image
