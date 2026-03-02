@@ -111,10 +111,18 @@ const getOrCreateWorkerPool = () => {
     workerPool = promiseTry(async () => {
       const { WorkerUrl } = await lazyLoadWorkerSubsetChunk();
 
+      // Next.js/Webpack can expose worker chunk as file://; Workers cannot load from file:// when page is http(s)
+      const urlForPool =
+        WorkerUrl &&
+        WorkerUrl.protocol !== "file:" &&
+        (WorkerUrl.protocol === "http:" || WorkerUrl.protocol === "https:")
+          ? WorkerUrl
+          : undefined;
+
       const pool = WorkerPool.create<
         SubsetWorkerData,
         SubsetWorkerResult<SubsetWorkerData["command"]>
-      >(WorkerUrl);
+      >(urlForPool);
 
       return pool;
     });

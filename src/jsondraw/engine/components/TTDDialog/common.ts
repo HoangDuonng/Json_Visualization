@@ -8,7 +8,7 @@ import type {
 import { EditorLocalStorage } from "../../data/EditorLocalStorage";
 import {
   convertToJsonDrawElements,
-  exportToCanvas,
+  exportToSvg,
   THEME,
 } from "../../index";
 
@@ -93,20 +93,22 @@ export const convertMermaidToJsonDraw = async ({
       files,
     };
 
-    const canvas = await exportToCanvas({
+    const svg = await exportToSvg({
       elements: data.current.elements,
       files: data.current.files,
       exportPadding: DEFAULT_EXPORT_PADDING,
-      maxWidthOrHeight:
-        Math.max(parent.offsetWidth, parent.offsetHeight) *
-        window.devicePixelRatio,
       appState: {
         exportWithDarkMode: theme === THEME.DARK,
+        viewBackgroundColor: "var(--default-bg-color)",
       },
     });
 
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
     parent.style.background = "var(--default-bg-color)";
-    canvasNode.replaceChildren(canvas);
+    canvasNode.replaceChildren(svg);
     return { success: true };
   } catch (err: any) {
     parent.style.background = "var(--default-bg-color)";
