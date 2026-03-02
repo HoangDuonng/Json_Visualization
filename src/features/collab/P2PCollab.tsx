@@ -153,11 +153,25 @@ export const P2PCollabProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     (async () => {
       const config = buildBaseConfig();
       try {
-        const r = await fetch("/api/turn-credentials");
-        if (r.ok) {
-          const iceServers = await r.json();
-          if (Array.isArray(iceServers) && iceServers.length > 0) {
-            config.rtcConfig = { iceServers };
+        const meteredDomain = process.env.NEXT_PUBLIC_METERED_DOMAIN;
+        const meteredApiKey = process.env.NEXT_PUBLIC_METERED_API_KEY;
+        const meteredRegion = process.env.NEXT_PUBLIC_METERED_REGION;
+
+        if (meteredDomain && meteredApiKey) {
+          const safeDomain = meteredDomain
+            .replace(/^https?:\/\//, "")
+            .replace(/\/$/, "")
+            .trim();
+          const url = `https://${safeDomain}/api/v1/turn/credentials?apiKey=${encodeURIComponent(
+            meteredApiKey
+          )}${meteredRegion ? `&region=${encodeURIComponent(meteredRegion)}` : ""}`;
+
+          const r = await fetch(url);
+          if (r.ok) {
+            const iceServers = await r.json();
+            if (Array.isArray(iceServers) && iceServers.length > 0) {
+              config.rtcConfig = { iceServers };
+            }
           }
         }
       } catch {
