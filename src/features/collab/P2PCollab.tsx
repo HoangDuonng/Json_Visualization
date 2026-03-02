@@ -9,7 +9,7 @@ import { selfId } from "trystero";
 import { MAX_COLLABORATORS_PER_ROOM } from "../../constants/enumData";
 import useJson from "../../store/useJson";
 import { COLLAB_ANIMALS, COLLAB_COLORS } from "./collabConstants";
-import { P2P_APP_ID, P2P_RELAY_URLS } from "./collabMode";
+import { getP2PTurnConfig, P2P_APP_ID, P2P_RELAY_URLS } from "./collabMode";
 import type { CollaboratorUser, JoinRequest } from "./Collab";
 
 interface StartCollaborationOptions {
@@ -138,211 +138,232 @@ export const P2PCollabProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const newText = newDoc.getText("json-content");
     setDocState({ doc: newDoc, text: newText });
 
-    const config: any = {
-      appId: P2P_APP_ID,
+    const applyConfigAndJoin = (config: any) => {
+      const room = joinRoom(config, newRoomId);
+      setP2pRoom(room);
+      return room;
     };
 
-    if (P2P_RELAY_URLS.length > 0) {
-      config.relayUrls = P2P_RELAY_URLS;
-    }
+    const buildBaseConfig = (): any => {
+      const config: any = { appId: P2P_APP_ID };
+      if (P2P_RELAY_URLS.length > 0) config.relayUrls = P2P_RELAY_URLS;
+      return config;
+    };
 
-    const room = joinRoom(config, newRoomId);
-    setP2pRoom(room);
-
-    ensureSelfCollaborator(ownerByClientIntent);
-
-    const selfProfile = collaboratorsRef.current.get(selfId);
-
-    const [sendIdentity, getIdentity] = room.makeAction("ident");
-    const [sendYUpdate, getYUpdate] = room.makeAction("yupd");
-    const [sendYFull, getYFull] = room.makeAction("yfull");
-    const [sendJoinRequest, getJoinRequest] = room.makeAction("jreq");
-    const [, getJoinResponse] = room.makeAction("jrsp");
-    const [, getPasswordCheck] = room.makeAction("pwchk");
-    const [, getPasswordResult] = room.makeAction("pwres");
-    const [, getKick] = room.makeAction("kick");
-
-    if (selfProfile) {
-      void sendIdentity({
-        ...selfProfile,
-        isOwner: ownerByClientIntent,
-      });
-    }
-
-    if (!ownerByClientIntent && selfProfile) {
-      setWaitingForApproval(true);
-      const joinPayload: JoinRequest = {
-        userId: selfProfile.id,
-        username: selfProfile.username || selfProfile.id,
-        color: selfProfile.color,
-      };
-      void sendJoinRequest(joinPayload as any);
-    }
-
-    getYUpdate((data: any) => {
-      if (!data) return;
-      if (!isRoomOwnerRef.current && !isApprovedRef.current) return;
-      const buffer = data instanceof ArrayBuffer ? data : (data as ArrayBuffer);
-      const update = new Uint8Array(buffer);
-      Y.applyUpdate(newDoc, update, "remote");
-    });
-
-    getYFull((data: any) => {
-      if (!data) return;
-      if (!isRoomOwnerRef.current && !isApprovedRef.current) return;
-      const buffer = data instanceof ArrayBuffer ? data : (data as ArrayBuffer);
-      const update = new Uint8Array(buffer);
-      Y.applyUpdate(newDoc, update, "remote");
-    });
-
-    getIdentity((data: any, peerId: string) => {
-      if (!data) return;
-      const profile = data as CollaboratorUser;
-      const existing = collaboratorsRef.current.get(peerId);
-
-      const next: CollaboratorUser = {
-        id: peerId,
-        username: profile.username || existing?.username || pickRandom(COLLAB_ANIMALS),
-        color: profile.color || existing?.color || pickRandom(COLLAB_COLORS),
-        isOwner: Boolean(profile.isOwner),
-      };
-
-      collaboratorsRef.current.set(peerId, next);
-      setCollaborators(Array.from(collaboratorsRef.current.values()));
-
-      if (next.isOwner) {
-        ownerPeerIdRef.current = peerId;
-      }
-    });
-
-    getJoinRequest((data: any) => {
-      if (!isRoomOwnerRef.current) return;
-      if (!data) return;
-
-      const payload = data as JoinRequest;
-      setPendingRequests(prev => {
-        if (prev.some(req => req.userId === payload.userId)) {
-          return prev;
+    (async () => {
+      const config = buildBaseConfig();
+      try {
+        const r = await fetch("/api/turn-credentials");
+        if (r.ok) {
+          const iceServers = await r.json();
+          if (Array.isArray(iceServers) && iceServers.length > 0) {
+            config.rtcConfig = { iceServers };
+          }
         }
-        return [...prev, payload];
-      });
-    });
-
-    getJoinResponse((data: any) => {
-      if (isRoomOwnerRef.current) return;
-      if (!data) return;
-
-      const payload = data as { approved: boolean; requiresPassword?: boolean; reason?: string };
-
-      setWaitingForApproval(false);
-
-      if (!payload.approved) {
-        room.leave();
-        resetConnectionState();
-        Modal.info({
-          title: "Join Rejected",
-          content: payload.reason || "The room owner rejected your request to join.",
-          centered: true,
-        });
-        return;
+      } catch {
+        // ignore; fall back to env TURN
       }
-
-      if (payload.requiresPassword) {
-        setPasswordRequiredRoom(newRoomId);
-      } else {
-        setIsApproved(true);
-        isApprovedRef.current = true;
+      if (!config.rtcConfig?.iceServers?.length) {
+        const turnConfig = getP2PTurnConfig();
+        if (turnConfig.length > 0) config.turnConfig = turnConfig;
       }
-    });
+      const room = applyConfigAndJoin(config);
 
-    getPasswordCheck((data: any, peerId: string) => {
-      if (!isRoomOwnerRef.current) return;
-      if (!data) return;
+      ensureSelfCollaborator(ownerByClientIntent);
 
-      const payload = data as { password: string };
-      const ok = payload.password === roomPasswordRef.current;
-      const [sendPasswordResult] = room.makeAction("pwres");
+      const selfProfile = collaboratorsRef.current.get(selfId);
 
-      void sendPasswordResult({ ok, reason: ok ? undefined : "Invalid room password" } as any, peerId);
-    });
-
-    getPasswordResult((data: any) => {
-      if (isRoomOwnerRef.current) return;
-      if (!data) return;
-
-      const payload = data as { ok: boolean; reason?: string };
-
-      if (payload.ok) {
-        setPasswordRequiredRoom(null);
-        setIsApproved(true);
-        isApprovedRef.current = true;
-      } else {
-        Modal.error({
-          title: "Connection Error",
-          content: payload.reason || "Invalid room password",
-          centered: true,
-        });
-      }
-    });
-
-    getKick((data: any) => {
-      if (isRoomOwnerRef.current) return;
-
-      const payload = data as { reason?: string };
-      room.leave();
-      resetConnectionState();
-      Modal.warning({
-        title: "Kicked from room",
-        content: payload?.reason || "You were removed from this room by the room owner.",
-        centered: true,
-      });
-    });
-
-    room.onPeerJoin(peerId => {
-      if (!collaboratorsRef.current.has(peerId)) {
-        const peer: CollaboratorUser = {
-          id: peerId,
-          username: pickRandom(COLLAB_ANIMALS),
-          color: pickRandom(COLLAB_COLORS),
-          isOwner: false,
-        };
-        collaboratorsRef.current.set(peerId, peer);
-      }
-
-      const totalPeers = collaboratorsRef.current.size;
-      if (!isRoomOwnerRef.current && totalPeers > MAX_COLLABORATORS_PER_ROOM) {
-        Modal.warning({
-          title: "Room is full",
-          content: `Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`,
-          centered: true,
-        });
-        room.leave();
-        resetConnectionState();
-        return;
-      }
-
-      setCollaborators(Array.from(collaboratorsRef.current.values()));
+      const [sendIdentity, getIdentity] = room.makeAction("ident");
+      const [sendYUpdate, getYUpdate] = room.makeAction("yupd");
+      const [sendYFull, getYFull] = room.makeAction("yfull");
+      const [sendJoinRequest, getJoinRequest] = room.makeAction("jreq");
+      const [, getJoinResponse] = room.makeAction("jrsp");
+      const [, getPasswordCheck] = room.makeAction("pwchk");
+      const [, getPasswordResult] = room.makeAction("pwres");
+      const [, getKick] = room.makeAction("kick");
 
       if (selfProfile) {
-        void sendIdentity(selfProfile as any, peerId);
+        void sendIdentity({
+          ...selfProfile,
+          isOwner: ownerByClientIntent,
+        });
       }
 
-      if (isRoomOwnerRef.current) {
-        const stateUpdate = Y.encodeStateAsUpdate(newDoc);
-        void sendYFull(stateUpdate, peerId);
+      if (!ownerByClientIntent && selfProfile) {
+        setWaitingForApproval(true);
+        const joinPayload: JoinRequest = {
+          userId: selfProfile.id,
+          username: selfProfile.username || selfProfile.id,
+          color: selfProfile.color,
+        };
+        void sendJoinRequest(joinPayload as any);
       }
-    });
 
-    room.onPeerLeave(peerId => {
-      collaboratorsRef.current.delete(peerId);
-      setCollaborators(Array.from(collaboratorsRef.current.values()));
-    });
+      getYUpdate((data: any) => {
+        if (!data) return;
+        if (!isRoomOwnerRef.current && !isApprovedRef.current) return;
+        const buffer = data instanceof ArrayBuffer ? data : (data as ArrayBuffer);
+        const update = new Uint8Array(buffer);
+        Y.applyUpdate(newDoc, update, "remote");
+      });
 
-    newDoc.on("update", (update: Uint8Array, origin: unknown) => {
-      if (origin !== "remote" && (isRoomOwnerRef.current || isApprovedRef.current)) {
-        void sendYUpdate(update);
-      }
-    });
+      getYFull((data: any) => {
+        if (!data) return;
+        if (!isRoomOwnerRef.current && !isApprovedRef.current) return;
+        const buffer = data instanceof ArrayBuffer ? data : (data as ArrayBuffer);
+        const update = new Uint8Array(buffer);
+        Y.applyUpdate(newDoc, update, "remote");
+      });
+
+      getIdentity((data: any, peerId: string) => {
+        if (!data) return;
+        const profile = data as CollaboratorUser;
+        const existing = collaboratorsRef.current.get(peerId);
+
+        const next: CollaboratorUser = {
+          id: peerId,
+          username: profile.username || existing?.username || pickRandom(COLLAB_ANIMALS),
+          color: profile.color || existing?.color || pickRandom(COLLAB_COLORS),
+          isOwner: Boolean(profile.isOwner),
+        };
+
+        collaboratorsRef.current.set(peerId, next);
+        setCollaborators(Array.from(collaboratorsRef.current.values()));
+
+        if (next.isOwner) {
+          ownerPeerIdRef.current = peerId;
+        }
+      });
+
+      getJoinRequest((data: any) => {
+        if (!isRoomOwnerRef.current) return;
+        if (!data) return;
+
+        const payload = data as JoinRequest;
+        setPendingRequests(prev => {
+          if (prev.some(req => req.userId === payload.userId)) {
+            return prev;
+          }
+          return [...prev, payload];
+        });
+      });
+
+      getJoinResponse((data: any) => {
+        if (isRoomOwnerRef.current) return;
+        if (!data) return;
+
+        const payload = data as { approved: boolean; requiresPassword?: boolean; reason?: string };
+
+        setWaitingForApproval(false);
+
+        if (!payload.approved) {
+          room.leave();
+          resetConnectionState();
+          Modal.info({
+            title: "Join Rejected",
+            content: payload.reason || "The room owner rejected your request to join.",
+            centered: true,
+          });
+          return;
+        }
+
+        if (payload.requiresPassword) {
+          setPasswordRequiredRoom(newRoomId);
+        } else {
+          setIsApproved(true);
+          isApprovedRef.current = true;
+        }
+      });
+
+      getPasswordCheck((data: any, peerId: string) => {
+        if (!isRoomOwnerRef.current) return;
+        if (!data) return;
+
+        const payload = data as { password: string };
+        const ok = payload.password === roomPasswordRef.current;
+        const [sendPasswordResult] = room.makeAction("pwres");
+
+        void sendPasswordResult({ ok, reason: ok ? undefined : "Invalid room password" } as any, peerId);
+      });
+
+      getPasswordResult((data: any) => {
+        if (isRoomOwnerRef.current) return;
+        if (!data) return;
+
+        const payload = data as { ok: boolean; reason?: string };
+
+        if (payload.ok) {
+          setPasswordRequiredRoom(null);
+          setIsApproved(true);
+          isApprovedRef.current = true;
+        } else {
+          Modal.error({
+            title: "Connection Error",
+            content: payload.reason || "Invalid room password",
+            centered: true,
+          });
+        }
+      });
+
+      getKick((data: any) => {
+        if (isRoomOwnerRef.current) return;
+
+        const payload = data as { reason?: string };
+        room.leave();
+        resetConnectionState();
+        Modal.warning({
+          title: "Kicked from room",
+          content: payload?.reason || "You were removed from this room by the room owner.",
+          centered: true,
+        });
+      });
+
+      room.onPeerJoin(peerId => {
+        if (!collaboratorsRef.current.has(peerId)) {
+          const peer: CollaboratorUser = {
+            id: peerId,
+            username: pickRandom(COLLAB_ANIMALS),
+            color: pickRandom(COLLAB_COLORS),
+            isOwner: false,
+          };
+          collaboratorsRef.current.set(peerId, peer);
+        }
+
+        const totalPeers = collaboratorsRef.current.size;
+        if (!isRoomOwnerRef.current && totalPeers > MAX_COLLABORATORS_PER_ROOM) {
+          Modal.warning({
+            title: "Room is full",
+            content: `Maximum ${MAX_COLLABORATORS_PER_ROOM} users are allowed.`,
+            centered: true,
+          });
+          room.leave();
+          resetConnectionState();
+          return;
+        }
+
+        setCollaborators(Array.from(collaboratorsRef.current.values()));
+
+        if (selfProfile) {
+          void sendIdentity(selfProfile as any, peerId);
+        }
+
+        if (isRoomOwnerRef.current) {
+          const stateUpdate = Y.encodeStateAsUpdate(newDoc);
+          void sendYFull(stateUpdate, peerId);
+        }
+      });
+
+      room.onPeerLeave(peerId => {
+        collaboratorsRef.current.delete(peerId);
+        setCollaborators(Array.from(collaboratorsRef.current.values()));
+      });
+
+      newDoc.on("update", (update: Uint8Array, origin: unknown) => {
+        if (origin !== "remote" && (isRoomOwnerRef.current || isApprovedRef.current)) {
+          void sendYUpdate(update);
+        }
+      });
+    })();
   };
 
   const stopCollaboration = () => {
