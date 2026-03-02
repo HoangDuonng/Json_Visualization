@@ -17,7 +17,7 @@ import { SecureInfo } from "./SecureInfo";
 import { ZoomControl } from "./ZoomControl";
 import useGraph from "./stores/useGraph";
 
-const StyledEditorWrapper = styled.div<{ $widget: boolean; $showRulers: boolean }>`
+const StyledEditorWrapper = styled.div<{ $widget: boolean; $showRulers: boolean; $showGrid: boolean }>`
   width: 100%;
   height: 100vh;
 
@@ -25,9 +25,10 @@ const StyledEditorWrapper = styled.div<{ $widget: boolean; $showRulers: boolean 
   --line-color-1: ${({ theme }) => theme.GRID_COLOR_PRIMARY};
   --line-color-2: ${({ theme }) => theme.GRID_COLOR_SECONDARY};
 
-  background-color: var(--bg-color);
-  ${({ $showRulers }) =>
+  background-color: ${({ theme, $showGrid }) => ($showGrid ? "var(--bg-color)" : theme.FULL_WHITE)};
+  ${({ $showRulers, $showGrid }) =>
     $showRulers &&
+    $showGrid &&
     `
     background-image: linear-gradient(var(--line-color-1) 1.5px, transparent 1.5px),
       linear-gradient(90deg, var(--line-color-1) 1.5px, transparent 1.5px),
@@ -146,6 +147,7 @@ export const GraphView = ({ isWidget = false }: GraphProps) => {
   const loading = useGraph(state => state.loading);
   const gesturesEnabled = useConfig(state => state.gesturesEnabled);
   const rulersEnabled = useConfig(state => state.rulersEnabled);
+  const [showGrid, setShowGrid] = React.useState(isWidget);
   const [debouncedLoading] = useDebouncedValue(loading, 300);
   const didInitialCenter = React.useRef(false);
 
@@ -169,6 +171,33 @@ export const GraphView = ({ isWidget = false }: GraphProps) => {
   const debouncedOnZoomChangeHandler = debounce(() => {
     setViewPort(viewPort!);
   }, 300);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+
+      if (target) {
+        const tagName = target.tagName;
+        const isEditableInput =
+          tagName === "INPUT" || tagName === "TEXTAREA" || target.isContentEditable;
+
+        if (isEditableInput) {
+          return;
+        }
+      }
+
+      if ((event.metaKey || event.ctrlKey) && event.key === "'" && !event.repeat) {
+        event.preventDefault();
+        setShowGrid(prev => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   React.useEffect(() => {
     if (didInitialCenter.current || loading || !viewPort) return;
@@ -197,6 +226,7 @@ export const GraphView = ({ isWidget = false }: GraphProps) => {
         onClick={blurOnClick}
         key={String(gesturesEnabled)}
         $showRulers={rulersEnabled}
+        $showGrid={showGrid}
         {...bindLongPress()}
       >
         <Space
