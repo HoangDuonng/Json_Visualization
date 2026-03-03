@@ -43,8 +43,7 @@ import { restoreLibraryItems } from "./restore";
  **/
 const ALLOWED_LIBRARY_URLS = [
   "jsonviz.online",
-  // when installing from github PRs
-  "raw.githubusercontent.com/jsondraw/jsondraw-libraries",
+  "raw.githubusercontent.com/HoangDuonng/json-viz-libraries",
 ];
 
 type LibraryUpdate = {
@@ -129,7 +128,7 @@ export const mergeLibraryItems = (
   localItems: LibraryItems,
   otherItems: LibraryItems
 ): LibraryItems => {
-  const newItems = [];
+  const newItems: LibraryItem[] = [];
   for (const item of otherItems) {
     if (isUniqueItem(localItems, item)) {
       newItems.push(item);

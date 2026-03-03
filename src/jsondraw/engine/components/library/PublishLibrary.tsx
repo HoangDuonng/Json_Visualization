@@ -368,7 +368,7 @@ const PublishLibrary = ({
               i18nKey="publishDialog.noteGuidelines"
               link={el => (
                 <a
-                  href="https://github.com/jsondraw/jsondraw-libraries#guidelines"
+                  href="https://github.com/HoangDuonng/json-viz-libraries#guidelines"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -471,7 +471,7 @@ const PublishLibrary = ({
                 i18nKey="publishDialog.noteLicense"
                 link={el => (
                   <a
-                    href="https://github.com/jsondraw/jsondraw-libraries/blob/main/LICENSE"
+                    href="https://github.com/HoangDuonng/json-viz-libraries/blob/main/LICENSE"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
