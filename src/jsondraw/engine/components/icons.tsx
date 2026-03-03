@@ -1857,6 +1857,17 @@ export const mermaidLogoIcon = createIcon(
   />,
 );
 
+// tabler-icons: table (MD to Table)
+export const mdTableIcon = createIcon(
+  <g strokeWidth="1.5">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <rect x="3" y="5" width="18" height="14" rx="1" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="12" y1="5" x2="12" y2="19" />
+  </g>,
+  tablerIconProps,
+);
+
 // tabler-icons: refresh
 export const RetryIcon = createIcon(
   <g strokeWidth="1.5">

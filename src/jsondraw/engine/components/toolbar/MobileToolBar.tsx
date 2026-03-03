@@ -24,6 +24,7 @@ import {
   laserPointerToolIcon,
   LassoIcon,
   mermaidLogoIcon,
+  mdTableIcon,
   MagicIcon,
 } from "../icons";
 import { HandButton } from "./HandButton";
@@ -431,6 +432,13 @@ export const MobileToolBar = ({ app, onHandToolToggle, setAppState }: MobileTool
             data-testid="toolbar-embeddable"
           >
             {t("toolBar.mermaidToJsonDraw")}
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            onSelect={() => app.setOpenDialog({ name: "ttd", tab: "md-to-table" })}
+            icon={mdTableIcon}
+            data-testid="toolbar-md-to-table"
+          >
+            {t("toolBar.mdToTable")}
           </DropdownMenu.Item>
           {app.props.aiEnabled !== false && app.plugins.diagramToCode && (
             <>

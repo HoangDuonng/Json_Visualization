@@ -316,6 +316,7 @@
     "hand": "Bàn tay (di chuyển)",
     "extraTools": "Công cụ khác",
     "mermaidToJsonDraw": "Mermaid sang JsonDraw",
+    "mdToTable": "MD sang bảng",
     "convertElementType": "Chuyển loại hình"
   },
   "element": {

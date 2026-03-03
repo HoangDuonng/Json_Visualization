@@ -39,6 +39,7 @@ import {
   bucketFillIcon,
   ExportImageIcon,
   mermaidLogoIcon,
+  mdTableIcon,
   brainIconThin,
   LibraryIcon,
   historyCommandIcon,
@@ -524,6 +525,21 @@ function CommandPaletteInner({ customCommandPaletteItems }: CommandPaletteProps)
               openDialog: {
                 name: "ttd",
                 tab: "mermaid",
+              },
+            }));
+          },
+        },
+        {
+          label: `${t("toolBar.mdToTable")}...`,
+          category: DEFAULT_CATEGORIES.tools,
+          icon: mdTableIcon,
+          viewMode: false,
+          perform: () => {
+            setAppState(state => ({
+              ...state,
+              openDialog: {
+                name: "ttd",
+                tab: "md-to-table",
               },
             }));
           },

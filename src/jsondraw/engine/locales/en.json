@@ -316,6 +316,7 @@
     "hand": "Hand (panning tool)",
     "extraTools": "More tools",
     "mermaidToJsonDraw": "Mermaid to JsonDraw",
+    "mdToTable": "MD to Table",
     "convertElementType": "Toggle shape type"
   },
   "element": {
