@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import type { ReactNode } from "react";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { t } from "../../i18n";
 import { alertTriangleIcon, zoomIn, zoomOut } from "../icons";
@@ -10,25 +11,30 @@ const PREVIEW_ZOOM_STEP = 0.25;
 const WHEEL_ZOOM_SENSITIVITY = 0.002;
 
 interface TTDDialogOutputProps {
-  error: Error | null;
-  canvasRef: React.RefObject<HTMLDivElement | null>;
-  loaded: boolean;
+  error?: Error | null;
+  canvasRef?: React.RefObject<HTMLDivElement | null>;
+  loaded?: boolean;
   hideErrorDetails?: boolean;
+  /** When provided, renders inside zoomable canvas instead of canvasRef (for Markdown preview, etc.) */
+  children?: ReactNode;
 }
 
 export const TTDDialogOutput = ({
-  error,
+  error = null,
   canvasRef,
-  loaded,
+  loaded = true,
   hideErrorDetails,
+  children,
 }: TTDDialogOutputProps) => {
   const viewportRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
   const lastPointerRef = useRef({ x: 0, y: 0 });
   const [viewportSize, setViewportSize] = useState({ w: 0, h: 0 });
+  const [contentSize, setContentSize] = useState({ w: 0, h: 0 });
 
   const zoomTowardPoint = useCallback(
     (newZoom: number, centerX: number, centerY: number) => {
@@ -54,6 +60,16 @@ export const TTDDialogOutput = ({
     setViewportSize({ w: el.offsetWidth, h: el.offsetHeight });
     return () => ro.disconnect();
   }, [loaded, error]);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const update = () => setContentSize({ w: el.offsetWidth, h: el.offsetHeight });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    update();
+    return () => ro.disconnect();
+  }, [loaded, error, children]);
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -114,12 +130,15 @@ export const TTDDialogOutput = ({
   };
 
   const showZoom = loaded && !error;
-  // Content rect (scaled, centered): center (w/2 + pan.x, h/2 + pan.y), size (w*zoom, h*zoom). Show button only when it does not intersect viewport (0,0,w,h).
+  // Content rect (scaled, centered): use actual content dimensions. Center at (w/2 + pan.x, h/2 + pan.y), scaled size (cw*zoom, ch*zoom). Show button only when content does not intersect viewport.
   const { w, h } = viewportSize;
-  const contentLeft = w / 2 + pan.x - (w * zoom) / 2;
-  const contentRight = w / 2 + pan.x + (w * zoom) / 2;
-  const contentTop = h / 2 + pan.y - (h * zoom) / 2;
-  const contentBottom = h / 2 + pan.y + (h * zoom) / 2;
+  const { w: cw, h: ch } = contentSize;
+  const scaledW = cw > 0 ? cw * zoom : w * zoom;
+  const scaledH = ch > 0 ? ch * zoom : h * zoom;
+  const contentLeft = w / 2 + pan.x - scaledW / 2;
+  const contentRight = w / 2 + pan.x + scaledW / 2;
+  const contentTop = h / 2 + pan.y - scaledH / 2;
+  const contentBottom = h / 2 + pan.y + scaledH / 2;
   const scrolledOutside =
     w > 0 &&
     h > 0 &&
@@ -161,7 +180,19 @@ export const TTDDialogOutput = ({
               transformOrigin: "center center",
             }}
           >
-            <div ref={canvasRef} className="ttd-dialog-output-canvas-content" />
+            {children != null ? (
+              <div ref={contentRef} className="ttd-dialog-output-canvas-content">
+                {children}
+              </div>
+            ) : (
+              <div
+                ref={el => {
+                  contentRef.current = el;
+                  if (canvasRef) (canvasRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                }}
+                className="ttd-dialog-output-canvas-content"
+              />
+            )}
           </div>
           {showZoom && (
             <div

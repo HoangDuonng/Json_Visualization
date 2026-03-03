@@ -379,7 +379,7 @@ export interface AppState {
   openDialog:
     | null
     | { name: "imageExport" | "help" | "jsonExport" }
-    | { name: "ttd"; tab: "text-to-diagram" | "mermaid" }
+    | { name: "ttd"; tab: "text-to-diagram" | "mermaid" | "md-to-table" }
     | { name: "commandPalette" }
     | { name: "settings" }
     | { name: "elementLinkSelector"; sourceElementId: JsonDrawElement["id"] };
@@ -746,6 +746,7 @@ export type AppClassProperties = {
   scrollToContent: App["scrollToContent"];
   addFiles: App["addFiles"];
   addElementsFromPasteOrLibrary: App["addElementsFromPasteOrLibrary"];
+  insertImageFromBlob: App["insertImageFromBlob"];
   togglePenMode: App["togglePenMode"];
   toggleLock: App["toggleLock"];
   setActiveTool: App["setActiveTool"];
@@ -768,6 +769,7 @@ export type AppClassProperties = {
 
   lastPointerMoveCoords: App["lastPointerMoveCoords"];
   bindModeHandler: App["bindModeHandler"];
+  setToast: App["setToast"];
 };
 
 export type PointerDownState = Readonly<{

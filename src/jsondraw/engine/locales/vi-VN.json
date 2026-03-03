@@ -621,6 +621,14 @@
     "label": "Mermaid",
     "inputPlaceholder": "Viết định nghĩa Mermaid tại đây..."
   },
+  "mdToTable": {
+    "label": "MD to Table",
+    "button": "Chèn",
+    "description": "Viết Markdown bên trái, xem kết quả render (bảng, tiêu đề, link) giống commit GitHub bên phải.",
+    "inputPlaceholder": "Viết Markdown tại đây...",
+    "preview": "Xem trước sẽ hiện khi tab này đang mở",
+    "noTableFound": "Không tìm thấy bảng markdown. Thêm bảng bằng cú pháp |."
+  },
   "ttd": {
     "error": "Lỗi!"
   },

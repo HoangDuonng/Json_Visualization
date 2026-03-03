@@ -5,6 +5,7 @@ import { useApp } from "../App";
 import { Dialog } from "../dialogs/Dialog";
 import { withInternalFallback } from "../hoc/withInternalFallback";
 import MermaidToJsonDraw from "./MermaidToJsonDraw";
+import MdToTable from "./MdToTable";
 import "./TTDDialog.scss";
 import { TTDDialogTab } from "./TTDDialogTab";
 import { TTDDialogTabTrigger } from "./TTDDialogTabTrigger";
@@ -44,7 +45,7 @@ const TTDDialogBase = withInternalFallback(
     tab,
     ...rest
   }: {
-    tab: "text-to-diagram" | "mermaid";
+    tab: "text-to-diagram" | "mermaid" | "md-to-table";
   } & (
     | {
         onTextSubmit(props: TTTDDialog.OnTextSubmitProps): Promise<TTTDDialog.OnTextSubmitRetValue>;
@@ -92,6 +93,7 @@ const TTDDialogBase = withInternalFallback(
                 </div>
               </TTDDialogTabTrigger>
               <TTDDialogTabTrigger tab="mermaid">{t("mermaid.label")}</TTDDialogTabTrigger>
+              <TTDDialogTabTrigger tab="md-to-table">{t("mdToTable.label")}</TTDDialogTabTrigger>
             </TTDDialogTabTriggers>
           )}
 
@@ -111,6 +113,9 @@ const TTDDialogBase = withInternalFallback(
               mermaidToJsonDrawLib={mermaidToJsonDrawLib}
               isActive={tab === "mermaid"}
             />
+          </TTDDialogTab>
+          <TTDDialogTab className="ttd-dialog-content" tab="md-to-table">
+            <MdToTable isActive={tab === "md-to-table"} />
           </TTDDialogTab>
           <div className="ttd-dialog-warning">
             AI may be inaccurate. Please review the generated diagram carefully before inserting it

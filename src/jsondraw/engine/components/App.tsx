@@ -10276,6 +10276,18 @@ class App extends React.Component<AppProps, AppState> {
     }
   };
 
+  /** Public API: insert image from blob (e.g. captured from HTML) into canvas center */
+  public insertImageFromBlob = async (blob: Blob, filename = "image.png") => {
+    const file = new File([blob], filename, { type: blob.type || "image/png" });
+    const clientX = this.state.width / 2 + this.state.offsetLeft;
+    const clientY = this.state.height / 2 + this.state.offsetTop;
+    const { x: sceneX, y: sceneY } = viewportCoordsToSceneCoords(
+      { clientX, clientY },
+      this.state
+    );
+    await this.insertImages([file], sceneX, sceneY);
+  };
+
   private insertImages = async (imageFiles: File[], sceneX: number, sceneY: number) => {
     const gridPadding = 50 / this.state.zoom.value;
     // Create, position, and insert placeholders

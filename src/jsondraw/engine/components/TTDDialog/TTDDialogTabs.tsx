@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
 const TTDDialogTabs = (
   props: {
     children: ReactNode;
-  } & { dialog: "ttd"; tab: "text-to-diagram" | "mermaid" },
+  } & { dialog: "ttd"; tab: "text-to-diagram" | "mermaid" | "md-to-table" },
 ) => {
   const setAppState = useJsonDrawSetAppState();
 
@@ -40,7 +40,7 @@ const TTDDialogTabs = (
         }
         if (
           props.dialog === "ttd" &&
-          isMemberOf(["text-to-diagram", "mermaid"], tab)
+          isMemberOf(["text-to-diagram", "mermaid", "md-to-table"], tab)
         ) {
           setAppState({
             openDialog: { name: props.dialog, tab },
