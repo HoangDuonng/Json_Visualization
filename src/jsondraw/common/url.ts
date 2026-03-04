@@ -7,6 +7,16 @@ export const normalizeLink = (link: string) => {
   if (!link) {
     return link;
   }
+
+  if (
+    !link.startsWith("/") &&
+    !link.startsWith("#") &&
+    !/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(link) &&
+    /^[^\s/]+\.[^\s/]+/.test(link)
+  ) {
+    link = `https://${link}`;
+  }
+
   return sanitizeUrl(escapeDoubleQuotes(link));
 };
 

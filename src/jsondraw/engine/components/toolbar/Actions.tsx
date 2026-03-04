@@ -38,6 +38,7 @@ import {
   hasStrokeWidth,
 } from "../../scene";
 import type { AppClassProperties, AppProps, UIAppState, Zoom, AppState } from "../../types";
+import { getShortcutKey } from "../../shortcut";
 import { useEditorInterface, useStylesPanelMode, useJsonDrawContainer } from "../App";
 import DropdownMenu from "../dropdownMenu/DropdownMenu";
 import {
@@ -49,6 +50,7 @@ import {
   laserPointerToolIcon,
   MagicIcon,
   LassoIcon,
+  LinkIcon,
   sharpArrowIcon,
   roundArrowIcon,
   elbowArrowIcon,
@@ -1120,6 +1122,28 @@ export const ShapesSwitcher = ({
               {t("toolBar.lasso")}
             </DropdownMenu.Item>
           )}
+          <DropdownMenu.Item
+            onSelect={() => {
+              const selectedElements = app.scene
+                .getSelectedElements(app.state);
+              if (selectedElements.length === 1) {
+                setAppState({
+                  showHyperlinkPopup: "editor",
+                  openMenu: null,
+                });
+              } else {
+                app.setToast({
+                  message: t("toolBar.link"),
+                  closable: true,
+                });
+              }
+            }}
+            icon={LinkIcon}
+            shortcut={getShortcutKey("CtrlOrCmd+K")}
+            data-testid="toolbar-link"
+          >
+            {t("labels.link.label")}
+          </DropdownMenu.Item>
           <div style={{ margin: "6px 0", fontSize: 14, fontWeight: 600 }}>Generate</div>
           {app.props.aiEnabled !== false && <TTDDialogTriggerTunnel.Out />}
           <DropdownMenu.Item
