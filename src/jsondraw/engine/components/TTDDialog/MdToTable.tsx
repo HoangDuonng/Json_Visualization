@@ -6,7 +6,7 @@ import { t } from "../../i18n";
 import { useApp } from "../App";
 import { ArrowRightIcon } from "../icons";
 import "./MdToTable.scss";
-import { convertMarkdownTableToElements } from "./mdToElements";
+import { convertMarkdownToElements } from "./mdToElements";
 import { TTDDialogInput } from "./TTDDialogInput";
 import { TTDDialogOutput } from "./TTDDialogOutput";
 import { TTDDialogPanel } from "./TTDDialogPanel";
@@ -35,10 +35,10 @@ const MdToTable = ({ isActive }: { isActive?: boolean }) => {
   }>({ elements: [], files: null });
 
   const onInsertToCanvas = () => {
-    const elements = convertMarkdownTableToElements(text);
+    const elements = convertMarkdownToElements(text);
     if (elements.length === 0) {
       if ("setToast" in app && typeof app.setToast === "function") {
-        app.setToast({ message: t("mdToTable.noTableFound"), closable: true });
+        app.setToast({ message: t("mdToTable.noContentFound"), closable: true });
       }
       return;
     }

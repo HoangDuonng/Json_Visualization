@@ -316,7 +316,7 @@
     "hand": "Bàn tay (di chuyển)",
     "extraTools": "Công cụ khác",
     "mermaidToJsonDraw": "Mermaid sang JsonDraw",
-    "mdToTable": "MD sang bảng",
+    "mdToTable": "Markdown",
     "convertElementType": "Chuyển loại hình"
   },
   "element": {
@@ -623,12 +623,13 @@
     "inputPlaceholder": "Viết định nghĩa Mermaid tại đây..."
   },
   "mdToTable": {
-    "label": "MD to Table",
+    "label": "Markdown",
     "button": "Chèn",
     "description": "Viết Markdown bên trái, xem kết quả render (bảng, tiêu đề, link) giống commit GitHub bên phải.",
     "inputPlaceholder": "Viết Markdown tại đây...",
     "preview": "Xem trước sẽ hiện khi tab này đang mở",
-    "noTableFound": "Không tìm thấy bảng markdown. Thêm bảng bằng cú pháp |."
+    "noTableFound": "Không tìm thấy bảng markdown. Thêm bảng bằng cú pháp |.",
+    "noContentFound": "Không có nội dung để chèn. Viết Markdown trước."
   },
   "ttd": {
     "error": "Lỗi!"

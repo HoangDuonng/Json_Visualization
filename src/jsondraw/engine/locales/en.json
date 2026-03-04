@@ -316,7 +316,7 @@
     "hand": "Hand (panning tool)",
     "extraTools": "More tools",
     "mermaidToJsonDraw": "Mermaid to JsonDraw",
-    "mdToTable": "MD to Table",
+    "mdToTable": "Markdown",
     "convertElementType": "Toggle shape type"
   },
   "element": {
@@ -623,12 +623,13 @@
     "inputPlaceholder": "Write Mermaid diagram defintion here..."
   },
   "mdToTable": {
-    "label": "MD to Table",
+    "label": "Markdown",
     "button": "Insert",
     "description": "Write Markdown on the left, see rendered output (tables, headings, links) like GitHub commits on the right.",
     "inputPlaceholder": "Write your Markdown here...",
     "preview": "Preview will appear when this tab is active",
-    "noTableFound": "No markdown table found. Add a table using | syntax."
+    "noTableFound": "No markdown table found. Add a table using | syntax.",
+    "noContentFound": "No content to insert. Write some Markdown first."
   },
   "ttd": {
     "error": "Error!"

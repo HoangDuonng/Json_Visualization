@@ -1857,7 +1857,7 @@ export const mermaidLogoIcon = createIcon(
   />,
 );
 
-// tabler-icons: table (MD to Table)
+// tabler-icons: table (Markdown)
 export const mdTableIcon = createIcon(
   <g strokeWidth="1.5">
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
