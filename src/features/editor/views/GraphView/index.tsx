@@ -25,7 +25,7 @@ const StyledEditorWrapper = styled.div<{ $widget: boolean; $showRulers: boolean;
   --line-color-1: ${({ theme }) => theme.GRID_COLOR_PRIMARY};
   --line-color-2: ${({ theme }) => theme.GRID_COLOR_SECONDARY};
 
-  background-color: ${({ theme, $showGrid }) => ($showGrid ? "var(--bg-color)" : theme.FULL_WHITE)};
+  background-color: var(--bg-color);
   ${({ $showRulers, $showGrid }) =>
     $showRulers &&
     $showGrid &&
