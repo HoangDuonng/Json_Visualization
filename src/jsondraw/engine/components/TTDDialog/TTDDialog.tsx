@@ -117,13 +117,15 @@ const TTDDialogBase = withInternalFallback(
           <TTDDialogTab className="ttd-dialog-content" tab="md-to-table">
             <MdToTable isActive={tab === "md-to-table"} />
           </TTDDialogTab>
-          <div className="ttd-dialog-warning">
-            AI may be inaccurate. Please review the generated diagram carefully before inserting it
-            into your canvas.{" "}
-            <a href="https://llm.chila.io.vn/" target="_blank" rel="noopener noreferrer">
-              API powered by Chila.io.vn
-            </a>
-          </div>
+          {tab === "text-to-diagram" && (
+            <div className="ttd-dialog-warning">
+              AI may be inaccurate. Please review the generated diagram carefully before inserting it
+              into your canvas.{" "}
+              <a href="https://llm.chila.io.vn/" target="_blank" rel="noopener noreferrer">
+                API powered by Chila.io.vn
+              </a>
+            </div>
+          )}
         </TTDDialogTabs>
       </Dialog>
     );
