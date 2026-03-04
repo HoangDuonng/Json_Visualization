@@ -251,6 +251,9 @@ export const Footer: React.FC<FooterProps> = () => {
               <Link href="/docs" prefetch={false} passHref legacyBehavior>
                 <StyledFooterLink>Docs</StyledFooterLink>
               </Link>
+              <Link href="/shorten" prefetch={false} passHref legacyBehavior>
+                <StyledFooterLink>URL Shortener</StyledFooterLink>
+              </Link>
             </StyledFooterSection>
 
             <StyledFooterSection>
