@@ -205,7 +205,8 @@ const ShortenPage = () => {
 
       await set(ref(db, `shortlinks/${code}`), record);
 
-      const shortUrl = `${SITE_URL}/s?c=${code}`;
+      const origin = typeof window !== "undefined" ? window.location.origin : SITE_URL;
+      const shortUrl = `${origin}/s?c=${code}`;
       const newResult: ShortenResult = {
         code,
         shortUrl,
