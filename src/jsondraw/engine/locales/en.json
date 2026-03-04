@@ -625,7 +625,7 @@
   "mdToTable": {
     "label": "Markdown",
     "button": "Insert",
-    "description": "Write Markdown on the left, see rendered output (tables, headings, links) like GitHub commits on the right.",
+    "description": "Write Markdown on the left, see rendered output (tables, headings, lists, code blocks) on the right.",
     "inputPlaceholder": "Write your Markdown here...",
     "preview": "Preview will appear when this tab is active",
     "noTableFound": "No markdown table found. Add a table using | syntax.",

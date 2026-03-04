@@ -625,7 +625,7 @@
   "mdToTable": {
     "label": "Markdown",
     "button": "Chèn",
-    "description": "Viết Markdown bên trái, xem kết quả render (bảng, tiêu đề, link) giống commit GitHub bên phải.",
+    "description": "Viết Markdown bên trái, xem kết quả render (bảng, tiêu đề, danh sách, code) bên phải.",
     "inputPlaceholder": "Viết Markdown tại đây...",
     "preview": "Xem trước sẽ hiện khi tab này đang mở",
     "noTableFound": "Không tìm thấy bảng markdown. Thêm bảng bằng cú pháp |.",
