@@ -94,6 +94,7 @@ const DrawPage = () => {
 
   useEffect(() => {
     setViewMode(ViewMode.JsonDraw);
+    useGraph.getState().toggleFullscreen(true);
   }, [setViewMode]);
 
   useEffect(() => {

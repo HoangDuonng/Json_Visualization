@@ -86,6 +86,10 @@ const EditorPage = () => {
   }, [checkEditorSession, isReady, query]);
 
   useEffect(() => {
+    useGraph.getState().toggleFullscreen(false);
+  }, []);
+
+  useEffect(() => {
     setColorScheme(darkmodeEnabled ? "dark" : "light");
     return () => {
       setColorScheme("light");
