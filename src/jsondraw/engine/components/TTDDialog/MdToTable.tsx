@@ -76,7 +76,18 @@ const MdToTable = ({ isActive }: { isActive?: boolean }) => {
           {isActive ? (
             <TTDDialogOutput>
               <div className="md-to-table-preview__content">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{text || " "}</ReactMarkdown>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer">
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {text || " "}
+                </ReactMarkdown>
               </div>
             </TTDDialogOutput>
           ) : (

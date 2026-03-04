@@ -22,9 +22,9 @@ const BLOCKQUOTE_GAP = 10;
 // ─── Markdown block parser ───────────────────────────────────────────────────
 
 type MdBlock =
-  | { type: "heading"; level: number; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "list"; ordered: boolean; items: string[] }
+  | { type: "heading"; level: number; text: string; rawText: string }
+  | { type: "paragraph"; text: string; rawText: string }
+  | { type: "list"; ordered: boolean; items: string[]; rawItems: string[] }
   | { type: "code"; lang: string; code: string }
   | { type: "blockquote"; text: string }
   | { type: "table"; rows: string[][] }
@@ -38,6 +38,12 @@ function stripInlineMarkdown(text: string): string {
     .replace(/(\*|_)(.*?)\1/g, "$2") // italic
     .replace(/~~(.*?)~~/g, "$1") // strikethrough
     .replace(/`([^`]+)`/g, "$1"); // inline code
+}
+
+/** Extract first markdown link URL from text, or null */
+function extractFirstLink(text: string): string | null {
+  const match = text.match(/\[([^\]]+)\]\(([^)]+)\)/);
+  return match ? match[2] : null;
 }
 
 function parseMarkdownBlocks(md: string): MdBlock[] {
@@ -76,6 +82,7 @@ function parseMarkdownBlocks(md: string): MdBlock[] {
         type: "heading",
         level: headingMatch[1].length,
         text: stripInlineMarkdown(headingMatch[2]),
+        rawText: headingMatch[2],
       });
       i++;
       continue;
@@ -126,22 +133,28 @@ function parseMarkdownBlocks(md: string): MdBlock[] {
     // unordered list
     if (/^\s*[-*+]\s/.test(line)) {
       const items: string[] = [];
+      const rawItems: string[] = [];
       while (i < lines.length && /^\s*[-*+]\s/.test(lines[i])) {
-        items.push(stripInlineMarkdown(lines[i].replace(/^\s*[-*+]\s+/, "")));
+        const raw = lines[i].replace(/^\s*[-*+]\s+/, "");
+        rawItems.push(raw);
+        items.push(stripInlineMarkdown(raw));
         i++;
       }
-      blocks.push({ type: "list", ordered: false, items });
+      blocks.push({ type: "list", ordered: false, items, rawItems });
       continue;
     }
 
     // ordered list
     if (/^\s*\d+\.\s/.test(line)) {
       const items: string[] = [];
+      const rawItems: string[] = [];
       while (i < lines.length && /^\s*\d+\.\s/.test(lines[i])) {
-        items.push(stripInlineMarkdown(lines[i].replace(/^\s*\d+\.\s+/, "")));
+        const raw = lines[i].replace(/^\s*\d+\.\s+/, "");
+        rawItems.push(raw);
+        items.push(stripInlineMarkdown(raw));
         i++;
       }
-      blocks.push({ type: "list", ordered: true, items });
+      blocks.push({ type: "list", ordered: true, items, rawItems });
       continue;
     }
 
@@ -162,7 +175,8 @@ function parseMarkdownBlocks(md: string): MdBlock[] {
       i++;
     }
     if (paraLines.length > 0) {
-      blocks.push({ type: "paragraph", text: stripInlineMarkdown(paraLines.join(" ")) });
+      const rawText = paraLines.join(" ");
+      blocks.push({ type: "paragraph", text: stripInlineMarkdown(rawText), rawText });
     }
   }
 
@@ -186,6 +200,7 @@ function createHeadingElements(
   const fontSizeMap: Record<number, number> = { 1: 28, 2: 24, 3: 20, 4: 18, 5: 16, 6: 14 };
   const fontSize = fontSizeMap[block.level] || 20;
   const fontFamily = DEFAULT_FONT_FAMILY;
+  const link = extractFirstLink(block.rawText);
   const m = measure(block.text, fontSize, fontFamily);
   const lineWidth = m.width + 8;
 
@@ -200,8 +215,9 @@ function createHeadingElements(
       fontFamily,
       textAlign: "left",
       verticalAlign: "top",
-      strokeColor: "#1e1e1e",
+      strokeColor: link ? "#1971c2" : "#1e1e1e",
       backgroundColor: "transparent",
+      link: link || null,
     }) as NonDeletedJsonDrawElement,
   );
 
@@ -233,6 +249,7 @@ function createParagraphElements(
 ): { elements: NonDeletedJsonDrawElement[]; height: number; width: number } {
   const fontSize = 16;
   const fontFamily = DEFAULT_FONT_FAMILY;
+  const link = extractFirstLink(block.rawText ?? block.text);
   const m = measure(block.text, fontSize, fontFamily);
 
   const el = newTextElement({
@@ -243,8 +260,9 @@ function createParagraphElements(
     fontFamily,
     textAlign: "left",
     verticalAlign: "top",
-    strokeColor: "#1e1e1e",
+    strokeColor: link ? "#1971c2" : "#1e1e1e",
     backgroundColor: "transparent",
+    link: link || null,
   }) as NonDeletedJsonDrawElement;
 
   return { elements: [el], height: m.height, width: m.width };
@@ -262,6 +280,8 @@ function createListElements(
 
   block.items.forEach((item, idx) => {
     const prefix = block.ordered ? `${idx + 1}. ` : "• ";
+    const rawItem = block.rawItems?.[idx] ?? item;
+    const link = extractFirstLink(rawItem);
     const text = prefix + item;
     const m = measure(text, fontSize, fontFamily);
 
@@ -274,8 +294,9 @@ function createListElements(
         fontFamily,
         textAlign: "left",
         verticalAlign: "top",
-        strokeColor: "#1e1e1e",
+        strokeColor: link ? "#1971c2" : "#1e1e1e",
         backgroundColor: "transparent",
+        link: link || null,
       }) as NonDeletedJsonDrawElement,
     );
 
