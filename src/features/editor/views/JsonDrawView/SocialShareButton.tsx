@@ -17,9 +17,9 @@ const shareTargets = {
     `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(
       "Check out this JSON visualization"
     )}`,
-  reddit: (url: string) =>
-    `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(
-      "JSON Visualization"
+  telegram: (url: string) =>
+    `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(
+      "Check out this JSON visualization"
     )}`,
   messenger: (url: string) =>
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
@@ -38,7 +38,7 @@ const shareTargets = {
 } satisfies Record<
   | "discord"
   | "twitter"
-  | "reddit"
+  | "telegram"
   | "messenger"
   | "pinterest"
   | "instagram"
@@ -167,10 +167,10 @@ const SocialShareButton: React.FC<SocialShareButtonProps> = ({ onPrepareShareUrl
           </svg>
         </button>
         <button
-          className="reddit-button button"
+          className="telegram-button button"
           type="button"
-          onClick={() => handleShare("reddit")}
-          aria-label="Share on Reddit"
+          onClick={() => handleShare("telegram")}
+          aria-label="Share on Telegram"
           style={{ transform: getButtonTransform(2), transitionDelay: "0.08s" }}
         >
           <svg
@@ -180,8 +180,7 @@ const SocialShareButton: React.FC<SocialShareButtonProps> = ({ onPrepareShareUrl
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M9.708 12a1.039 1.039 0 0 0-1.037 1.037c0 .574.465 1.05 1.037 1.04a1.04 1.04 0 0 0 0-2.077Zm2.304 4.559c.394 0 1.754-.048 2.47-.764a.29.29 0 0 0 0-.383.266.266 0 0 0-.382 0c-.442.454-1.408.61-2.088.61-.681 0-1.635-.156-2.089-.61a.266.266 0 0 0-.382 0 .266.266 0 0 0 0 .383c.705.704 2.065.763 2.471.763Zm1.24-3.509a1.04 1.04 0 0 0 1.039 1.037c.572 0 1.037-.476 1.037-1.037a1.039 1.039 0 0 0-2.075 0Z" />
-            <path d="M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Zm-4.785-1.456c-.394 0-.753.155-1.015.406-1.001-.716-2.375-1.181-3.901-1.241l.667-3.127 2.173.466a1.038 1.038 0 1 0 1.037-1.087 1.037 1.037 0 0 0-.93.585l-2.422-.512a.254.254 0 0 0-.264.106.232.232 0 0 0-.035.096l-.74 3.485c-1.55.048-2.947.513-3.963 1.24a1.466 1.466 0 0 0-1.927-.082 1.454 1.454 0 0 0 .318 2.457 2.542 2.542 0 0 0-.037.441c0 2.244 2.614 4.07 5.836 4.07 3.222 0 5.835-1.813 5.835-4.07a2.73 2.73 0 0 0-.036-.44c.502-.227.86-.74.86-1.337 0-.813-.656-1.456-1.456-1.456Z" />
+            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm4.63 6.806-1.64 7.735c-.124.547-.447.68-.903.424l-2.496-1.84-1.204 1.158c-.133.133-.244.244-.5.244l.178-2.54 4.622-4.176c.2-.178-.045-.278-.31-.1l-5.713 3.596-2.462-.77c-.536-.167-.547-.536.112-.792l9.62-3.71c.447-.166.836.1.692.77Z" />
           </svg>
         </button>
         <button
@@ -357,8 +356,8 @@ const StyledWrapper = styled.div`
     color: #ffffff;
   }
 
-  .reddit-button:hover {
-    background: #ff4500;
+  .telegram-button:hover {
+    background: #229ed9;
     color: #ffffff;
   }
 
