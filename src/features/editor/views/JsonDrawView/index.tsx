@@ -33,6 +33,7 @@ import { useCollab } from "../../../collab/CollabRoot";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
 import useGraph from "../GraphView/stores/useGraph";
 import { LoadFromLinkDialog } from "./LoadFromLinkDialog";
+import SocialShareButton from "./SocialShareButton";
 import { jsonToJsonDrawElements } from "./jsonToJsonDraw";
 import {
   createShareLink,
@@ -409,9 +410,7 @@ export const JsonDrawView = () => {
           if (payload.action === "FOLLOW") {
             setFollowedUserId(payload.userToFollow.socketId || null);
           } else if (payload.action === "UNFOLLOW") {
-            setFollowedUserId(prev =>
-              prev === payload.userToFollow.socketId ? null : prev
-            );
+            setFollowedUserId(prev => (prev === payload.userToFollow.socketId ? null : prev));
           }
         });
       }
@@ -475,9 +474,9 @@ export const JsonDrawView = () => {
       .catch(() => toast.error("Failed to copy link."));
   }, [shareUrl]);
 
-  const handleShareClick = React.useCallback(async () => {
+  const createSnapshotShareUrl = React.useCallback(async () => {
     const api = jsonDrawAPIRef.current;
-    if (!api) return;
+    if (!api) return null;
 
     setIsSharing(true);
     try {
@@ -487,14 +486,22 @@ export const JsonDrawView = () => {
 
       const url = await createShareLink(elements, appState, files);
       setShareUrl(url);
-      setShowShareModal(true);
+      return url;
     } catch (error: any) {
       console.error("Share failed:", error);
       toast.error("Failed to create share link. Please try again.");
+      return null;
     } finally {
       setIsSharing(false);
     }
   }, []);
+
+  const handleShareClick = React.useCallback(async () => {
+    const url = await createSnapshotShareUrl();
+    if (url) {
+      setShowShareModal(true);
+    }
+  }, [createSnapshotShareUrl]);
 
   // Periodically broadcast the current viewport so that when someone clicks
   // "Follow", they can snap to the latest camera (scroll + zoom) of the user
@@ -508,8 +515,7 @@ export const JsonDrawView = () => {
       if (!api || typeof api.getAppState !== "function") return;
 
       const state = api.getAppState();
-      const zoomValue =
-        state.zoom && typeof state.zoom.value === "number" ? state.zoom.value : 1;
+      const zoomValue = state.zoom && typeof state.zoom.value === "number" ? state.zoom.value : 1;
 
       const viewport = {
         scrollX: state.scrollX || 0,
@@ -998,13 +1004,9 @@ export const JsonDrawView = () => {
                               color={followedUserId === user.id ? "blue" : "gray"}
                               variant={followedUserId === user.id ? "filled" : "light"}
                               aria-label={
-                                followedUserId === user.id
-                                  ? "Stop following user"
-                                  : "Follow user"
+                                followedUserId === user.id ? "Stop following user" : "Follow user"
                               }
-                              onClick={() =>
-                                handleToggleFollowUser(user.id, user.username)
-                              }
+                              onClick={() => handleToggleFollowUser(user.id, user.username)}
                             >
                               <FiEye size={14} />
                             </ActionIcon>
@@ -1094,9 +1096,7 @@ export const JsonDrawView = () => {
                 if (api && typeof api.getAppState === "function") {
                   const state = api.getAppState();
                   const zoomValue =
-                    state.zoom && typeof state.zoom.value === "number"
-                      ? state.zoom.value
-                      : 1;
+                    state.zoom && typeof state.zoom.value === "number" ? state.zoom.value : 1;
                   viewport = {
                     scrollX: state.scrollX || 0,
                     scrollY: state.scrollY || 0,
@@ -1130,37 +1130,54 @@ export const JsonDrawView = () => {
             }}
             renderTopRightUI={(isMobile: boolean) => (
               <Box px="md">
-                <Menu shadow="md" width={200} position="bottom-end">
-                  <Menu.Target>
-                    <Button
-                      size="sm"
-                      color={isCollaborating ? "green" : "violet"}
-                      loading={isSharing}
-                      leftSection={isCollaborating ? <FiUsers size={16} /> : <FiShare2 size={16} />}
-                      title="Share canvas"
-                    >
-                      {isCollaborating ? "Live" : "Share"}
-                    </Button>
-                  </Menu.Target>
+                {!isMobile && (
+                  <Box
+                    style={{
+                      position: "fixed",
+                      right: "calc(1rem + var(--lg-button-size) + 0.5rem)",
+                      bottom: "1rem",
+                      zIndex: 300,
+                    }}
+                  >
+                    <SocialShareButton onPrepareShareUrl={createSnapshotShareUrl} />
+                  </Box>
+                )}
 
-                  <Menu.Dropdown>
-                    <Menu.Label>Export Options</Menu.Label>
-                    <Menu.Item leftSection={<FiCopy size={14} />} onClick={handleShareClick}>
-                      Share Link (Snapshot)
-                    </Menu.Item>
+                <Group gap="xs">
+                  <Menu shadow="md" width={220} position="bottom-end">
+                    <Menu.Target>
+                      <Button
+                        size="sm"
+                        color={isCollaborating ? "green" : "violet"}
+                        loading={isSharing}
+                        leftSection={
+                          isCollaborating ? <FiUsers size={16} /> : <FiShare2 size={16} />
+                        }
+                        title="Session options"
+                      >
+                        {isCollaborating ? "Live" : "Session"}
+                      </Button>
+                    </Menu.Target>
 
-                    <Menu.Divider />
+                    <Menu.Dropdown>
+                      <Menu.Label>Snapshot</Menu.Label>
+                      <Menu.Item leftSection={<FiCopy size={14} />} onClick={handleShareClick}>
+                        Copy Snapshot Link
+                      </Menu.Item>
 
-                    <Menu.Label>Realtime</Menu.Label>
-                    <Menu.Item
-                      color={isCollaborating ? "green" : "blue"}
-                      leftSection={isCollaborating ? <FiUsers size={14} /> : <FiPlay size={14} />}
-                      onClick={() => setShowCollabModal(true)}
-                    >
-                      {isCollaborating ? "Manage Collab Session" : "Start Live Collab"}
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
+                      <Menu.Divider />
+
+                      <Menu.Label>Realtime</Menu.Label>
+                      <Menu.Item
+                        color={isCollaborating ? "green" : "blue"}
+                        leftSection={isCollaborating ? <FiUsers size={14} /> : <FiPlay size={14} />}
+                        onClick={() => setShowCollabModal(true)}
+                      >
+                        {isCollaborating ? "Manage Collab Session" : "Start Live Collab"}
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
+                </Group>
               </Box>
             )}
           />
