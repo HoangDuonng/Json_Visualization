@@ -4,6 +4,22 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
+const normalizeUrl = value => (value || "").replace(/\/+$/, "");
+
+const librarySiteUrl = normalizeUrl(
+  process.env.NEXT_PUBLIC_LIBRARY_SITE_URL || process.env.VITE_APP_LIBRARY_URL
+);
+
+const libraryBackendUrl = normalizeUrl(
+  process.env.NEXT_PUBLIC_LIBRARY_BACKEND_URL || process.env.VITE_APP_LIBRARY_BACKEND
+);
+
+if (!libraryBackendUrl) {
+  throw new Error(
+    "Missing library backend URL. Set NEXT_PUBLIC_LIBRARY_BACKEND_URL or VITE_APP_LIBRARY_BACKEND."
+  );
+}
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -59,10 +75,8 @@ const config = {
         // Neutralize Vite-specific env vars
         "import.meta.env.VITE_APP_DISABLE_SENTRY": JSON.stringify("true"),
         "import.meta.env.VITE_APP_ENABLE_TRACKING": JSON.stringify("false"),
-        "import.meta.env.VITE_APP_LIBRARY_URL": JSON.stringify("https://libraries.jsonviz.online"),
-        "import.meta.env.VITE_APP_LIBRARY_BACKEND": JSON.stringify(
-          "https://us-central1-jsondraw-room-persistence.cloudfunctions.net/libraries"
-        ),
+        "import.meta.env.VITE_APP_LIBRARY_URL": JSON.stringify(librarySiteUrl),
+        "import.meta.env.VITE_APP_LIBRARY_BACKEND": JSON.stringify(libraryBackendUrl),
         "import.meta.env.VITE_APP_AI_BACKEND": JSON.stringify(""),
         "import.meta.env.VITE_APP_BACKEND_V2_GET_URL": JSON.stringify(
           "https://json.jsonviz.online/api/v2/"
