@@ -18,6 +18,7 @@ export type { JsonDrawElement, JsonDrawArrowElement } from "./element/types";
 export { saveAsJSON } from "./engine/data";
 export { restoreAppState, restoreElements } from "./engine/data/restore";
 export { reconcileElements } from "./engine/data/reconcile";
+export { useHandleLibrary } from "./engine/data/library";
 export { getSceneVersion } from "./engine";
 
 // UI components

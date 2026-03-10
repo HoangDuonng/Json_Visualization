@@ -27,7 +27,13 @@ import {
   FiUserX,
   FiEye,
 } from "react-icons/fi";
-import { HamsterLoader, saveAsJSON, restoreAppState, restoreElements } from "../../../../jsondraw";
+import {
+  HamsterLoader,
+  saveAsJSON,
+  restoreAppState,
+  restoreElements,
+  useHandleLibrary,
+} from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
 import { useCollab } from "../../../collab/CollabRoot";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
@@ -64,8 +70,11 @@ export const JsonDrawView = () => {
     JsonDraw: React.ComponentType<any>;
   } | null>(null);
   const [drawReady, setDrawReady] = React.useState(false);
+  const [jsonDrawAPI, setJsonDrawAPI] = React.useState<any>(null);
 
   const jsonDrawAPIRef = React.useRef<any>(null);
+  useHandleLibrary({ jsondrawAPI: jsonDrawAPI });
+
   const hasInitialized = React.useRef(false);
   const hasUserDrawing = React.useRef(false);
   const [showClearModal, setShowClearModal] = React.useState(false);
@@ -397,6 +406,7 @@ export const JsonDrawView = () => {
   const handleJsonDrawAPI = React.useCallback(
     (api: any) => {
       jsonDrawAPIRef.current = api;
+      setJsonDrawAPI(api);
 
       if (typeof window === "undefined") return;
 
