@@ -116,11 +116,30 @@ function JsonCrack({ Component, pageProps }: AppProps) {
                   background: "#ffffff",
                   color: "#1a1a1a",
                   border: "1px solid #e8e4db",
-                  borderRadius: 4,
+                  borderRadius: 8,
                   fontSize: 14,
+                },
+                classNames: {
+                  success: "toast-success",
+                  error: "toast-error",
+                  warning: "toast-warning",
                 },
               }}
             />
+            <style jsx global>{`
+              .toast-success {
+                border-color: #37ff8b !important;
+                color: #166534 !important;
+              }
+              .toast-error {
+                border-color: #ef4444 !important;
+                color: #991b1b !important;
+              }
+              .toast-warning {
+                border-color: #f7c948 !important;
+                color: #854d0e !important;
+              }
+            `}</style>
             <GlobalStyle />
             {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && <GoogleAnalytics trackPageViews />}
             <CollabProvider>
