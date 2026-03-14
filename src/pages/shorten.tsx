@@ -1,15 +1,24 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Head from "next/head";
-import { Container, Stack, Text, Title, TextInput, CopyButton, ActionIcon, Tooltip } from "@mantine/core";
+import {
+  Container,
+  Stack,
+  Text,
+  Title,
+  TextInput,
+  CopyButton,
+  ActionIcon,
+  Tooltip,
+} from "@mantine/core";
 import styled, { keyframes } from "styled-components";
-import { generateNextSeo } from "next-seo/pages";
 import { ref, set, get } from "firebase/database";
 import { nanoid } from "nanoid";
-import { toast } from "sonner";
+import { generateNextSeo } from "next-seo/pages";
 import { IoLink, IoCopyOutline, IoCheckmark, IoOpenOutline } from "react-icons/io5";
+import { toast } from "sonner";
 import { SEO, SITE_URL } from "../constants/seo";
-import { getDb } from "../lib/db";
 import Layout from "../layout/PageLayout";
+import { getDb } from "../lib/db";
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(8px); }
@@ -26,13 +35,14 @@ const StyledCard = styled.div`
   border: 1px solid #e8e4db;
   border-radius: 16px;
   padding: 40px;
-  max-width: 640px;
+  width: 70%;
   margin: 0 auto;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 `;
 
 const StyledInputGroup = styled.div`
   display: flex;
+  width: 100%;
   gap: 12px;
   align-items: flex-end;
 
@@ -224,9 +234,11 @@ const ShortenPage = () => {
       toast.success("Short link created!");
     } catch (error: any) {
       console.error("Shorten error:", error);
-      toast.error(error?.message?.includes("Database configuration")
-        ? "URL shortener is not configured. Please set up Firebase."
-        : "Failed to create short link. Please try again.");
+      toast.error(
+        error?.message?.includes("Database configuration")
+          ? "URL shortener is not configured. Please set up Database."
+          : "Failed to create short link. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -250,7 +262,7 @@ const ShortenPage = () => {
         })}
       </Head>
 
-      <Container size="lg" py={40}>
+      <Container size="xl" py={40}>
         <Stack gap="lg">
           <StyledHeroSection>
             <Title order={1} c="dark" mb="sm">
