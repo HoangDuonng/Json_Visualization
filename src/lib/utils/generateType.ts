@@ -12,6 +12,9 @@ export const generateType = async (input: string, format: FileFormat, output: Ty
       const types = json2go.default(jsonString);
 
       return gofmt.default(types.go);
+    } else if (output === TypeLanguage.Dart) {
+      const { default: jsonToDart } = await import("../../lib/utils/json2dart");
+      return jsonToDart(jsonString);
     } else {
       const { run } = await import("json_typegen_wasm");
       return run("Root", jsonString, JSON.stringify({ output_mode: output }));

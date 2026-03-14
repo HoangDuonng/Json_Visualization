@@ -20,6 +20,7 @@ export enum TypeLanguage {
   JSON_SCHEMA = "json_schema",
   Kotlin = "kotlin",
   Rust = "rust",
+  Dart = "dart",
 }
 
 export enum ViewMode {
@@ -70,5 +71,10 @@ export const typeOptions = [
     label: "Rust",
     value: TypeLanguage.Rust,
     lang: "rust",
+  },
+  {
+    label: "Dart",
+    value: TypeLanguage.Dart,
+    lang: "dart",
   },
 ];

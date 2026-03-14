@@ -12,6 +12,7 @@ enum Language {
   JSON_SCHEMA = "json_schema",
   Kotlin = "kotlin",
   Rust = "rust",
+  Dart = "dart",
 }
 
 const typeOptions = [
@@ -44,6 +45,11 @@ const typeOptions = [
     label: "Rust",
     value: Language.Rust,
     lang: "rust",
+  },
+  {
+    label: "Dart",
+    value: Language.Dart,
+    lang: "dart",
   },
 ];
 
@@ -79,6 +85,10 @@ export const TypeModal = ({ opened, onClose }: ModalProps) => {
               const types = jtg.default(getJson());
               setType(gofmt.default(types.go));
             });
+          });
+        } else if (selectedType === Language.Dart) {
+          import("../../../lib/utils/json2dart").then(({ default: jsonToDart }) => {
+            setType(jsonToDart(getJson()));
           });
         } else {
           transformer({ value: getJson() }).then(setType);
