@@ -6,7 +6,7 @@ import { Box, Container, Flex, Paper, Text, Title } from "@mantine/core";
 import styled from "styled-components";
 import { Editor } from "@monaco-editor/react";
 import { generateNextSeo } from "next-seo/pages";
-import { LuCheck, LuCircleX } from "react-icons/lu";
+import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
 import { ExploreButton } from "../../components/ExploreButton";
 import { type FileFormat, formats } from "../../constants/enumData";
@@ -27,6 +27,21 @@ const StyledEditorWrapper = styled.div`
   }
 `;
 
+const StyledCopyButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: #666;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1a1a1a;
+  }
+`;
+
 interface ToolPageProps {
   from: FileFormat;
   to: FileFormat;
@@ -39,6 +54,14 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
   const [convertedContent, setConvertedContent] = React.useState("");
   const [scrollPosition, setScrollPosition] = React.useState(0);
   const [editorHeight, setEditorHeight] = React.useState(0);
+  const [copiedFrom, setCopiedFrom] = React.useState(false);
+  const [copiedTo, setCopiedTo] = React.useState(false);
+
+  const handleCopy = (content: string, setCopied: (v: boolean) => void) => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const fromLabel = formats.find(({ value }) => value === from)?.label;
   const toLabel = formats.find(({ value }) => value === to)?.label;
@@ -94,11 +117,16 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
               <Flex justify="space-between" align="center">
                 <Text c="#1a1a1a">{fromLabel}</Text>
-                {contentHasError && !!originalContent ? (
-                  <LuCircleX color="red" />
-                ) : (
-                  <LuCheck color="lightgreen" />
-                )}
+                <Flex align="center" gap="xs">
+                  {contentHasError && !!originalContent ? (
+                    <LuCircleX color="red" />
+                  ) : (
+                    <LuCheck color="lightgreen" />
+                  )}
+                  <StyledCopyButton onClick={() => handleCopy(originalContent, setCopiedFrom)}>
+                    {copiedFrom ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
+                  </StyledCopyButton>
+                </Flex>
               </Flex>
             </Box>
             <StyledEditorWrapper>
@@ -125,7 +153,12 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
 
           <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
-              <Text c="#1a1a1a">{toLabel}</Text>
+              <Flex justify="space-between" align="center">
+                <Text c="#1a1a1a">{toLabel}</Text>
+                <StyledCopyButton onClick={() => handleCopy(convertedContent, setCopiedTo)}>
+                  {copiedTo ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
+                </StyledCopyButton>
+              </Flex>
             </Box>
             <StyledEditorWrapper>
               <Editor

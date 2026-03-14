@@ -8,7 +8,7 @@ import { Editor, type OnMount } from "@monaco-editor/react";
 import { JSONSchemaFaker } from "json-schema-faker";
 import { generateNextSeo } from "next-seo/pages";
 import { toast } from "react-hot-toast";
-import { LuCheck, LuCircleX } from "react-icons/lu";
+import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
 import { ExploreButton } from "../../components/ExploreButton";
 import { GenerateButton } from "../../components/GenerateButton";
@@ -28,6 +28,21 @@ const jetbrainsMono = JetBrains_Mono({
 const StyledEditorWrapper = styled.div`
   * {
     font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+  }
+`;
+
+const StyledCopyButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: #666;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1a1a1a;
   }
 `;
 
@@ -64,6 +79,14 @@ const JSONSchemaTool = () => {
   const [jsonSchemaError, setJsonSchemaError] = React.useState(false);
   const [json, setJson] = React.useState("");
   const [jsonSchema, setJsonSchema] = React.useState("");
+  const [copiedJson, setCopiedJson] = React.useState(false);
+  const [copiedSchema, setCopiedSchema] = React.useState(false);
+
+  const handleCopy = (content: string, setCopied: (v: boolean) => void) => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   React.useEffect(() => {
     monacoRef.current?.languages.json.jsonDefaults.setDiagnosticsOptions({
@@ -178,7 +201,12 @@ const JSONSchemaTool = () => {
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
               <Flex justify="space-between" align="center">
                 <Text c="#1a1a1a">JSON</Text>
-                {jsonError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
+                <Flex align="center" gap="xs">
+                  {jsonError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
+                  <StyledCopyButton onClick={() => handleCopy(json, setCopiedJson)}>
+                    {copiedJson ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
+                  </StyledCopyButton>
+                </Flex>
               </Flex>
             </Box>
             <StyledEditorWrapper>
@@ -206,7 +234,12 @@ const JSONSchemaTool = () => {
             <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
               <Flex justify="space-between" align="center">
                 <Text c="#1a1a1a">JSON Schema</Text>
-                {jsonSchemaError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
+                <Flex align="center" gap="xs">
+                  {jsonSchemaError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
+                  <StyledCopyButton onClick={() => handleCopy(jsonSchema, setCopiedSchema)}>
+                    {copiedSchema ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
+                  </StyledCopyButton>
+                </Flex>
               </Flex>
             </Box>
             <StyledEditorWrapper>
