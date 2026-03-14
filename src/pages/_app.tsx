@@ -113,8 +113,9 @@ function JsonCrack({ Component, pageProps }: AppProps) {
               position="bottom-right"
               toastOptions={{
                 style: {
-                  background: "#4D4D4D",
-                  color: "#B9BBBE",
+                  background: "#ffffff",
+                  color: "#1a1a1a",
+                  border: "1px solid #e8e4db",
                   borderRadius: 4,
                   fontSize: 14,
                 },
