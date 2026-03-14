@@ -10,7 +10,7 @@ import { ThemeProvider } from "styled-components";
 import { SoftwareApplicationJsonLd } from "next-seo";
 import { generateDefaultSeo } from "next-seo/pages";
 import { GoogleAnalytics } from "nextjs-google-analytics";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 import GlobalStyle from "../constants/globalStyle";
 import { SEO, SITE_URL } from "../constants/seo";
 import { lightTheme } from "../constants/theme";
@@ -111,16 +111,12 @@ function JsonCrack({ Component, pageProps }: AppProps) {
           <ThemeProvider theme={lightTheme}>
             <Toaster
               position="bottom-right"
-              containerStyle={{
-                bottom: 34,
-                right: 8,
-                fontSize: 14,
-              }}
               toastOptions={{
                 style: {
                   background: "#4D4D4D",
                   color: "#B9BBBE",
                   borderRadius: 4,
+                  fontSize: 14,
                 },
               }}
             />

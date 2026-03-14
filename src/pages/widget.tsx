@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useMantineColorScheme } from "@mantine/core";
 import { ThemeProvider } from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { darkTheme, lightTheme } from "../constants/theme";
 import useGraph from "../features/editor/views/GraphView/stores/useGraph";
 import useFile from "../store/useFile";

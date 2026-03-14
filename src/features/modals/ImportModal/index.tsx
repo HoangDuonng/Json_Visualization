@@ -3,7 +3,7 @@ import type { ModalProps } from "@mantine/core";
 import { Modal, Group, Button, TextInput, Stack, Paper, Text } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { event as gaEvent } from "nextjs-google-analytics";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { AiOutlineUpload } from "react-icons/ai";
 import type { FileFormat } from "../../../constants/enumData";
 import useFile from "../../../store/useFile";

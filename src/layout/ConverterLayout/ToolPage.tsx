@@ -6,6 +6,7 @@ import { Box, Container, Flex, Paper, Text, Title } from "@mantine/core";
 import styled from "styled-components";
 import { Editor } from "@monaco-editor/react";
 import { generateNextSeo } from "next-seo/pages";
+import { toast } from "sonner";
 import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
 import { ExploreButton } from "../../components/ExploreButton";
@@ -61,6 +62,7 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
     navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    toast.success("Copied to clipboard!");
   };
 
   const fromLabel = formats.find(({ value }) => value === from)?.label;

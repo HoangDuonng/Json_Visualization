@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { toBlob, toJpeg, toPng, toSvg } from "html-to-image";
 import { event as gaEvent } from "nextjs-google-analytics";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { FiCopy, FiDownload } from "react-icons/fi";
 
 enum Extensions {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Group, Text } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { VscCircleSlash, VscFiles } from "react-icons/vsc";
 import { FileFormat } from "../../constants/enumData";
 import useFile from "../../store/useFile";

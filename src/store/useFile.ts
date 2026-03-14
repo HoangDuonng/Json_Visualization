@@ -1,6 +1,6 @@
 import debounce from "lodash.debounce";
 import { event as gaEvent } from "nextjs-google-analytics";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { create } from "zustand";
 import { FileFormat } from "../constants/enumData";
 import exampleJson from "../data/example.json";

@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { ref, set, get } from "firebase/database";
 import { nanoid } from "nanoid";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { IoLink, IoCopyOutline, IoCheckmark, IoOpenOutline } from "react-icons/io5";
 import { SEO, SITE_URL } from "../constants/seo";
 import { getDb } from "../lib/db";

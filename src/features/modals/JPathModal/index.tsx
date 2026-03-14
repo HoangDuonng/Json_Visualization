@@ -3,7 +3,7 @@ import type { ModalProps } from "@mantine/core";
 import { Stack, Modal, Button, Text, Anchor, Group, TextInput } from "@mantine/core";
 import { JSONPath } from "jsonpath-plus";
 import { event as gaEvent } from "nextjs-google-analytics";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { VscLinkExternal } from "react-icons/vsc";
 import useFile from "../../../store/useFile";
 import useJson from "../../../store/useJson";

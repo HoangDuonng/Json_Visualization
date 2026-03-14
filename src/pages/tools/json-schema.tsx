@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Editor, type OnMount } from "@monaco-editor/react";
 import { JSONSchemaFaker } from "json-schema-faker";
 import { generateNextSeo } from "next-seo/pages";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { ArrowButton } from "../../components/ArrowButton";
 import { ExploreButton } from "../../components/ExploreButton";
@@ -86,6 +86,7 @@ const JSONSchemaTool = () => {
     navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    toast.success("Copied to clipboard!");
   };
 
   React.useEffect(() => {

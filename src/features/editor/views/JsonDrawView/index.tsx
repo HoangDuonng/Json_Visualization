@@ -13,7 +13,7 @@ import {
   Badge,
 } from "@mantine/core";
 import styled from "styled-components";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import {
   FiCopy,
   FiCheck,
@@ -452,7 +452,7 @@ export const JsonDrawView = () => {
   React.useEffect(() => {
     if (pendingRequests && pendingRequests.length > prevPendingRequestsLength.current) {
       const latestReq = pendingRequests[pendingRequests.length - 1];
-      toast(`${latestReq.username} wants to join the room!`, { icon: "👋" });
+      toast(`👋 ${latestReq.username} wants to join the room!`);
     }
     prevPendingRequestsLength.current = pendingRequests?.length || 0;
   }, [pendingRequests]);

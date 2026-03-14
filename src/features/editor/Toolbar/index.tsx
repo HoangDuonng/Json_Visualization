@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Flex, Group } from "@mantine/core";
 import { useSessionStorage } from "@mantine/hooks";
 import styled from "styled-components";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineLayout } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa6";
 import { ViewMode } from "../../../constants/enumData";
