@@ -68,11 +68,32 @@ const Center = styled.div`
 `;
 
 const StyledButton = styled(Button)<any>`
+  background: transparent !important;
+  overflow: visible !important;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    height: 70%;
+    border-radius: 20px;
+    background: transparent;
+    transition: background 0.2s ease;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   &:hover {
     background: transparent !important;
   }
 
-  background: transparent !important;
+  &:hover::after {
+    background: rgba(0, 0, 0, 0.06);
+  }
 `;
 
 export const Navbar = () => {
