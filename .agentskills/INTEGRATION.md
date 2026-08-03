@@ -78,6 +78,10 @@ This repository includes [Agent Skills](.agentskills/) - structured documentatio
 4. Loads skills automatically
 ```
 
+### Amp compatibility
+
+Amp discovers project skills from `.agents/skills/`. This repository keeps the canonical skill documentation in `.agentskills/` and provides thin adapters in `.agents/skills/` that point agents back to the canonical files. Do not maintain a second copy of a skill's instructions.
+
 ## Progressive Disclosure
 
 Agents load information in stages to minimize context usage:

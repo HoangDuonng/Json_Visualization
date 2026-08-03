@@ -56,6 +56,10 @@ Public redesign scope includes `/`, `/docs`, `/docs/**`, `/converter/**`, `/type
 - Keep components small and named clearly. Avoid adding an abstraction for one use case.
 - Do not introduce a new font without checking loading, licensing, fallback behavior, and the protected editor pages.
 
+## Homepage composition freedom
+
+Treat the homepage structure as intentionally open-ended. You may replace the existing hero, section order, feature grid, preview placement, calls to action, and copy when that creates a stronger product story. Do not turn “freestyle” into unstructured decoration: the final composition must make the product purpose, primary action, proof/preview, supported workflows, and next-step navigation understandable without relying on the old layout. Keep the design contract, factual product claims, responsive behavior, accessibility, and protected-route boundaries as hard constraints.
+
 ## Completion report
 
 Report the public routes and shared files changed, the protected files intentionally untouched, the visual system decisions, verification performed, and any remaining visual limitations caused by unavailable assets or browser inspection.

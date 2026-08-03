@@ -1,5 +1,7 @@
 # Agent Guidelines for JSON Visualization
 
+Project skills are maintained canonically in `.agentskills/`. Amp-compatible discovery adapters live in `.agents/skills/` and point back to the canonical files; keep those locations synchronized when adding or renaming skills.
+
 This document provides guidelines for AI coding agents working in the JSON Visualization codebase.
 
 > **💡 For comprehensive documentation**: See [`.agentskills/json-visualization-dev/`](.agentskills/json-visualization-dev/) for structured Agent Skills with detailed architecture, components, and state management references.
