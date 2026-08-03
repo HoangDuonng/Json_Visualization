@@ -390,7 +390,7 @@ Check the [GitHub repository](https://github.com/HoangDuonng/Json_Visualization)
 - Reaflow (graph visualization)
 - Monaco Editor (code editor)
 
-See [Architecture](../.agentskills/json-visualization-dev/references/ARCHITECTURE.md).
+See [Architecture](../.agents/skills/json-visualization-dev/references/ARCHITECTURE.md).
 
 ### Can I self-host it?
 

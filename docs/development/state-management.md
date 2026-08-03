@@ -10,7 +10,7 @@ JSON Visualization uses Zustand for global state management. Stores are simple, 
 
 For comprehensive state management documentation, see:
 
-**[Agent Skills - State Reference](../../.agentskills/json-visualization-dev/references/STATE.md)**
+**[Agent Skills - State Reference](../../.agents/skills/json-visualization-dev/references/STATE.md)**
 
 This includes:
 - Complete store overview
@@ -140,4 +140,4 @@ const useFile = create<FileStates & JsonActions>()((set, get) => ({
 - [Architecture](architecture.md) - System design
 - [Components](components.md) - Component catalog
 - [Code Style](code-style.md) - Coding conventions
-- [Agent Skills - State](../../.agentskills/json-visualization-dev/references/STATE.md) - Full details
+- [Agent Skills - State](../../.agents/skills/json-visualization-dev/references/STATE.md) - Full details

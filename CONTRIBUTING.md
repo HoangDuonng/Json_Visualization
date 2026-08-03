@@ -419,10 +419,10 @@ Keep PRs small and focused:
 
 ### Documentation
 
-- [Agent Skills](.agentskills/json-visualization-dev/SKILL.md) - Project overview
-- [Architecture](.agentskills/json-visualization-dev/references/ARCHITECTURE.md) - System design
-- [Components](.agentskills/json-visualization-dev/references/COMPONENTS.md) - Component catalog
-- [State](.agentskills/json-visualization-dev/references/STATE.md) - State management
+- [Agent Skills](.agents/skills/json-visualization-dev/SKILL.md) - Project overview
+- [Architecture](.agents/skills/json-visualization-dev/references/ARCHITECTURE.md) - System design
+- [Components](.agents/skills/json-visualization-dev/references/COMPONENTS.md) - Component catalog
+- [State](.agents/skills/json-visualization-dev/references/STATE.md) - State management
 
 ### External
 

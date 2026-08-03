@@ -103,7 +103,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Component hierarchy
   - Data flow
   - State management
-  - (References existing `.agentskills/json-visualization-dev/references/ARCHITECTURE.md`)
+  - (References existing `.agents/skills/json-visualization-dev/references/ARCHITECTURE.md`)
 
 ### 2.4 Component Guide (Reference)
 
@@ -111,7 +111,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Component catalog
   - Usage examples
   - Props documentation
-  - (References existing `.agentskills/json-visualization-dev/references/COMPONENTS.md`)
+  - (References existing `.agents/skills/json-visualization-dev/references/COMPONENTS.md`)
 
 ### 2.5 State Management (Explanation)
 
@@ -119,7 +119,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
   - Zustand stores
   - State patterns
   - Best practices
-  - (References existing `.agentskills/json-visualization-dev/references/STATE.md`)
+  - (References existing `.agents/skills/json-visualization-dev/references/STATE.md`)
 
 ### 2.6 Code Style (Reference)
 
@@ -214,11 +214,11 @@ Following [Diátaxis framework](https://diataxis.fr/):
 
 ## Phase 4: Enhanced Agent Skills
 
-**Location**: `.agentskills/json-visualization-dev/references/`
+**Location**: `.agents/skills/json-visualization-dev/references/`
 
 ### 4.1 Workflows (How-to)
 
-- [x] `.agentskills/json-visualization-dev/references/WORKFLOWS.md`
+- [x] `.agents/skills/json-visualization-dev/references/WORKFLOWS.md`
   - Adding a new converter
   - Adding a new type generator
   - Adding a new modal
@@ -227,7 +227,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 
 ### 4.2 Debugging (How-to)
 
-- [x] `.agentskills/json-visualization-dev/references/DEBUGGING.md`
+- [x] `.agents/skills/json-visualization-dev/references/DEBUGGING.md`
   - Common errors
   - Debugging tools
   - Browser DevTools tips
@@ -236,7 +236,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 
 ### 4.3 Performance (Reference)
 
-- [x] `.agentskills/json-visualization-dev/references/PERFORMANCE.md`
+- [x] `.agents/skills/json-visualization-dev/references/PERFORMANCE.md`
   - Performance patterns
   - Optimization techniques
   - Profiling methods
@@ -244,7 +244,7 @@ Following [Diátaxis framework](https://diataxis.fr/):
 
 ### 4.4 Testing (How-to)
 
-- [x] `.agentskills/json-visualization-dev/references/TESTING.md`
+- [x] `.agents/skills/json-visualization-dev/references/TESTING.md`
 
 ## Phase 4: Enhanced Agent Skills - ✅ COMPLETED
 

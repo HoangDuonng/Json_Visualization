@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Paper, Stack, Text, Title } from "@mantine/core";
+import { Text } from "@mantine/core";
 import styled from "styled-components";
 
 interface DocsNavItem {
@@ -15,16 +15,16 @@ interface DocsNavigationProps {
   next?: DocsNavItem;
 }
 
-const StyledNavCard = styled(Paper)<any>`
+const StyledNavCard = styled.div`
   height: 100%;
   cursor: pointer;
-  transition: all 0.25s ease;
-  background: #ffffff;
-  border: 1px solid #e8e4db;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--public-border);
+  color: var(--public-text);
+  transition: border-color var(--public-motion);
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(26, 26, 26, 0.12);
+    border-color: var(--public-accent);
   }
 `;
 
@@ -32,13 +32,26 @@ const StyledNavLabel = styled(Text)`
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.7rem;
-  color: #868e96;
+  margin: 0 0 0.5rem;
+  color: var(--public-text-subtle);
+`;
+
+const StyledNavigation = styled.nav`
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+  border-block: 1px solid var(--public-border);
+
+  h3 {
+    margin: 0 0 1.5rem;
+    color: var(--public-text);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 500;
+  }
 `;
 
 const StyledNavGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 2rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -59,10 +72,8 @@ export const DocsNavigation = ({ title, previous, next }: DocsNavigationProps) =
   }
 
   return (
-    <Paper bg="white" c="black" p="xl" radius="md" withBorder>
-      <Title mb="md" order={3} c="dark">
-        {title}
-      </Title>
+    <StyledNavigation aria-label={title}>
+      <h3>{title}</h3>
       <StyledNavGrid>
         {previous && (
           <StyledNavItem>
@@ -71,13 +82,9 @@ export const DocsNavigation = ({ title, previous, next }: DocsNavigationProps) =
               style={{ textDecoration: "none", color: "inherit" }}
               aria-label={`${previous.label}: ${previous.title}`}
             >
-              <StyledNavCard p="lg" radius="md">
-                <Stack gap={6}>
-                  <StyledNavLabel>{previous.label}</StyledNavLabel>
-                  <Text fw={600} c="dark">
-                    {previous.title}
-                  </Text>
-                </Stack>
+              <StyledNavCard>
+                <StyledNavLabel>{previous.label}</StyledNavLabel>
+                <Text fw={600}>{previous.title}</Text>
               </StyledNavCard>
             </Link>
           </StyledNavItem>
@@ -89,18 +96,14 @@ export const DocsNavigation = ({ title, previous, next }: DocsNavigationProps) =
               style={{ textDecoration: "none", color: "inherit" }}
               aria-label={`${next.label}: ${next.title}`}
             >
-              <StyledNavCard p="lg" radius="md">
-                <Stack gap={6}>
-                  <StyledNavLabel>{next.label}</StyledNavLabel>
-                  <Text fw={600} c="dark">
-                    {next.title}
-                  </Text>
-                </Stack>
+              <StyledNavCard>
+                <StyledNavLabel>{next.label}</StyledNavLabel>
+                <Text fw={600}>{next.title}</Text>
               </StyledNavCard>
             </Link>
           </StyledNavItem>
         )}
       </StyledNavGrid>
-    </Paper>
+    </StyledNavigation>
   );
 };

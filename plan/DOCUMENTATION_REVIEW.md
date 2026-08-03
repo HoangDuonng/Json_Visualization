@@ -46,7 +46,7 @@
 ### 2. Agent Skills Standards Compliance ✅
 
 **Structure:**
-- ✅ `.agentskills/json-visualization-dev/SKILL.md` exists
+- ✅ `.agents/skills/json-visualization-dev/SKILL.md` exists
 - ✅ YAML frontmatter with required fields (name, description)
 - ✅ `references/` directory with detailed docs
 - ✅ `scripts/` directory with utilities
@@ -66,10 +66,8 @@
 - ✅ Scripts executable
 
 **Discovery:**
-- ✅ `.agentskills/README.md` - Skills catalog
-- ✅ `.agentskills/QUICKSTART.md` - Quick start
-- ✅ `.agentskills/AGENTS_START_HERE.md` - Entry point
-- ✅ `.agentskills/agentskills.json` - Machine-readable manifest
+- ✅ `.agents/skills/` - Standard project skill directory
+- ✅ Each skill has a `SKILL.md` with YAML frontmatter
 - ✅ Main README.md references Agent Skills
 - ✅ AGENTS.md references Agent Skills
 
@@ -253,7 +251,7 @@
 1. **Add validation**
    ```bash
    pnpm add -D @agentskills/skills-ref
-   pnpm skills-ref validate .agentskills/json-visualization-dev
+   pnpm skills-ref validate .agents/skills/json-visualization-dev
    ```
 
 2. **Add architecture diagram**

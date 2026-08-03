@@ -35,7 +35,7 @@ const StyledHeroTitle = styled.h1`
   font-size: 2.3rem;
   font-weight: 700;
   display: inline;
-  color: #120f43;
+  color: var(--site-text, #1a1a1a);
   width: fit-content;
   line-height: 1.15;
   max-width: 30rem;
@@ -58,15 +58,19 @@ const StyledHeroTitle = styled.h1`
 
 const StyledHeroText = styled.h2`
   font-size: 14px;
-  color: #4a5568;
+  color: var(--site-text-muted, #666666);
   font-weight: 400;
   max-width: 75%;
   margin-top: 1rem;
   text-align: center;
 
   strong {
-    font-weight: 400;
-    color: #115fe6;
+    font-weight: 600;
+    color: var(--site-text, #1a1a1a);
+    text-decoration: underline;
+    text-decoration-color: var(--site-accent, #37ff8b);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 3px;
   }
 
   @media only screen and (min-width: 576px) {
@@ -80,7 +84,7 @@ const StyledHeroText = styled.h2`
   }
 `;
 
-export const HeroSection = ({ stars = 0 }) => {
+export const HeroSection = () => {
   return (
     <StyledHeroSection>
       <StyledHeroSectionBody>

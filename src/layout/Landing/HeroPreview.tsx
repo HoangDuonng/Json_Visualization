@@ -13,9 +13,10 @@ export const HeroPreview = () => {
         style={{
           borderRadius: 10,
           overflow: "hidden",
-          border: "1px solid #c1c1c1",
-          outline: "1px solid #c1c1c1",
+          border: "1px solid var(--site-border, #e8e4db)",
+          outline: "1px solid var(--site-border, #e8e4db)",
           outlineOffset: "6px",
+          boxShadow: "0 24px 60px rgba(26, 26, 26, 0.12)",
         }}
       />
     </Container>

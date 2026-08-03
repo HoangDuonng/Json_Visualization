@@ -10,7 +10,7 @@ JSON Visualization is a client-side web application built with Next.js, React, a
 
 For comprehensive architecture documentation, see:
 
-**[Agent Skills - Architecture Reference](../../.agentskills/json-visualization-dev/references/ARCHITECTURE.md)**
+**[Agent Skills - Architecture Reference](../../.agents/skills/json-visualization-dev/references/ARCHITECTURE.md)**
 
 This includes:
 - System architecture diagram
@@ -65,4 +65,4 @@ User Input → TextEditor → useFile Store → jsonParser.ts → useGraph Store
 - [Components Guide](components.md) - Component catalog
 - [State Management](state-management.md) - Zustand patterns
 - [Code Style](code-style.md) - Coding conventions
-- [Agent Skills - Architecture](../../.agentskills/json-visualization-dev/references/ARCHITECTURE.md) - Full details
+- [Agent Skills - Architecture](../../.agents/skills/json-visualization-dev/references/ARCHITECTURE.md) - Full details

@@ -1,20 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
-import Link from "next/link";
-import { Box, Container, Flex, Paper, Title, Text } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import styled from "styled-components";
 import { Editor } from "@monaco-editor/react";
 import { generateNextSeo } from "next-seo/pages";
-import { toast } from "sonner";
 import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
+import { toast } from "sonner";
 import { ArrowButton } from "../../components/ArrowButton";
-import { ExploreButton } from "../../components/ExploreButton";
 import { type FileFormat, formats, type TypeLanguage, typeOptions } from "../../constants/enumData";
 import { SEO } from "../../constants/seo";
 import { editorOptions } from "../../layout/ConverterLayout/options";
 import Layout from "../../layout/PageLayout";
 import { generateType } from "../../lib/utils/generateType";
+import {
+  PublicContainer,
+  PublicEyebrow,
+  PublicPrimaryLink,
+  PublicToolGrid,
+  PublicToolHeader,
+  PublicToolPanel,
+  PublicToolPanelHeader,
+} from "../PageLayout/PublicPage";
 import { PageLinks } from "./PageLinks";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -39,8 +46,18 @@ const StyledCopyButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: #1a1a1a;
+    color: var(--public-text);
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--public-accent);
+    outline-offset: 2px;
+  }
+`;
+
+const StyledToolFooter = styled.section`
+  padding-block: 1rem var(--public-section-space);
+  border-top: 1px solid var(--public-border);
 `;
 
 interface ConverterPagesProps {
@@ -87,28 +104,30 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
         {generateNextSeo({
           ...SEO,
           title: `${fromLabel} to ${toLabel} | JSON Visualization`,
-          canonical: `https://jsonviz.online/converter/${from}-to-${to}`,
+          canonical: `https://jsonviz.online/type/${from}-to-${to}`,
           description: `Instantly generate ${toLabel} from ${fromLabel} using this free online tool. Paste your ${fromLabel} and get the generated ${toLabel} instantly.`,
         })}
       </Head>
-      <Container mt="xl" mb="xl" pb="xl" size="xl">
-        <Title c="black" mb="lg">
-          {fromLabel} to {toLabel} Converter
-        </Title>
+      <PublicContainer $wide>
+        <PublicToolHeader>
+          <div>
+            <PublicEyebrow>Type generator · Runs in your browser</PublicEyebrow>
+            <h1>
+              {fromLabel} to {toLabel}
+            </h1>
+            <p>
+              Paste {fromLabel} and generate a ready-to-use {toLabel} definition while keeping your
+              data in the browser.
+            </p>
+          </div>
+          <PublicPrimaryLink href="/editor">Open visual editor</PublicPrimaryLink>
+        </PublicToolHeader>
 
-        <Flex justify="flex-start" mb="xl">
-          <Link href="/editor">
-            <ExploreButton>Open JSON Visualization</ExploreButton>
-          </Link>
-        </Flex>
-
-        <PageLinks />
-
-        <Flex pt="xl" gap="40" align="center">
-          <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+        <PublicToolGrid>
+          <PublicToolPanel>
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">{fromLabel}</Text>
+                <span>{fromLabel}</span>
                 <Flex align="center" gap="xs">
                   {contentHasError && !!originalContent ? (
                     <LuCircleX color="red" />
@@ -120,7 +139,7 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
                   </StyledCopyButton>
                 </Flex>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={originalContent}
@@ -130,19 +149,21 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
                 options={editorOptions}
               />
             </StyledEditorWrapper>
-          </Paper>
+          </PublicToolPanel>
 
-          <ArrowButton />
+          <div data-tool-arrow>
+            <ArrowButton />
+          </div>
 
-          <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+          <PublicToolPanel>
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">{toLabel}</Text>
+                <span>{toLabel}</span>
                 <StyledCopyButton onClick={() => handleCopy(convertedContent, setCopiedTo)}>
                   {copiedTo ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
                 </StyledCopyButton>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={convertedContent}
@@ -157,9 +178,12 @@ export const TypegenWrapper = ({ from, to }: ConverterPagesProps) => {
                 }}
               />
             </StyledEditorWrapper>
-          </Paper>
-        </Flex>
-      </Container>
+          </PublicToolPanel>
+        </PublicToolGrid>
+        <StyledToolFooter>
+          <PageLinks />
+        </StyledToolFooter>
+      </PublicContainer>
     </Layout>
   );
 };

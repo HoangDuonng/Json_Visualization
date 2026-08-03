@@ -1,176 +1,123 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@mantine/core";
 import styled from "styled-components";
-import { GlassSurface } from "../../components/GlassSurface";
 import { JSONCrackLogo } from "../JsonCrackLogo";
+import { PublicContainer } from "./PublicPage";
 
-const StyledNavbarWrapper = styled.div`
-  position: fixed;
-  top: 20px;
-  left: 0;
-  right: 0;
+const StyledHeader = styled.header`
+  position: sticky;
+  top: 0;
   z-index: 100;
-  transition: all 0.3s ease;
-  padding: 0 24px;
-  display: flex;
-  justify-content: center;
+  border-bottom: 1px solid var(--public-border);
+  background: color-mix(in srgb, var(--public-bg) 94%, transparent);
+  backdrop-filter: blur(12px);
 `;
 
 const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 4px 12px;
-  gap: 16px;
-  position: relative;
+  min-height: 64px;
+  gap: 2rem;
 
-  @media only screen and (max-width: 768px) {
-    padding: 8px 12px;
+  @media (max-width: 680px) {
+    min-height: 58px;
+    gap: 1rem;
   }
 `;
 
-const Left = styled.div`
+const StyledNavLinks = styled.div`
   display: flex;
+  flex: 1;
   align-items: center;
-  position: relative;
-  z-index: 1;
-`;
+  gap: 1.5rem;
 
-const Right = styled.div`
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  white-space: nowrap;
-  position: relative;
-  z-index: 1;
-
-  button {
-    color: #1a1a1a !important;
-  }
-`;
-
-const Center = styled.div`
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  white-space: nowrap;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-
-  @media only screen and (max-width: 768px) {
+  @media (max-width: 820px) {
     display: none;
   }
 `;
 
-const StyledButton = styled(Button)<any>`
-  background: transparent !important;
-  overflow: visible !important;
-  position: relative;
+const StyledNavActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+`;
 
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    height: 70%;
-    border-radius: 20px;
-    background: transparent;
-    transition: background 0.2s ease;
-    z-index: 0;
-    pointer-events: none;
-  }
+const StyledNavLink = styled(Link)`
+  color: var(--public-text-muted);
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--public-motion);
 
   &:hover {
-    background: transparent !important;
+    color: var(--public-text);
   }
 
-  &:hover::after {
-    background: rgba(0, 0, 0, 0.06);
+  &:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid var(--public-accent);
+    outline-offset: 4px;
+  }
+`;
+
+const StyledActionLink = styled(StyledNavLink)<{ $primary?: boolean }>`
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  padding-inline: 0.75rem;
+  border: 1px solid
+    ${props => (props.$primary ? "var(--public-accent)" : "var(--public-border-strong)")};
+  border-radius: var(--public-radius-sm);
+  background: ${props => (props.$primary ? "var(--public-accent)" : "transparent")};
+  color: ${props => (props.$primary ? "var(--public-accent-contrast)" : "var(--public-text)")};
+
+  &:hover {
+    border-color: ${props =>
+      props.$primary ? "var(--public-accent-hover)" : "var(--public-text)"};
+    background: ${props =>
+      props.$primary ? "var(--public-accent-hover)" : "var(--public-surface-raised)"};
+    color: ${props => (props.$primary ? "var(--public-accent-contrast)" : "var(--public-text)")};
+  }
+
+  @media (max-width: 420px) {
+    &:not([data-primary]) {
+      display: none;
+    }
   }
 `;
 
 export const Navbar = () => {
   return (
-    <StyledNavbarWrapper className="navbar">
-      <GlassSurface
-        blur={18}
-        opacity={0.04}
-        borderRadius={24}
-        padding="8px 24px"
-        style={{ margin: 0 }}
-      >
+    <StyledHeader>
+      <PublicContainer $wide>
         <StyledNavbar>
-          <Left>
-            <JSONCrackLogo fontSize="1.2rem" />
-          </Left>
-          <Center>
-            <StyledButton
-              component={Link}
-              prefetch={false}
-              href="/converter/json-to-yaml"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-            >
-              Converter
-            </StyledButton>
-            <StyledButton
-              component={Link}
-              prefetch={false}
-              href="/type/json-to-rust"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-            >
-              Generate Types
-            </StyledButton>
-            <StyledButton
-              component={Link}
-              prefetch={false}
-              href="/tools/json-schema"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-            >
+          <JSONCrackLogo fontSize="1.05rem" />
+          <StyledNavLinks aria-label="Public navigation">
+            <StyledNavLink href="/docs" prefetch={false}>
+              Docs
+            </StyledNavLink>
+            <StyledNavLink href="/converter/json-to-yaml" prefetch={false}>
+              Convert
+            </StyledNavLink>
+            <StyledNavLink href="/type/json-to-typescript" prefetch={false}>
+              Generate types
+            </StyledNavLink>
+            <StyledNavLink href="/tools/json-schema" prefetch={false}>
               JSON Schema
-            </StyledButton>
-          </Center>
-          <Right>
-            <StyledButton
-              component={Link}
-              prefetch={false}
-              href="/editor"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-            >
-              Editor
-            </StyledButton>
-            <StyledButton
-              component={Link}
-              prefetch={false}
-              href="/draw"
-              variant="subtle"
-              color="black"
-              size="md"
-              radius="md"
-            >
+            </StyledNavLink>
+          </StyledNavLinks>
+          <StyledNavActions>
+            <StyledActionLink href="/draw" prefetch={false}>
               Draw
-            </StyledButton>
-          </Right>
+            </StyledActionLink>
+            <StyledActionLink href="/editor" prefetch={false} $primary data-primary>
+              Open editor
+            </StyledActionLink>
+          </StyledNavActions>
         </StyledNavbar>
-      </GlassSurface>
-    </StyledNavbarWrapper>
+      </PublicContainer>
+    </StyledHeader>
   );
 };

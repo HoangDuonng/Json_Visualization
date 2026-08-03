@@ -1,22 +1,28 @@
 import React from "react";
 import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
-import Link from "next/link";
-import { Box, Container, Flex, Paper, Title, Text } from "@mantine/core";
+import { Flex, Paper } from "@mantine/core";
 import styled from "styled-components";
 import { Editor, type OnMount } from "@monaco-editor/react";
 import { JSONSchemaFaker } from "json-schema-faker";
 import { generateNextSeo } from "next-seo/pages";
-import { toast } from "sonner";
 import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
+import { toast } from "sonner";
 import { ArrowButton } from "../../components/ArrowButton";
-import { ExploreButton } from "../../components/ExploreButton";
 import { GenerateButton } from "../../components/GenerateButton";
 import { Tooltip } from "../../components/Tooltip";
 import { FileFormat, TypeLanguage } from "../../constants/enumData";
 import { SEO } from "../../constants/seo";
 import { editorOptions } from "../../layout/ConverterLayout/options";
 import Layout from "../../layout/PageLayout";
+import {
+  PublicContainer,
+  PublicEyebrow,
+  PublicPrimaryLink,
+  PublicToolGrid,
+  PublicToolHeader,
+  PublicToolPanelHeader,
+} from "../../layout/PageLayout/PublicPage";
 import { generateType } from "../../lib/utils/generateType";
 import { jsonToContent } from "../../lib/utils/jsonAdapter";
 
@@ -47,6 +53,11 @@ const StyledCopyButton = styled.button`
 `;
 
 const StyledPaper = styled(Paper)<any>`
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--public-border-strong);
+  border-radius: var(--public-radius-md);
+  background: var(--public-surface);
   transition: outline 0.3s ease;
 
   &[data-tooltip] {
@@ -62,15 +73,22 @@ const StyledPaper = styled(Paper)<any>`
     background: rgba(26, 26, 26, 0.95);
     color: #fff;
     padding: 16px 20px;
-    border-radius: 8px;
+    border-radius: var(--public-radius-sm);
     font-size: 0.95rem;
     white-space: normal;
     max-width: 280px;
     text-align: center;
     z-index: 1000;
     pointer-events: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: inherit;
   }
+`;
+
+const StyledActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-block: 1.5rem 0;
 `;
 
 const JSONSchemaTool = () => {
@@ -115,7 +133,7 @@ const JSONSchemaTool = () => {
       const jsonSchema = await generateType(json, FileFormat.JSON, TypeLanguage.JSON_SCHEMA);
       setJsonSchema(jsonSchema);
       toast.success("JSON Schema generated successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to generate JSON Schema!");
     }
   };
@@ -133,7 +151,7 @@ const JSONSchemaTool = () => {
       const contents = await jsonToContent(JSON.stringify(randomJson, null, 2), FileFormat.JSON);
       setJson(contents);
       toast.success("Mock JSON generated successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to generate JSON!");
     }
   };
@@ -149,18 +167,20 @@ const JSONSchemaTool = () => {
           canonical: "https://jsonviz.online/tools/json-schema",
         })}
       </Head>
-      <Container mt="xl" mb="xl" pb="xl" size="xl">
-        <Title c="black" mb="lg">
-          JSON Schema Validator & Generator
-        </Title>
+      <PublicContainer $wide>
+        <PublicToolHeader>
+          <div>
+            <PublicEyebrow>Schema workspace · Runs in your browser</PublicEyebrow>
+            <h1>JSON Schema validator & generator</h1>
+            <p>
+              Move between JSON and JSON Schema, validate structure as you type, and generate mock
+              data from a schema.
+            </p>
+          </div>
+          <PublicPrimaryLink href="/editor">Open visual editor</PublicPrimaryLink>
+        </PublicToolHeader>
 
-        <Flex justify="flex-start" mb="xl">
-          <Link href="/editor">
-            <ExploreButton>Open JSON Visualization</ExploreButton>
-          </Link>
-        </Flex>
-
-        <Flex pt="lg" gap="lg" mb="xl">
+        <StyledActions>
           <Tooltip
             content={
               jsonError
@@ -189,19 +209,13 @@ const JSONSchemaTool = () => {
               Generate JSON
             </GenerateButton>
           </Tooltip>
-        </Flex>
+        </StyledActions>
 
-        <Flex pt="xl" gap="40" align="center">
-          <StyledPaper
-            id="json-editor"
-            mah="600px"
-            withBorder
-            flex="1"
-            style={{ overflow: "hidden" }}
-          >
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+        <PublicToolGrid>
+          <StyledPaper id="json-editor" mah="600px">
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">JSON</Text>
+                <span>JSON</span>
                 <Flex align="center" gap="xs">
                   {jsonError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
                   <StyledCopyButton onClick={() => handleCopy(json, setCopiedJson)}>
@@ -209,7 +223,7 @@ const JSONSchemaTool = () => {
                   </StyledCopyButton>
                 </Flex>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={json}
@@ -223,18 +237,14 @@ const JSONSchemaTool = () => {
             </StyledEditorWrapper>
           </StyledPaper>
 
-          <ArrowButton />
+          <div data-tool-arrow>
+            <ArrowButton />
+          </div>
 
-          <StyledPaper
-            id="schema-editor"
-            mah="600px"
-            withBorder
-            flex="1"
-            style={{ overflow: "hidden" }}
-          >
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+          <StyledPaper id="schema-editor" mah="600px">
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">JSON Schema</Text>
+                <span>JSON Schema</span>
                 <Flex align="center" gap="xs">
                   {jsonSchemaError ? <LuCircleX color="red" /> : <LuCheck color="lightgreen" />}
                   <StyledCopyButton onClick={() => handleCopy(jsonSchema, setCopiedSchema)}>
@@ -242,7 +252,7 @@ const JSONSchemaTool = () => {
                   </StyledCopyButton>
                 </Flex>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={jsonSchema}
@@ -254,8 +264,8 @@ const JSONSchemaTool = () => {
               />
             </StyledEditorWrapper>
           </StyledPaper>
-        </Flex>
-      </Container>
+        </PublicToolGrid>
+      </PublicContainer>
     </Layout>
   );
 };

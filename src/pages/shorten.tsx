@@ -1,43 +1,30 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Head from "next/head";
-import {
-  Container,
-  Stack,
-  Text,
-  Title,
-  TextInput,
-  CopyButton,
-  ActionIcon,
-  Tooltip,
-} from "@mantine/core";
-import styled, { keyframes } from "styled-components";
-import { ref, set, get } from "firebase/database";
+import { Text, TextInput, CopyButton, ActionIcon, Tooltip } from "@mantine/core";
+import styled from "styled-components";
+import { ref, set } from "firebase/database";
 import { nanoid } from "nanoid";
 import { generateNextSeo } from "next-seo/pages";
 import { IoLink, IoCopyOutline, IoCheckmark, IoOpenOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { SEO, SITE_URL } from "../constants/seo";
 import Layout from "../layout/PageLayout";
+import { PublicContainer, PublicEyebrow, PublicToolHeader } from "../layout/PageLayout/PublicPage";
 import { getDb } from "../lib/db";
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+const StyledWorkspace = styled.section`
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--public-border);
 `;
 
-const StyledHeroSection = styled.div`
-  text-align: center;
-  padding: 40px 0 20px;
-`;
+const StyledForm = styled.div`
+  width: 100%;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--public-border);
 
-const StyledCard = styled.div`
-  background: white;
-  border: 1px solid #e8e4db;
-  border-radius: 16px;
-  padding: 40px;
-  width: 70%;
-  margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  @media (max-width: 600px) {
+    padding-bottom: 1.5rem;
+  }
 `;
 
 const StyledInputGroup = styled.div`
@@ -46,17 +33,17 @@ const StyledInputGroup = styled.div`
   gap: 12px;
   align-items: flex-end;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
   }
 `;
 
 const StyledShortenButton = styled.button`
-  background: #f7c948;
-  color: #1a1a1a;
-  border: none;
-  border-radius: 8px;
+  background: var(--public-accent);
+  color: var(--public-accent-contrast);
+  border: 1px solid var(--public-accent);
+  border-radius: var(--public-radius-sm);
   padding: 10px 24px;
   font-size: 15px;
   font-weight: 600;
@@ -67,7 +54,8 @@ const StyledShortenButton = styled.button`
   font-family: inherit;
 
   &:hover:not(:disabled) {
-    background: #37ff8b;
+    background: var(--public-accent-hover);
+    border-color: var(--public-accent-hover);
   }
 
   &:active:not(:disabled) {
@@ -81,25 +69,19 @@ const StyledShortenButton = styled.button`
 `;
 
 const StyledResultCard = styled.div`
-  animation: ${fadeIn} 0.3s ease;
-  background: #f8f9fa;
-  border: 1px solid #e8e4db;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 24px;
+  padding-top: 2rem;
 `;
 
 const StyledShortUrl = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-top: 1px solid var(--public-border-strong);
+  border-bottom: 1px solid var(--public-border-strong);
   padding: 12px 16px;
   font-size: 16px;
   font-weight: 500;
-  color: #228be6;
+  color: var(--public-text);
   word-break: break-all;
 `;
 
@@ -108,8 +90,7 @@ const StyledOriginalUrl = styled(Text)<any>`
 `;
 
 const StyledHistorySection = styled.div`
-  max-width: 640px;
-  margin: 40px auto 0;
+  padding-block: 2.5rem;
 `;
 
 const StyledHistoryItem = styled.div`
@@ -117,14 +98,8 @@ const StyledHistoryItem = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: white;
-  border: 1px solid #e8e4db;
-  border-radius: 8px;
-
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--public-border);
 `;
 
 const StyledHistoryUrl = styled.div`
@@ -133,13 +108,15 @@ const StyledHistoryUrl = styled.div`
 `;
 
 const StyledHistoryShort = styled.a`
-  color: #228be6;
+  color: var(--public-text);
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
 
   &:hover {
     text-decoration: underline;
+    text-decoration-color: var(--public-accent);
+    text-decoration-thickness: 1px;
   }
 `;
 
@@ -262,18 +239,16 @@ const ShortenPage = () => {
         })}
       </Head>
 
-      <Container size="xl" py={40}>
-        <Stack gap="lg">
-          <StyledHeroSection>
-            <Title order={1} c="dark" mb="sm">
-              URL Shortener
-            </Title>
-            <Text size="lg" c="dimmed" maw={500} mx="auto">
-              Shorten long URLs into clean, shareable links.
-            </Text>
-          </StyledHeroSection>
-
-          <StyledCard>
+      <PublicContainer>
+        <PublicToolHeader>
+          <div>
+            <PublicEyebrow>Utility</PublicEyebrow>
+            <h1>URL Shortener</h1>
+            <p>Shorten long URLs into clean, shareable links.</p>
+          </div>
+        </PublicToolHeader>
+        <StyledWorkspace>
+          <StyledForm>
             <StyledInputGroup>
               <TextInput
                 flex={1}
@@ -285,8 +260,9 @@ const ShortenPage = () => {
                 size="md"
                 styles={{
                   input: {
-                    borderColor: "#e0e0e0",
-                    "&:focus": { borderColor: "#f7c948" },
+                    borderColor: "var(--public-border-strong)",
+                    background: "var(--public-surface)",
+                    color: "var(--public-text)",
                   },
                 }}
               />
@@ -333,7 +309,7 @@ const ShortenPage = () => {
                 </StyledOriginalUrl>
               </StyledResultCard>
             )}
-          </StyledCard>
+          </StyledForm>
 
           {history.length > 0 && (
             <StyledHistorySection>
@@ -372,8 +348,8 @@ const ShortenPage = () => {
               ))}
             </StyledHistorySection>
           )}
-        </Stack>
-      </Container>
+        </StyledWorkspace>
+      </PublicContainer>
     </Layout>
   );
 };

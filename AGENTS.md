@@ -1,8 +1,12 @@
 # Agent Guidelines for JSON Visualization
 
+Project skills are maintained canonically in `.agents/skills/`. Each skill must contain a `SKILL.md` and may include only the references or scripts it actually needs.
+
 This document provides guidelines for AI coding agents working in the JSON Visualization codebase.
 
-> **💡 For comprehensive documentation**: See [`.agentskills/json-visualization-dev/`](.agentskills/json-visualization-dev/) for structured Agent Skills with detailed architecture, components, and state management references.
+> **💡 For comprehensive documentation**: See [`.agents/skills/json-visualization-dev/`](.agents/skills/json-visualization-dev/) for structured Agent Skills with detailed architecture, components, and state management references.
+
+For public-page redesigns, also load [`.agents/skills/public-editorial-redesign/SKILL.md`](.agents/skills/public-editorial-redesign/SKILL.md) and its references. Keep `/editor`, `/draw`, and `/widget` outside that skill's modification scope.
 
 ## Project Overview
 

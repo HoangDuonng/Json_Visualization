@@ -404,7 +404,7 @@ Validate multiple files:
 ```bash
 # Validate all JSON files
 for file in *.json; do
-  node .agentskills/json-visualization-dev/scripts/validate-format.js json "$file"
+  node .agents/skills/json-visualization-dev/scripts/validate-format.js json "$file"
 done
 ```
 

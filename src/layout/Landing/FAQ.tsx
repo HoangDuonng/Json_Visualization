@@ -23,18 +23,18 @@ export const FAQ = () => {
         variant="separated"
         styles={{
           panel: {
-            background: "#f9f9f9",
-            color: "#1d1d1d",
+            background: "var(--site-surface, #fffdf7)",
+            color: "var(--site-text, #1a1a1a)",
           },
           label: {
-            color: "#1d1d1d",
+            color: "var(--site-text, #1a1a1a)",
             fontWeight: 500,
           },
           item: {
-            background: "#f9f9f9",
-            color: "#1d1d1d",
+            background: "var(--site-surface, #fffdf7)",
+            color: "var(--site-text, #1a1a1a)",
             overflow: "hidden",
-            border: "1px solid #ededed",
+            border: "1px solid var(--site-border, #e8e4db)",
             borderRadius: 12,
             fontWeight: 300,
           },
