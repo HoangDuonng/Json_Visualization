@@ -4,7 +4,7 @@ Detailed guide to Zustand stores and state patterns in JSON Visualization.
 
 ## Store overview
 
-All stores use Zustand with TypeScript. Pattern:
+The app uses Zustand with TypeScript. Most stores use this shape:
 
 ```typescript
 import { create } from "zustand";
@@ -25,32 +25,52 @@ const useStore = create<State & Actions>()((set, get) => ({
 export default useStore;
 ```
 
+`useConfig` uses `persist` middleware, and `useModal` uses `createWithEqualityFn` from `zustand/traditional`.
+
 ## useFile store
 
-**File**: `src/store/useFile.ts` (160 LOC - largest store)
+**File**: `src/store/useFile.ts`
 
-**Purpose**: Manages file content, format, and parsing.
+**Purpose**: Manages source file content, current format, parsing errors, file metadata, JSON schema, and session restoration.
 
 ### State
 
 ```typescript
-interface FileStates {
-  contents: string; // Raw file content
-  format: FileFormat; // Current format (JSON/YAML/CSV/XML/TOML)
-  error: string | null; // Parse error message
-}
+type FileStates = {
+  fileData: File | null;
+  format: FileFormat;
+  contents: string;
+  error: any;
+  hasChanges: boolean;
+  jsonSchema: object | null;
+};
 ```
+
+`FileFormat` comes from `src/constants/enumData.ts` and currently supports JSON, YAML, XML, and CSV.
 
 ### Actions
 
 ```typescript
+type SetContents = {
+  contents|: string;
+  hasChanges|: boolean;
+  skipUpdate|: boolean;
+  format|: FileFormat;
+};
+
 interface JsonActions {
   getContents: () => string;
-  setContents: (contents: string) => void;
-  setFormat: (format: FileFormat) => void;
-  checkFormat: () => void; // Auto-detect format
-  clear: () => void; // Reset to initial state
+  getFormat: () => FileFormat;
+  getHasChanges: () => boolean;
   setError: (error: string | null) => void;
+  setHasChanges: (hasChanges: boolean) => void;
+  setContents: (data: SetContents) => void;
+  fetchUrl: (url: string) => void;
+  setFormat: (format: FileFormat) => void;
+  clear: () => void;
+  setFile: (fileData: File) => void;
+  setJsonSchema: (jsonSchema: object | null) => void;
+  checkEditorSession: (url: string | string[] | undefined, widget|: boolean) => void;
 }
 ```
 
@@ -62,10 +82,9 @@ import useFile from "src/store/useFile";
 function MyComponent() {
   const contents = useFile(state => state.contents);
   const setContents = useFile(state => state.setContents);
-  const format = useFile(state => state.format);
 
   const handleChange = (value: string) => {
-    setContents(value);
+    setContents({ contents: value });
   };
 
   return <textarea value={contents} onChange={e => handleChange(e.target.value)} />;
@@ -74,65 +93,62 @@ function MyComponent() {
 
 ### Key behaviors
 
-- **Auto-detection**: `checkFormat()` analyzes content to detect format
-- **Validation**: Attempts to parse content and sets error if invalid
-- **Session storage**: Persists contents to sessionStorage
-- **Debouncing**: Changes trigger debounced parsing (600ms)
+- Initializes with `src/data/example.json`.
+- `setContents()` parses via `contentToJson(contents, format)`.
+- Parsed values are debounced for 400ms before updating `useJson`.
+- Session storage persists content and format for normal editor sessions.
+- `setFormat()` converts existing content from the previous format to the new format.
+- `fetchUrl()` fetches JSON from a URL and reports failures with `sonner`.
 
 ## useJson store
 
 **File**: `src/store/useJson.ts`
 
-**Purpose**: Stores parsed JSON object.
+**Purpose**: Stores the pretty-printed JSON string used by graph/tree views.
 
 ### State
 
 ```typescript
-interface JsonState {
-  json: any; // Parsed JSON object
-}
+type JsonStates = {
+  json: string;
+  loading: boolean;
+};
 ```
 
 ### Actions
 
 ```typescript
 interface JsonActions {
-  getJson: () => any;
-  setJson: (json: any) => void;
+  setJson: (json: string) => void;
+  getJson: () => string;
   clear: () => void;
 }
 ```
 
-### Usage
+### Key behaviors
 
-```typescript
-import useJson from "src/store/useJson";
-
-function MyComponent() {
-  const json = useJson(state => state.json);
-  const setJson = useJson(state => state.setJson);
-
-  // Parse and store
-  const parsed = JSON.parse(contents);
-  setJson(parsed);
-}
-```
+- `setJson(json)` sets `loading` to false and calls `useGraph.getState().setGraph(json)`.
+- `clear()` clears the JSON string and calls `useGraph.getState().clearGraph()`.
 
 ## useGraph store
 
-**File**: `src/features/editor/views/GraphView/stores/useGraph.ts` (106 LOC)
+**File**: `src/features/editor/views/GraphView/stores/useGraph.ts`
 
-**Purpose**: Manages graph visualization state.
+**Purpose**: Manages graph visualization state and viewport controls.
 
 ### State
 
 ```typescript
-interface GraphState {
-  nodes: NodeData[]; // Graph nodes
-  edges: EdgeData[]; // Graph edges
-  collapsedNodes: Set<string>; // IDs of collapsed nodes
-  collapsedEdges: string[]; // IDs of edges from collapsed nodes
-  selectedNode: string | null; // Currently selected node ID
+interface Graph {
+  viewPort: ViewPort | null;
+  direction: CanvasDirection;
+  loading: boolean;
+  fullscreen: boolean;
+  nodes: NodeData[];
+  edges: EdgeData[];
+  selectedNode: NodeData | null;
+  path: string;
+  aboveSupportedLimit: boolean;
 }
 ```
 
@@ -140,11 +156,18 @@ interface GraphState {
 
 ```typescript
 interface GraphActions {
-  setGraph: (nodes: NodeData[], edges: EdgeData[]) => void;
-  expandNodes: (nodeId: string) => void;
-  collapseNodes: (nodeId: string) => void;
-  setSelectedNode: (nodeId: string | null) => void;
+  setGraph: (json|: string, options|: Partial<Graph>[]) => void;
+  setLoading: (loading: boolean) => void;
+  setDirection: (direction: CanvasDirection) => void;
+  setViewPort: (ref: ViewPort) => void;
+  setSelectedNode: (nodeData: NodeData) => void;
+  focusFirstNode: () => void;
+  toggleFullscreen: (value: boolean) => void;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  centerView: () => void;
   clearGraph: () => void;
+  setZoomFactor: (zoomFactor: number) => void;
 }
 ```
 
@@ -153,138 +176,99 @@ interface GraphActions {
 ```typescript
 import useGraph from "src/features/editor/views/GraphView/stores/useGraph";
 
-function GraphView() {
-  const nodes = useGraph(state => state.nodes);
-  const edges = useGraph(state => state.edges);
-  const setGraph = useGraph(state => state.setGraph);
+function GraphStats() {
+  const nodeCount = useGraph(state => state.nodes.length);
+  const edgeCount = useGraph(state => state.edges.length);
 
-  // Update graph
-  React.useEffect(() => {
-    const { nodes, edges } = parseJson(json);
-    setGraph(nodes, edges);
-  }, [json]);
-
-  return <Canvas nodes={nodes} edges={edges} />;
+  return <span>{nodeCount} nodes / {edgeCount} edges</span>;
 }
 ```
 
 ### Key behaviors
 
-- **Collapse/expand**: Manages node visibility in graph
-- **Selection**: Tracks selected node for highlighting
-- **Edge filtering**: Hides edges connected to collapsed nodes
+- `setGraph()` parses JSON with `parser()` from `GraphView/lib/jsonParser.ts`.
+- If the node count exceeds `SUPPORTED_LIMIT`, it sets `aboveSupportedLimit`.
+- Direction changes trigger a delayed `centerView()`.
+- Zoom and center actions operate through the `react-zoomable-ui` viewport.
 
 ## useConfig store
 
 **File**: `src/store/useConfig.ts`
 
-**Purpose**: App-wide configuration and preferences.
+**Purpose**: Persists app-wide editor preferences.
 
 ### State
 
 ```typescript
-interface ConfigState {
-  viewMode: ViewMode; // "graph" | "tree"
-  theme: "light" | "dark";
-  layout: LayoutType; // Graph layout algorithm
-  zoomLevel: number;
-}
+const initialStates = {
+  darkmodeEnabled: true,
+  imagePreviewEnabled: true,
+  liveTransformEnabled: true,
+  gesturesEnabled: false,
+  rulersEnabled: true,
+};
 ```
 
 ### Actions
 
 ```typescript
 interface ConfigActions {
-  setViewMode: (mode: ViewMode) => void;
-  setTheme: (theme: "light" | "dark") => void;
-  setLayout: (layout: LayoutType) => void;
-  setZoomLevel: (level: number) => void;
+  toggleDarkMode: (value: boolean) => void;
+  toggleImagePreview: (value: boolean) => void;
+  toggleLiveTransform: (value: boolean) => void;
+  toggleGestures: (value: boolean) => void;
+  toggleRulers: (value: boolean) => void;
 }
 ```
 
-### Usage
+### Key behaviors
 
-```typescript
-import useConfig from "src/store/useConfig";
-
-function ViewToggle() {
-  const viewMode = useConfig(state => state.viewMode);
-  const setViewMode = useConfig(state => state.setViewMode);
-
-  return (
-    <button onClick={() => setViewMode(viewMode === "graph" ? "tree" : "graph")}>
-      Switch to {viewMode === "graph" ? "Tree" : "Graph"} View
-    </button>
-  );
-}
-```
+- Uses Zustand `persist` middleware with storage name `config`.
+- `toggleImagePreview()` also calls `useGraph.getState().setGraph()` so node rendering refreshes.
 
 ## useModal store
 
 **File**: `src/store/useModal.ts`
 
-**Purpose**: Modal state management.
+**Purpose**: Tracks visibility for every registered modal.
 
 ### State
 
 ```typescript
-interface ModalState {
-  modal: ModalType | null; // Currently open modal
-  data: any; // Modal-specific data
-}
+type ModalState = Record<ModalName, boolean>;
 ```
+
+`ModalName` is derived from exports in `src/features/modals/modalTypes.ts`.
 
 ### Actions
 
 ```typescript
 interface ModalActions {
-  openModal: (modal: ModalType, data?: any) => void;
-  closeModal: () => void;
+  setVisible: (name: ModalName, open: boolean) => void;
 }
 ```
 
 ### Usage
 
 ```typescript
-import useModal from "src/store/useModal";
+import { useModal } from "src/store/useModal";
 
-function Toolbar() {
-  const openModal = useModal(state => state.openModal);
+function ToolbarAction() {
+  const setVisible = useModal(state => state.setVisible);
 
-  return (
-    <button onClick={() => openModal("import")}>
-      Import
-    </button>
-  );
-}
-
-function ModalController() {
-  const modal = useModal(state => state.modal);
-  const closeModal = useModal(state => state.closeModal);
-
-  return (
-    <>
-      {modal === "import" && <ImportModal onClose={closeModal} />}
-      {modal === "download" && <DownloadModal onClose={closeModal} />}
-      {/* ... other modals */}
-    </>
-  );
+  return <button onClick={() => setVisible("ImportModal", true)}>Import</button>;
 }
 ```
 
-### Modal types
-
-```typescript
-type ModalType = "import" | "download" | "type" | "schema" | "jq" | "jpath" | "node";
-```
+`src/features/modals/ModalController.tsx` maps over the `modals` array, reads `useModal(state => state[modalKey])`, and renders each modal with `opened` and `onClose`.
 
 ## View mode state
 
-Editor view mode is stored in session storage (not Zustand):
+Editor view mode is stored in session storage, not Zustand.
 
 - **Key**: `viewMode`
 - **Values**: `graph`, `tree`, `jsondraw`
-- **Source**: `src/enums/viewMode.enum.ts`
+- **Source**: `ViewMode` enum in `src/constants/enumData.ts`
 - **Usage**: `src/features/editor/LiveEditor.tsx` and `src/features/editor/Toolbar/ViewMenu.tsx`
 
 ## State patterns
@@ -294,10 +278,10 @@ Editor view mode is stored in session storage (not Zustand):
 Use selectors to subscribe to specific state slices:
 
 ```typescript
-// ✅ Good - only re-renders when contents changes
+// Good: only re-renders when contents changes
 const contents = useFile(state => state.contents);
 
-// ❌ Bad - re-renders on any state change
+// Avoid: re-renders on any state change
 const file = useFile();
 const contents = file.contents;
 ```
@@ -305,173 +289,85 @@ const contents = file.contents;
 ### Multiple selectors
 
 ```typescript
-// ✅ Good - separate selectors
+// Good: separate selectors
 const contents = useFile(state => state.contents);
 const format = useFile(state => state.format);
 
-// ❌ Bad - single selector for multiple values (re-renders more often)
+// Avoid: a new object in the selector can re-render more often
 const { contents, format } = useFile(state => ({
   contents: state.contents,
-  format: state.format
+  format: state.format,
 }));
 ```
 
 ### Action pattern
 
 ```typescript
-// ✅ Good - stable reference, doesn't cause re-renders
+// Good: stable reference
 const setContents = useFile(state => state.setContents);
 
-// ✅ Also good - using setState directly
-useFile.setState({ contents: newContents });
+// Also valid for direct state changes
+useFile.setState({ hasChanges: false });
 ```
 
 ### Computed values
 
 ```typescript
-// ✅ Good - compute in selector
+// Good: compute in selector
 const nodeCount = useGraph(state => state.nodes.length);
-
-// ❌ Bad - compute in component (re-computes on every render)
-const nodes = useGraph(state => state.nodes);
-const nodeCount = nodes.length;
-```
-
-### Async actions
-
-```typescript
-// In store definition
-const useFile = create<FileStates & JsonActions>()((set, get) => ({
-  contents: "",
-
-  loadFromUrl: async (url: string) => {
-    try {
-      const response = await fetch(url);
-      const text = await response.text();
-      set({ contents: text });
-    } catch (error) {
-      set({ error: error.message });
-    }
-  },
-}));
-
-// Usage
-const loadFromUrl = useFile(state => state.loadFromUrl);
-await loadFromUrl("https://example.com/data.json");
-```
-
-### Middleware pattern
-
-Zustand supports middleware for logging, persistence, etc:
-
-```typescript
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-const useStore = create(
-  persist(
-    (set, get) => ({
-      // store definition
-    }),
-    {
-      name: "my-storage-key",
-      storage: sessionStorage,
-    }
-  )
-);
 ```
 
 ## State synchronization
 
-### File → JSON → Graph flow
+### File -> JSON -> Graph flow
 
 ```typescript
 // 1. User edits in TextEditor
-useFile.setState({ contents: newValue });
+useFile.getState().setContents({ contents: newValue });
 
-// 2. Debounced parse (in useEffect)
+// 2. setContents parses the current content and format
 const json = await contentToJson(contents, format);
-useJson.setState({ json });
 
-// 3. Parse to graph (in useEffect)
-const { nodes, edges } = parseJson(json);
-useGraph.setState({ nodes, edges });
+// 3. debouncedUpdateJson updates useJson
+useJson.getState().setJson(JSON.stringify(json, null, 2));
 
-// 4. GraphView re-renders with new nodes/edges
+// 4. useJson.setJson triggers useGraph.setGraph(json)
+useGraph.getState().setGraph(jsonString);
 ```
 
 ### Cross-store communication
 
-Stores don't directly reference each other. Use React effects:
+Current stores do call each other directly in a few places:
 
-```typescript
-function Editor() {
-  const contents = useFile(state => state.contents);
-  const format = useFile(state => state.format);
-  const setJson = useJson(state => state.setJson);
+- `useFile` updates `useJson` and `useGraph`.
+- `useJson` updates `useGraph`.
+- `useConfig.toggleImagePreview()` refreshes `useGraph`.
 
-  React.useEffect(() => {
-    const parse = async () => {
-      try {
-        const json = await contentToJson(contents, format);
-        setJson(json);
-      } catch (error) {
-        console.error("Parse error:", error);
-      }
-    };
-
-    parse();
-  }, [contents, format]);
-}
-```
+When adding new behavior, prefer keeping shared updates explicit and easy to trace.
 
 ### JsonDraw persistence
 
-JsonDraw view auto-saves to `localStorage` under `jsondraw-autosave` and restores on load.
+JsonDraw view persists its own drawing state. See `src/features/editor/views/JsonDrawView/` for autosave, share link, and load-from-link behavior.
 
 ## Performance tips
 
-1. **Use selectors**: Only subscribe to needed state slices
-2. **Memoize selectors**: Use `React.useMemo` for expensive computations
-3. **Batch updates**: Use `set()` once with multiple properties
-4. **Avoid inline objects**: Don't create new objects in selectors
-5. **Debounce frequent updates**: Use `useDebouncedValue` from Mantine hooks
-
-Example:
-
-```typescript
-import { useDebouncedValue } from "@mantine/hooks";
-
-function MyComponent() {
-  const contents = useFile(state => state.contents);
-  const [debouncedContents] = useDebouncedValue(contents, 600);
-
-  React.useEffect(() => {
-    // Only runs 600ms after user stops typing
-    parseContents(debouncedContents);
-  }, [debouncedContents]);
-}
-```
+1. Use selectors so components subscribe only to needed state slices.
+2. Avoid creating new objects in selectors unless equality handling is intentional.
+3. Batch updates with one `set()` call when practical.
+4. Debounce frequent parsing or rendering updates.
+5. Use `React.memo()` and custom equality in graph nodes when touching render-heavy paths.
 
 ## Testing stores
 
-Stores can be tested independently:
+This project currently has no automated test suite. Only write tests if explicitly requested.
+
+If tests are added later, stores can be reset with `setState()`:
 
 ```typescript
+import { FileFormat } from "src/constants/enumData";
 import useFile from "src/store/useFile";
 
-// Reset store before each test
 beforeEach(() => {
-  useFile.setState({ contents: "", format: "json", error: null });
-});
-
-test("setContents updates contents", () => {
-  const { setContents, getContents } = useFile.getState();
-
-  setContents("test");
-
-  expect(getContents()).toBe("test");
+  useFile.setState({ contents: "", format: FileFormat.JSON, error: null });
 });
 ```
-
-**Note**: This project has no test suite. Only write tests if explicitly requested.

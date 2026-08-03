@@ -12,7 +12,7 @@ Core flows:
 
 - Paste JSON and verify graph renders.
 - Switch between Graph and Tree views.
-- Run format conversions (JSON/YAML/CSV/XML/TOML).
+- Run format conversions (JSON/YAML/CSV/XML).
 - Run JSONPath and jq queries.
 - Generate types for at least one language.
 - Export visualization (PNG/SVG).

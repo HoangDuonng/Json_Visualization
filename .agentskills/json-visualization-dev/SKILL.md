@@ -6,7 +6,7 @@ compatibility: Requires Node.js >=24.x, pnpm package manager
 metadata:
   author: json-visualization
   version: "1.0"
-  tech-stack: "Next.js, React 19, TypeScript, Zustand, Styled-components, Mantine v8"
+  tech-stack: "Next.js 16, React 19, TypeScript, Zustand, styled-components, Mantine v8"
 ---
 
 # JSON Visualization Development Skill
@@ -15,7 +15,7 @@ This skill helps you work with the JSON Visualization codebase - an open-source 
 
 ## When to use this skill
 
-- Adding new features to the editor, graph visualization, or converters
+- Adding new features to the editor, graph visualization, JsonDraw view, or converters
 - Fixing bugs in data parsing, rendering, or state management
 - Understanding the codebase architecture and data flow
 - Creating new data format converters or type generators
@@ -23,14 +23,15 @@ This skill helps you work with the JSON Visualization codebase - an open-source 
 
 ## Project overview
 
-**What it does**: Converts JSON, YAML, CSV, XML, TOML into interactive graphs/trees with features like format conversion, validation, code generation, and image export.
+**What it does**: Converts JSON, YAML, CSV, and XML into interactive graphs/trees with features like format conversion, validation, code generation, JsonDraw editing, and image export.
 
 **Tech stack**:
-- Next.js (React 19) + TypeScript
-- Zustand (state management)
-- Styled-components + Mantine v8 (UI)
-- Monaco Editor (code editor)
-- Reaflow (graph visualization)
+- Next.js 16 (React 19) + TypeScript
+- Zustand for state management
+- styled-components + Mantine v8 for UI
+- Monaco Editor for text editing
+- Reaflow for graph visualization
+- Embedded JsonDraw packages under `src/jsondraw/`
 
 ## Quick start
 
@@ -39,7 +40,7 @@ This skill helps you work with the JSON Visualization codebase - an open-source 
 pnpm install
 
 # Start dev server
-pnpm dev  # http://localhost:3000
+pnpm dev  # http://localhost:3979
 
 # Lint and format
 pnpm lint
@@ -50,48 +51,55 @@ pnpm lint:fix
 
 ### Core directories
 
-```
+```text
 src/
-├── pages/              # Next.js routes (index, editor, converters, type generators)
-├── features/
-│   ├── editor/        # Main editor (TextEditor, GraphView, TreeView, Toolbar)
-│   └── modals/        # Import, Download, Type, Schema, JQ, JPath modals
-├── store/             # Zustand stores (useFile, useConfig, useJson, useModal)
-├── components/        # Reusable UI (buttons, animations, effects)
-├── layout/            # Page layouts (Navbar, Footer, Landing sections)
-├── lib/utils/         # Utilities (jsonAdapter, json2go, generateType, search)
-├── hooks/             # Custom hooks (useFocusNode, useJsonQuery)
-├── constants/         # Theme, global styles, graph config
-├── enums/             # FileFormat, TypeLanguage, ViewMode
-└── types/             # TypeScript type definitions
+|-- pages/              # Next.js routes (index, editor, converters, type generators)
+|-- features/
+|   |-- editor/         # Main editor (TextEditor, GraphView, TreeView, JsonDrawView, Toolbar)
+|   `-- modals/         # Modal components and ModalController
+|-- store/              # Zustand stores (useFile, useConfig, useJson, useModal)
+|-- components/         # Reusable UI (buttons, animations, effects)
+|-- layout/             # Page layouts (Navbar, Footer, converter/type layouts)
+|-- lib/utils/          # Utilities (jsonAdapter, json2go, json2dart, generateType, search)
+|-- hooks/              # Custom hooks
+|-- constants/          # Theme, global styles, graph config, enums in enumData.ts
+|-- data/               # Static data
+|-- assets/             # Imported images and static assets
+|-- jsondraw/           # Embedded JsonDraw packages
+`-- types/              # TypeScript type definitions
 ```
 
 ### Data flow
 
-1. **Input** → `useFile` store → Parse via `jsonParser.ts` → Graph nodes
-2. **Render** → `GraphView` (Reaflow + custom nodes/edges)
-3. **Actions** → Toolbar → Modals → Store updates → Re-render
+1. **Input** -> `useFile` store -> `contentToJson()` -> `useJson` store
+2. **Graph render** -> `useGraph.setGraph(json)` -> `jsonParser.ts` -> Reaflow canvas
+3. **View render** -> `GraphView`, `TreeView`, or `JsonDrawView` selected via `viewMode` session storage
+4. **Actions** -> Toolbar -> Modals -> Store updates -> Re-render
 
 ### Key files
 
-- `src/store/useFile.ts` - File operations, content management (160 LOC)
-- `src/features/editor/views/GraphView/lib/jsonParser.ts` - JSON → graph parser (207 LOC)
-- `src/lib/utils/jsonAdapter.ts` - Format conversions (104 LOC)
-- `src/features/editor/views/GraphView/index.tsx` - Main graph view (198 LOC)
+- `src/store/useFile.ts` - File operations, content management, parsing, session persistence
+- `src/store/useJson.ts` - Pretty-printed JSON string and graph update trigger
+- `src/features/editor/views/GraphView/stores/useGraph.ts` - Graph nodes, edges, viewport, loading, fullscreen, selection
+- `src/features/editor/views/GraphView/lib/jsonParser.ts` - JSON string to graph nodes/edges
+- `src/lib/utils/jsonAdapter.ts` - JSON/YAML/XML/CSV parsing and conversion
+- `src/constants/enumData.ts` - `FileFormat`, `TypeLanguage`, `ViewMode`, and option lists
 
 ## Code style guidelines
 
 ### TypeScript
 
 ```typescript
-// ✅ Use type imports
+// Good: use type imports
 import type { MenuItemProps } from "@mantine/core";
 
-// ❌ Don't use regular imports for types
+// Avoid regular imports for types
 import { MenuItemProps } from "@mantine/core";
 ```
 
-### Import order (enforced by Prettier)
+### Import order
+
+The order is enforced by `@trivago/prettier-plugin-sort-imports` in `.prettierrc`:
 
 1. React (`react`, `react/*`)
 2. Next.js (`next`, `next/*`)
@@ -106,7 +114,7 @@ import { MenuItemProps } from "@mantine/core";
 
 - **Components**: PascalCase (`Navbar.tsx`, `GraphView.tsx`)
 - **Hooks**: camelCase with `use` prefix (`useFocusNode.ts`)
-- **Stores**: camelCase with `use` prefix, default export (`useFile.ts`)
+- **Stores**: camelCase with `use` prefix, default export except `useModal`
 - **Styled components**: Prefix with `Styled` (`StyledButton`)
 - **Functions**: camelCase (`fetchUrl`, `setContents`)
 
@@ -122,15 +130,19 @@ import { MenuItemProps } from "@mantine/core";
 
 ### Adding a new converter
 
-1. Create route in `src/pages/converter/[format1]-to-[format2].tsx`
-2. Use `ConverterLayout/ToolPage.tsx` wrapper
-3. Conversion logic is in `lib/utils/jsonAdapter.ts`
+1. Create route in `src/pages/converter/[format1]-to-[format2].tsx`.
+2. Use `src/layout/ConverterLayout/ToolPage.tsx`.
+3. Use `FileFormat` from `src/constants/enumData.ts`.
+4. Keep conversion logic in `src/lib/utils/jsonAdapter.ts`.
+5. Update `src/layout/ConverterLayout/PageLinks.tsx` if navigation should expose it.
 
 ### Adding a new type generator
 
-1. Create route in `src/pages/type/[format]-to-[language].tsx`
-2. Use `TypeLayout/TypegenWrapper.tsx` wrapper
-3. Generation logic in `lib/utils/generateType.ts` or `json2go.js`
+1. Create route in `src/pages/type/[format]-to-[language].tsx`.
+2. Use `src/layout/TypeLayout/TypegenWrapper.tsx`.
+3. Use `TypeLanguage` from `src/constants/enumData.ts`.
+4. Generation logic lives in `src/lib/utils/generateType.ts`, `json2go.js`, or `json2dart.ts`.
+5. Update `src/layout/TypeLayout/PageLinks.tsx` if navigation should expose it.
 
 ### Creating a Zustand store
 
@@ -145,7 +157,7 @@ interface MyActions {
   setValue: (value: string) => void;
 }
 
-const useMyStore = create<MyState & MyActions>()((set, get) => ({
+const useMyStore = create<MyState & MyActions>()(set => ({
   value: "",
   setValue: value => set({ value }),
 }));
@@ -181,19 +193,21 @@ const StyledButton = styled.button`
 
 **Fonts**:
 - Global: Playfair Display (serif)
-- Code: JetBrains Mono (monospace)
+- Code/editor: JetBrains Mono / `MONO_FONT_FAMILY`
 
 ## Important notes
 
-- **No tests**: Project has no test suite - don't create tests unless requested
-- **Package manager**: Use `pnpm` only (not npm/yarn)
-- **Privacy-first**: All processing is client-side
-- **Node version**: >=24.x required
-- **ESLint**: `src/enums` directory is ignored
+- **No tests**: Project has no automated test suite - do not create tests unless requested.
+- **Package manager**: Use `pnpm` only, not npm or yarn.
+- **Node version**: `>=24.x` required.
+- **Dev port**: `pnpm dev` serves on `http://localhost:3979`.
+- **Supported conversion formats**: JSON, YAML, XML, CSV.
+- **Enums**: Current app enums live in `src/constants/enumData.ts`.
+- **ESLint**: `src/enums` is ignored by config, but the current project does not use it for app enums.
 
 ## Getting help
 
-- See [references/ARCHITECTURE.md](references/ARCHITECTURE.md) for detailed architecture
-- See [references/COMPONENTS.md](references/COMPONENTS.md) for component catalog
-- See [references/STATE.md](references/STATE.md) for state management patterns
-- Check `AGENTS.md` in project root for full guidelines
+- See [references/ARCHITECTURE.md](references/ARCHITECTURE.md) for detailed architecture.
+- See [references/COMPONENTS.md](references/COMPONENTS.md) for component catalog.
+- See [references/STATE.md](references/STATE.md) for state management patterns.
+- Check `AGENTS.md` in project root for full guidelines.

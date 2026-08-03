@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Validates JSON/YAML/CSV/XML/TOML content
+ * Validates JSON/YAML/CSV/XML content.
  * Usage: node validate-format.js <format> <file>
  */
 
 const fs = require("fs");
-const path = require("path");
 
-const SUPPORTED_FORMATS = ["json", "yaml", "csv", "xml", "toml"];
+const SUPPORTED_FORMATS = ["json", "yaml", "csv", "xml"];
 
 function validateJson(content) {
   try {
@@ -20,50 +19,28 @@ function validateJson(content) {
 }
 
 function validateYaml(content) {
-  try {
-    // Basic YAML validation (requires yaml package in real implementation)
-    if (content.trim().length === 0) {
-      return { valid: false, error: "Empty YAML content" };
-    }
-    return { valid: true };
-  } catch (error) {
-    return { valid: false, error: error.message };
+  if (content.trim().length === 0) {
+    return { valid: false, error: "Empty YAML content" };
   }
+
+  return { valid: true };
 }
 
 function validateCsv(content) {
-  try {
-    const lines = content.trim().split("\n");
-    if (lines.length === 0) {
-      return { valid: false, error: "Empty CSV content" };
-    }
-    return { valid: true };
-  } catch (error) {
-    return { valid: false, error: error.message };
+  const lines = content.trim().split("\n").filter(Boolean);
+  if (lines.length === 0) {
+    return { valid: false, error: "Empty CSV content" };
   }
+
+  return { valid: true };
 }
 
 function validateXml(content) {
-  try {
-    // Basic XML validation
-    if (!content.trim().startsWith("<")) {
-      return { valid: false, error: "Invalid XML: must start with <" };
-    }
-    return { valid: true };
-  } catch (error) {
-    return { valid: false, error: error.message };
+  if (!content.trim().startsWith("<")) {
+    return { valid: false, error: "Invalid XML: must start with <" };
   }
-}
 
-function validateToml(content) {
-  try {
-    if (content.trim().length === 0) {
-      return { valid: false, error: "Empty TOML content" };
-    }
-    return { valid: true };
-  } catch (error) {
-    return { valid: false, error: error.message };
-  }
+  return { valid: true };
 }
 
 function main() {
@@ -76,8 +53,9 @@ function main() {
   }
 
   const [format, filePath] = args;
+  const normalizedFormat = format.toLowerCase();
 
-  if (!SUPPORTED_FORMATS.includes(format.toLowerCase())) {
+  if (!SUPPORTED_FORMATS.includes(normalizedFormat)) {
     console.error(`Unsupported format: ${format}`);
     console.error(`Supported formats: ${SUPPORTED_FORMATS.join(", ")}`);
     process.exit(1);
@@ -91,7 +69,7 @@ function main() {
   const content = fs.readFileSync(filePath, "utf-8");
 
   let result;
-  switch (format.toLowerCase()) {
+  switch (normalizedFormat) {
     case "json":
       result = validateJson(content);
       break;
@@ -104,18 +82,15 @@ function main() {
     case "xml":
       result = validateXml(content);
       break;
-    case "toml":
-      result = validateToml(content);
-      break;
   }
 
   if (result.valid) {
-    console.log(`✓ Valid ${format.toUpperCase()}`);
+    console.log(`OK: Valid ${normalizedFormat.toUpperCase()}`);
     process.exit(0);
-  } else {
-    console.error(`✗ Invalid ${format.toUpperCase()}: ${result.error}`);
-    process.exit(1);
   }
+
+  console.error(`ERROR: Invalid ${normalizedFormat.toUpperCase()}: ${result.error}`);
+  process.exit(1);
 }
 
 main();

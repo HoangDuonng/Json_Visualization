@@ -455,11 +455,11 @@ const StyledContainer = styled.div`
 
 ```typescript
 interface ButtonProps {
-  variant?: "primary" | "secondary";
+  variant|: "primary" | "secondary";
 }
 
 const StyledButton = styled.button<ButtonProps>`
-  background: ${props => (props.variant === "primary" ? "#f7c948" : "#37ff8b")};
+  background: ${props => (props.variant === "primary" | "#f7c948" : "#37ff8b")};
 `;
 ```
 
@@ -510,7 +510,7 @@ const StyledWrapper = styled.div`
 
 interface MyComponentProps {
   title: string;
-  onClick?: () => void;
+  onClick|: () => void;
 }
 
 export const MyComponent: React.FC<MyComponentProps> = ({ title, onClick }) => {

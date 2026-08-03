@@ -10,7 +10,7 @@ Checklist:
 
 1. Add a route page in `src/pages/converter/[from]-to-[to].tsx`.
 2. Use `ConverterLayout/ToolPage.tsx` for consistent UI.
-3. Ensure format detection uses `FileFormat` in `src/enums/FileFormat.ts`.
+3. Ensure format detection uses `FileFormat` in `src/constants/enumData.ts`.
 4. Convert data using `contentToJson` and `jsonToContent` from `src/lib/utils/jsonAdapter.ts`.
 5. Update any navigation links in `src/layout/ConverterLayout/PageLinks.tsx`.
 
@@ -18,7 +18,7 @@ Minimal route example:
 
 ```tsx
 import React from "react";
-import { FileFormat } from "src/enums/FileFormat";
+import { FileFormat } from "src/constants/enumData";
 import ToolPage from "src/layout/ConverterLayout/ToolPage";
 
 const Page = () => <ToolPage inputFormat={FileFormat.JSON} outputFormat={FileFormat.YAML} />;
@@ -41,7 +41,7 @@ Minimal route example:
 
 ```tsx
 import React from "react";
-import { FileFormat } from "src/enums/FileFormat";
+import { FileFormat } from "src/constants/enumData";
 import TypegenWrapper from "src/layout/TypeLayout/TypegenWrapper";
 
 const Page = () => <TypegenWrapper inputFormat={FileFormat.JSON} outputLanguage="typescript" />;
@@ -86,7 +86,7 @@ Checklist:
 
 1. Update conversion in `src/features/editor/views/JsonDrawView/jsonToJsonDraw.ts`.
 2. Render/view logic lives in `src/features/editor/views/JsonDrawView/index.tsx`.
-3. View selection uses `ViewMode.JsonDraw` in `src/enums/viewMode.enum.ts`.
+3. View selection uses `ViewMode.JsonDraw` in `src/constants/enumData.ts`.
 4. Ensure `LiveEditor` and `Toolbar/ViewMenu` include the view option.
 5. Keep autosave key `jsondraw-autosave` stable for restore behavior.
 

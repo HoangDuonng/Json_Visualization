@@ -79,7 +79,7 @@ Parses JSON to a tree and builds graph nodes:
 ```typescript
 export const parser = (json: string): Graph => {
   const jsonTree = parseTree(json);
-  // traverse(node, parentId?)
+  // traverse(node, parentId|)
 };
 ```
 
@@ -125,11 +125,11 @@ export function jsonToContent(json: any, format: FileFormat): string;
 
 ## Type generation
 
-### TypeScript/Kotlin/Rust
+### TypeScript/Kotlin/Rust/Dart/JSON Schema
 
 **File**: `src/lib/utils/generateType.ts`
 
-Uses `json-to-ts`, `json-to-kotlin`, `json-to-rust` libraries.
+Uses `json_typegen_wasm` for TypeScript, Kotlin, Rust, and JSON Schema, and `src/lib/utils/json2dart.ts` for Dart.
 
 ### Go
 

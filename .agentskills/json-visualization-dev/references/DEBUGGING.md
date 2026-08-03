@@ -146,7 +146,7 @@ Add try-catch around:
 - JSON parsing
 - Network requests
 
-Use `react-hot-toast` for user-friendly feedback:
+Use `sonner` for user-friendly feedback:
 
 ```ts
 toast.error("Failed to process data!");

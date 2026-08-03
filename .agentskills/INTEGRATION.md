@@ -7,6 +7,7 @@ This document explains how AI agents discover and use the Agent Skills in this r
 ### 1. Repository root files
 
 **README.md** - Main project README includes:
+
 ```markdown
 ## For AI Agents
 
@@ -15,6 +16,7 @@ This repository includes [Agent Skills](.agentskills/) - structured documentatio
 ```
 
 **AGENTS.md** - Legacy agent guidelines with pointer:
+
 ```markdown
 > **💡 For comprehensive documentation**: See `.agentskills/json-visualization-dev/`
 ```
@@ -22,12 +24,14 @@ This repository includes [Agent Skills](.agentskills/) - structured documentatio
 ### 2. .agentskills directory
 
 **Entry points** (in order of prominence):
+
 1. `AGENTS_START_HERE.md` - Prominent entry point
 2. `QUICKSTART.md` - Step-by-step guide
 3. `README.md` - Skills overview and catalog
 4. `agentskills.json` - Machine-readable manifest
 
 **Skill directory**:
+
 - `json-visualization-dev/SKILL.md` - Main skill definition
 - `json-visualization-dev/references/` - Detailed docs
 - `json-visualization-dev/scripts/` - Utility scripts
@@ -79,18 +83,22 @@ This repository includes [Agent Skills](.agentskills/) - structured documentatio
 Agents load information in stages to minimize context usage:
 
 **Stage 1: Discovery (~100 tokens)**
+
 - Skill name and description from SKILL.md frontmatter
 
 **Stage 2: Overview (~3000 tokens)**
+
 - Full SKILL.md body content
 - Quick start, architecture overview, common tasks
 
 **Stage 3: Details (2000-3000 tokens each, on-demand)**
+
 - ARCHITECTURE.md - System design and data flow
 - COMPONENTS.md - Component catalog
 - STATE.md - State management patterns
 
 **Stage 4: Execution (as needed)**
+
 - Run scripts for validation and analysis
 
 ## File Structure
@@ -123,14 +131,16 @@ Repository Root
 ### GitHub Copilot / Cursor / Windsurf
 
 These tools can:
+
 1. Read repository files
 2. Discover .agentskills/ directory
 3. Load SKILL.md files
 4. Reference detailed docs as needed
 
-### Kiro CLI (current tool)
+### AMPCODE CLI / coding agents
 
 Can:
+
 1. Read all files in repository
 2. Execute scripts
 3. Follow links between documents
@@ -139,6 +149,7 @@ Can:
 ### Future AI tools
 
 Will be able to:
+
 1. Parse agentskills.json manifest
 2. Load skills programmatically
 3. Cache skill metadata
@@ -171,6 +182,7 @@ npx skills-ref validate .agentskills/json-visualization-dev
 ```
 
 This checks:
+
 - SKILL.md frontmatter format
 - Required fields (name, description)
 - Naming conventions

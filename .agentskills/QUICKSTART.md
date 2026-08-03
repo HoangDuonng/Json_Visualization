@@ -67,7 +67,7 @@ This minimizes context usage while providing comprehensive information.
 - [`AGENTS.md`](AGENTS.md) - Original agent guidelines (still valid, but Agent Skills are more structured)
 - [`README.md`](README.md) - Project README for humans
 
-## Questions?
+## Questions|
 
 - Check [Agent Skills specification](https://agentskills.io/specification)
 - Read [Diátaxis framework](https://diataxis.fr/) for documentation structure

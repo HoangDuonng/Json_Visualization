@@ -2,7 +2,7 @@
 
 This directory contains Agent Skills for AI coding assistants working with this codebase.
 
-## What are Agent Skills?
+## What are Agent Skills|
 
 Agent Skills are structured documentation packages that help AI agents understand codebases quickly and work effectively. They follow the [Agent Skills specification](https://agentskills.io/specification).
 

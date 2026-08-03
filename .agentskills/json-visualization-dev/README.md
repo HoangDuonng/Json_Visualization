@@ -12,11 +12,11 @@ This directory contains the Agent Skill for developing and maintaining the JSON 
 │   ├── COMPONENTS.md          # Component catalog
 │   └── STATE.md               # State management
 └── scripts/                    # Utility scripts
-    ├── validate-format.js     # Validate JSON/YAML/CSV/XML/TOML
+    ├── validate-format.js     # Validate JSON/YAML/CSV/XML
     └── analyze-json.js        # Analyze JSON structure
 ```
 
-## What is this?
+## What is this|
 
 This is an [Agent Skills](https://agentskills.io) package that helps AI agents understand and work with the JSON Visualization codebase effectively.
 
