@@ -14,10 +14,10 @@ const StyledImageWrapper = styled.div`
     left: 0;
     padding: 12px;
     border-radius: 15px;
-    border: 1px solid #e0e0e0;
-    background: #f3f3f3;
-    --line-color-1: #e3e3e3;
-    --line-color-2: #e5e5e5;
+    border: 1px solid var(--site-border, #e8e4db);
+    background: var(--site-surface, #fffdf7);
+    --line-color-1: #e8e4db;
+    --line-color-2: rgba(232, 228, 219, 0.55);
     background-image:
       linear-gradient(var(--line-color-1) 1.5px, transparent 1.5px),
       linear-gradient(90deg, var(--line-color-1) 1.5px, transparent 1.5px),
@@ -86,11 +86,18 @@ export const Section1 = () => {
           mx="auto"
           style={{
             borderRadius: "17px",
-            border: "1px solid #e0e0e0",
+            border: "1px solid var(--site-border, #e8e4db)",
+            background: "var(--site-surface, #fffdf7)",
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step1-visual.png" pos="relative" w="100%" alt="upload" loading="lazy" />
+            <Image
+              src="/assets/step1-visual.png"
+              pos="relative"
+              w="100%"
+              alt="upload"
+              loading="lazy"
+            />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Upload your data
@@ -106,11 +113,18 @@ export const Section1 = () => {
           mx="auto"
           style={{
             borderRadius: "17px",
-            border: "1px solid #e0e0e0",
+            border: "1px solid var(--site-border, #e8e4db)",
+            background: "var(--site-surface, #fffdf7)",
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step2-visual.png" pos="relative" w="100%" alt="visualize" loading="lazy" />
+            <Image
+              src="/assets/step2-visual.png"
+              pos="relative"
+              w="100%"
+              alt="visualize"
+              loading="lazy"
+            />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Visualize your JSON
@@ -127,11 +141,18 @@ export const Section1 = () => {
           mx="auto"
           style={{
             borderRadius: "17px",
-            border: "1px solid #e0e0e0",
+            border: "1px solid var(--site-border, #e8e4db)",
+            background: "var(--site-surface, #fffdf7)",
           }}
         >
           <StyledImageWrapper>
-            <Image src="/assets/step3-visual.png" pos="relative" w="100%" alt="export image" loading="lazy" />
+            <Image
+              src="/assets/step3-visual.png"
+              pos="relative"
+              w="100%"
+              alt="export image"
+              loading="lazy"
+            />
           </StyledImageWrapper>
           <Title ta="center" c="black" order={3}>
             Export to image

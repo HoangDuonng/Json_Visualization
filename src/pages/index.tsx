@@ -19,7 +19,7 @@ export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) 
         {generateNextSeo({ ...SEO, canonical: SITE_URL })}
         <link rel="preload" href="/assets/editor.webp" as="image" />
       </Head>
-      <HeroSection stars={props.stars} />
+      <HeroSection />
       <HeroPreview />
       <Section1 />
       <Section2 />

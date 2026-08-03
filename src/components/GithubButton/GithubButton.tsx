@@ -6,7 +6,7 @@ import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 
 const StyledWrapper = styled.div`
   .codepen-button {
-    display: block;
+    display: inline-block;
     cursor: pointer;
     color: white;
     margin: 0 auto;

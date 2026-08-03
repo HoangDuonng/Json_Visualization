@@ -13,9 +13,9 @@ interface DocsTocProps {
 }
 
 const StyledTocCard = styled(Paper)<any>`
-  background: #fffdf5;
-  border: 1px solid #e8e4db;
-  border-left: 4px solid #f7c948;
+  background: var(--site-surface, #fffdf7);
+  border: 1px solid var(--site-border, #e8e4db);
+  border-left: 4px solid var(--site-highlight, #f7c948);
 `;
 
 const StyledTocList = styled.div`
@@ -25,13 +25,14 @@ const StyledTocList = styled.div`
 `;
 
 const StyledTocLink = styled.a`
-  color: #228be6;
+  color: var(--site-text, #1a1a1a);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
 
   &:hover {
-    text-decoration: underline;
+    text-decoration-color: var(--site-accent, #37ff8b);
+    text-decoration-thickness: 3px;
   }
 `;
 

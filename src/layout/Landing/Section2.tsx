@@ -13,13 +13,14 @@ import {
 import styled from "styled-components";
 import { LuBadgeCheck } from "react-icons/lu";
 import { ExploreButton } from "../../components/ExploreButton";
+import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 
 const StyledDottedContainer = styled.div`
   position: relative;
-  background-color: #f3f3f3;
-  background-image: radial-gradient(#e0e0e0 3px, transparent 0);
+  background-color: var(--site-surface, #fffdf7);
+  background-image: radial-gradient(var(--site-border, #e8e4db) 3px, transparent 0);
   background-size: 40px 40px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--site-border, #e8e4db);
 
   width: 100%;
   min-width: 300px;
@@ -34,11 +35,11 @@ const StyledDottedContainer = styled.div`
     padding: 12px;
     border-radius: 15px;
     transform: translate(-80px, 10%);
-    border: 1px solid #000;
-    box-shadow: 0px 4px 0px 0px #000;
-    background: #f3f3f3;
-    --line-color-1: #e3e3e3;
-    --line-color-2: #e5e5e5;
+    border: 1px solid var(--site-text, #1a1a1a);
+    box-shadow: 0 4px 0 var(--site-text, #1a1a1a);
+    background: var(--site-surface, #fffdf7);
+    --line-color-1: #e8e4db;
+    --line-color-2: rgba(232, 228, 219, 0.55);
     background-image:
       linear-gradient(var(--line-color-1) 1.5px, transparent 1.5px),
       linear-gradient(90deg, var(--line-color-1) 1.5px, transparent 1.5px),
@@ -63,8 +64,8 @@ const StyledDottedContainer = styled.div`
     transform: translate(80%, 80%);
     width: 273px;
     border-radius: 15px;
-    border: 1px solid #000;
-    box-shadow: 0px 4px 0px 0px #000;
+    border: 1px solid var(--site-text, #1a1a1a);
+    box-shadow: 0 4px 0 var(--site-text, #1a1a1a);
     overflow: hidden;
   }
 
@@ -126,6 +127,7 @@ export const Section2 = () => {
               input: {
                 border: "none",
                 fontSize: 12,
+                fontFamily: `${MONO_FONT_FAMILY} !important`,
               },
             }}
             value={JSON.stringify(

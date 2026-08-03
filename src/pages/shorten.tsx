@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import styled, { keyframes } from "styled-components";
-import { ref, set, get } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { nanoid } from "nanoid";
 import { generateNextSeo } from "next-seo/pages";
 import { IoLink, IoCopyOutline, IoCheckmark, IoOpenOutline } from "react-icons/io5";
@@ -31,13 +31,18 @@ const StyledHeroSection = styled.div`
 `;
 
 const StyledCard = styled.div`
-  background: white;
-  border: 1px solid #e8e4db;
+  background: var(--site-surface, #fffdf7);
+  border: 1px solid var(--site-border, #e8e4db);
   border-radius: 16px;
   padding: 40px;
-  width: 70%;
+  width: 100%;
+  max-width: 880px;
   margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 12px 32px rgba(26, 26, 26, 0.06);
+
+  @media (max-width: 600px) {
+    padding: 24px 18px;
+  }
 `;
 
 const StyledInputGroup = styled.div`
@@ -46,7 +51,7 @@ const StyledInputGroup = styled.div`
   gap: 12px;
   align-items: flex-end;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
   }
@@ -82,8 +87,8 @@ const StyledShortenButton = styled.button`
 
 const StyledResultCard = styled.div`
   animation: ${fadeIn} 0.3s ease;
-  background: #f8f9fa;
-  border: 1px solid #e8e4db;
+  background: var(--site-background, #f7f3e6);
+  border: 1px solid var(--site-border, #e8e4db);
   border-radius: 12px;
   padding: 20px;
   margin-top: 24px;
@@ -93,13 +98,13 @@ const StyledShortUrl = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: var(--site-surface, #fffdf7);
+  border: 1px solid var(--site-border, #e8e4db);
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 16px;
   font-weight: 500;
-  color: #228be6;
+  color: var(--site-text, #1a1a1a);
   word-break: break-all;
 `;
 
@@ -118,8 +123,8 @@ const StyledHistoryItem = styled.div`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: white;
-  border: 1px solid #e8e4db;
+  background: var(--site-surface, #fffdf7);
+  border: 1px solid var(--site-border, #e8e4db);
   border-radius: 8px;
 
   &:not(:last-child) {
@@ -133,13 +138,15 @@ const StyledHistoryUrl = styled.div`
 `;
 
 const StyledHistoryShort = styled.a`
-  color: #228be6;
+  color: var(--site-text, #1a1a1a);
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
 
   &:hover {
     text-decoration: underline;
+    text-decoration-color: var(--site-accent, #37ff8b);
+    text-decoration-thickness: 3px;
   }
 `;
 

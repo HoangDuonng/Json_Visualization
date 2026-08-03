@@ -29,7 +29,8 @@ const StyledNavbar = styled.nav`
   position: relative;
 
   @media only screen and (max-width: 768px) {
-    padding: 8px 12px;
+    gap: 8px;
+    padding: 4px;
   }
 `;
 
@@ -64,6 +65,12 @@ const Center = styled.div`
 
   @media only screen and (max-width: 768px) {
     display: none;
+  }
+`;
+
+const MobileRight = styled(Right)`
+  @media only screen and (max-width: 768px) {
+    gap: 4px;
   }
 `;
 
@@ -145,7 +152,7 @@ export const Navbar = () => {
               JSON Schema
             </StyledButton>
           </Center>
-          <Right>
+          <MobileRight>
             <StyledButton
               component={Link}
               prefetch={false}
@@ -168,7 +175,7 @@ export const Navbar = () => {
             >
               Draw
             </StyledButton>
-          </Right>
+          </MobileRight>
         </StyledNavbar>
       </GlassSurface>
     </StyledNavbarWrapper>

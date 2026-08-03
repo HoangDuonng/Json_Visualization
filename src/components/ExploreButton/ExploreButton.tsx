@@ -13,31 +13,29 @@ const StyledWrapper = styled.div`
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    color: #7e97b8;
-    background-color: #e0e8ef;
-    border-style: solid;
-    border-width: 2px 2px 2px 2px;
-    border-color: rgba(255, 255, 255, 0.333);
-    border-radius: 40px 40px 40px 40px;
+    color: var(--site-text, #1a1a1a);
+    background-color: var(--site-highlight, #f7c948);
+    border: 1px solid rgba(26, 26, 26, 0.14);
+    border-radius: 40px;
     padding: 12px 20px 12px 22px;
-    transform: translate(0px, 0px) rotate(0deg);
-    transition: 0.2s;
-    box-shadow:
-      -4px -2px 16px 0px #ffffff,
-      4px 2px 16px 0px rgb(95 157 231 / 48%);
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+    box-shadow: 0 6px 0 rgba(26, 26, 26, 0.14);
     cursor: pointer;
   }
 
-  button:hover {
-    color: #516d91;
-    background-color: #e5edf5;
-    box-shadow:
-      -2px -1px 8px 0px #ffffff,
-      2px 1px 8px 0px rgb(95 157 231 / 48%);
+  button:hover,
+  button:focus-visible {
+    background-color: var(--site-accent, #37ff8b);
+    box-shadow: 0 4px 0 rgba(26, 26, 26, 0.16);
+    transform: translateY(2px);
   }
 
   button:active {
     box-shadow: none;
+    transform: translateY(6px);
   }
 `;
 

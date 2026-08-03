@@ -19,8 +19,8 @@ const StyledNavCard = styled(Paper)<any>`
   height: 100%;
   cursor: pointer;
   transition: all 0.25s ease;
-  background: #ffffff;
-  border: 1px solid #e8e4db;
+  background: var(--site-surface, #fffdf7);
+  border: 1px solid var(--site-border, #e8e4db);
 
   &:hover {
     transform: translateY(-2px);
@@ -32,7 +32,13 @@ const StyledNavLabel = styled(Text)`
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.7rem;
-  color: #868e96;
+  color: var(--site-text-muted, #666666);
+`;
+
+const StyledNavigation = styled(Paper)<any>`
+  background: var(--site-surface, #fffdf7);
+  color: var(--site-text, #1a1a1a);
+  border-color: var(--site-border, #e8e4db);
 `;
 
 const StyledNavGrid = styled.div`
@@ -59,7 +65,7 @@ export const DocsNavigation = ({ title, previous, next }: DocsNavigationProps) =
   }
 
   return (
-    <Paper bg="white" c="black" p="xl" radius="md" withBorder>
+    <StyledNavigation p="xl" radius="md" withBorder>
       <Title mb="md" order={3} c="dark">
         {title}
       </Title>
@@ -101,6 +107,6 @@ export const DocsNavigation = ({ title, previous, next }: DocsNavigationProps) =
           </StyledNavItem>
         )}
       </StyledNavGrid>
-    </Paper>
+    </StyledNavigation>
   );
 };
