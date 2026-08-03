@@ -22,6 +22,19 @@ Agent Skills are structured documentation packages that help AI agents understan
 - Components: [references/COMPONENTS.md](json-visualization-dev/references/COMPONENTS.md)
 - State: [references/STATE.md](json-visualization-dev/references/STATE.md)
 
+### public-editorial-redesign
+
+**Purpose**: Redesign public-facing pages with an editorial developer-tool visual system inspired by Amp.
+
+**When to use**: Homepage, docs, converter, type-generation, tools, legal, shorten, and other public UI work. It protects `/editor`, `/draw`, `/widget`, code typography, and JsonDraw behavior.
+
+**Location**: `.agentskills/public-editorial-redesign/`
+
+**Quick access**:
+- Overview: [SKILL.md](public-editorial-redesign/SKILL.md)
+- Design contract: [references/EDITORIAL-DESIGN.md](public-editorial-redesign/references/EDITORIAL-DESIGN.md)
+- Page map: [references/PUBLIC-PAGE-MAP.md](public-editorial-redesign/references/PUBLIC-PAGE-MAP.md)
+
 ## For AI Agents
 
 When you start working with this repository:

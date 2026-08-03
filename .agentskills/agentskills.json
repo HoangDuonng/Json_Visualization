@@ -16,6 +16,16 @@
           "scripts/validate-format.js",
           "scripts/analyze-json.js"
         ]
+      },
+      {
+        "name": "public-editorial-redesign",
+        "path": ".agentskills/public-editorial-redesign",
+        "description": "Redesign public-facing pages with a restrained editorial developer-tool aesthetic inspired by Amp while protecting editor, draw, widget, code typography, and JsonDraw behavior.",
+        "entrypoint": "SKILL.md",
+        "references": [
+          "references/EDITORIAL-DESIGN.md",
+          "references/PUBLIC-PAGE-MAP.md"
+        ]
       }
     ]
   }

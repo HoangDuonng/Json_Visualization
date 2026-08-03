@@ -18,6 +18,12 @@ This gives you:
 - Code style guidelines
 - Common tasks
 
+For public-page redesigns, additionally read:
+
+`.agentskills/public-editorial-redesign/SKILL.md`
+
+This adds the editorial design contract and protected-route boundaries. Do not use it to redesign `/editor`, `/draw`, or `/widget`.
+
 ## 3. Access detailed references (as needed)
 
 - **Architecture & data flow**: [`.agentskills/json-visualization-dev/references/ARCHITECTURE.md`](.agentskills/json-visualization-dev/references/ARCHITECTURE.md)

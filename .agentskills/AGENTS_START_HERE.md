@@ -16,6 +16,8 @@
 - **State management** - Zustand stores and patterns
 - **Common tasks** - How to add features, fix bugs, etc.
 
+For public-page redesigns, also load `.agentskills/public-editorial-redesign/SKILL.md` and its references. Keep `/editor`, `/draw`, and `/widget` outside that skill's modification scope.
+
 ## Structure
 
 ```
