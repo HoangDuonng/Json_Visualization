@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { Container, Paper, Stack, Text, Title, Alert, SimpleGrid } from "@mantine/core";
+import { Paper, Stack, Text, Title, Alert, SimpleGrid } from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { VscInfo } from "react-icons/vsc";
@@ -10,6 +10,41 @@ import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
 import { useTranslation } from "../../i18n";
 import Layout from "../../layout/PageLayout";
+import { PublicContainer } from "../../layout/PageLayout/PublicPage";
+
+const StyledDocsContainer = styled(PublicContainer)`
+  padding-block: clamp(3rem, 7vw, 6rem);
+  & > .mantine-Stack-root {
+    gap: 0;
+  }
+  & > .mantine-Stack-root > div:first-child {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--public-border);
+  }
+  & > .mantine-Stack-root > .mantine-Paper-root {
+    padding: clamp(2.5rem, 6vw, 4rem) 0;
+    border: 0;
+    border-bottom: 1px solid var(--public-border);
+    border-radius: 0;
+    background: transparent;
+  }
+  h1 {
+    font-size: var(--public-type-page-title);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  .mantine-Alert-root {
+    margin-block: 1.5rem;
+    border: 1px solid var(--public-border);
+    background: var(--public-surface);
+  }
+  @media (max-width: 480px) {
+    & > .mantine-Stack-root > div:first-child {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+`;
 
 const StyledContentBody = styled.div`
   display: flex;
@@ -19,7 +54,7 @@ const StyledContentBody = styled.div`
 `;
 
 const StyledLink = styled.a`
-  color: #228be6;
+  color: var(--public-accent);
   text-decoration: none;
   font-weight: 500;
 
@@ -54,7 +89,7 @@ const VisualizationDocs = () => {
           canonical: `https://jsonviz.online/${locale === "vi" ? "vi/" : ""}docs/visualization`,
         })}
       </Head>
-      <Container size="lg" py={60}>
+      <StyledDocsContainer $narrow>
         <Stack gap="xl">
           <div
             style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}
@@ -72,9 +107,9 @@ const VisualizationDocs = () => {
 
           <Alert
             icon={<VscInfo size={20} />}
-            color="cyan"
+            color="#236b4a"
             variant="light"
-            styles={{ message: { color: "#1971c2" } }}
+            styles={{ message: { color: "var(--public-accent-hover)" } }}
           >
             {t("visualization.alert")}
           </Alert>
@@ -237,7 +272,7 @@ const VisualizationDocs = () => {
             </StyledContentBody>
           </Paper>
         </Stack>
-      </Container>
+      </StyledDocsContainer>
     </Layout>
   );
 };

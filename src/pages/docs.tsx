@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Container, Group, Paper, Stack, Text, Title, ThemeIcon, SimpleGrid } from "@mantine/core";
+import { Group, Paper, Stack, Text, Title, ThemeIcon, SimpleGrid } from "@mantine/core";
 import styled from "styled-components";
 import { generateNextSeo } from "next-seo/pages";
 import { FaBolt, FaToolbox } from "react-icons/fa";
@@ -16,6 +16,37 @@ import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SEO } from "../constants/seo";
 import { useTranslation } from "../i18n";
 import Layout from "../layout/PageLayout";
+import { PublicContainer } from "../layout/PageLayout/PublicPage";
+
+const StyledDocsContainer = styled(PublicContainer)`
+  padding-block: clamp(3rem, 7vw, 6rem);
+  & > .mantine-Stack-root {
+    gap: 0;
+  }
+  & > .mantine-Stack-root > div:first-child {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--public-border);
+  }
+  & > .mantine-Stack-root > .mantine-Paper-root {
+    padding: clamp(2.5rem, 6vw, 4rem) 0;
+    border: 0;
+    border-bottom: 1px solid var(--public-border);
+    border-radius: 0;
+    background: transparent;
+  }
+  h1 {
+    font-size: var(--public-type-page-title);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  @media (max-width: 480px) {
+    & > .mantine-Stack-root > div:first-child {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 1.5rem;
+    }
+  }
+`;
 
 const StyledContentBody = styled.div`
   display: flex;
@@ -26,15 +57,17 @@ const StyledContentBody = styled.div`
 
 const StyledFeatureCard = styled(Paper)<any>`
   cursor: pointer;
-  transition: all 0.3s ease;
+  border: 0;
+  border-top: 1px solid var(--public-border);
+  border-radius: 0;
+  transition: border-color var(--public-motion);
   height: 100%;
   background: var(--site-surface, #fffdf7);
   color: var(--site-text, #1a1a1a);
   border-color: var(--site-border, #e8e4db);
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--public-accent);
   }
 `;
 
@@ -69,63 +102,63 @@ const Docs = () => {
       title: t("index.visualizationTitle"),
       description: t("index.visualizationDesc"),
       icon: <FaBolt size={24} />,
-      color: "#f7c948",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/visualization"),
     },
     {
       title: t("index.jsonDrawTitle"),
       description: t("index.jsonDrawDesc"),
       icon: <IoBrushOutline size={24} />,
-      color: "#37ff8b",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/jsondraw"),
     },
     {
       title: t("index.formatConversionTitle"),
       description: t("index.formatConversionDesc"),
       icon: <TbTransformFilled size={24} />,
-      color: "#f7c948",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/format-conversion"),
     },
     {
       title: t("index.formatValidateTitle"),
       description: t("index.formatValidateDesc"),
       icon: <MdOutlineFormatIndentIncrease size={24} />,
-      color: "#37ff8b",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/format-validate"),
     },
     {
       title: t("index.typeGenerationTitle"),
       description: t("index.typeGenerationDesc"),
       icon: <MdOutlineGeneratingTokens size={24} />,
-      color: "#f7c948",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/type-generation"),
     },
     {
       title: t("index.jsonSchemaTitle"),
       description: t("index.jsonSchemaDesc"),
       icon: <VscJson size={24} />,
-      color: "#37ff8b",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/json-schema"),
     },
     {
       title: t("index.jqQueryTitle"),
       description: t("index.jqQueryDesc"),
       icon: <FaToolbox size={24} />,
-      color: "#f7c948",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/jq-query"),
     },
     {
       title: t("index.jsonPathTitle"),
       description: t("index.jsonPathDesc"),
       icon: <FaToolbox size={24} />,
-      color: "#37ff8b",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/json-path"),
     },
     {
       title: t("index.exportImageTitle"),
       description: t("index.exportImageDesc"),
       icon: <IoImages size={24} />,
-      color: "#f7c948",
+      color: "#236b4a",
       link: getLocalizedLink("/docs/export-image"),
     },
   ];
@@ -188,7 +221,7 @@ const Docs = () => {
           canonical: "https://jsonviz.online/docs",
         })}
       </Head>
-      <Container size="xl" py={60}>
+      <StyledDocsContainer>
         <Stack gap="xl">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Title order={1} c="dark">
@@ -369,7 +402,7 @@ const Docs = () => {
             </StyledContentBody>
           </StyledDocsPaper>
         </Stack>
-      </Container>
+      </StyledDocsContainer>
 
       <ChatBot opened={chatOpened} onClose={() => setChatOpened(false)} />
     </Layout>
