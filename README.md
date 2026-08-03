@@ -56,9 +56,9 @@ JSON Visualization is a tool for visualizing JSON data in a structured, interact
 
 ## For AI Agents
 
-This repository includes [Agent Skills](.agentskills/) - structured documentation to help AI coding assistants understand and work with this codebase effectively.
+This repository includes [Agent Skills](.agents/skills/) - structured documentation to help AI coding assistants understand and work with this codebase effectively.
 
-**Quick start for agents**: Read [`.agentskills/json-visualization-dev/SKILL.md`](.agentskills/json-visualization-dev/SKILL.md) for project overview, architecture, and development guidelines.
+**Quick start for agents**: Read [`.agents/skills/json-visualization-dev/SKILL.md`](.agents/skills/json-visualization-dev/SKILL.md) for project overview, architecture, and development guidelines.
 
 ## Stay Up-to-Date
 

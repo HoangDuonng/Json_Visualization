@@ -132,7 +132,7 @@ pnpm type-check
 
 ```
 Json_Visualization/
-├── .agentskills/          # Agent Skills documentation
+├── .agents/skills/          # Agent Skills documentation
 ├── .github/               # GitHub config
 ├── .next/                 # Next.js build output (generated)
 ├── node_modules/          # Dependencies (generated)
@@ -537,7 +537,7 @@ services:
 - Read [Architecture](docs/development/architecture.md)
 - Review [Code Style](docs/development/code-style.md)
 - Check [Contributing Guide](../CONTRIBUTING.md)
-- Explore [Agent Skills](.agentskills/json-visualization-dev/SKILL.md)
+- Explore [Agent Skills](.agents/skills/json-visualization-dev/SKILL.md)
 
 ## Getting Help
 

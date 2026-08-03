@@ -13,7 +13,7 @@ Repository
 │   ├── technical/                 # Technical deep dives
 │   ├── faq.md
 │   └── troubleshooting.md
-├── .agentskills/                  # Agent Skills (AI agents)
+├── .agents/skills/                  # Agent Skills (AI agents)
 │   └── json-visualization-dev/
 │       └── references/
 │           ├── WORKFLOWS.md       # New: Development workflows
@@ -33,7 +33,7 @@ Repository
 | **Tutorials** | Learning | `docs/getting-started.md` | First visualization, basic usage |
 | **How-to** | Tasks | `docs/how-to/` | Convert formats, generate types |
 | **Explanation** | Understanding | `docs/features/`, `docs/development/` | Architecture, concepts |
-| **Reference** | Information | `docs/reference/`, `.agentskills/` | Shortcuts, API, specs |
+| **Reference** | Information | `docs/reference/`, `.agents/skills/` | Shortcuts, API, specs |
 
 ## Phases
 

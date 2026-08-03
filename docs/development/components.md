@@ -10,7 +10,7 @@ Components are organized by feature and follow consistent patterns with TypeScri
 
 For comprehensive component documentation, see:
 
-**[Agent Skills - Components Reference](../../.agentskills/json-visualization-dev/references/COMPONENTS.md)**
+**[Agent Skills - Components Reference](../../.agents/skills/json-visualization-dev/references/COMPONENTS.md)**
 
 This includes:
 - Complete component catalog
@@ -85,4 +85,4 @@ export const MyComponent: React.FC<MyComponentProps> = ({ title, onClick }) => {
 - [Architecture](architecture.md) - System design
 - [State Management](state-management.md) - State patterns
 - [Code Style](code-style.md) - Coding conventions
-- [Agent Skills - Components](../../.agentskills/json-visualization-dev/references/COMPONENTS.md) - Full catalog
+- [Agent Skills - Components](../../.agents/skills/json-visualization-dev/references/COMPONENTS.md) - Full catalog
