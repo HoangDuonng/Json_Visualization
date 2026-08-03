@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
+import { HamsterLoader } from "@jsondraw-runtime";
 import Editor, { type EditorProps, loader, type OnMount, useMonaco } from "@monaco-editor/react";
-import { HamsterLoader } from "../../jsondraw";
 import useConfig from "../../store/useConfig";
 import useFile from "../../store/useFile";
 

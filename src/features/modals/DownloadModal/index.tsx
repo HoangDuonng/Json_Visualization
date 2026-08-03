@@ -12,8 +12,8 @@ import {
 } from "@mantine/core";
 import { toBlob, toJpeg, toPng, toSvg } from "html-to-image";
 import { event as gaEvent } from "nextjs-google-analytics";
-import { toast } from "sonner";
 import { FiCopy, FiDownload } from "react-icons/fi";
+import { toast } from "sonner";
 
 enum Extensions {
   SVG = "svg",

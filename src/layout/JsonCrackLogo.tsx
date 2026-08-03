@@ -1,14 +1,6 @@
 import React from "react";
-import localFont from "next/font/local";
 import Link from "next/link";
 import styled from "styled-components";
-
-const monaSans = localFont({
-  src: "../assets/fonts/Mona-Sans.woff2",
-  variable: "--mona-sans",
-  display: "swap",
-  fallback: ["Futura, Helvetica, sans-serif", "Tahoma, Verdana, sans-serif"],
-});
 
 const StyledLogoWrapper = styled.div`
   display: flex;
@@ -47,7 +39,7 @@ export const JSONCrackLogo = ({ fontSize = "1.2rem", hideText, hideLogo, ...prop
 
   return (
     <Link href="/" prefetch={false} target="_self" onClick={handleLogoClick}>
-      <StyledLogoWrapper>
+      <StyledLogoWrapper data-logo-hidden={hideLogo}>
         {/* {!hideLogo && (
           <Image
             src="/assets/192.png"

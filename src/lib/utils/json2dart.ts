@@ -58,7 +58,7 @@ function generateClass(
 
   for (const [key, value] of entries) {
     const fieldName = toCamelCase(key);
-    let actualValue = value;
+    const actualValue = value;
 
     if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object") {
       const itemClassName = toPascalCase(key);
@@ -92,12 +92,10 @@ function generateClass(
         result += `      ${fieldName} = <${innerType}>[];\n`;
         result += `      json['${key}'].forEach((v) {\n`;
         result += `        ${fieldName}!.add(${innerType}.fromJson(v));\n`;
-        result += `      });\n`;
-        result += `    }\n`;
+        result += "      });\n";
+        result += "    }\n";
       }
-    } else if (
-      !["String", "int", "double", "bool", "dynamic"].includes(dartType)
-    ) {
+    } else if (!["String", "int", "double", "bool", "dynamic"].includes(dartType)) {
       result += `    ${fieldName} = json['${key}'] != null ? ${dartType}.fromJson(json['${key}']) : null;\n`;
     } else {
       result += `    ${fieldName} = json['${key}'];\n`;
@@ -105,8 +103,8 @@ function generateClass(
   }
   result += "  }\n";
 
-  result += `\n  Map<String, dynamic> toJson() {\n`;
-  result += `    final Map<String, dynamic> data = <String, dynamic>{};\n`;
+  result += "\n  Map<String, dynamic> toJson() {\n";
+  result += "    final Map<String, dynamic> data = <String, dynamic>{};\n";
   for (const { key, fieldName, dartType } of fields) {
     if (dartType.startsWith("List<")) {
       const innerType = dartType.slice(5, -1);
@@ -117,19 +115,17 @@ function generateClass(
       } else {
         result += `    if (${fieldName} != null) {\n`;
         result += `      data['${key}'] = ${fieldName}!.map((v) => v.toJson()).toList();\n`;
-        result += `    }\n`;
+        result += "    }\n";
       }
-    } else if (
-      !["String", "int", "double", "bool", "dynamic"].includes(dartType)
-    ) {
+    } else if (!["String", "int", "double", "bool", "dynamic"].includes(dartType)) {
       result += `    if (${fieldName} != null) {\n`;
       result += `      data['${key}'] = ${fieldName}!.toJson();\n`;
-      result += `    }\n`;
+      result += "    }\n";
     } else {
       result += `    data['${key}'] = ${fieldName};\n`;
     }
   }
-  result += `    return data;\n`;
+  result += "    return data;\n";
   result += "  }\n";
   result += "}\n";
 

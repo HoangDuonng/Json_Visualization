@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // CSS/SCSS module declarations
 declare module "*.css";
 declare module "*.scss";

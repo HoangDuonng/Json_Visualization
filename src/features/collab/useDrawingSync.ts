@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 // Import reconcile utilities from the JsonDraw drawing engine
-import { getSceneVersion, reconcileElements, restoreElements } from "../../jsondraw";
+import { getSceneVersion, reconcileElements, restoreElements } from "@jsondraw-runtime";
+import { CollabType } from "../../constants/enumData";
 import { useCollab } from "./CollabRoot";
 import { getCollabType } from "./collabMode";
-import { CollabType } from "../../constants/enumData";
 
 // Define the shape of our JsonDraw API reference
 interface JsonDrawAPI {
@@ -183,11 +183,8 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
           // snap our camera to their scroll/zoom (canvas background),
           // ignoring their pointer position.
           try {
-            const appState =
-              typeof api.getAppState === "function" ? api.getAppState() : null;
-            const targetSocketId = appState?.userToFollow?.socketId as
-              | string
-              | undefined;
+            const appState = typeof api.getAppState === "function" ? api.getAppState() : null;
+            const targetSocketId = appState?.userToFollow?.socketId as string | undefined;
 
             if (targetSocketId && targetSocketId === peerId && pointerData.viewport) {
               const viewport = pointerData.viewport as {
@@ -250,11 +247,8 @@ export const useDrawingSync = (apiRef: React.MutableRefObject<JsonDrawAPI | null
           // Same logic for P2P: if we are following this peer and
           // they included a viewport, sync our canvas background.
           try {
-            const appState =
-              typeof api.getAppState === "function" ? api.getAppState() : null;
-            const targetSocketId = appState?.userToFollow?.socketId as
-              | string
-              | undefined;
+            const appState = typeof api.getAppState === "function" ? api.getAppState() : null;
+            const targetSocketId = appState?.userToFollow?.socketId as string | undefined;
 
             if (targetSocketId && targetSocketId === peerId && payload.viewport) {
               const viewport = payload.viewport as {

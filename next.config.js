@@ -62,6 +62,8 @@ const config = {
       "@jsondraw/element": path.resolve(__dirname, "src/jsondraw/element"),
       "@jsondraw/jsondraw": path.resolve(__dirname, "src/jsondraw/engine"),
       "@jsondraw/utils": path.resolve(__dirname, "src/jsondraw/utils"),
+      "@jsondraw-runtime": path.resolve(__dirname, "src/jsondraw/index.ts"),
+      "@jsondraw-runtime/font": path.resolve(__dirname, "src/jsondraw/common/constants.ts"),
     };
 
     // Shim import.meta.env for JsonDraw source (Vite → Next.js)

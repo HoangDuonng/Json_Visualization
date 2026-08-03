@@ -1,16 +1,16 @@
 import React from "react";
 import type { ModalProps } from "@mantine/core";
 import { Modal, Group, Button, TextInput, Stack, Paper, Text } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
+import { Dropzone, type FileWithPath } from "@mantine/dropzone";
 import { event as gaEvent } from "nextjs-google-analytics";
-import { toast } from "sonner";
 import { AiOutlineUpload } from "react-icons/ai";
+import { toast } from "sonner";
 import type { FileFormat } from "../../../constants/enumData";
 import useFile from "../../../store/useFile";
 
 export const ImportModal = ({ opened, onClose }: ModalProps) => {
   const [url, setURL] = React.useState("");
-  const [file, setFile] = React.useState<File | null>(null);
+  const [file, setFile] = React.useState<FileWithPath | null>(null);
 
   const setContents = useFile(state => state.setContents);
   const setFormat = useFile(state => state.setFormat);

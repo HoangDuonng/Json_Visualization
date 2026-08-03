@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Stack, Text, ScrollArea } from "@mantine/core";
+import { Modal, Text, ScrollArea } from "@mantine/core";
 import styled, { keyframes } from "styled-components";
 import { IoSend, IoStopCircleOutline } from "react-icons/io5";
 import { MdPerson } from "react-icons/md";

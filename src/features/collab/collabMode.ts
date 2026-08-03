@@ -32,11 +32,7 @@ const relayA = process.env.NEXT_PUBLIC_P2P_RELAY_URLS_A;
 const relayB = process.env.NEXT_PUBLIC_P2P_RELAY_URLS_B;
 
 export const P2P_RELAY_URLS =
-  relayA && relayA.length > 0
-    ? [relayA]
-    : relayB && relayB.length > 0
-      ? [relayB]
-      : [];
+  relayA && relayA.length > 0 ? [relayA] : relayB && relayB.length > 0 ? [relayB] : [];
 
 // TURN servers for P2P when peers are behind strict NAT/firewall (different networks).
 // Trystero uses these in addition to default STUN so peers can relay via TURN if direct connection fails.
@@ -45,15 +41,23 @@ const turnUsername = process.env.NEXT_PUBLIC_P2P_TURN_USERNAME;
 const turnCredential = process.env.NEXT_PUBLIC_P2P_TURN_CREDENTIAL;
 
 /** ICE server config for Trystero turnConfig. Empty if TURN not configured. */
-export const getP2PTurnConfig = (): Array<{ urls: string | string[]; username?: string; credential?: string }> => {
+export const getP2PTurnConfig = (): Array<{
+  urls: string | string[];
+  username?: string;
+  credential?: string;
+}> => {
   if (!turnUrlsRaw?.trim()) return [];
-  const urls = turnUrlsRaw.split(",").map(u => u.trim()).filter(Boolean);
+  const urls = turnUrlsRaw
+    .split(",")
+    .map(u => u.trim())
+    .filter(Boolean);
   if (urls.length === 0) return [];
   return [
     {
       urls: urls.length === 1 ? urls[0] : urls,
-      ...(turnUsername && turnCredential ? { username: turnUsername, credential: turnCredential } : {}),
+      ...(turnUsername && turnCredential
+        ? { username: turnUsername, credential: turnCredential }
+        : {}),
     },
   ];
 };
-
