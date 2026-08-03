@@ -3,13 +3,7 @@ import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import Head from "next/head";
 import { generateNextSeo } from "next-seo/pages";
 import { SEO, SITE_URL } from "../constants/seo";
-import { FAQ } from "../layout/Landing/FAQ";
-import { Features } from "../layout/Landing/Features";
-import { HeroPreview } from "../layout/Landing/HeroPreview";
-import { HeroSection } from "../layout/Landing/HeroSection";
-import { Section1 } from "../layout/Landing/Section1";
-import { Section2 } from "../layout/Landing/Section2";
-import { Section3 } from "../layout/Landing/Section3";
+import { EditorialHome } from "../layout/Landing/EditorialHome";
 import Layout from "../layout/PageLayout";
 
 export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -19,13 +13,7 @@ export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) 
         {generateNextSeo({ ...SEO, canonical: SITE_URL })}
         <link rel="preload" href="/assets/editor.webp" as="image" />
       </Head>
-      <HeroSection />
-      <HeroPreview />
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Features />
-      <FAQ />
+      <EditorialHome stars={props.stars} />
     </Layout>
   );
 };

@@ -1,19 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
-import Link from "next/link";
-import { Box, Container, Flex, Paper, Text, Title } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import styled from "styled-components";
 import { Editor } from "@monaco-editor/react";
 import { generateNextSeo } from "next-seo/pages";
-import { toast } from "sonner";
 import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
+import { toast } from "sonner";
 import { ArrowButton } from "../../components/ArrowButton";
-import { ExploreButton } from "../../components/ExploreButton";
 import { type FileFormat, formats } from "../../constants/enumData";
 import { SEO } from "../../constants/seo";
 import { contentToJson, jsonToContent } from "../../lib/utils/jsonAdapter";
 import Layout from "../PageLayout";
+import {
+  PublicContainer,
+  PublicEyebrow,
+  PublicPrimaryLink,
+  PublicToolGrid,
+  PublicToolHeader,
+  PublicToolPanel,
+  PublicToolPanelHeader,
+} from "../PageLayout/PublicPage";
 import { PageLinks } from "./PageLinks";
 import { editorOptions } from "./options";
 
@@ -39,8 +46,18 @@ const StyledCopyButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: #1a1a1a;
+    color: var(--public-text);
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--public-accent);
+    outline-offset: 2px;
+  }
+`;
+
+const StyledToolFooter = styled.section`
+  padding-block: 1rem var(--public-section-space);
+  border-top: 1px solid var(--public-border);
 `;
 
 interface ToolPageProps {
@@ -98,27 +115,29 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
           ...SEO,
           title: `${fromLabel} to ${toLabel} | JSON Visualization`,
           canonical: `https://jsonviz.online/converter/${from}-to-${to}`,
-          description: `Convert ${fromLabel} to ${toLabel} using this free online tool. Upload your ${fromLabel} file and get the converted ${fromLabel} file instantly.`,
+          description: `Convert ${fromLabel} to ${toLabel} using this free online tool. Paste your ${fromLabel} data and get the converted ${toLabel} instantly.`,
         })}
       </Head>
-      <Container mt="xl" mb="xl" pb="xl" size="xl">
-        <Title c="black" mb="lg">
-          {fromLabel} to {toLabel} Converter
-        </Title>
+      <PublicContainer $wide>
+        <PublicToolHeader>
+          <div>
+            <PublicEyebrow>Format converter · Runs in your browser</PublicEyebrow>
+            <h1>
+              {fromLabel} to {toLabel}
+            </h1>
+            <p>
+              Paste {fromLabel} on the left. The converted {toLabel} appears immediately on the
+              right, ready to copy.
+            </p>
+          </div>
+          <PublicPrimaryLink href="/editor">Open visual editor</PublicPrimaryLink>
+        </PublicToolHeader>
 
-        <Flex justify="flex-start" mb="xl">
-          <Link href="/editor">
-            <ExploreButton>Open JSON Visualization</ExploreButton>
-          </Link>
-        </Flex>
-
-        <PageLinks />
-
-        <Flex pt="xl" gap="40" align="center">
-          <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+        <PublicToolGrid>
+          <PublicToolPanel>
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">{fromLabel}</Text>
+                <span>{fromLabel}</span>
                 <Flex align="center" gap="xs">
                   {contentHasError && !!originalContent ? (
                     <LuCircleX color="red" />
@@ -130,7 +149,7 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
                   </StyledCopyButton>
                 </Flex>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={originalContent}
@@ -149,19 +168,21 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
                 }}
               />
             </StyledEditorWrapper>
-          </Paper>
+          </PublicToolPanel>
 
-          <ArrowButton />
+          <div data-tool-arrow>
+            <ArrowButton />
+          </div>
 
-          <Paper mah="600px" withBorder flex="1" style={{ overflow: "hidden" }}>
-            <Box p="xs" style={{ backgroundColor: "#f7f3e6" }}>
+          <PublicToolPanel>
+            <PublicToolPanelHeader>
               <Flex justify="space-between" align="center">
-                <Text c="#1a1a1a">{toLabel}</Text>
+                <span>{toLabel}</span>
                 <StyledCopyButton onClick={() => handleCopy(convertedContent, setCopiedTo)}>
                   {copiedTo ? <LuCopyCheck color="#37ff8b" /> : <LuCopy />}
                 </StyledCopyButton>
               </Flex>
-            </Box>
+            </PublicToolPanelHeader>
             <StyledEditorWrapper>
               <Editor
                 value={convertedContent}
@@ -176,9 +197,12 @@ export const ToolPage = ({ from, to }: ToolPageProps) => {
                 }}
               />
             </StyledEditorWrapper>
-          </Paper>
-        </Flex>
-      </Container>
+          </PublicToolPanel>
+        </PublicToolGrid>
+        <StyledToolFooter>
+          <PageLinks />
+        </StyledToolFooter>
+      </PublicContainer>
     </Layout>
   );
 };

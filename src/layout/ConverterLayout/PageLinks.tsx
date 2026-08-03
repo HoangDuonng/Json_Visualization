@@ -1,9 +1,77 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Flex, SimpleGrid, Stack } from "@mantine/core";
-import { AnimatedLinkButton } from "../../components/AnimatedLinkButton";
+import styled from "styled-components";
 import { formats } from "../../constants/enumData";
+
+const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: baseline;
+  padding-block: 2rem 1.25rem;
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  span {
+    color: var(--public-text-subtle);
+    font-size: var(--public-type-meta);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+`;
+
+const StyledGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--public-border-strong);
+
+  @media (max-width: 760px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const StyledColumn = styled.div`
+  padding: 1.25rem;
+  border-right: 1px solid var(--public-border);
+  border-bottom: 1px solid var(--public-border);
+
+  &:first-child {
+    border-left: 1px solid var(--public-border);
+  }
+
+  h3 {
+    margin: 0 0 1rem;
+    font-family: inherit;
+    font-size: var(--public-type-meta);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+`;
+
+const StyledLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+`;
+
+const StyledLink = styled(Link)`
+  color: var(--public-text-muted);
+  font-size: 0.825rem;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--public-accent);
+  }
+`;
 
 const languages = formats.map(format => format.label);
 
@@ -19,27 +87,30 @@ function groupCombinations(array: string[]): Record<string, string[]> {
 const groupedLanguages = groupCombinations(languages);
 
 export const PageLinks = () => {
-  const router = useRouter();
-
   return (
-    <Flex justify="space-between" align="center" wrap="wrap" gap="md">
-      <SimpleGrid cols={4} w="100%" spacing="xl" style={{ flex: 1 }}>
+    <>
+      <StyledHeader>
+        <h2>Other conversions</h2>
+        <span>JSON · YAML · XML · CSV</span>
+      </StyledHeader>
+      <StyledGrid>
         {Object.entries(groupedLanguages).map(([from, tos]) => (
-          <Stack key={from} gap="xs">
-            {tos.map(to => (
-              <Link
-                key={to}
-                href={`/converter/${from.toLowerCase()}-to-${to.toLowerCase()}`}
-                prefetch={false}
-              >
-                <AnimatedLinkButton>
-                  {from} to {to}
-                </AnimatedLinkButton>
-              </Link>
-            ))}
-          </Stack>
+          <StyledColumn key={from}>
+            <h3>From {from}</h3>
+            <StyledLinks>
+              {tos.map(to => (
+                <StyledLink
+                  key={to}
+                  href={`/converter/${from.toLowerCase()}-to-${to.toLowerCase()}`}
+                  prefetch={false}
+                >
+                  {from} to {to} →
+                </StyledLink>
+              ))}
+            </StyledLinks>
+          </StyledColumn>
         ))}
-      </SimpleGrid>
-    </Flex>
+      </StyledGrid>
+    </>
   );
 };

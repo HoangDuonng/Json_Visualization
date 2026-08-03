@@ -1,16 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Head from "next/head";
-import {
-  Container,
-  Stack,
-  Text,
-  Title,
-  TextInput,
-  CopyButton,
-  ActionIcon,
-  Tooltip,
-} from "@mantine/core";
-import styled, { keyframes } from "styled-components";
+import { Text, TextInput, CopyButton, ActionIcon, Tooltip } from "@mantine/core";
+import styled from "styled-components";
 import { ref, set } from "firebase/database";
 import { nanoid } from "nanoid";
 import { generateNextSeo } from "next-seo/pages";
@@ -18,30 +9,21 @@ import { IoLink, IoCopyOutline, IoCheckmark, IoOpenOutline } from "react-icons/i
 import { toast } from "sonner";
 import { SEO, SITE_URL } from "../constants/seo";
 import Layout from "../layout/PageLayout";
+import { PublicContainer, PublicEyebrow, PublicToolHeader } from "../layout/PageLayout/PublicPage";
 import { getDb } from "../lib/db";
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+const StyledWorkspace = styled.section`
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--public-border);
 `;
 
-const StyledHeroSection = styled.div`
-  text-align: center;
-  padding: 40px 0 20px;
-`;
-
-const StyledCard = styled.div`
-  background: var(--site-surface, #fffdf7);
-  border: 1px solid var(--site-border, #e8e4db);
-  border-radius: 16px;
-  padding: 40px;
+const StyledForm = styled.div`
   width: 100%;
-  max-width: 880px;
-  margin: 0 auto;
-  box-shadow: 0 12px 32px rgba(26, 26, 26, 0.06);
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--public-border);
 
   @media (max-width: 600px) {
-    padding: 24px 18px;
+    padding-bottom: 1.5rem;
   }
 `;
 
@@ -58,10 +40,10 @@ const StyledInputGroup = styled.div`
 `;
 
 const StyledShortenButton = styled.button`
-  background: #f7c948;
-  color: #1a1a1a;
-  border: none;
-  border-radius: 8px;
+  background: var(--public-accent);
+  color: var(--public-accent-contrast);
+  border: 1px solid var(--public-accent);
+  border-radius: var(--public-radius-sm);
   padding: 10px 24px;
   font-size: 15px;
   font-weight: 600;
@@ -72,7 +54,8 @@ const StyledShortenButton = styled.button`
   font-family: inherit;
 
   &:hover:not(:disabled) {
-    background: #37ff8b;
+    background: var(--public-accent-hover);
+    border-color: var(--public-accent-hover);
   }
 
   &:active:not(:disabled) {
@@ -86,25 +69,19 @@ const StyledShortenButton = styled.button`
 `;
 
 const StyledResultCard = styled.div`
-  animation: ${fadeIn} 0.3s ease;
-  background: var(--site-background, #f7f3e6);
-  border: 1px solid var(--site-border, #e8e4db);
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 24px;
+  padding-top: 2rem;
 `;
 
 const StyledShortUrl = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--site-surface, #fffdf7);
-  border: 1px solid var(--site-border, #e8e4db);
-  border-radius: 8px;
+  border-top: 1px solid var(--public-border-strong);
+  border-bottom: 1px solid var(--public-border-strong);
   padding: 12px 16px;
   font-size: 16px;
   font-weight: 500;
-  color: var(--site-text, #1a1a1a);
+  color: var(--public-text);
   word-break: break-all;
 `;
 
@@ -113,8 +90,7 @@ const StyledOriginalUrl = styled(Text)<any>`
 `;
 
 const StyledHistorySection = styled.div`
-  max-width: 640px;
-  margin: 40px auto 0;
+  padding-block: 2.5rem;
 `;
 
 const StyledHistoryItem = styled.div`
@@ -122,14 +98,8 @@ const StyledHistoryItem = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: var(--site-surface, #fffdf7);
-  border: 1px solid var(--site-border, #e8e4db);
-  border-radius: 8px;
-
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--public-border);
 `;
 
 const StyledHistoryUrl = styled.div`
@@ -138,15 +108,15 @@ const StyledHistoryUrl = styled.div`
 `;
 
 const StyledHistoryShort = styled.a`
-  color: var(--site-text, #1a1a1a);
+  color: var(--public-text);
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
 
   &:hover {
     text-decoration: underline;
-    text-decoration-color: var(--site-accent, #37ff8b);
-    text-decoration-thickness: 3px;
+    text-decoration-color: var(--public-accent);
+    text-decoration-thickness: 1px;
   }
 `;
 
@@ -269,18 +239,16 @@ const ShortenPage = () => {
         })}
       </Head>
 
-      <Container size="xl" py={40}>
-        <Stack gap="lg">
-          <StyledHeroSection>
-            <Title order={1} c="dark" mb="sm">
-              URL Shortener
-            </Title>
-            <Text size="lg" c="dimmed" maw={500} mx="auto">
-              Shorten long URLs into clean, shareable links.
-            </Text>
-          </StyledHeroSection>
-
-          <StyledCard>
+      <PublicContainer>
+        <PublicToolHeader>
+          <div>
+            <PublicEyebrow>Utility</PublicEyebrow>
+            <h1>URL Shortener</h1>
+            <p>Shorten long URLs into clean, shareable links.</p>
+          </div>
+        </PublicToolHeader>
+        <StyledWorkspace>
+          <StyledForm>
             <StyledInputGroup>
               <TextInput
                 flex={1}
@@ -292,8 +260,9 @@ const ShortenPage = () => {
                 size="md"
                 styles={{
                   input: {
-                    borderColor: "#e0e0e0",
-                    "&:focus": { borderColor: "#f7c948" },
+                    borderColor: "var(--public-border-strong)",
+                    background: "var(--public-surface)",
+                    color: "var(--public-text)",
                   },
                 }}
               />
@@ -340,7 +309,7 @@ const ShortenPage = () => {
                 </StyledOriginalUrl>
               </StyledResultCard>
             )}
-          </StyledCard>
+          </StyledForm>
 
           {history.length > 0 && (
             <StyledHistorySection>
@@ -379,8 +348,8 @@ const ShortenPage = () => {
               ))}
             </StyledHistorySection>
           )}
-        </Stack>
-      </Container>
+        </StyledWorkspace>
+      </PublicContainer>
     </Layout>
   );
 };
