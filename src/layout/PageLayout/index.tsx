@@ -88,7 +88,14 @@ const ContentWrapper = styled.main`
   z-index: 1;
 `;
 
-const PageLayout = ({ children, stars = 0 }: React.PropsWithChildren<{ stars?: number }>) => {
+interface PageLayoutProps {
+  hideGithubLink?: boolean;
+}
+
+const PageLayout = ({
+  children,
+  hideGithubLink = false,
+}: React.PropsWithChildren<PageLayoutProps>) => {
   return (
     <ThemeProvider theme={lightTheme}>
       <Head>
@@ -97,7 +104,7 @@ const PageLayout = ({ children, stars = 0 }: React.PropsWithChildren<{ stars?: n
       <StyledLayoutWrapper>
         <Navbar />
         <ContentWrapper>{children}</ContentWrapper>
-        <Footer stars={stars} />
+        <Footer hideGithubLink={hideGithubLink} />
       </StyledLayoutWrapper>
     </ThemeProvider>
   );
