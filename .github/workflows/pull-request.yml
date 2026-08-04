@@ -2,37 +2,24 @@ name: Verify Pull Request
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  cache-and-install:
+  verify:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Install Node.js
         uses: actions/setup-node@v5
         with:
           node-version: 24
-          cache: ""
-
-      - name: Install pnpm
-        run: npm install --global pnpm@11.18.0
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cache: pnpm
 
       - name: Restore Next.js cache
         uses: actions/cache@v4
@@ -44,7 +31,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm run lint
@@ -52,7 +39,5 @@ jobs:
       - name: Build
         run: pnpm run build
         env:
-          NEXT_PUBLIC_LIBRARY_SITE_URL: ${{ secrets.NEXT_PUBLIC_LIBRARY_SITE_URL }}
-          NEXT_PUBLIC_LIBRARY_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_LIBRARY_BACKEND_URL }}
-
-        
+          NEXT_PUBLIC_LIBRARY_SITE_URL: ${{ secrets.VITE_APP_LIBRARY_URL || 'https://example.invalid/libraries' }}
+          NEXT_PUBLIC_LIBRARY_BACKEND_URL: ${{ secrets.VITE_APP_LIBRARY_BACKEND || 'https://example.invalid' }}

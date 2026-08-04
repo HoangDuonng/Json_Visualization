@@ -2,6 +2,7 @@
   "name": "json-visualization",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "pnpm@11.18.0",
   "author": {
     "name": "Hoang Duong",
     "email": "nguuyen1801@gmail.com"

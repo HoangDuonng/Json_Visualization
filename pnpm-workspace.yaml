@@ -1,6 +1,9 @@
-onlyBuiltDependencies:
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  "@firebase/util": true
+  "@parcel/watcher": true
+  protobufjs: true
+  sharp: true
+  unrs-resolver: true
 
 overrides:
   "@types/react": 19.2.11
