@@ -1,8 +1,9 @@
-packages:
-  - "."
-allowBuilds:
-  "@firebase/util": true
-  "@parcel/watcher": true
-  protobufjs: true
-  sharp: true
-  unrs-resolver: true
+onlyBuiltDependencies:
+  - sharp
+  - unrs-resolver
+
+overrides:
+  "@types/react": 19.2.11
+  "@types/react-dom": 19.2.3
+  html-to-image: 1.11.11
+  jq-web: 0.5.1

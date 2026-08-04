@@ -51,5 +51,8 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        env:
+          NEXT_PUBLIC_LIBRARY_SITE_URL: ${{ secrets.NEXT_PUBLIC_LIBRARY_SITE_URL }}
+          NEXT_PUBLIC_LIBRARY_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_LIBRARY_BACKEND_URL }}
 
         
