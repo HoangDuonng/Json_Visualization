@@ -94,10 +94,10 @@ const StyledLegalLinks = styled.div`
 `;
 
 interface FooterProps {
-  stars?: number;
+  hideGithubLink?: boolean;
 }
 
-export const Footer: React.FC<FooterProps> = () => {
+export const Footer: React.FC<FooterProps> = ({ hideGithubLink = false }) => {
   return (
     <StyledFooter>
       <PublicContainer $wide>
@@ -137,13 +137,15 @@ export const Footer: React.FC<FooterProps> = () => {
             <Link href="/docs" prefetch={false} passHref legacyBehavior>
               <StyledFooterLink>Documentation</StyledFooterLink>
             </Link>
-            <StyledFooterLink
-              href="https://github.com/HoangDuonng/Json_Visualization"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </StyledFooterLink>
+            {!hideGithubLink && (
+              <StyledFooterLink
+                href="https://github.com/HoangDuonng/Json_Visualization"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </StyledFooterLink>
+            )}
             <StyledFooterLink href="mailto:hoangduong@nguuyen.io.vn">Contact</StyledFooterLink>
           </StyledFooterSection>
         </StyledFooterGrid>

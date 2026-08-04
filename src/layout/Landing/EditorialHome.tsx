@@ -291,11 +291,7 @@ const workflows = [
   },
 ];
 
-interface EditorialHomeProps {
-  stars: number;
-}
-
-export const EditorialHome = ({ stars }: EditorialHomeProps) => {
+export const EditorialHome = () => {
   return (
     <>
       <StyledHero>
@@ -323,8 +319,6 @@ export const EditorialHome = ({ stars }: EditorialHomeProps) => {
                 <dd>4</dd>
                 <dt>Type targets</dt>
                 <dd>5</dd>
-                <dt>GitHub stars</dt>
-                <dd>{stars.toLocaleString("en-US")}</dd>
               </StyledMeta>
             </StyledHeroAside>
           </StyledHeroGrid>
