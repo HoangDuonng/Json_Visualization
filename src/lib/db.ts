@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
-import { getDatabase, Database } from "firebase/database";
+import type { Database } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 const dbConfig = {
   apiKey: process.env.NEXT_PUBLIC_DB_API_KEY,

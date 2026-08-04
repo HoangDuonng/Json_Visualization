@@ -31,7 +31,7 @@ export function useTranslation(namespace: "docs") {
 export function getLocalizedPath(path: string, locale: Locale): string {
   // Remove existing lang parameter
   const cleanPath = path.split("?")[0];
-  
+
   // Add locale as query parameter
   if (locale === defaultLocale) {
     return cleanPath;

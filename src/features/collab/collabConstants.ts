@@ -39,4 +39,3 @@ export const COLLAB_COLORS = [
   "#ffb6e6",
   "#b6ffff",
 ];
-

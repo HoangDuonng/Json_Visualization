@@ -4,7 +4,8 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jsonviz.onl
 
 export const SEO: DefaultSeoProps = {
   titleTemplate: "%s | JSON Visualization",
-  defaultTitle: "JSON Visualization | Online JSON Viewer - Transform your data into interactive graphs",
+  defaultTitle:
+    "JSON Visualization | Online JSON Viewer - Transform your data into interactive graphs",
   title: "JSON Visualization | Online JSON Viewer - Transform your data into interactive graphs",
   description:
     "Free online JSON viewer: visualize JSON as graphs, format, validate, convert to CSV/YAML/XML. Edit, query with jq, generate TypeScript/Go/Rust types. No signup, data stays in your browser.",

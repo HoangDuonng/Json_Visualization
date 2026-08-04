@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMantineColorScheme } from "@mantine/core";
@@ -11,21 +10,16 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { generateNextSeo } from "next-seo/pages";
 import { ViewMode } from "../constants/enumData";
+import { MONO_FONT_FAMILY } from "../constants/globalStyle";
 import { SEO } from "../constants/seo";
 import { darkTheme, lightTheme } from "../constants/theme";
-import { CollabProvider, useCollab } from "../features/collab/CollabRoot";
+import { CollabProvider } from "../features/collab/CollabRoot";
 import { BottomBar } from "../features/editor/BottomBar";
 import { FullscreenDropzone } from "../features/editor/FullscreenDropzone";
 import { Toolbar } from "../features/editor/Toolbar";
 import useGraph from "../features/editor/views/GraphView/stores/useGraph";
 import useConfig from "../store/useConfig";
 import useFile from "../store/useFile";
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-jetbrains-mono",
-});
 
 const ModalController = dynamic(() => import("../features/modals/ModalController"));
 const ExternalMode = dynamic(() => import("../features/editor/ExternalMode"));
@@ -35,10 +29,10 @@ const StyledPageWrapper = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+  font-family: ${MONO_FONT_FAMILY} !important;
 
   * {
-    font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+    font-family: ${MONO_FONT_FAMILY} !important;
   }
 
   @media only screen and (max-width: 320px) {

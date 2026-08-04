@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Box, Text, Button, Stack } from "@mantine/core";
+import { Modal, Text, Button, Stack } from "@mantine/core";
 import styled from "styled-components";
 import { FiAlertTriangle, FiDownload } from "react-icons/fi";
 

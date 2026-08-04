@@ -141,9 +141,7 @@ const Custom500 = () => {
             You can refresh to try again, or head back home.
           </Text>
           <StyledActions>
-            <ExploreButton onClick={() => router.reload()}>
-              Refresh the page
-            </ExploreButton>
+            <ExploreButton onClick={() => router.reload()}>Refresh the page</ExploreButton>
             <Link href="/" passHref legacyBehavior>
               <a>
                 <ExploreButton>Go home</ExploreButton>

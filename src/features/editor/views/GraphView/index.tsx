@@ -2,12 +2,12 @@ import React from "react";
 import { Box, useComputedColorScheme } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import styled from "styled-components";
+import { HamsterLoader } from "@jsondraw-runtime";
 import debounce from "lodash.debounce";
 import { Space } from "react-zoomable-ui";
 import { Canvas } from "reaflow";
 import type { ElkRoot } from "reaflow";
 import { useLongPress } from "use-long-press";
-import { HamsterLoader } from "../../../../jsondraw";
 import useConfig from "../../../../store/useConfig";
 import { CustomEdge } from "./CustomEdge";
 import { CustomNode } from "./CustomNode";
@@ -17,7 +17,11 @@ import { SecureInfo } from "./SecureInfo";
 import { ZoomControl } from "./ZoomControl";
 import useGraph from "./stores/useGraph";
 
-const StyledEditorWrapper = styled.div<{ $widget: boolean; $showRulers: boolean; $showGrid: boolean }>`
+const StyledEditorWrapper = styled.div<{
+  $widget: boolean;
+  $showRulers: boolean;
+  $showGrid: boolean;
+}>`
   width: 100%;
   height: 100vh;
 

@@ -30,7 +30,9 @@
       "@jsondraw/jsondraw": ["./src/jsondraw/engine"],
       "@jsondraw/jsondraw/*": ["./src/jsondraw/engine/*"],
       "@jsondraw/utils": ["./src/jsondraw/utils"],
-      "@jsondraw/utils/*": ["./src/jsondraw/utils/*"]
+      "@jsondraw/utils/*": ["./src/jsondraw/utils/*"],
+      "@jsondraw-runtime": ["./src/types/jsondraw-runtime.d.ts"],
+      "@jsondraw-runtime/font": ["./src/types/jsondraw-runtime-font.d.ts"]
     },
     "typeRoots": [
       "types"

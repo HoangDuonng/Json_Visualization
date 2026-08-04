@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
+import { HamsterLoader } from "@jsondraw-runtime";
 import Editor, { type EditorProps, loader, type OnMount, useMonaco } from "@monaco-editor/react";
-import { HamsterLoader } from "../../jsondraw";
 import useConfig from "../../store/useConfig";
 import useFile from "../../store/useFile";
 
@@ -30,9 +30,14 @@ const TextEditor = () => {
   const getHasChanges = useFile(state => state.getHasChanges);
   const theme = useConfig(state => (state.darkmodeEnabled ? "vs-dark" : "light"));
   const fileType = useFile(state => state.format);
+  const jsonDefaults = (
+    monaco?.languages.json as unknown as {
+      jsonDefaults?: { setDiagnosticsOptions: (options: object) => void };
+    }
+  )?.jsonDefaults;
 
   React.useEffect(() => {
-    monaco?.languages.json.jsonDefaults.setDiagnosticsOptions({
+    jsonDefaults?.setDiagnosticsOptions({
       validate: true,
       allowComments: true,
       enableSchemaRequest: true,
@@ -46,7 +51,7 @@ const TextEditor = () => {
         ],
       }),
     });
-  }, [jsonSchema, monaco?.languages.json.jsonDefaults]);
+  }, [jsonDefaults, jsonSchema]);
 
   React.useEffect(() => {
     const beforeunload = (e: BeforeUnloadEvent) => {

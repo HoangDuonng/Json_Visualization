@@ -1,16 +1,17 @@
 "use client";
 
+/* eslint-disable react-hooks/refs -- the collaboration provider intentionally exposes a live ref. */
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Modal } from "antd";
 import type { Socket } from "socket.io-client";
-import * as Y from "yjs";
-import { joinRoom } from "trystero/torrent";
 import { selfId } from "trystero";
+import { joinRoom } from "trystero/torrent";
+import * as Y from "yjs";
 import { MAX_COLLABORATORS_PER_ROOM } from "../../constants/enumData";
 import useJson from "../../store/useJson";
+import type { CollaboratorUser, JoinRequest } from "./Collab";
 import { COLLAB_ANIMALS, COLLAB_COLORS } from "./collabConstants";
 import { getP2PTurnConfig, P2P_APP_ID, P2P_RELAY_URLS } from "./collabMode";
-import type { CollaboratorUser, JoinRequest } from "./Collab";
 
 interface StartCollaborationOptions {
   asOwner?: boolean;
@@ -297,7 +298,10 @@ export const P2PCollabProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         const ok = payload.password === roomPasswordRef.current;
         const [sendPasswordResult] = room.makeAction("pwres");
 
-        void sendPasswordResult({ ok, reason: ok ? undefined : "Invalid room password" } as any, peerId);
+        void sendPasswordResult(
+          { ok, reason: ok ? undefined : "Invalid room password" } as any,
+          peerId
+        );
       });
 
       getPasswordResult((data: any) => {
@@ -401,10 +405,7 @@ export const P2PCollabProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
 
     const [sendKick] = p2pRoom.makeAction("kick");
-    void sendKick(
-      { reason: "You were removed from this room by the room owner." },
-      collaboratorId
-    );
+    void sendKick({ reason: "You were removed from this room by the room owner." }, collaboratorId);
 
     setCollaborators(prev => prev.filter(c => c.id !== collaboratorId));
     setPendingRequests(prev => prev.filter(req => req.userId !== collaboratorId));
@@ -567,4 +568,3 @@ export const useP2PCollab = () => {
   }
   return context;
 };
-

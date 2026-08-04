@@ -1,13 +1,11 @@
 "use client";
 
+/* eslint-disable react-hooks/rules-of-hooks -- provider selection is mutually exclusive at runtime. */
 import React from "react";
 import { CollabType } from "../../constants/enumData";
-import { getCollabType } from "./collabMode";
-import {
-  CollabProvider as SocketCollabProvider,
-  useCollab as useSocketCollab,
-} from "./Collab";
+import { CollabProvider as SocketCollabProvider, useCollab as useSocketCollab } from "./Collab";
 import { P2PCollabProvider, useP2PCollab } from "./P2PCollab";
+import { getCollabType } from "./collabMode";
 
 export const CollabProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const type = getCollabType();
@@ -28,4 +26,3 @@ export const useCollab = () => {
 
   return useP2PCollab();
 };
-

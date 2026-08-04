@@ -3,5 +3,6 @@
 node_modules/
 out
 public
+src/jsondraw
 *-lock.json
 tsconfig.json

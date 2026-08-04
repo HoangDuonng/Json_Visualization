@@ -4,7 +4,7 @@
  * Maps the existing graph model (from jsonParser) into JsonDraw-compatible
  * element format so JSON data can be visualized on the JsonDraw whiteboard.
  */
-import { FONT_FAMILY } from "@jsondraw/common";
+import { FONT_FAMILY } from "@jsondraw-runtime/font";
 import {
   JSONDRAW_FONT_SIZE,
   JSONDRAW_HORIZONTAL_GAP,

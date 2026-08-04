@@ -16,7 +16,7 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-  globalIgnores(["src/enums", "**/next.config.js"]),
+  globalIgnores(["src/enums", "src/jsondraw", "src/types/jsondraw.d.ts", "**/next.config.js"]),
   {
     extends: [
       ...nextCoreWebVitals,

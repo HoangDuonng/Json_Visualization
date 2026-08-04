@@ -13,7 +13,13 @@ import {
   Badge,
 } from "@mantine/core";
 import styled from "styled-components";
-import { toast } from "sonner";
+import {
+  HamsterLoader,
+  saveAsJSON,
+  restoreAppState,
+  restoreElements,
+  useHandleLibrary,
+} from "@jsondraw-runtime";
 import {
   FiCopy,
   FiCheck,
@@ -27,13 +33,7 @@ import {
   FiUserX,
   FiEye,
 } from "react-icons/fi";
-import {
-  HamsterLoader,
-  saveAsJSON,
-  restoreAppState,
-  restoreElements,
-  useHandleLibrary,
-} from "../../../../jsondraw";
+import { toast } from "sonner";
 import useConfig from "../../../../store/useConfig";
 import { useCollab } from "../../../collab/CollabRoot";
 import { useDrawingSync } from "../../../collab/useDrawingSync";
@@ -164,7 +164,7 @@ export const JsonDrawView = () => {
 
   // Dynamic import to avoid SSR issues (Canvas API is client-only)
   React.useEffect(() => {
-    import("../../../../jsondraw").then(mod => {
+    import("@jsondraw-runtime").then(mod => {
       setJsonDrawModule({ JsonDraw: mod.JsonDraw });
       setDrawReady(false);
     });
@@ -182,7 +182,7 @@ export const JsonDrawView = () => {
             if (Array.isArray(parsed.elements) && parsed.elements.length > 0) {
               hasContent = true;
             }
-          } catch (e) {
+          } catch {
             hasContent = true;
           }
         }
@@ -261,7 +261,7 @@ export const JsonDrawView = () => {
       const name = api.getName?.() || appState.name;
       await saveAsJSON(elements, appState, files, name);
       toast.success("Drawing saved to disk!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to save drawing.");
     }
   }, []);
