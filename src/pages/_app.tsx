@@ -126,7 +126,7 @@ function JsonCrack({ Component, pageProps }: AppProps) {
                 },
               }}
             />
-            <style jsx global>{`
+            <style>{`
               .toast-success {
                 border-color: #37ff8b !important;
                 color: #166534 !important;
