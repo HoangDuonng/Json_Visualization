@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 import { Flex } from "@mantine/core";
 import styled from "styled-components";
@@ -9,6 +8,7 @@ import { LuCheck, LuCircleX, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { toast } from "sonner";
 import { ArrowButton } from "../../components/ArrowButton";
 import { type FileFormat, formats } from "../../constants/enumData";
+import { MONO_FONT_FAMILY } from "../../constants/globalStyle";
 import { SEO } from "../../constants/seo";
 import { contentToJson, jsonToContent } from "../../lib/utils/jsonAdapter";
 import Layout from "../PageLayout";
@@ -24,14 +24,9 @@ import {
 import { PageLinks } from "./PageLinks";
 import { editorOptions } from "./options";
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
 const StyledEditorWrapper = styled.div`
   * {
-    font-family: ${jetbrainsMono.style.fontFamily}, monospace !important;
+    font-family: ${MONO_FONT_FAMILY} !important;
   }
 `;
 
