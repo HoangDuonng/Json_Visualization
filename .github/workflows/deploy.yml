@@ -3,26 +3,43 @@ name: Deploy 🕊️
 on:
   push:
     branches:
-      - main #✎ Adjust to branch you want to deploy
+      - main
   workflow_dispatch:
-    inputs:
-      secrets_txt:
-        description: 'Paste secrets here (format: KEY=VALUE)'
-        required: false
+
+permissions:
+  contents: write
 
 jobs:
   build_and_deploy:
     name: Build & Deploy 🚀
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_CHAT_API_KEY: ${{ secrets.NEXT_PUBLIC_CHAT_API_KEY }}
+      NEXT_PUBLIC_CHAT_API_URL: ${{ secrets.NEXT_PUBLIC_CHAT_API_URL }}
+      NEXT_PUBLIC_COLLAB_TYPE: ${{ secrets.NEXT_PUBLIC_COLLAB_TYPE }}
+      NEXT_PUBLIC_DB_API_KEY: ${{ secrets.NEXT_PUBLIC_DB_API_KEY }}
+      NEXT_PUBLIC_DB_APP_ID: ${{ secrets.NEXT_PUBLIC_DB_APP_ID }}
+      NEXT_PUBLIC_DB_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_DB_AUTH_DOMAIN }}
+      NEXT_PUBLIC_DB_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_DB_PROJECT_ID }}
+      NEXT_PUBLIC_DB_SENDER_ID: ${{ secrets.NEXT_PUBLIC_DB_SENDER_ID }}
+      NEXT_PUBLIC_DB_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_DB_STORAGE_BUCKET }}
+      NEXT_PUBLIC_DB_URL: ${{ secrets.NEXT_PUBLIC_DB_URL }}
+      NEXT_PUBLIC_DISABLE_EXTERNAL_MODE: ${{ secrets.NEXT_PUBLIC_DISABLE_EXTERNAL_MODE }}
+      NEXT_PUBLIC_METERED_API_KEY: ${{ secrets.NEXT_PUBLIC_METERED_API_KEY }}
+      NEXT_PUBLIC_METERED_DOMAIN: ${{ secrets.NEXT_PUBLIC_METERED_DOMAIN }}
+      NEXT_PUBLIC_METERED_REGION: ${{ secrets.NEXT_PUBLIC_METERED_REGION }}
+      NEXT_PUBLIC_NODE_LIMIT: ${{ secrets.NEXT_PUBLIC_NODE_LIMIT }}
+      NEXT_PUBLIC_P2P_APP_ID: ${{ secrets.NEXT_PUBLIC_P2P_APP_ID }}
+      NEXT_PUBLIC_P2P_OPTION: ${{ secrets.NEXT_PUBLIC_P2P_OPTION }}
+      NEXT_PUBLIC_P2P_RELAY_URLS_A: ${{ secrets.NEXT_PUBLIC_P2P_RELAY_URLS_A }}
+      NEXT_PUBLIC_P2P_RELAY_URLS_B: ${{ secrets.NEXT_PUBLIC_P2P_RELAY_URLS_B }}
+      NEXT_PUBLIC_WS_SERVER_URL: ${{ secrets.NEXT_PUBLIC_WS_SERVER_URL }}
+      NEXT_TELEMETRY_DISABLED: ${{ secrets.NEXT_TELEMETRY_DISABLED }}
+      VITE_APP_LIBRARY_BACKEND: ${{ secrets.VITE_APP_LIBRARY_BACKEND }}
+      VITE_APP_LIBRARY_URL: ${{ secrets.VITE_APP_LIBRARY_URL }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4.1.7
-
-      - name: Import secrets
-        env:
-          SECRETS_CONTEXT: ${{ toJSON(secrets) }}
-        run: |
-          echo "$SECRETS_CONTEXT" | jq -r 'to_entries[] | "\(.key)=\(.value)"' >> "$GITHUB_ENV"
+        uses: actions/checkout@v5
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
