@@ -18,6 +18,10 @@ const editorOptions: EditorProps["options"] = {
   minimap: { enabled: false },
   stickyScroll: { enabled: false },
   scrollBeyondLastLine: false,
+  fontSize: 13,
+  lineHeight: 21,
+  lineNumbersMinChars: 3,
+  padding: { top: 14, bottom: 14 },
   placeholder: "Start typing...",
 };
 

@@ -16,12 +16,12 @@ const StyledBottomBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid ${({ theme }) => theme.BACKGROUND_MODIFIER_ACCENT};
-  background: ${({ theme }) => theme.TOOLBAR_BG};
-  max-height: 27px;
-  height: 27px;
+  border-top: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
+  background: ${({ theme }) => theme.EDITOR_PANEL_MUTED};
+  min-height: 36px;
+  height: 36px;
   z-index: 35;
-  padding-right: 6px;
+  padding: 0 8px;
 
   @media screen and (max-width: 320px) {
     display: none;
@@ -54,9 +54,11 @@ const StyledBottomBarItem = styled.button<{ $bg?: string }>`
   width: fit-content;
   margin: 0;
   height: 28px;
-  padding: 4px;
-  font-size: 12px;
-  font-weight: 400;
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
   color: ${({ theme }) => theme.INTERACTIVE_NORMAL};
   background: ${({ $bg }) => $bg};
   white-space: nowrap;
@@ -64,8 +66,14 @@ const StyledBottomBarItem = styled.button<{ $bg?: string }>`
   overflow: hidden;
 
   &:hover:not(&:disabled) {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+    border-color: ${({ theme }) => theme.EDITOR_BORDER_STRONG};
+    background: ${({ theme }) => theme.EDITOR_PANEL};
     color: ${({ theme }) => theme.INTERACTIVE_HOVER};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.EDITOR_ACCENT};
+    outline-offset: 1px;
   }
 
   &:disabled {

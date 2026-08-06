@@ -1,10 +1,34 @@
 import React from "react";
 import { ActionIcon, Flex, Tooltip, Text } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
+import styled from "styled-components";
 import { event as gaEvent } from "nextjs-google-analytics";
 import { LuFocus, LuMaximize, LuMinus, LuPlus } from "react-icons/lu";
-import { SearchInput } from "../../Toolbar/SearchInput";
 import useGraph from "./stores/useGraph";
+
+const StyledZoomControls = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 12px;
+  bottom: 12px;
+  z-index: 100;
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
+  border-radius: 6px;
+  background: ${({ theme }) => theme.EDITOR_PANEL};
+  box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+
+  button {
+    border-radius: 0;
+    background: transparent;
+    color: ${({ theme }) => theme.INTERACTIVE_NORMAL};
+  }
+
+  button + button {
+    border-left: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
+  }
+`;
 
 export const ZoomControl = () => {
   const zoomIn = useGraph(state => state.zoomIn);
@@ -23,17 +47,7 @@ export const ZoomControl = () => {
   );
 
   return (
-    <Flex
-      align="center"
-      gap="xs"
-      style={{
-        position: "absolute",
-        bottom: "10px",
-        left: "10px",
-        alignItems: "start",
-        zIndex: 100,
-      }}
-    >
+    <StyledZoomControls>
       <ActionIcon.Group borderWidth={0}>
         <Tooltip
           label={
@@ -104,7 +118,6 @@ export const ZoomControl = () => {
           <LuPlus />
         </ActionIcon>
       </ActionIcon.Group>
-      <SearchInput />
-    </Flex>
+    </StyledZoomControls>
   );
 };

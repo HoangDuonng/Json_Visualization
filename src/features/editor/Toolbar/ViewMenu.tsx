@@ -1,9 +1,7 @@
-import { Menu, Flex, SegmentedControl } from "@mantine/core";
+import { SegmentedControl } from "@mantine/core";
 import { useSessionStorage } from "@mantine/hooks";
 import { event as gaEvent } from "nextjs-google-analytics";
-import { CgChevronDown } from "react-icons/cg";
 import { ViewMode } from "../../../constants/enumData";
-import { StyledToolElement } from "./styles";
 
 export const ViewMenu = () => {
   const [viewMode, setViewMode] = useSessionStorage({
@@ -12,32 +10,27 @@ export const ViewMenu = () => {
   });
 
   return (
-    <Menu shadow="md" closeOnItemClick={false} withArrow>
-      <Menu.Target>
-        <StyledToolElement onClick={() => gaEvent("show_view_menu")}>
-          <Flex align="center" gap={3}>
-            View <CgChevronDown />
-          </Flex>
-        </StyledToolElement>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <SegmentedControl
-          size="md"
-          w="100%"
-          value={viewMode}
-          onChange={e => {
-            setViewMode(e as ViewMode);
-            gaEvent("change_view_mode", { label: e });
-          }}
-          data={[
-            { value: ViewMode.Graph, label: "Graph" },
-            { value: ViewMode.Tree, label: "Tree" },
-            { value: ViewMode.JsonDraw, label: "JsonDraw" },
-          ]}
-          fullWidth
-          orientation="vertical"
-        />
-      </Menu.Dropdown>
-    </Menu>
+    <SegmentedControl
+      size="xs"
+      value={viewMode}
+      onChange={value => {
+        setViewMode(value as ViewMode);
+        gaEvent("change_view_mode", { label: value });
+      }}
+      data={[
+        { value: ViewMode.Graph, label: "Graph" },
+        { value: ViewMode.Tree, label: "Tree" },
+        { value: ViewMode.JsonDraw, label: "Draw" },
+      ]}
+      styles={{
+        root: {
+          flexShrink: 0,
+          padding: 2,
+          border: "1px solid var(--editor-border)",
+          background: "var(--editor-panel-muted)",
+        },
+        label: { paddingInline: 9, fontSize: 10 },
+      }}
+    />
   );
 };
