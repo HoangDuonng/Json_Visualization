@@ -16,6 +16,24 @@ const StyledFlowIcon = styled(TiFlowMerge)<{ rotate: number }>`
   transform: rotate(${({ rotate }) => `${rotate}deg`});
 `;
 
+const StyledOptions = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+
+  > button {
+    border: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
+    border-radius: 6px;
+    background: ${({ theme }) => theme.EDITOR_PANEL};
+    color: ${({ theme }) => theme.INTERACTIVE_NORMAL};
+    box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+  }
+`;
+
 const getNextDirection = (direction: LayoutDirection) => {
   if (direction === "RIGHT") return "DOWN";
   if (direction === "DOWN") return "LEFT";
@@ -81,16 +99,7 @@ export const OptionsMenu = () => {
   }, []);
 
   return (
-    <Flex
-      gap="xs"
-      align="center"
-      style={{
-        position: "absolute",
-        top: "10px",
-        left: "10px",
-        zIndex: 100,
-      }}
-    >
+    <StyledOptions>
       <Menu withArrow>
         <Menu.Target>
           <ActionIcon aria-label="actions" size="lg" color="gray" variant="light">
@@ -182,6 +191,6 @@ export const OptionsMenu = () => {
           </Menu>
         </Menu.Dropdown>
       </Menu>
-    </Flex>
+    </StyledOptions>
   );
 };

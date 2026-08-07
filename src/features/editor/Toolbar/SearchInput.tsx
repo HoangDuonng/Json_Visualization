@@ -17,10 +17,10 @@ export const SearchInput = () => {
       type="search"
       size="xs"
       id="search-node"
-      w={180}
+      w="clamp(140px, 18vw, 220px)"
       value={searchValue}
       onChange={e => setValue(e.currentTarget.value)}
-      placeholder={`Search Node (${coreKey} + F)`}
+      placeholder={`Find node · ${coreKey} F`}
       autoComplete="off"
       autoCorrect="off"
       onKeyDown={getHotkeyHandler([["Enter", skip]])}
@@ -34,7 +34,16 @@ export const SearchInput = () => {
           </Flex>
         )
       }
-      style={{ borderBottom: "1px solid gray" }}
+      styles={{
+        input: {
+          height: 30,
+          minHeight: 30,
+          border: "1px solid var(--editor-border)",
+          borderRadius: 4,
+          background: "var(--editor-panel-muted)",
+          fontSize: 10,
+        },
+      }}
     />
   );
 };

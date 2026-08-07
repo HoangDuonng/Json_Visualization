@@ -12,7 +12,6 @@ import { JSONCrackLogo } from "../../../layout/JsonCrackLogo";
 import useGraph from "../views/GraphView/stores/useGraph";
 import { ThemeToggle } from "./ThemeToggle";
 import { ToolsMenu } from "./ToolsMenu";
-import { ViewMenu } from "./ViewMenu";
 import { StyledToolElement } from "./styles";
 
 const StyledTools = styled.div`
@@ -20,18 +19,30 @@ const StyledTools = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
   justify-content: space-between;
-  height: 45px;
-  padding: 6px 12px;
-  background: ${({ theme }) => theme.TOOLBAR_BG};
+  height: 58px;
+  padding: 8px 14px;
+  background: ${({ theme }) => theme.EDITOR_PANEL};
   color: ${({ theme }) => theme.SILVER};
   z-index: 36;
-  border-bottom: 1px solid ${({ theme }) => theme.SILVER_DARK};
+  border-bottom: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
 
   @media only screen and (max-width: 320px) {
     display: none;
   }
+`;
+
+const StyledBrand = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: 14px;
+  margin-right: 4px;
+  border-right: 1px solid ${({ theme }) => theme.EDITOR_BORDER};
+`;
+
+const StyledToolbarGroup = styled(Group)`
+  flex-wrap: nowrap;
 `;
 
 function fullscreenBrowser() {
@@ -75,28 +86,28 @@ export const Toolbar = () => {
 
   return (
     <StyledTools>
-      <Group gap="xs" justify="left" w="100%" style={{ flexWrap: "nowrap" }}>
-        <StyledToolElement title="JSON Visualization">
+      <StyledToolbarGroup gap="xs" justify="left" w="100%">
+        <StyledBrand>
           <Flex gap="xs" align="center" justify="center">
-            <JSONCrackLogo fontSize="14px" hideLogo />
+            <JSONCrackLogo fontSize="14px" />
           </Flex>
-        </StyledToolElement>
-        <ViewMenu />
-        <ToolsMenu />
+        </StyledBrand>
         <StyledToolElement title="Editor" $highlight={!isDrawView} onClick={handleEditorClick}>
           Editor
         </StyledToolElement>
         <StyledToolElement title="Draw" $highlight={isDrawView} onClick={handleDrawClick}>
           Draw
         </StyledToolElement>
+        <ToolsMenu />
         <StyledToolElement
-          title="Toggle Editor"
+          title="Toggle source panel"
           onClick={() => useGraph.getState().toggleFullscreen(!useGraph.getState().fullscreen)}
         >
           <AiOutlineLayout size="20" />
+          <span>Source</span>
         </StyledToolElement>
-      </Group>
-      <Group gap="xs" justify="right" w="100%" style={{ flexWrap: "nowrap" }}>
+      </StyledToolbarGroup>
+      <StyledToolbarGroup gap="xs" justify="right" w="100%">
         <ThemeToggle />
         <Link href="https://github.com/HoangDuonng" rel="noopener" target="_blank">
           <StyledToolElement title="GitHub">
@@ -109,7 +120,7 @@ export const Toolbar = () => {
         >
           {isFullscreen ? <AiOutlineFullscreenExit size="20" /> : <AiOutlineFullscreen size="20" />}
         </StyledToolElement>
-      </Group>
+      </StyledToolbarGroup>
     </StyledTools>
   );
 };

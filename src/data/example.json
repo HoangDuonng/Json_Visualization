@@ -1,38 +1,33 @@
 {
-  "fruits": [
+  "workspace": {
+    "name": "northstar-platform",
+    "environment": "production",
+    "region": "ap-southeast-1"
+  },
+  "services": [
     {
-      "name": "Apple",
-      "color": "#FF0000",
-      "details": {
-        "type": "Pome",
-        "season": "Fall"
+      "name": "api-gateway",
+      "status": "healthy",
+      "endpoints": ["/v1/events", "/v1/projects"],
+      "metrics": {
+        "latencyMs": 42,
+        "requestsPerMinute": 1280
       },
-      "nutrients": {
-        "calories": 52,
-        "fiber": "2.4g",
-        "vitaminC": "4.6mg"
-      }
+      "dependencies": ["identity", "event-store"]
     },
     {
-      "name": "Banana",
-      "color": "#FFFF00",
-      "details": {
-        "type": "Berry",
-        "season": "Year-round"
+      "name": "event-worker",
+      "status": "healthy",
+      "metrics": {
+        "queueDepth": 18,
+        "processedToday": 48620
       },
-      "nutrients": {
-        "calories": 89,
-        "fiber": "2.6g",
-        "potassium": "358mg"
-      }
-    },
-    {
-      "name": "Orange",
-      "color": "#FFA500",
-      "details": {
-        "type": "Citrus",
-        "season": "Winter"
-      }
+      "dependencies": ["event-store", "notifications"]
     }
-  ]
+  ],
+  "release": {
+    "version": "2026.8.4",
+    "deployedAt": "2026-08-04T18:45:00Z",
+    "features": ["schema-validation", "live-collaboration"]
+  }
 }
